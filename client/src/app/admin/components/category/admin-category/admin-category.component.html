@@ -1,0 +1,27 @@
+<div class="admin-category">
+
+  <h1>Список категорий</h1>
+
+  <div class="admin-category__info" *ngIf="errorMessage || category.length; else load">
+
+    <ng-container *ngIf="category.length; else empty">
+      <div *ngFor="let c of category; let idx = index">
+        <span>id: {{c.id}}</span>
+        <a [routerLink]="['/', 'admin', 'category', c.id]">Категория: {{c.categoryName}}</a>
+        <span>Привязан к группе товаров? {{c.productGroup ? 'Да': 'Нет'}}</span>
+      </div>
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

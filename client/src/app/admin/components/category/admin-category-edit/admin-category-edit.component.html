@@ -1,0 +1,53 @@
+<div class="admin-category-edit">
+
+  <h1>Редактирование категории</h1>
+
+  <div class="admin-category-edit__info" *ngIf="category || errorMessage; else load">
+
+    <ng-container *ngIf="category; else empty">
+
+      <form [formGroup]="categoryForm" (ngSubmit)="update()">
+
+        <label>
+          <span>Категория</span>
+          <input class="admin-input" placeholder="Укажите категорию" type="text" formControlName="category">
+          <small *ngIf="categoryForm.controls['category'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <div>
+          <span>Привязка к группе товаров: {{getProductGroupName()}}</span>
+          <div>
+            <button (click)="dropDown()" type="button">Список групп товаров</button>
+            <ul #list>
+              <li *ngFor="let p of productGroup; let idx = index">
+                <label>
+                  <input type="radio" formControlName="productGroup" [value]="p.id" (change)="dropDown()">
+                  <span>{{p.productGroup}}</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+          <small *ngIf="categoryForm.controls['productGroup'].errors?.required">Поле не должно быть пустым</small>
+        </div>
+
+        <button class="admin-btn-action" type="submit" [disabled]="categoryForm.invalid || action">Изменить</button>
+        <small class="successful" *ngIf="successful">Категория успешно обновлена</small>
+        <small class="error" *ngIf="updateError">{{updateError}}</small>
+
+      </form>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

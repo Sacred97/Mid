@@ -1,0 +1,38 @@
+<div class="restore">
+
+  <ng-container *ngIf="!errorMessage; else failed">
+    <ng-container *ngIf="successfulMessage; else not_sending">
+      <h1>{{successfulMessage}}</h1>
+    </ng-container>
+    <ng-template #not_sending>
+      <h1>Введите новый пароль: </h1>
+
+      <form [formGroup]="form" (ngSubmit)="changePassword()">
+        <div>
+          <div>
+            <input type="password" placeholder="Новый пароль" formControlName="password" #pass>
+            <div class="veil" (click)="disclose()">OOO</div>
+          </div>
+          <div *ngIf="form.controls['password'].invalid && form.controls['password'].dirty">
+            <small *ngIf="form.controls['password'].errors?.required">Поле не должно быть пустым</small>
+          </div>
+        </div>
+
+        <div>
+          <input type="password" placeholder="Повторите пароль" formControlName="repassword">
+          <div *ngIf="form.controls['repassword'].invalid && form.controls['repassword'].dirty">
+            <small *ngIf="form.controls['repassword'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="form.controls['repassword'].errors?.mismatch">Пароли не совпадают</small>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="action || form.invalid || !token">Сменить пароль</button>
+        <small *ngIf="error">{{error}}</small>
+
+      </form>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #failed><h1>{{errorMessage}}</h1></ng-template>
+
+</div>

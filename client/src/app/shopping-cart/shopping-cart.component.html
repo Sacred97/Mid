@@ -1,0 +1,154 @@
+<div class="shopping-cart-page">
+
+  <div class="cart">
+
+    <div class="cart__header">
+      <h1>Корзина</h1>
+
+      <div class="cart__header__sort" *ngIf="details.length">
+        <span>Сортировать: </span>
+        <button (click)="sorting(true, false)">
+          по названию
+        </button>
+        <div [ngClass]="{
+            'cart__header__sort__name': sortByName,
+            'cart__header__sort__name_desc': sortByName && !sortByASC,
+            'cart__header__sort__date': sortByDate,
+            'cart__header__sort__date_desc': sortByDate && !sortByASC
+          }">
+          <span></span>
+        </div>
+        <button (click)="sorting(false, true)" *ngIf="userService.user$.getValue()">
+          по дате добавления в корзину
+        </button>
+      </div>
+    </div>
+
+    <div class="cart__result" *ngIf="details.length; else loading">
+
+      <hr>
+
+      <div *ngFor="let item of details; let idx = index">
+
+        <div class="cart__result__number">{{idx + 1}}</div>
+
+        <div class="cart__result__image">
+          <img [src]="item.photoDetail && item.photoDetail.length ?
+            item.photoDetail[0].url : '../../assets/catalog/not-have-photo.jpg'" alt="">
+        </div>
+
+        <div class="cart__result__title">
+          <a [routerLink]="['/', 'catalog', item.id]" (click)="viewedService.addToRecentlyViewed(item.id)">
+            {{item.name}}
+          </a>
+          <span>Артикул: {{item.vendorCode}}</span>
+          <span>Производитель: {{item.manufacturer ? item.manufacturer.nameCompany : 'Не указан'}}</span>
+        </div>
+
+        <div class="cart__result__price">
+          <span>{{cartService.toCurrency(item.price)}}</span>
+          <span>вес: {{item.weight ? item.weight + ' кг' : '-'}}</span>
+        </div>
+
+        <div class="cart__result__quantity">
+          <button (click)="decrease(idx)"></button>
+          <input type="number" [value]="item.quantity" (change)="manualInput($event, idx)">
+          <button (click)="increase(idx)"><span></span></button>
+        </div>
+
+        <div class="cart__result__total">
+          Итого: {{cartService.toCurrency(item.price * item.quantity!)}}
+        </div>
+
+        <div class="cart__result__remove">
+          <button (click)="prepareOnRemove(item.id, idx)">&#xd7;</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <ng-template #loading>
+      <div class="cart__load">
+
+        <ng-container *ngIf="!errorMessage; else error">
+          <div class="lds-dual-ring"></div>
+        </ng-container>
+
+        <ng-template #error>
+          <h1>{{errorMessage}}</h1>
+        </ng-template>
+
+      </div>
+    </ng-template>
+
+  </div>
+
+  <div class="cart-info" *ngIf="details.length">
+    <button (click)="clearModal = true">Очистить все содержимое корзины</button>
+    <span>Итого: {{cartService.toCurrency(cartService.totalCost)}}</span>
+    <span>Предварительный общий вес: {{totalWeight ? totalWeight + ' кг' : 'Не указано'}}</span>
+    <div>
+      <button (click)="makeOrder()" [disabled]="cartService.totalCost <= 999 || action">
+        Оформить заказ
+      </button>
+      <small *ngIf="cartService.totalCost <= 999">
+        Минимальная сумма заказа от {{cartService.toCurrency(1000)}}
+      </small>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="clearModal">
+  <div class="modal-background"></div>
+
+  <div class="confirm-modal-window" *ngIf="!action">
+
+    <ng-container *ngIf="!modalError">
+      <h1>Вы уверены, что хотите очистить корзину?</h1>
+      <div>
+        <button (click)="clearShoppingCart()">Да</button>
+        <button (click)="clearModal = false">Отмена</button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="modalError">
+      <h1>{{modalError}}</h1>
+      <button (click)="modalErrorClose()">Закрыть окно</button>
+    </ng-container>
+
+  </div>
+
+  <div class="loader-container" *ngIf="action">
+    <div class="lds-dual-ring"></div>
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="removeModal">
+
+  <div class="modal-background"></div>
+
+  <div class="confirm-modal-window" *ngIf="!action">
+
+    <ng-container *ngIf="!modalError">
+      <h1>Вы подтверждаете удаление товара?</h1>
+      <div>
+        <button (click)="removeItem()">Да</button>
+        <button (click)="cancel()">Отмена</button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="modalError">
+      <h1>{{modalError}}</h1>
+      <button (click)="modalErrorClose()">Закрыть окно</button>
+    </ng-container>
+
+  </div>
+
+  <div class="loader-container" *ngIf="action">
+    <div class="lds-dual-ring"></div>
+  </div>
+
+</div>

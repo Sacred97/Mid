@@ -1,0 +1,126 @@
+@import "../../styles/variables";
+
+.city-modal-window {
+  position: absolute;
+  z-index: 101;
+  width: 25%;
+  max-height: 650px;
+  padding: 0 27px;
+  border: 2px solid $yellow;
+  border-radius: 15px;
+  background-color: #ffffff;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    //это фон самого скроллбара
+    background-color: $grey_easy;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-button {
+    //кнопки направления на полосе прокрутки
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    //пустое пространство под индикатором прокрутки
+
+  }
+
+  &::-webkit-scrollbar-thumb {
+    //индикатор прокрутки, перетаскиваемый элемент.
+    background-color: $yellow;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+  }
+
+  &__title {
+    margin: 26px auto;
+    text-align: center;
+    h1 {
+      font-size: 24px;
+      color: $violet;
+      font-family: "Museo Sans Cyrl 700";
+      text-transform: uppercase;
+    }
+  }
+
+  &__search {
+    display: flex;
+    width: 100%;
+    position: relative;
+
+    input, button {
+      outline: none;
+      border: none;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 19px;
+      background-color: $grey_easy;
+      font-size: 16px;
+      font-family: "Museo Sans Cyrl 300";
+      border-radius: 10px;
+    }
+
+    ul {
+      position: absolute;
+      width: 100%;
+      top: 100%;
+      left: 0;
+      background-color: #ffffff;
+      box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
+      list-style: none;
+
+      li {
+        width: 100%;
+      }
+
+      li>a {
+        display: block;
+        cursor: pointer;
+        padding: 5px;
+
+        &:hover {
+          background-color: $yellow-hover;
+        }
+      }
+
+    }
+
+  }
+
+  &__list {
+    padding-left: 19px;
+    margin: 27px 0;
+    width: 100%;
+    list-style: none;
+
+    li>span {
+      text-transform: uppercase;
+      font-size: 15px;
+      font-family: "Museo Sans Cyrl 700";
+      color: $black;
+    }
+
+    li>a {
+      font-family: "Museo Sans Cyrl 300";
+      font-size: 15px;
+      color: $grey_dark;
+      cursor: pointer;
+      &:hover {
+        color: $violet;
+      }
+    }
+
+    li>a.city-modal-window__list_active {
+      color: $violet;
+      font-family: "Museo Sans Cyrl 700";
+    }
+
+  }
+
+
+}

@@ -1,0 +1,498 @@
+@import "../shared/styles/variables";
+
+.shopping-cart-page {
+  width: 89.2%;
+  margin: 0 auto;
+  min-height: 50vh;
+}
+
+.cart {
+  width: 100%;
+  margin: 23px 0 17px;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    h1 {
+      width: fit-content;
+      color: $violet;
+      font-size: 26px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 700";
+    }
+
+    &__sort {
+      display: flex;
+      align-items: center;
+      margin-right: 34px;
+
+      span {
+        display: inline-block;
+        margin-right: 4px;
+        color: $black;
+        font-size: 14px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+
+      button {
+        display: block;
+        width: fit-content;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: $black;
+        font-size: 14px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+
+      .sorting {
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      div {
+        position: relative;
+        margin: 0 2px;
+        width: 22px;
+        height: 12px;
+
+        &:before, span, &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          border-top: 1px solid $violet;
+          transition: right 0.5s, left 0.5s;
+        }
+
+        &:before {
+          top: 2px;
+        }
+
+        span {
+          width: 35%;
+          top: 6px;
+        }
+
+        &:after {
+          bottom: 1px;
+        }
+      }
+
+      &__name {
+
+        &:before, span, &:after{
+          left: 0;
+        }
+
+        &:before {
+          right: 80%;
+        }
+
+        &:after {
+          right: 50%;
+        }
+
+        &_desc {
+
+          &:before {
+            right: 50%;
+          }
+
+          &:after {
+            right: 80%;
+          }
+        }
+      }
+
+      &__date {
+
+        &:before, &:after{
+          right: 0;
+        }
+
+        span {
+          left: 65%;
+        }
+
+        &:before {
+          left: 80%;
+        }
+
+        &:after {
+          left: 50%;
+        }
+
+        &_desc {
+
+          &:before {
+            left: 50%;
+          }
+
+          &:after {
+            left: 80%;
+          }
+        }
+      }
+
+    }
+
+  }
+
+  &__load {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    width: 100%;
+
+    h1 {
+      color: $grey_easy-hover;
+      font-size: 32px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 700";
+    }
+
+  }
+
+  &__result {
+    margin: 23px 0 17px;
+    width: 100%;
+
+    hr {
+      width: 100%;
+      border: none;
+      border-top: 2px solid $grey_normal;
+    }
+
+    > div {
+      display: flex;
+      width: 100%;
+      padding: 2px 0;
+      border-bottom: 2px solid $grey_normal;
+    }
+
+    &__number {
+      flex-basis: 4%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $grey_normal;
+      font-size: 17px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 500";
+    }
+
+    &__image {
+      flex-basis: 8%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        max-width: 100%;
+        max-height: 90px;
+      }
+    }
+
+    &__title {
+      flex-basis: 45%;
+      margin-left: 1%;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+
+      a {
+        display: block;
+        width: fit-content;
+        margin-bottom: 10px;
+        color: $black;
+        font-size: 17px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 700";
+        &:hover {
+          color: $black-hover;
+        }
+      }
+
+      span {
+        display: block;
+        width: fit-content;
+        color: $grey_normal;
+        font-size: 14px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+    }
+
+    &__price {
+      flex-basis: 12%;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+
+      > span:first-child {
+        display: block;
+        color: $black;
+        font-size: 17px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 700";
+      }
+
+      > span:last-child {
+        display: block;
+        margin-top: 10px;
+        color: $grey_normal;
+        font-size: 14px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+      }
+    }
+
+    &__quantity {
+      flex-basis: 7%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      input, button {
+        width: 33.3%;
+        height: 33px;
+      }
+
+      input {
+        display: flex;
+        text-align: center;
+        color: $grey_normal;
+        font-size: 21px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 500';
+        &:disabled {
+          background-color: transparent;
+        }
+      }
+
+      button {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        border: none;
+        background-color: #ffffff;
+        cursor: pointer;
+
+        &:before, span {
+          content: '';
+          display: block;
+          position: absolute;
+          bottom: 16px;
+          width: 50%;
+          height: 0;
+          border-top: 2px solid $grey_normal;
+        }
+
+        span {
+          transform: rotate(90deg);
+        }
+
+        &:hover {
+          &:before, span {
+            border-top: 2px solid $grey_normal-hover;
+          }
+        }
+
+      }
+
+    }
+
+    &__total {
+      flex-basis: 20%;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      color: $black;
+      font-size: 22px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 700";
+    }
+
+    &__remove {
+      flex-basis: 3%;
+      display: flex;
+      align-items: center;
+
+      button {
+        display: block;
+        width: fit-content;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: $grey_normal;
+        line-height: 1;
+        font-size: 29px;
+        font-family: "Museo Sans Cyrl 300";
+        &:hover {
+          color: $grey_normal-hover;
+        }
+      }
+    }
+
+  }
+
+}
+
+.cart-info {
+  width: 100%;
+  margin-bottom: 30px;
+
+  > button {
+    display: block;
+    margin: 0 0 27px auto;
+    width: fit-content;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid $grey_normal;
+    color: $grey_normal;
+    font-size: 18px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 300";
+    cursor: pointer;
+    &:hover {
+      color: $grey_normal-hover;
+      border-bottom-color: transparent;
+    }
+  }
+
+  span {
+    display: block;
+    margin: 0 0 12px auto;
+    width: fit-content;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  > span:nth-child(2) {
+    color: $black;
+    font-size: 27px;
+  }
+
+  > span:nth-child(3) {
+    color: $grey_normal;
+    font-size: 20px;
+  }
+
+  div {
+    margin-left: auto;
+    width: 100%;
+    max-width: 250px;
+
+    button {
+      display: block;
+      padding: 14px 0;
+      width: 100%;
+      background-color: transparent;
+      border: 2px solid $yellow;
+      border-radius: 10px;
+      color: $black;
+      font-size: 22px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 300";
+      cursor: pointer;
+
+      &:hover {
+        background-color: $yellow-hover;
+      }
+      &:disabled {
+        background-color: $grey_easy;
+        border-color: $grey_easy;
+        cursor: not-allowed;
+      }
+    }
+
+    small {
+      display: block;
+      width: fit-content;
+      margin: 8px auto 0;
+      color: red;
+      font-size: 10px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 300";
+    }
+
+  }
+
+}
+
+.confirm-modal-window, .loader-container {
+  position: absolute;
+  z-index: 101;
+  padding: 32px 0 24px;
+  width: 100%;
+  background-color: #ffffff;
+  border: 2px solid $yellow;
+  border-radius: 15px;
+}
+
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  min-height: 200px;
+}
+
+.confirm-modal-window {
+  max-width: 600px;
+
+  h1 {
+    width: fit-content;
+    margin: 0 auto 19px;
+    color: $violet;
+    font-size: 24px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  button {
+    display: block;
+    padding: 12px 0;
+    background-color: #ffffff;
+    border: 2px solid $yellow;
+    border-radius: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    color: $violet;
+    font-size: 13px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+    cursor: pointer;
+    &:hover {
+      background-color: $yellow-hover;
+    }
+  }
+
+  > button {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  div {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 250px;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: 49%;
+    }
+
+  }
+
+}

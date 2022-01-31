@@ -1,0 +1,97 @@
+@import "../../../../shared/styles/variables";
+
+.admin-region-edit {
+  width: 100%;
+
+  > h1 {
+    color: $black;
+    font-size: 36px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  &__info {
+    width: 100%;
+    padding: 20px 0;
+
+    > span {
+      display: block;
+      margin: 0 auto;
+      width: fit-content;
+      color: $grey_normal;
+      font-size: 24px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 500";
+    }
+
+    form {
+      width: 100%;
+      padding: 10px 20px;
+      border: 2px solid $border_grey;
+
+      > label {
+        display: block;
+        width: 100%;
+        margin-bottom: 15px;
+
+        span {
+          display: block;
+          margin-bottom: 15px;
+          color: $black;
+          font-size: 16px;
+          line-height: 1;
+          font-family: "Museo Sans Cyrl 500";
+        }
+
+        input {
+          max-width: 100%;
+          width: 500px;
+        }
+
+        small {
+          display: block;
+          margin-top: 5px;
+          color: red;
+          font-size: 12px;
+          line-height: 1;
+          font-family: "Museo Sans Cyrl 100";
+        }
+
+      }
+
+      > button {
+        width: 200px;
+      }
+
+      > small {
+        display: block;
+        margin-top: 5px;
+        font-size: 14px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 100";
+      }
+
+      > small.successful {
+        color: $green;
+      }
+
+      > small.error {
+        color: red;
+      }
+
+    }
+
+    > div {
+      margin-top: 20px;
+      width: 100%;
+
+      > button {
+        width: 200px;
+      }
+
+    }
+
+  }
+
+}
+

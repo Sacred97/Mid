@@ -1,0 +1,535 @@
+<ng-template appRef></ng-template>
+
+<div class="order-guest">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb class="breadcrumbs-links" symbol="" [bgColor]="'#ffffff'"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <form class="order-guest-data" [formGroup]="form">
+
+    <div>
+
+      <div class="order-guest-data__title">
+
+        <h1>Информация о заказе</h1>
+
+        <span></span>
+
+        <div class="order-guest-data__title__info">
+
+          <div>
+
+            <div>
+              <span>Количество позиций:</span>
+              <span>{{quantityDetails}}</span>
+            </div>
+
+            <hr>
+
+            <div>
+              <span>Приблизительный вес заказа:</span>
+              <span>{{totalWeight ? totalWeight + ' кг' : 'Не указано'}}</span>
+            </div>
+
+          </div>
+
+          <div>
+            <span>Общая сумма:</span>
+            <span>{{cartService.toCurrency(cartService.totalCost)}}</span>
+          </div>
+
+        </div>
+
+        <a routerLink="/shopping-cart">Посмотреть заказ еще раз</a>
+
+      </div>
+
+      <div class="order-guest-data__contacts">
+
+        <h1>Контактные данные для связи</h1>
+        <span></span>
+
+        <div>
+
+          <label>
+            <span>ФИО</span>
+            <input type="text" placeholder="Введите ФИО" formControlName="fullName">
+            <small *ngIf="form.controls['fullName'].errors?.required">Поле не должно быть пустым</small>
+          </label>
+
+          <label>
+            <span>Телефон</span>
+            <input type="text" placeholder="Телефон" formControlName="phone">
+            <small *ngIf="form.controls['phone'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="form.controls['phone'].errors?.minlength">Минимальная длинна поля 11 символов</small>
+          </label>
+
+          <label>
+            <span>Электронная почта</span>
+            <input type="email" placeholder="Почта" formControlName="email">
+            <small *ngIf="form.controls['email'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="form.controls['email'].errors?.email">Email указан не верно</small>
+          </label>
+
+          <label>
+            <span>Дополнительный телефон</span>
+            <input type="text" formControlName="additional">
+          </label>
+
+        </div>
+
+      </div>
+
+      <div class="order-guest-data__customer">
+
+        <h1>Покупатель</h1>
+        <span></span>
+
+        <div class="order-guest-data__customer__choice">
+          <span>Выберите физическое лицо или организацию на кого выставлять счет</span>
+          <label class="radio-make-order">
+            <input type="radio" formControlName="customer" value="Физ.лицо">
+            <div></div>
+            <span>Физическое лицо</span>
+          </label>
+          <label class="radio-make-order">
+            <input type="radio" formControlName="customer" value="Юр.лицо">
+            <div></div>
+            <span>Организация</span>
+          </label>
+        </div>
+
+        <div class="order-guest-data__customer__company" *ngIf="form.controls['customer'].value === 'Юр.лицо'">
+          <span>Название организации, ИНН</span>
+          <input type="text" placeholder="Пример: ООО Мидкам" appDelayedInput
+                 [delayTime]="1000" (delayedInput)="searchCompanyInDaData($event)"
+                 [value]="!!companyData ? companyData.opf + ' ' + companyData.name + ' ' + companyData.inn : ''">
+          <span>Выберите вариант или продолжите ввод</span>
+
+          <ul>
+            <li *ngFor="let item of companyList" (click)="chooseCompany(item)">
+              <span>{{item.opf + ' ' + item.name + ' ИНН: ' + item.inn}}</span>
+              <span>{{'КПП: ' + item.kpp + ' ' + item.address}}</span>
+            </li>
+          </ul>
+
+          <label>
+            <input type="checkbox" formControlName="new">
+            <span>Не нашли свою организацию?</span>
+          </label>
+        </div>
+
+        <div class="order-guest-data__customer__new" *ngIf="form.controls['new'].value">
+
+          <label>
+            <span>Название формы собственности</span>
+            <input type="text" placeholder="ОПФ" formControlName="companyOPF">
+            <small *ngIf="form.controls['companyOPF'].errors?.required">Поле не должно быть пустым</small>
+          </label>
+
+          <label>
+            <span>Название организации</span>
+            <input type="text" placeholder="Мидкам" formControlName="companyName">
+            <small *ngIf="form.controls['companyName'].errors?.required">Поле не должно быть пустым</small>
+          </label>
+
+          <label>
+            <span>ИНН</span>
+            <input type="number" formControlName="companyINN">
+            <small *ngIf="form.controls['companyINN'].errors?.uncorrected">
+              Длинна поля должна быть из 10 или 12 цифр
+            </small>
+          </label>
+
+          <label>
+            <span>КПП</span>
+            <input type="number" formControlName="companyKPP">
+            <small *ngIf="form.controls['companyKPP'].errors?.uncorrected">
+              Длинна поля должна быть из 9 цифр
+            </small>
+          </label>
+
+          <label>
+            <span>Юридический адрес</span>
+            <input type="text" formControlName="companyAddress">
+            <small *ngIf="form.controls['companyAddress'].errors?.required">Поле не должно быть пустым</small>
+          </label>
+
+        </div>
+
+      </div>
+
+      <div class="order-guest-data__payment">
+
+        <h1>Способ оплаты</h1>
+        <span></span>
+
+        <div>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Наличными">
+            <div>
+              <img src="../../assets/detail-cart/payment-cash.svg" alt="">
+              <div>
+                <span>Наличными</span>
+                <span></span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Банковской картой">
+            <div>
+              <img src="../../assets/detail-cart/payment-card-in-shop.svg" alt="">
+              <div>
+                <span>Банковской картой</span>
+                <span>VISA MASTERCARD МИР</span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Иное">
+            <div>
+              <img src="../../assets/detail-cart/ruble.svg" alt="">
+              <div>
+                <span>Иное</span>
+                <span>Индивидуально</span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Безналичным платежом с НДС">
+            <div>
+              <img src="../../assets/detail-cart/wire-transfer.svg" alt="">
+              <div>
+                <span>Безналичным платежом</span>
+                <span>С НДС</span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Безналичным платежом без НДС">
+            <div>
+              <img src="../../assets/detail-cart/wire-transfer.svg" alt="">
+              <div>
+                <span>Безналичным платежом</span>
+                <span>Без НДС</span>
+              </div>
+            </div>
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div>
+
+      <div class="order-guest-data__delivery">
+
+        <h1>Адрес и метод доставки</h1>
+        <span></span>
+
+        <div class="order-guest-data__delivery__choice">
+          <span>Способ доставки:</span>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="delivery" value="pickup">
+            <div></div>
+            <span>Самовывоз</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="delivery" value="city">
+            <div></div>
+            <span>Транспортной компанией “до терминала”</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="delivery" value="home">
+            <div></div>
+            <span>Транспортной компанией “до двери”</span>
+          </label>
+        </div>
+
+        <div class="order-guest-data__delivery__pickup" *ngIf="form.controls['delivery'].value === 'pickup'">
+          <span>Пункт самовывоза:</span>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="point" value="Сидоровка">
+            <div></div>
+            <span>Сидоровка</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="point" value="Орловка">
+            <div></div>
+            <span>Орловка</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="point" value="Гараж-2000">
+            <div></div>
+            <span>Гараж-2000</span>
+          </label>
+
+          <div *ngIf="form.controls['point'].value === 'Сидоровка'">
+            <span>Сидоровка</span>
+
+            <div>
+              <span>Местоположение:</span>
+              <p>
+                РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, дом. 123
+                <br/>
+                (трасса М-7 Волга, направление Уфа-Казань, 1046 километр)
+              </p>
+            </div>
+
+            <div>
+              <span>Время работы:</span>
+              <p>
+                с 8:00 по 17:00 с понедельника по пятницу
+                <br/>
+                с 8:00 по 13:00 по субботам
+              </p>
+            </div>
+
+            <div>
+              <span>Телефоны:</span>
+              <p>
+                +7 8552 927-111
+                <br/>
+                8-800-700-31-32
+              </p>
+            </div>
+          </div>
+
+          <div *ngIf="form.controls['point'].value === 'Орловка'">
+            <span>Орловка</span>
+
+            <div>
+              <span>Местоположение:</span>
+              <p>
+                РФ, Республика Татарстан, г. Набережные Челны, ул. Орловская, дом 186
+                <br/>
+                (ул. Центральная, дом 186)
+              </p>
+            </div>
+
+            <div>
+              <span>Время работы:</span>
+              <p>
+                с 8:00 по 17:00 с понедельника по пятницу
+                <br/>
+                с 8:00 по 12:00 по субботам
+              </p>
+            </div>
+
+            <div>
+              <span>Телефоны:</span>
+              <p>
+                +7 8552 32‒23‒23
+                <br/>
+                8-800-700-31-32
+              </p>
+            </div>
+          </div>
+
+          <div *ngIf="form.controls['point'].value === 'Гараж-2000'">
+            <span>Гараж-2000</span>
+
+            <div>
+              <span>Местоположение:</span>
+              <p>РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, 224/4 блок 4</p>
+            </div>
+
+            <div>
+              <span>Время работы:</span>
+              <p>с 8:00 по 17:00 с понедельника по пятницу</p>
+            </div>
+
+            <div>
+              <span>Телефоны:</span>
+              <p>
+                +7 8552 44‒55‒55
+                <br/>
+                8-800-700-31-32
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="order-guest-data__delivery__transport" *ngIf="form.controls['delivery'].value === 'home' ||
+             form.controls['delivery'].value === 'city'">
+          <span>Транспортная компания:</span>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="transport" value="ПЭК">
+            <div></div>
+            <span>ПЭК</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="transport" value="Деловые Линии">
+            <div></div>
+            <span>Деловые Линии</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="transport" value="Байкал Сервис">
+            <div></div>
+            <span>Байкал Сервис</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="transport" value="Энергия">
+            <div></div>
+            <span>Энергия</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="transport" value="КИТ">
+            <div></div>
+            <span>КИТ</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="transport" value="СДЭК">
+            <div></div>
+            <span>СДЭК</span>
+          </label>
+
+          <label class="radio-make-order">
+            <input type="radio" formControlName="transport" value="Другое">
+            <div></div>
+            <span>Другая</span>
+          </label>
+
+          <div class="order-guest-data__delivery__transport__own"
+               *ngIf="form.controls['transport'].value === 'Другое'">
+            <span>Название транспортной компании</span>
+            <input type="text" placeholder="Пример: Boxberry" formControlName="another">
+            <small *ngIf="form.controls['another'].errors?.required">Поле не должно быть пустым</small>
+          </div>
+
+          <div class="order-guest-data__delivery__transport__city" *ngIf="form.controls['delivery'].value === 'city'">
+            <span>Город терминала</span>
+            <input type="text" placeholder="г. Набережные Челны" formControlName="place">
+            <small *ngIf="form.controls['place'].errors?.required">Поле не должно быть пустым</small>
+          </div>
+
+          <div class="order-guest-data__delivery__transport__home" *ngIf="form.controls['delivery'].value === 'home'">
+            <span>Адрес</span>
+
+            <div>
+              <label>
+                <span>Населенный пункт</span>
+                <input type="text" placeholder="г. Набережные Челны" formControlName="city">
+                <small *ngIf="form.controls['city'].errors?.required">Поле не должно быть пустым</small>
+              </label>
+
+              <label>
+                <span>Улица</span>
+                <input type="text" placeholder="пр-кт Казанский" formControlName="street">
+                <small *ngIf="form.controls['street'].errors?.required">Поле не должно быть пустым</small>
+              </label>
+
+              <label>
+                <span>Дом</span>
+                <input type="text" placeholder="123" formControlName="building">
+                <small *ngIf="form.controls['building'].errors?.required">Поле не должно быть пустым</small>
+              </label>
+
+              <label>
+                <span>Квартира / офис</span>
+                <input type="text" placeholder="10" formControlName="office">
+                <small *ngIf="form.controls['office'].errors?.required">Поле не должно быть пустым</small>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="map" id="map_container" [style]="mapVisible ?
+           'position: relative; z-index: 1; opacity: 1; margin: 0 0 20px;'
+           : 'position: absolute; top: 0; left: 0; z-index: -1; opacity: 0; margin: 0;'">
+      </div>
+
+      <button type="button" (click)="orderDataAssembly()" [disabled]="form.invalid ||
+          (form.controls['customer'].value === 'Юр.лицо' ?
+          (form.controls['new'].value ? false : !companyData)
+          : false) || action">
+        Оформить заказ
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+
+<div class="modal" *ngIf="continue">
+
+  <div class="modal-background" (click)="close()"></div>
+
+  <div class="modal-guest-continue">
+
+    <ng-container *ngIf="!action; else loading">
+
+      <ng-container *ngIf="!errorMessage && !success && !warning">
+        <p>
+          Вы уверены, что хотите продолжить
+          оформление заказа без регистрации? <br>
+          У Вас не сохранятся: история этого заказа
+          и все заполненные данные
+        </p>
+        <div>
+          <button (click)="makeOrder()">Да, продолжить так</button>
+          <button (click)="registrationStart()">Начать регистрацию</button>
+        </div>
+      </ng-container>
+
+
+      <div class="modal-guest-continue__success" *ngIf="!errorMessage && !warning && success && orderNumber">
+        <p>
+          Заказ под номером {{orderNumber}} успешно создан, <br>
+          так же на указанную почту отправлен дубликат заказа.
+        </p>
+        <a routerLink="/">На главную</a>
+      </div>
+
+      <div class="modal-guest-continue__warning" *ngIf="!errorMessage && !success && warning">
+        <p>
+          Цены на некоторые товары были изменены. <br>
+          На данный момент сумма заказа - {{cartService.toCurrency(cartService.totalCost)}},
+          прошлая сумма заказа - {{cartService.toCurrency(prevCost)}}
+        </p>
+        <a routerLink="/shopping-cart">В корзину</a>
+      </div>
+
+      <div class="modal-guest-continue__error" *ngIf="errorMessage">
+        <p>{{errorMessage}}</p>
+        <button (click)="closeError()">Закрыть окно</button>
+      </div>
+
+
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="loading-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>
+

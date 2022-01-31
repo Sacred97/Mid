@@ -1,0 +1,131 @@
+<div class="modal">
+
+  <div class="modal-background" (click)="close.emit()"></div>
+
+  <div class="auth-modal" *ngIf="!forgotPasswordAction && !registrationAction; else action">
+
+    <div class="auth-modal__title">
+      <span [style.color]="signIn?'#724684':'#898989'" (click)="signIn=true">Вход</span>
+      <span>/</span>
+      <span [style.color]="signIn?'#898989':'#724684'" (click)="signIn=false">Регистрация</span>
+    </div>
+
+    <form *ngIf="signIn; else signUp" class="auth-modal__login" [formGroup]="formLogin" (ngSubmit)="login()">
+      <div>
+        <input type="email" placeholder="Email*" formControlName="email">
+        <div *ngIf="formLogin.controls['email'].invalid && formLogin.controls['email'].dirty" class="auth-modal__validation">
+          <small *ngIf="formLogin.controls['email'].errors?.required">Поле не должно быть пустым</small>
+          <small *ngIf="formLogin.controls['email'].errors?.email">Email введен не коректно</small>
+        </div>
+      </div>
+      <div>
+        <input type="password" placeholder="Пароль*" formControlName="password">
+        <a (click)="forgotPasswordAction = true">Забыли пароль?</a>
+        <div *ngIf="formLogin.controls['password'].invalid && formLogin.controls['password'].dirty" class="auth-modal__validation">
+          <small *ngIf="formLogin.controls['password'].errors?.required">Поле не должно быть пустым</small>
+          <small *ngIf="formLogin.controls['password'].errors?.minlength">Пароль должен быть не менее 6 символов</small>
+        </div>
+      </div>
+      <label>
+        <input type="checkbox" formControlName="isSave">
+        <span>Запомнить на этом устройстве</span>
+      </label>
+      <button type="submit" [disabled]="formLogin.invalid || submitted">Вход</button>
+      <small *ngIf="errorLogin">{{errorLogin}}</small>
+    </form>
+
+    <ng-template #signUp>
+      <form class="auth-modal__registration" [formGroup]="formRegistration" (ngSubmit)="registrationUser()">
+        <div>
+          <input type="text" placeholder="ФИО*" formControlName="fullName">
+          <div *ngIf="formRegistration.controls['fullName'].invalid && formRegistration.controls['fullName'].dirty" class="auth-modal__validation">
+            <small *ngIf="formRegistration.controls['fullName'].errors?.required">Поле не должно быть пустым</small>
+          </div>
+        </div>
+        <div>
+          <input type="email" placeholder="Email*" formControlName="email">
+          <div *ngIf="formRegistration.controls['email'].invalid && formRegistration.controls['email'].dirty" class="auth-modal__validation">
+            <small *ngIf="formRegistration.controls['email'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="formRegistration.controls['email'].errors?.email">Email введен не коректно</small>
+          </div>
+        </div>
+        <div>
+          <input type="text" placeholder="Телефон*" formControlName="phone">
+          <div *ngIf="formRegistration.controls['phone'].invalid && formRegistration.controls['phone'].dirty" class="auth-modal__validation">
+            <small
+              *ngIf="formRegistration.controls['phone'].errors?.maxlength ||
+              formRegistration.controls['phone'].errors?.minlength">Номер введене не верно. Формат номера +70000000000
+            </small>
+            <small *ngIf="formRegistration.controls['phone'].errors?.required">Поле не должно быть пустым</small>
+          </div>
+        </div>
+        <div>
+          <input type="password" placeholder="Пароль*" formControlName="password">
+          <div *ngIf="formRegistration.controls['password'].invalid && formRegistration.controls['password'].dirty" class="auth-modal__validation">
+            <small *ngIf="formRegistration.controls['password'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="formRegistration.controls['password'].errors?.minlength">Пароль должен быть не менее 6 символов</small>
+          </div>
+        </div>
+        <div>
+          <input type="password" placeholder="Повторите пароль*" formControlName="confirmPassword">
+          <div *ngIf="formRegistration.controls['confirmPassword'].invalid && formRegistration.controls['confirmPassword'].dirty" class="auth-modal__validation">
+            <small *ngIf="formRegistration.controls['confirmPassword'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="formRegistration.controls['confirmPassword'].errors?.mismatch">Пароли не совпадают</small>
+          </div>
+        </div>
+        <label>
+          <input type="checkbox" formControlName="checkbox">
+          <span></span>
+          <a href="https://google.com" target="_blank">
+            Я даю свое согласие на обработку персональных
+            данных и получение информации о статусе
+            заказов,подтверждаю свою дееспособность
+          </a>
+        </label>
+        <button type="submit" [disabled]="formRegistration.invalid || submitted">Зарегестрироваться</button>
+        <small *ngIf="errorRegistration">{{errorRegistration}}</small>
+      </form>
+    </ng-template>
+
+  </div>
+
+  <ng-template #action>
+
+    <ng-container *ngIf="forgotPasswordAction; else regAction">
+      <div class="re-store-modal" *ngIf="!notice; else notification">
+        <h1>Восстановить пароль</h1>
+        <form [formGroup]="restoreForm" (ngSubmit)="restorePassword()">
+          <div>
+            <input type="email" placeholder="Введите E-mail" formControlName="email">
+            <div class="re-store-modal__validation" *ngIf="restoreForm.invalid && restoreForm.controls['email'].dirty">
+              <small *ngIf="restoreForm.controls['email'].errors?.email">Email введене не коректно</small>
+              <small *ngIf="restoreForm.controls['email'].errors?.required">Поле не должно быть пустым</small>
+            </div>
+          </div>
+          <button type="submit" [disabled]="submitted">Восстановить</button>
+          <small *ngIf="errorRestore">{{errorRestore}}</small>
+        </form>
+      </div>
+
+      <ng-template #notification>
+        <div class="notification-modal">
+          <h1>На Ваш e-mail {{restoreForm.controls['email'].value}}
+            было отправлено письмо со ссылкой
+            на восстановление пароля. <br>
+            Проверьте Вашу почту.</h1>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #regAction>
+      <div class="notification-modal">
+        <h1>Для завершения регистрации, <br>
+          Вам необходимо зайти <br>
+          на e-mail {{formRegistration.controls['email'].value}} <br>
+          и перейти по ссылке из письма.</h1>
+      </div>
+    </ng-template>
+
+  </ng-template>
+
+</div>

@@ -1,0 +1,166 @@
+@import "../../../../shared/styles/variables";
+
+.admin-news-letter {
+  width: 100%;
+
+  > h1 {
+    color: $black;
+    font-size: 36px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  form {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin: 20px 0;
+    padding: 5px 10px;
+    width: 55%;
+    border: 2px solid $border_grey;
+
+    label {
+      flex-basis: 65%;
+      display: block;
+
+      span {
+        display: block;
+        margin-bottom: 5px;
+        color: $black;
+        font-size: 16px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      small {
+        display: block;
+        margin-bottom: 5px;
+        color: red;
+        font-size: 12px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 100";
+      }
+
+      input {
+        width: 100%;
+        background-color: $grey_easy;
+        border-radius: 10px;
+        padding: 10px 13px;
+        color: $black;
+        font-size: 15px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 300";
+      }
+
+    }
+
+    button {
+      display: block;
+      max-width: 30%;
+      width: 200px;
+      padding: 12px 13px;
+      background-color: $yellow;
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      color: $violet;
+      font-size: 15px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 500";
+      cursor: pointer;
+
+      &:disabled {
+        background-color: $grey_easy !important;
+        cursor: not-allowed;
+      }
+      &:hover {
+        background-color: $yellow-hover;
+      }
+    }
+
+  }
+
+  &__result {
+    width: 100%;
+
+    > span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 30vh;
+      width: 100%;
+      color: $grey_normal;
+      font-size: 40px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 300";
+    }
+
+    > div {
+      width: 100%;
+
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        margin-bottom: 10px;
+
+        span {
+          display: block;
+          width: fit-content;
+          max-width: 30%;
+          color: $black;
+          font-size: 16px;
+          line-height: 1;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
+        button {
+          display: block;
+          max-width: 25%;
+          width: 180px;
+          padding: 12px 13px;
+          border: none;
+          border-radius: 10px;
+          text-align: center;
+          font-size: 16px;
+          line-height: 1;
+          font-family: "Museo Sans Cyrl 500";
+          cursor: pointer;
+          &:disabled {
+            cursor: not-allowed;
+          }
+        }
+
+        > button:nth-child(3) {
+          background-color: $grey_light;
+          color: $black;
+          &:hover {
+            background-color: $grey_light-hover;
+          }
+          &:disabled {
+            background-color: $grey_easy !important;
+          }
+        }
+
+        > button:last-child {
+          background-color: red;
+          color: #ffffff;
+          &:hover {
+            background-color: rgba(255, 0, 0, 0.6);
+          }
+          &:disabled {
+            background-color: $grey_easy !important;
+          }
+        }
+
+      }
+
+      > div:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+  }
+
+}

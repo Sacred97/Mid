@@ -1,0 +1,77 @@
+@import "../../../../shared/styles/variables";
+
+.admin-subscribers {
+  width: 100%;
+
+  h1 {
+    margin-bottom: 20px;
+    color: $black;
+    font-size: 36px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  &__list {
+    width: 100%;
+    margin-bottom: 40px;
+
+    > div {
+      width: 100%;
+      padding: 20px 15px;
+      margin-bottom: 10px;
+      border: 2px solid $border_grey;
+
+      > span {
+        display: block;
+        margin-bottom: 10px;
+        color: $black;
+        font-size: 24px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      div {
+        display: flex;
+        margin-bottom: 10px;
+        span {
+          display: block;
+          margin-right: 10px;
+          width: fit-content;
+          color: $black;
+          font-size: 16px;
+          line-height: 1;
+          font-family: "Museo Sans Cyrl 300";
+        }
+      }
+
+      button {
+        display: block;
+        width: 180px;
+        padding: 12px 13px;
+        background-color: red;
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+        cursor: pointer;
+        &:disabled {
+          background-color: $grey_easy !important;
+          color: $black;
+          cursor: not-allowed;
+        }
+        &:hover {
+          background-color: rgba(255, 0, 0, 0.6)
+        }
+      }
+
+    }
+
+  }
+
+
+
+
+}

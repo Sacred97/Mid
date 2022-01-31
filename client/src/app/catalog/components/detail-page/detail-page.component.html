@@ -1,0 +1,669 @@
+<div class="detail-page">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <div class="detail" *ngIf="routeReady; else starting">
+
+    <div class="detail__slider">
+
+      <ng-container *ngIf="detail.photoDetail.length; else empty_slider">
+        <ngx-slick-carousel class="slick-slider-main-class detail-cart-page-main-slider"
+                            [config]="detailSlideConfigMain">
+          <div ngxSlickItem *ngFor="let slide of detail.photoDetail" class="slide">
+            <img [src]="slide.url" alt="../../../../assets/catalog/not-have-photo.jpg">
+          </div>
+        </ngx-slick-carousel>
+
+        <span>Код товара: {{detail.productCode}}</span>
+
+        <ngx-slick-carousel class="slick-slider-main-class detail-cart-page-syncing-slider"
+                            [config]="detailSlideConfigSyncing">
+          <div ngxSlickItem *ngFor="let slide of detail.photoDetail" class="slide">
+            <img [src]="slide.url" alt="../../../../assets/catalog/not-have-photo.jpg">
+          </div>
+        </ngx-slick-carousel>
+      </ng-container>
+
+      <ng-template #empty_slider>
+        <ngx-slick-carousel class="slick-slider-main-class detail-cart-page-main-slider"
+                            [config]="detailSlideConfigMain">
+          <div ngxSlickItem class="slide">
+            <img src="../../../../assets/catalog/not-have-photo.jpg">
+          </div>
+        </ngx-slick-carousel>
+
+        <span>Код товара: {{detail.productCode}}</span>
+
+        <ngx-slick-carousel class="slick-slider-main-class detail-cart-page-syncing-slider"
+                            [config]="detailSlideConfigSyncing">
+          <div ngxSlickItem class="slide">
+            <img src="../../../../assets/catalog/not-have-photo.jpg">
+          </div>
+        </ngx-slick-carousel>
+      </ng-template>
+
+    </div>
+
+    <div class="detail__information">
+
+      <div class="detail__information__title">
+        <h1>{{detail.name}}</h1>
+        <div><span>Артикул: {{detail.vendorCode}}</span></div>
+        <div *ngIf="detail.additionalVendorCode.length">
+          <span>
+            Доп. артикул:
+            <span *ngFor="let item of detail.additionalVendorCode">
+              {{item.additionalCode}};
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="detail__information__price">
+        {{shoppingCartService.toCurrency(detail.price)}}
+      </div>
+
+      <div class="detail__information__to-order">
+        <div>
+          <button (click)="decreaseBySingle()" [disabled]="action"></button>
+          <input type="text" [value]="detail.quantity" (change)="manualInputBySingle($event)" [disabled]="action">
+          <button (click)="increaseBySingle()" [disabled]="action"><span></span></button>
+        </div>
+        <button (click)="addBySingle()" [disabled]="shoppingCartService.check(detail.id) || action">
+          {{shoppingCartService.check(detail.id) ? 'В корзине' : 'В заказ'}}
+        </button>
+      </div>
+
+      <div class="detail__information__quantity">
+
+        <div class="quantity-bar">
+
+          <div
+            [style.width]="detail.quantityRatio + '%'"
+            [style.border-top-right-radius]="detail.quantityRatio && detail.quantityRatio > 90 ? '5px' : '0px'"
+            [style.border-bottom-right-radius]="detail.quantityRatio && detail.quantityRatio > 90 ? '5px' : '0px'">
+          </div>
+          <span *ngIf="detail.quantityRatio; else not_available">в наличии</span>
+          <ng-template #not_available><span style="font-size: 10px; left: 9px">нет в наличии</span></ng-template>
+
+          <ul>
+
+            <li>
+              <div>
+                <span>пр. Казанский, 123</span>
+                <span>Сидоровка</span>
+              </div>
+              <div *ngIf="detail.storageGES >= 70">
+                <span></span>
+                <span>Очень много</span>
+              </div>
+              <div *ngIf="detail.storageGES >= 50 && detail.storageGES <= 60">
+                <span></span>
+                <span>Много</span>
+              </div>
+              <div *ngIf="detail.storageGES >= 20 && detail.storageGES <= 40">
+                <span></span>
+                <span>Достаточно</span>
+              </div>
+              <div *ngIf="detail.storageGES === 10">
+                <span></span>
+                <span>Мало</span>
+              </div>
+              <div *ngIf="detail.storageGES === 0">
+                <span></span>
+                <span>Очень мало</span>
+              </div>
+              <div *ngIf="detail.storageGES === -10">
+                <div>&#xd7;</div>
+                <span style="margin-left: 4px;">Нет в наличии</span>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <span>ул. Центральная, 186</span>
+                <span>Орловка</span>
+              </div>
+              <div *ngIf="detail.storageOrlovka >= 70">
+                <span></span>
+                <span>Очень много</span>
+              </div>
+              <div *ngIf="detail.storageOrlovka >= 50 && detail.storageOrlovka <= 60">
+                <span></span>
+                <span>Много</span>
+              </div>
+              <div *ngIf="detail.storageOrlovka >= 20 && detail.storageOrlovka <= 40">
+                <span></span>
+                <span>Достаточно</span>
+              </div>
+              <div *ngIf="detail.storageOrlovka === 10">
+                <span></span>
+                <span>Мало</span>
+              </div>
+              <div *ngIf="detail.storageOrlovka === 0">
+                <span></span>
+                <span>Очень мало</span>
+              </div>
+              <div *ngIf="detail.storageOrlovka === -10">
+                <div>&#xd7;</div>
+                <span style="margin-left: 4px;">Нет в наличии</span>
+              </div>
+            </li>
+
+            <li>
+              <div>
+                <span>пр. Казанский, 224/4 блок 4</span>
+                <span>"Гараж-2000"</span>
+              </div>
+              <div *ngIf="detail.storageGarage2000 >= 70">
+                <span></span>
+                <span>Очень много</span>
+              </div>
+              <div *ngIf="detail.storageGarage2000 >= 50 && detail.storageGarage2000 <= 60">
+                <span></span>
+                <span>Много</span>
+              </div>
+              <div *ngIf="detail.storageGarage2000 >= 20 && detail.storageGarage2000 <= 40">
+                <span></span>
+                <span>Достаточно</span>
+              </div>
+              <div *ngIf="detail.storageGarage2000 === 10">
+                <span></span>
+                <span>Мало</span>
+              </div>
+              <div *ngIf="detail.storageGarage2000 === 0">
+                <span></span>
+                <span>Очень мало</span>
+              </div>
+              <div *ngIf="detail.storageGarage2000 === -10">
+                <div>&#xd7;</div>
+                <span style="margin-left: 4px;">Нет в наличии</span>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="notification" *ngIf="!detail.quantityRatio && userService.user$.getValue()">
+          <img src="../../../../assets/detail-cart/notification.svg" alt="">
+          <button *ngIf="!isSubscribing()" (click)="subscribeOnDetail()" [disabled]="action">
+            Сообщить о поступлении
+          </button>
+          <button *ngIf="isSubscribing()" (click)="unsubscribeOnDetail()" [disabled]="action">
+            Отписаться от уведомления
+          </button>
+        </div>
+
+      </div>
+
+      <div class="detail__information__special-actions">
+        <div (click)="markBySingle()">
+          <div [style.backgroundColor]="detail.marked ? '#fdcb00' : '#ffffff'"></div>
+          <span>Добавить в закладки</span>
+        </div>
+        <div>
+          <div><span>?</span></div>
+          <span>Задать вопрос</span>
+        </div>
+      </div>
+
+      <div class="detail__information__manufacturer">
+        <span>торговая марка</span>
+        <ng-container *ngIf="detail.manufacturer && detail.manufacturer.logoCompanyUrl; else manufacturer_text">
+          <a [routerLink]="['/', 'manufacturer', detail.manufacturer.id]">
+            <img [src]="detail.manufacturer.logoCompanyUrl" [alt]="detail.manufacturer.nameCompany">
+          </a>
+        </ng-container>
+        <ng-template #manufacturer_text>
+          <span>
+            {{detail.manufacturer ? detail.manufacturer.nameCompany : 'Производитель отсутствует'}}
+          </span>
+        </ng-template>
+      </div>
+
+      <div class="detail__information__phone">
+        <span>
+          Для  уточнения информации о товаре или заказе,<br> позвоните по номеру:
+          <a href="tel:88007003132">8 800 700-31-32</a>
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="additional" *ngIf="routeReady">
+
+    <div class="additional__tabs">
+
+      <div class="additional__tabs__tab">
+        <button (click)="textInfoView('description')" [class.active]="description">
+          Описание
+        </button>
+        <button (click)="textInfoView('applicability')" [class.active]="applicability">
+          Применяемость
+        </button>
+        <button (click)="textInfoView('certificate')" [class.active]="certificate">
+          Сертификаты
+        </button>
+        <button (click)="textInfoView('delivery')" [class.active]="delivery">
+          Доставка
+        </button>
+        <button (click)="textInfoView('payment')" [class.active]="payment">
+          Условия оплаты
+        </button>
+      </div>
+
+      <div class="additional__tabs__description" *ngIf="description">
+
+        <div>
+          <h1>От интернет-магазина www.midkam.ru</h1>
+          <pre>{{detail.description ? detail.description : 'Описания товара нет...........'}}</pre>
+        </div>
+
+        <div>
+          <h1>Дополнительные сведения</h1>
+
+          <div>
+            <span>Производитель</span>
+            <div></div>
+            <span>{{detail.manufacturer ? detail.manufacturer.nameCompany : 'Производитель не указан'}}</span>
+          </div>
+
+          <div>
+            <span>Единица измерения</span>
+            <div></div>
+            <span>{{detail.unit}}</span>
+          </div>
+
+          <div>
+            <span>Вес</span>
+            <div></div>
+            <span>{{detail.weight ? detail.weight + ' кг' : 'Вес не указан'}}</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="additional__tabs__applicability" *ngIf="applicability">
+        <p>usePossible</p>
+      </div>
+
+      <div class="additional__tabs__certificate" *ngIf="certificate">
+        <p>Макеты сертификатов производителя, слайдер?</p>
+      </div>
+
+      <div class="additional__tabs__delivery" *ngIf="delivery">
+
+        <div>
+          <div>
+            <div>
+              <img src="../../../../assets/detail-cart/pickup.svg" alt="">
+            </div>
+          </div>
+          <div>
+            <h1>Самовывоз из торговых точек «Мидкам»</h1>
+            <p>
+              Заказ можно получить в часы работы любой торговой точки.
+              В зависимости от формы оплаты при себе необходимо иметь паспорт, доверенность, либо печать.
+              Факт поступления денежных средств обязателен, платежная ведомость не принимается.
+            </p>
+            <p>
+              Лучшее время для приезда уточняйте у своего менеджер.
+              Желательно приезжать, когда Ваш товар полностью собран.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div>
+            <div>
+              <img src="../../../../assets/detail-cart/delivery.svg" alt="">
+            </div>
+          </div>
+          <div>
+            <h1>Доставка силами транспортных компаний</h1>
+
+            <p>
+              Для того чтобы заказать адресную доставку курьерами транспортной компании,
+              покупателю необходимо будет указать в «Корзине» в разделе «Способ получения»
+              адресные данные. Затем следует выбрать подходящую транспортную компанию.
+            </p>
+
+            <p>
+              После прибытия заказа покупатель получит СМС-оповещение.
+              Для получения заказа необходимо предъявить документ, удостоверяющий личность (паспорт или водительские
+              права).
+            </p>
+
+            <p>
+              Доставка до подъезда – платная.
+              Оплата стоимости доставки производится в соответствии с расценками конкретной транспортной компании.
+            </p>
+
+            <p>Ниже Вы можете рассчитать примерную доставку распространенными ТК.</p>
+
+            <button (click)="pekModal = true"><span>Первая Экспидиционная Компания</span></button>
+            <button (click)="dellinModal = true"><span>Деловые линии</span></button>
+            <button (click)="baikalModal = true"><span>Байкал сервис</span></button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="additional__tabs__payment" *ngIf="payment">
+
+        <div>
+          <div>
+            <div>
+              <img src="../../../../assets/detail-cart/payment-cash.svg" alt="">
+            </div>
+          </div>
+          <div>
+            <h1>Оплата наличными в магазине</h1>
+            <p>В магазинах «Мидкам» можно произвести оплату наличными.
+              Продажа товаров за наличные расчет осуществляется через контрольно-кассовый аппарат с выдачей
+              покупателю чека. Оплата товара производится только в рублях.</p>
+          </div>
+        </div>
+
+        <div>
+          <div>
+            <div>
+              <img src="../../../../assets/detail-cart/payment-card-in-shop.svg" alt="">
+            </div>
+          </div>
+          <div>
+            <h1>Оплата картой в магазине</h1>
+            <p>В магазинах «Мидкам» можно произвести оплату банковскими картами Visa, MasterCard, Мир.</p>
+            <p>При оплате картой предварительно необходимо сообщить об этом менеджеру.</p>
+            <p>Оплату банковской картой может произвести только владелец карты.
+              При получении товара владелец карты должен присутствовать лично, чтобы при необходимости
+              предъявить карту и документ, удостоверяющий личность (паспорт или водительское удостоверение)</p>
+          </div>
+        </div>
+
+        <div>
+          <div>
+            <div>
+              <img src="../../../../assets/detail-cart/wire-transfer.svg" alt="">
+            </div>
+          </div>
+          <div>
+            <h1>Безналичный перевод от юридических лиц и ИП (с НДС и без НДС)</h1>
+            <p>При заказе товаров или услуг по безналичному расчету необходимо предоставить менеджеру-оператору
+              по электронной почте или на бумажном носителе реквизиты
+              компании: ИНН, КПП, полное наименование, юридический адрес, фактический адрес, фамилию, имя и отчество
+              контактного лица.
+              В карте партнера, либо в письме должна быть указана форма налогооблажения
+              для правильности оформления договора и выставления счетов.</p>
+            <p>После проверки организации юридической службой выставляется договор, после подписания которого
+              выставляется счет.</p>
+            <p>Выставленный счет действителен в течении 3 банковских дней.
+              Товар отпускается со склада или доставляется в указанное место только после фактического поступления денег
+              на расчетный счет при наличии доверенности от организации и паспорта доверенного лица.</p>
+          </div>
+        </div>
+
+        <div>
+          <div>
+            <div>
+              <img src="../../../../assets/detail-cart/payment-card-on-site.svg" alt="">
+            </div>
+          </div>
+          <div>
+            <h1>Оплата картой на сайте</h1>
+            <p>Появится в скором времени.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="additional__seo">
+      <span> {{detail.name}} {{detail.manufacturer ? '/ ' + detail.manufacturer.nameCompany : ''}}
+        купить по выгодной цене оптом и в розницу с доставкой в {{getCityTo()}} с нашего склада
+        в г. Набережные Челны. Товар соответствует артикулу. Проверяйте соответствие.
+      </span>
+    </div>
+
+    <div class="additional__details-carousel" *ngIf="!!detail.manufacturer && detailsByManufacturer.length">
+
+      <div class="additional__details-carousel__title">
+        <h1>Другие товары производителя</h1>
+        <a [routerLink]="['/', 'manufacturer', detail.manufacturer.id]">посмотреть »</a>
+      </div>
+
+      <div class="additional__details-carousel__slider">
+
+        <ngx-slick-carousel class="slick-slider-main-class details-list-slider" [config]="detailsListSliderConfig">
+          <div ngxSlickItem *ngFor="let slide of detailsByManufacturer; let idx = index"
+               [style.width]="slideWidth+'px'">
+
+            <div>
+              <div [style.backgroundColor]="slide.marked ? '#fdcb00' : '#ffffff'"
+                   (click)="markByArray(detailsByManufacturer, idx, recentlyViewed)">
+                <span></span>
+                <span></span>
+              </div>
+              <img [src]="slide.photoDetail.length > 0 ? slide.photoDetail[0].url
+              : '../../../../assets/home/logo-on-details.jpg'"
+                   [style.maxWidth]="slideWidth*0.7+'px'">
+              <a [routerLink]="['/', 'manufacturer', detail.manufacturer.id]"
+                 *ngIf="detail.manufacturer.logoCompanyUrl">
+                <img [src]="detail.manufacturer.logoCompanyUrl">
+              </a>
+            </div>
+
+            <a (click)="navigateToDetail(slide.id)">{{slide.name}}</a>
+
+            <div>
+            <span>
+              <span>Артикул:</span>
+              {{slide.vendorCode}}
+            </span>
+            </div>
+
+            <span>{{shoppingCartService.toCurrency(slide.price)}}</span>
+            <div *ngIf="shoppingCartService.check(slide.id); else no_have">
+              <button class="btn" (click)="decreaseByArray(detailsByManufacturer, idx, recentlyViewed)"
+                      [disabled]="action"></button>
+              <input type="number"
+                     [value]="slide.quantity"
+                     (change)="manualInputByArray($event, detailsByManufacturer, idx, recentlyViewed)"
+                     [disabled]="action">
+              <button class="btn" (click)="increaseByArray(detailsByManufacturer, idx, recentlyViewed)"
+                      [disabled]="action"><span></span></button>
+            </div>
+            <ng-template #no_have>
+              <button class="btn" (click)="addByArray(idx, detailsByManufacturer)" [disabled]="action">В заказ</button>
+            </ng-template>
+          </div>
+
+        </ngx-slick-carousel>
+
+      </div>
+
+    </div>
+
+    <div class="additional__details-carouse" *ngIf="recentlyViewed.length">
+
+      <div class="additional__details-carousel__title">
+        <h1>Надевно просмотренные</h1>
+        <a [routerLink]="['/','catalog']">история просмотров »</a>
+      </div>
+
+      <div class="additional__details-carousel__slider">
+
+        <ngx-slick-carousel class="slick-slider-main-class details-list-slider" [config]="detailsListSliderConfig">
+          <div ngxSlickItem *ngFor="let slide of recentlyViewed; let idx = index"
+               [style.width]="slideWidth+'px'">
+
+            <div>
+              <div [style.backgroundColor]="slide.marked ? '#fdcb00' : '#ffffff'"
+                   (click)="markByArray(recentlyViewed, idx, detailsByManufacturer)"></div>
+              <img [src]="slide.photoDetail && slide.photoDetail.length > 0 && !!slide.photoDetail[0].url
+                ? slide.photoDetail[0].url : '../../../../assets/home/logo-on-details.jpg'"
+                [style.maxWidth]="slideWidth*0.7+'px'">
+              <a [routerLink]="['/', 'manufacturer', slide.manufacturer.id]"
+                 *ngIf="slide.manufacturer && slide.manufacturer.logoCompanyUrl">
+                <img [src]="slide.manufacturer.logoCompanyUrl">
+              </a>
+            </div>
+
+            <a (click)="navigateToDetail(slide.id)">{{slide.name}}</a>
+
+            <div>
+              <span>Артикул:</span>
+              {{slide.vendorCode}}
+            </div>
+
+            <span>{{shoppingCartService.toCurrency(slide.price)}}</span>
+            <div *ngIf="shoppingCartService.check(slide.id); else no_have">
+              <button class="btn" (click)="decreaseByArray(recentlyViewed, idx, detailsByManufacturer)"
+                      [disabled]="action"></button>
+              <input type="number"
+                     [value]="slide.quantity"
+                     (change)="manualInputByArray($event, recentlyViewed, idx, detailsByManufacturer)"
+                     [disabled]="action">
+              <button class="btn" (click)="increaseByArray(recentlyViewed, idx, detailsByManufacturer)"
+                      [disabled]="action"><span></span>
+              </button>
+            </div>
+            <ng-template #no_have>
+              <button class="btn" (click)="addByArray(idx, recentlyViewed)" [disabled]="action">В заказ</button>
+            </ng-template>
+          </div>
+
+        </ngx-slick-carousel>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #starting>
+
+    <div class="route-load">
+
+      <ng-container *ngIf="routeError; else loading">
+        <h1>{{routeError}}</h1>
+      </ng-container>
+
+      <ng-template #loading>
+        <div class="lds-dual-ring"></div>
+      </ng-template>
+
+    </div>
+  </ng-template>
+
+</div>
+
+<!-- iframe Логистических компаний -->
+
+<div class="modal" *ngIf="dellinModal">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="iframe-window">
+    <div class="iframe-load" *ngIf="!iframeLoad">
+      <div class="lds-dual-ring"></div>
+    </div>
+    <iframe (load)="iframeLoad = true"
+            src="https://widgets.dellin.ru/calculator?arrival_point=1600000100000000000000000&derival_point=1600000200000000000000000&derival_to_door=off&arrival_to_door=on&sized_weight=110&sized_volume=80&disabled_calculation=on&insurance=0&package=1"
+            width="332"
+            height="390"
+            scrolling="no"
+            frameborder="0">
+    </iframe>
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="baikalModal">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="iframe-window">
+    <div class="iframe-load" *ngIf="!iframeLoad">
+      <div class="lds-dual-ring"></div>
+    </div>
+    <iframe src="https://api.baikalsr.ru/widget/calculator?order=hide" width="310" height="524.6" scrolling="no"
+            frameborder="0" (load)="iframeLoad = true">
+    </iframe>
+
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="pekModal">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="iframe-window">
+    <div class="iframe-load" *ngIf="!iframeLoad">
+      <div class="lds-dual-ring"></div>
+    </div>
+    <iframe (load)="iframeLoad = true" allowtransparency="true" frameborder="0" width="250" height="345"
+            scrolling="no"
+            style="border:1px solid #ededed" src="https://pecom.ru/ru/newcalc/">
+    </iframe>
+
+  </div>
+
+</div>
+
+<!-- Модальное окно оповещения на подписанный товар -->
+
+<div class="modal" *ngIf="notification">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="subscribe-modal">
+
+    <div class="subscribe-modal__load" *ngIf="notificationLoad">
+      <div class="lds-dual-ring"></div>
+    </div>
+
+    <div class="subscribe-modal__info" *ngIf="!notificationLoad && !notificationError">
+
+      <h1>Товар добавлен в лист ожидания</h1>
+
+      <div class="subscribe-modal__info__detail">
+
+        <div>
+          <img [src]="detail.photoDetail.length ? detail.photoDetail[0].url
+                    : '../../../../assets/catalog/not-have-photo.jpg'" alt="">
+        </div>
+
+        <div>
+
+          <h1>{{detail.name}}</h1>
+          <span>{{detail.vendorCode}}</span>
+          <div *ngIf="detail.additionalVendorCode.length">
+            <span *ngFor="let v of detail.additionalVendorCode">
+              {{v.additionalCode}}
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <a routerLink="/user/my-waiting-list">В личный кабинет</a>
+
+    </div>
+
+    <div class="subscribe-modal__error" *ngIf="!notification && notificationError">
+      <h1>{{notificationError}}</h1>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,136 @@
+<div class="user-waiting-list">
+
+  <div class="waiting-list" *ngIf="!loading; else load">
+
+    <div class="waiting-list__error" *ngIf="error">
+      <span>Что-то пошло не так, повторите попытку позже.</span>
+    </div>
+
+    <div class="waiting-list__empty" *ngIf="!details.length">
+      <div>
+        <img src="../../../../assets/user/box.svg" alt="Товар">
+        <span>Товары в разделе «Лист ожидания» отсутствуют</span>
+      </div>
+    </div>
+
+    <form [formGroup]="formAdd" (ngSubmit)="changeRecipient()" class="waiting-list__recipient"
+          *ngIf="user && !error">
+
+      <div class="waiting-list__recipient__profiles">
+        <span>Профиль для информирования о поступлении</span>
+        <button type="button" (click)="dropdown($event)">
+          <span>{{formAdd.value.profile}}</span>
+          <div></div>
+        </button>
+        <ul>
+          <li>
+            <label (click)="upList($event)">
+              <input type="radio" formControlName="profile" value="Основной профиль">
+              <span>Основной профиль</span>
+            </label>
+          </li>
+          <li *ngFor="let p of user.manager">
+            <label (click)="upList($event)">
+              <input type="radio" formControlName="profile" [value]="p.fullName">
+              <span>{{p.fullName}}</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="waiting-list__recipient__email">
+        <span>Электронная почта</span>
+        <div>{{getEmail()}} (заполняется автоматически)</div>
+      </div>
+
+      <button type="submit" [disabled]="formAdd.invalid || action || formAdd.pristine">Изменить</button>
+      <small *ngIf="formAddError">Что-то пошло не так.</small>
+    </form>
+
+    <div class="waiting-list__items" *ngIf="details.length && user">
+
+      <hr/>
+
+      <div *ngFor="let d of details; let idx = index">
+
+        <div class="waiting-list__items__image">
+          <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="Изображение">
+          <span *ngIf="d.photoDetail.length">
+              <img [src]="d.photoDetail[0].url">
+            </span>
+        </div>
+
+        <div class="waiting-list__items__title">
+          <a [routerLink]="['/', 'catalog', d.id]"
+             (click)="viewedService.addToRecentlyViewed(d.id)">
+            {{d.name}}
+          </a>
+        </div>
+
+        <div class="waiting-list__items__text">
+          <span>{{d.vendorCode}} / {{d.productCode}}</span>
+        </div>
+
+        <div class="waiting-list__items__manufacturer">
+          <a [routerLink]="!!d.manufacturer ? ['/', 'manufacturer', d.manufacturer.id] : undefined">
+            <ng-container *ngIf="d.manufacturer; else without_manufacturer">
+              <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
+                <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+              </ng-container>
+
+              <ng-template #without_logo>
+                <span>{{d.manufacturer!.nameCompany}}</span>
+              </ng-template>
+            </ng-container>
+
+            <ng-template #without_manufacturer>
+              <span>Производитель не указан</span>
+            </ng-template>
+          </a>
+        </div>
+
+        <div class="waiting-list__items__price">
+          <span>{{cartService.toCurrency(d.price)}}</span>
+        </div>
+
+        <div class="waiting-list__items__quantity">
+          <div class="quantity-bar">
+            <div [style.width]="d.quantityRatio + '%'"
+                 [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                 [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+            </div>
+            <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+            <ng-template #no_available_analog_view>
+              <span class="not-available-analog">нет в наличии</span>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="waiting-list__items__to-order">
+          <div *ngIf="cartService.check(d.id); else to_cart">
+            <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+            <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
+            <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+          </div>
+          <ng-template #to_cart>
+            <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
+          </ng-template>
+        </div>
+
+        <div class="waiting-list__items__delete">
+          <button (click)="removeFromWaitingList(d.id, idx)">&#xd7;</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #load>
+    <div class="user-my-waiting-list-loader-container">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,35 @@
+<div class="user-order">
+
+  <div class="user-order__orders" *ngIf="!!orders && orders.length; else empty">
+
+    <span>Заказы</span>
+    <div *ngFor="let o of orders; let idx = index">
+      <span>Заказ №{{o.orderNumber}} от {{cartService.toDate(o.orderDate)}}, {{o.orderItem.length}} товар на сумму
+        {{cartService.toCurrency(o.orderCost)}}</span>
+      <a [routerLink]="['/', 'user', 'my-orders', o.id]">Подробнее о заказе</a>
+      <button>
+        <img src="../../../../assets/user/repeatOrder.svg" alt="Повторить">
+        <span (click)="repeatOrder(o)">Повторить заказ</span>
+      </button>
+    </div>
+
+  </div>
+
+  <ng-template #empty>
+
+    <div class="user-order__empty">
+
+      <div>
+        <div>
+          <img src="../../../../assets/user/box.svg" alt="Заказы">
+          <span>Заказов пока нет</span>
+
+        </div>
+        <a routerLink="/catalog">Начать покупки</a>
+      </div>
+
+    </div>
+
+  </ng-template>
+
+</div>

@@ -1,0 +1,56 @@
+@import "../../../../shared/styles/variables";
+
+.admin-detail {
+  width: 100%;
+
+  h1 {
+    color: $black;
+    font-size: 32px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+
+  &__hidden-list {
+    width: 100%;
+
+    > div {
+      margin-top: 10px;
+      padding: 10px 15px;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      border: 2px solid $border_grey;
+
+      span, a {
+        display: block;
+        font-size: 16px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      span {
+        flex-basis: 100%;
+        color: $black;
+      }
+      a {
+        color: $violet;
+        width: fit-content;
+        &:hover {
+          color: $violet-hover;
+        }
+      }
+
+      > div {
+        flex-basis: 100%;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+    }
+
+  }
+
+}

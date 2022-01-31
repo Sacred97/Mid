@@ -1,0 +1,117 @@
+<div class="container">
+
+  <ngx-slick-carousel class="slick-slider-main-class home-page-main-slider" [config]="mainSliderConfig">
+    <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+      <img src="{{ slide.img }}" alt="">
+    </div>
+  </ngx-slick-carousel>
+
+</div>
+
+<div class="home-title">
+
+  <div class="home-title__text">
+    <p>В нашем интернет-магазине представлены запасные части на отечественные грузовые
+      автомобили КАМАЗ, МАЗ, малотоннажные автомобили ГАЗ, европейские грузовые автомобили,
+      на прицепы и полуприцепы СЗАп, НЕФАЗ, ТОНАР и др., тракторные запчасти. А также запасные
+      части на двигатели КАМАЗ, ЯМЗ, CUMMINS, коробки ZF, мосты MADARA и RABA, РТИ, метизы,
+      подшипники, электрооборудование, кабины, двигатели, автоаксессуары, рессорная продукция,
+      дополнительное оборудование и многое другое оптом и в розницу.</p>
+  </div>
+
+  <div class="home-title__awards">
+
+    <div>
+      <img src="../../assets/home/awards-1.png" alt="">
+      <div>
+        <b>Более 20 лет</b>
+        <p>на рынке автозапчастей</p>
+      </div>
+    </div>
+
+    <div>
+      <img src="../../assets/home/awards-2.png" alt="">
+      <div>
+        <b>Огромные складские</b>
+        <p>остатки для быстрой отгрузки товара</p>
+      </div>
+    </div>
+
+    <div>
+      <img src="../../assets/home/awards-3.png" alt="">
+      <div>
+        <b>Прямые поставки</b>
+        <p>от заводов производителей</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="slider-place">
+
+  <div class="slider-place__selection">
+
+    <button class="btn btn-slider-place" (click)="addClassToggled('first')" [ngClass]="{toggled: firstBtn}">
+      <img src="../../assets/home/best-position.png" alt="">
+      <span>Рекомендуемые товары</span>
+    </button>
+
+    <button class="btn btn-slider-place" (click)="addClassToggled('second')" [ngClass]="{toggled: secondBtn}">
+      <img src="../../assets/home/new-position.png" alt="">
+      <span>Товары-новинки</span>
+    </button>
+
+    <button class="btn btn-slider-place" (click)="addClassToggled('third')" [ngClass]="{toggled: thirdBtn}">
+      <img src="../../assets/home/sale.png" alt="">
+      <span>Акционные товары</span>
+    </button>
+
+    <button class="btn btn-slider-place" (click)="addClassToggled('fourth')" [ngClass]="{toggled: fourth}">
+      <img src="../../assets/home/factory.png" alt="">
+      <span>Заводы-производители</span>
+    </button>
+
+    <button class="btn btn-slider-place" (click)="addClassToggled('fifth')" [ngClass]="{toggled: fifth}">
+      <img src="../../assets/home/sertificate.png" alt="">
+      <span>Наши сертификаты</span>
+    </button>
+
+  </div>
+
+  <div class="slider-place__slider">
+
+    <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel"
+                        [ngStyle]="{'display': firstBtn?'block':'none'}" [config]="sliderFirstConfig">
+      <div ngxSlickItem *ngFor="let slide of slidesOnFirstSlider" class="slide">
+        <div>
+          <img [src]="slide.src" alt="">
+          <a routerLink="/"><img [src]="slide.company" alt=""></a>
+        </div>
+        <a routerLink="">{{slide.title}}</a>
+        <div><span>Артикул:</span> {{slide.vendorCode}}</div>
+        <span>{{slide.price}} &#8381;</span>
+        <button class="btn">В заказ</button>
+      </div>
+    </ngx-slick-carousel>
+
+    <ngx-slick-carousel class="carouselOnBtn" [ngStyle]="{'display': secondBtn?'block':'none'}" [config]="sliderFirstConfig">
+      <p>Второй слайдер</p>
+    </ngx-slick-carousel>
+
+    <ngx-slick-carousel class="carouselOnBtn" [ngStyle]="{'display': thirdBtn?'block':'none'}" [config]="sliderFirstConfig">
+      <p>Третий слайдер</p>
+    </ngx-slick-carousel>
+
+    <ngx-slick-carousel class="carouselOnBtn" [ngStyle]="{'display': fourth?'block':'none'}" [config]="sliderFirstConfig">
+      <p>Четвертый слайдер</p>
+    </ngx-slick-carousel>
+
+    <ngx-slick-carousel class="carouselOnBtn" [ngStyle]="{'display': fifth?'block':'none'}" [config]="sliderFirstConfig">
+      <p>Пятый слайдер</p>
+    </ngx-slick-carousel>
+
+  </div>
+
+</div>

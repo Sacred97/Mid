@@ -1,0 +1,99 @@
+<div class="manufacturer">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <div class="sort">
+
+    <div class="sort__cyrillic">
+      <label *ngFor="let letter of cyrillic; let idx = index">
+        <input type="radio" name="letter" [checked]="letter.checked" (change)="letterChange(cyrillic, idx)">
+        <span>{{letter.symbol}}</span>
+      </label>
+      <div class="cancel" (click)="removeLetter()" onmousedown="return false" onselectstart="return false">&#10006;</div>
+    </div>
+
+    <div class="sort__latin">
+      <label *ngFor="let letter of latin; let idx = index">
+        <input type="radio" name="letter" [checked]="letter.checked" (change)="letterChange(latin, idx)">
+        <span>{{letter.symbol}}</span>
+      </label>
+      <div class="cancel" (click)="removeLetter()" onmousedown="return false" onselectstart="return false">&#10006;</div>
+    </div>
+
+    <div class="sort__search">
+      <input type="text" placeholder="Производитель / город"
+             appDelayedInput [delayTime]="1000" (delayedInput)="searchManufacturer($event)">
+      <ul class="sort__search__result" *ngIf="searchList.length">
+        <li *ngFor="let item of searchList; let idx = index">
+          <a [routerLink]="['/', 'manufacturer', item.id]">
+            <img [src]="item.logoCompanyUrl ? item.logoCompanyUrl : ''">
+            <span>{{item.nameCompany}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="location">
+
+    <div class="location__region">
+
+      <button type="button" (click)="dropDown($event)">
+        <span>{{getRegionLabel()}}</span>
+        <div></div>
+      </button>
+
+      <ul>
+        <li *ngFor="let r of region; let idx = index"
+            [class.location__region_active]="filter.region === r.id" (click)="chooseRegion(idx, $event)">
+          {{r.label}}
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="location__country">
+
+      <button type="button" [disabled]="!filter.region" (click)="dropDown($event)">
+        <span>{{getCountryLabel()}}</span>
+        <div></div>
+      </button>
+
+      <ul>
+        <li *ngFor="let c of country; let idx = index"
+            [class.location__country_active]="filter.country === c.id" (click)="chooseCountry(idx, $event)">
+          {{c.label}}
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <div class="result" *ngIf="manufacturers.length; else empty">
+
+    <a *ngFor="let i of manufacturers; let idx = index" [routerLink]="['/', 'manufacturer', i.id]">
+      <div>
+        <img [src]="i.logoCompanyUrl ? i.logoCompanyUrl : '../../assets/manufacturer/default-manufacturer.jpg'">
+      </div>
+
+      <span>{{i.nameCompany}}</span>
+    </a>
+
+  </div>
+
+  <ng-template #empty>
+    <div class="empty-error">
+      <span *ngIf="!errorMessage; else error">Производитель не найден</span>
+      <ng-template #error><span>{{errorMessage}}</span></ng-template>
+    </div>
+  </ng-template>
+
+  <button type="button" [disabled]="max || action" *ngIf="manufacturers.length" (click)="getMoreManufacturer()">
+    Показать еще
+  </button>
+
+</div>

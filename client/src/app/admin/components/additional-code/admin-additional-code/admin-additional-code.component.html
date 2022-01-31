@@ -1,0 +1,32 @@
+<div class="admin-additional">
+
+  <h1>Список не привязанных артикулов</h1>
+
+  <div class="admin-additional__list" *ngIf="!loading; else load">
+
+    <ng-container *ngIf="additionalCodes.length; else empty">
+
+      <div *ngFor="let a of additionalCodes; let idx = index">
+        <span>id: {{a.id}}</span>
+        <span>Доп. артикул: {{a.additionalCode}}</span>
+        <div>
+          <input type="text" placeholder="id Товара">
+          <button (click)="attach($event, a.id, idx)" [disabled]="action">Привязать</button>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>Не привязанных артикулов нет</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,437 @@
+<div class="catalog-page">
+
+  <aside class="aside-menu" #nav_panel>
+
+    <div class="aside-menu__search">
+      <span>Фильтры</span>
+      <input type="text" placeholder="Поиск по фильтрам" appDelayedInput [delayTime]="1000"
+             (delayedInput)="searchFilter($event)">
+      <ul>
+        <li *ngFor="let f of searchFilterList">
+          <button (click)="toFilter(f)">{{f.textContent}}</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="aside-menu__filters">
+      <button (click)="dropList($event)">
+        <span>Применяемость</span>
+        <div></div>
+      </button>
+
+      <ul>
+        <li *ngFor="let ap of applicability; let idx = index" [attr.data-filter]="ap.label">
+          <label>
+            <input type="checkbox" [ngModel]="!!ap.checked"
+                   (ngModelChange)="changesFilter(applicability, idx, 'applicability')">
+            <span>
+              {{ap.label}}
+              <div>{{ap.count_detail ? '(' + ap.count_detail + ')' : ''}}</div>
+            </span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="aside-menu__filters">
+      <button (click)="dropList($event)">
+        <span>Категория товара</span>
+        <div></div>
+      </button>
+
+      <ul>
+        <li *ngFor="let c of category; let idx = index" [attr.data-filter]="c.label">
+          <label>
+            <input type="checkbox" [ngModel]="!!c.checked"
+                   (ngModelChange)="changesFilter(category, idx, 'category')">
+            <span>
+              {{c.label}}
+              <div>{{c.count_detail ? '(' + c.count_detail + ')' : ''}}</div>
+            </span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="aside-menu__filters">
+      <button (click)="dropList($event)">
+        <span>Автомобильная группа</span>
+        <div></div>
+      </button>
+
+      <ul>
+        <li *ngFor="let p of parts; let idx = index" [attr.data-filter]="p.label">
+          <label>
+            <input type="checkbox" [ngModel]="!!p.checked" (ngModelChange)="changesFilter(parts, idx, 'parts')">
+            <span>
+              {{p.label}}
+              <div>{{p.count_detail ? '(' + p.count_detail + ')' : ''}}</div>
+            </span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="aside-menu__filters">
+      <button (click)="dropList($event)">
+        <span>Производитель</span>
+        <div></div>
+      </button>
+
+      <ul>
+        <li *ngFor="let m of manufacturer; let idx=index" [attr.data-filter]="m.label">
+          <label>
+            <input type="checkbox" [ngModel]="!!m.checked"
+                   (ngModelChange)="changesFilter(manufacturer, idx, 'manufacturer')">
+            <span>
+              {{m.label}}
+              <div>{{m.count_detail ? '(' + m.count_detail + ')' : ''}}</div>
+            </span>
+          </label>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="aside-menu__filters">
+      <button (click)="dropList($event)">
+        <span>Наличие товара</span>
+        <div></div>
+      </button>
+
+      <ul>
+        <li>
+          <label>
+            <input type="checkbox" [ngModel]="availability"
+                   (ngModelChange)="additionalFilterChange('availability', 'В наличии')">
+            <span>В наличии</span>
+          </label>
+        </li>
+        <div></div>
+        <li>
+          <label>
+            <input type="checkbox" [ngModel]="recent"
+                   (ngModelChange)="additionalFilterChange('recent', 'Рекомендуемые')">
+            <span>Рекомендуем</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" [ngModel]="sale"
+                   (ngModelChange)="additionalFilterChange('sale', 'По акции')">
+            <span>Акции</span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" [ngModel]="popular"
+                   (ngModelChange)="additionalFilterChange('popular', 'Новинки')">
+            <span>Новинки</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+  </aside>
+
+  <div class="catalog">
+
+    <ngx-slick-carousel class="slick-slider-main-class catalog-banners" [config]="bannersConfig">
+      <div ngxSlickItem *ngFor="let banner of banners" class="slide">
+<!--        <a routerLink="/">-->
+          <img [src]="banner.src" alt="">
+<!--        </a>-->
+      </div>
+    </ngx-slick-carousel>
+
+    <div class="catalog__quick-search">
+
+      <div>
+        <label *ngFor="let l of letters; let idx = index">
+          <input type="radio" name="letter" [checked]="l.checked" (change)="chooseLetter(idx)">
+          <span>{{l.label.charAt(l.label.length - 1)}}</span>
+        </label>
+      </div>
+
+      <div>
+        <input type="text" placeholder="Поиск по разделу"
+               appDelayedInput [delayTime]="1000" (delayedInput)="search($event)">
+        <ul>
+          <li *ngFor="let i of searchList">
+            <a [routerLink]="['/', 'catalog', i.id]">
+              <div>{{i.name}}</div>
+              <div>{{i.vendorCode}}</div>
+              <div>{{shoppingService.toCurrency(i.price)}}</div>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="catalog__info">
+
+      <div>
+        <span>Найдено товаров: {{total}}</span>
+      </div>
+
+      <div>
+
+        <div class="catalog__info__sort">
+          <span>Сортировать:</span>
+          <button (click)="sorting(true, false)" [ngClass]="{'sorting': sortByLetter}">
+            по названию
+          </button>
+          <div [ngClass]="{
+              'catalog__info__sort__letter': sortByLetter,
+              'catalog__info__sort__letter_desc': sortByLetter && !sortByASC,
+              'catalog__info__sort__price': sortByPrice,
+              'catalog__info__sort__price_desc': sortByPrice && !sortByASC
+            }">
+            <span></span>
+          </div>
+          <button (click)="sorting(false, true)" [ngClass]="{'sorting': sortByPrice}">
+            по цене
+          </button>
+        </div>
+
+        <div class="catalog__info__display">
+
+          <label class="main" [style]="displayMain ? 'background: #ebecec;' : 'background: transparent;'">
+            <input type="radio" name="display" (change)="displayMain = true">
+            <span></span>
+            <div></div>
+          </label>
+
+          <label class="analog" [style]="!displayMain ? 'background: #ebecec;' : 'background: transparent;'">
+            <input type="radio" name="display" (change)="displayMain = false">
+            <div></div>
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div class="catalog__filters">
+
+      <div>
+
+        <div *ngFor="let f of selectedFilters; let idx = index">
+          <span>{{f.label}}</span>
+          <span (click)="removeFilter(idx)">&#10006;</span>
+        </div>
+
+      </div>
+
+      <button (click)="clearFilter()">Сбросить все фильтры</button>
+
+    </div>
+
+    <hr>
+
+    <ul class="catalog__result" *ngIf="details.length>0; else empty">
+
+      <li [ngClass]="{
+            'catalog__display-main': displayMain,
+            'catalog__display-analog': !displayMain
+          }"
+          *ngFor="let d of details |
+          paginate: { itemsPerPage: 20, currentPage: page, totalItems: total};
+           let idx = index;">
+
+        <ng-template [ngIf]="displayMain">
+
+          <div class="catalog__display-main__image">
+            <img [src]="d.photoDetail && d.photoDetail.length ? d.photoDetail[0].url : defaultImage">
+            <span *ngIf="d.photoDetail && d.photoDetail.length">Быстрый просмотр</span>
+          </div>
+
+          <div class="catalog__display-main__text">
+
+            <a [routerLink]="['/', 'catalog', d.id]"
+               (click)="recentlyViewedService.addToRecentlyViewed(d.id)">
+              {{d.name}}
+            </a>
+
+            <div class="catalog__display-main__text__codes">
+              Артикул: {{d.vendorCode}}
+              <span *ngIf="d.additionalVendorCode && d.additionalVendorCode.length">
+                Доп артикул:
+                <span *ngFor="let vendorCode of d.additionalVendorCode">
+                  {{vendorCode.additionalCode}} /
+                </span>
+              </span>
+            </div>
+
+            <div class="catalog__display-main__text__applicability">
+              <small *ngIf="d.autoApplicability.length">
+                Применяемость:
+                <span *ngFor="let applicability of d.autoApplicability; let idxAp = index">
+                  {{applicability.autoApplicabilityName}}
+                  <span *ngIf="idxAp < d.autoApplicability.length - 1">, </span>
+                </span>
+              </small>
+            </div>
+
+          </div>
+
+          <div class="catalog__display-main__quantity">
+            <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+            <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
+            <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+          </div>
+
+          <div class="catalog__display-main__to-order">
+
+            <div>
+              <div class="quantity-bar">
+                <div
+                  [style.width]="d.quantityRatio + '%'"
+                  [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                  [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+                </div>
+                <span *ngIf="d.quantityRatio; else no_available_main">в наличии</span>
+                <ng-template #no_available_main><span class="not-available">нет в наличии</span></ng-template>
+              </div>
+              <div (click)="mark(d.id, idx)" [style.backgroundColor]="d.marked ? '#fdcb00' : '#ffffff'">
+                <span></span>
+              </div>
+            </div>
+
+            <a [routerLink]="!!d.manufacturer ? ['/', 'manufacturer', d.manufacturer.id] : undefined">
+
+              <ng-container *ngIf="d.manufacturer; else without_manufacturer">
+                <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else manufacturer_no_logo">
+                  <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+                </ng-container>
+
+                <ng-template #manufacturer_no_logo>
+                  <span>{{d.manufacturer!.nameCompany}}</span>
+                </ng-template>
+              </ng-container>
+
+              <ng-template #without_manufacturer>
+                <span>Производитель не указан</span>
+              </ng-template>
+
+            </a>
+
+            <span>{{shoppingService.toCurrency(d.price)}}</span>
+
+            <button (click)="addProduct(d.id, idx)"
+                    [disabled]="shoppingService.check(d.id) || action"
+                    [style]="shoppingService.check(d.id)?
+                    'background-color: #fdcb00;':'background-color: #ffffff;'">
+              {{shoppingService.check(d.id)?'В корзине':'В заказ'}}
+            </button>
+
+          </div>
+
+        </ng-template>
+
+        <ng-template [ngIf]="!displayMain">
+
+          <div class="catalog__display-analog__image">
+            <img [src]="d.photoDetail && d.photoDetail.length ? d.photoDetail[0].url : defaultImage">
+            <span *ngIf="d.photoDetail && d.photoDetail.length">
+              <img [src]="d.photoDetail[0].url">
+            </span>
+          </div>
+
+          <div class="catalog__display-analog__title">
+            <a [routerLink]="['/', 'catalog', d.id]"
+               (click)="recentlyViewedService.addToRecentlyViewed(d.id)">
+              {{d.name}}
+            </a>
+          </div>
+
+          <div class="catalog__display-analog__text">
+            <span>{{d.vendorCode}} / {{d.productCode}}</span>
+          </div>
+
+          <div class="catalog__display-analog__manufacturer">
+            <a [routerLink]="!!d.manufacturer ? ['/', 'manufacturer', d.manufacturer.id] : undefined">
+              <ng-container *ngIf="d.manufacturer;else without_manufacturer_analog">
+                <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo_analog">
+                  <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+                </ng-container>
+
+                <ng-template #without_logo_analog>
+                  <span>{{d.manufacturer!.nameCompany}}</span>
+                </ng-template>
+              </ng-container>
+
+              <ng-template #without_manufacturer_analog>
+                <span>Производитель не указан</span>
+              </ng-template>
+            </a>
+          </div>
+
+          <div class="catalog__display-analog__price">
+            <span>{{shoppingService.toCurrency(d.price)}}</span>
+          </div>
+
+          <div class="catalog__display-analog__quantity">
+            <div class="quantity-bar">
+              <div [style.width]="d.quantityRatio + '%'"
+                   [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                   [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+              </div>
+              <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+              <ng-template #no_available_analog_view><span class="not-available-analog">нет в наличии</span></ng-template>
+            </div>
+            <div (click)="mark(d.id, idx)" [style.backgroundColor]="d.marked ? '#fdcb00' : '#ffffff'">
+              <span></span>
+            </div>
+          </div>
+
+          <div class="catalog__display-analog__to-order">
+            <div *ngIf="shoppingService.check(d.id); else to_cart">
+              <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+              <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
+              <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+            </div>
+            <ng-template #to_cart>
+              <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
+            </ng-template>
+          </div>
+
+        </ng-template>
+
+      </li>
+
+      <li class="catalog__result__more">
+        <button (click)="nextPackage(page + 1, true)"
+                [disabled]="offsetEnd || action">
+          Показать еще
+        </button>
+      </li>
+
+      <pagination-controls class="pagination" (pageChange)="nextPackage($event, false)"
+                           previousLabel="" nextLabel="" [maxSize]="9">
+      </pagination-controls>
+    </ul>
+
+    <ng-template #empty>
+
+      <ng-container *ngIf="errorMessage; else loader">
+        <div class="catalog__error">
+          <span>{{errorMessage}}</span>
+        </div>
+      </ng-container>
+
+      <ng-template #loader>
+        <div class="catalog__loader">
+          <div class="lds-dual-ring"></div>
+        </div>
+      </ng-template>
+
+    </ng-template>
+
+  </div>
+
+</div>

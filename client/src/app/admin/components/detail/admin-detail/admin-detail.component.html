@@ -1,0 +1,30 @@
+<div class="admin-detail">
+
+  <h1>Список скрытых товаров</h1>
+
+  <div class="admin-detail__hidden-list" *ngIf="details.length; else load">
+
+    <div *ngFor="let d of details">
+      <span>id: {{d.name}}</span>
+      <a [routerLink]="['/', 'admin', 'detail', d.id]">Наименование: {{d.name}}</a>
+      <span>Артикул: {{d.vendorCode}}</span>
+      <span>Код продукта: {{d.productCode}}</span>
+      <div *ngIf="d.manufacturer; else no_manufacturer">
+        <span>Производитель: {{d.manufacturer.nameCompany}}</span>
+        <span>Страна / город: {{d.manufacturer.country.country}}</span>
+        <span>Регион: {{d.manufacturer.country.region.region}}</span>
+      </div>
+      <ng-template #no_manufacturer>
+        <div><span>Производитель не указан</span></div>
+      </ng-template>
+    </div>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

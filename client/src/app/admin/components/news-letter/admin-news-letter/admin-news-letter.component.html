@@ -1,0 +1,41 @@
+<div class="admin-news-letter">
+
+  <h1>Список созданных рассылок</h1>
+
+  <form [formGroup]="form" (ngSubmit)="createNewsLetter()">
+    <label>
+      <span>Создать рассылку</span>
+      <small *ngIf="form.controls['letter'].dirty && form.controls['letter'].errors?.required">
+        Поле не лолжно быть пустым
+      </small>
+      <input type="text" placeholder="Название рассылки" formControlName="letter">
+    </label>
+    <button type="submit" [disabled]="form.invalid || action">Создать</button>
+  </form>
+
+  <div class="admin-news-letter__result" *ngIf="!loading; else load">
+
+    <div *ngIf="newsLetter.length; else empty">
+
+      <div *ngFor="let l of newsLetter; let idx = index">
+        <span>id: {{l.id}}</span>
+        <span>Рассылка: {{l.name}}</span>
+        <button (click)="update(l.id)" [disabled]="action">Изменить</button>
+        <button (click)="remove(l.id)" [disabled]="action">Удалить</button>
+      </div>
+
+    </div>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

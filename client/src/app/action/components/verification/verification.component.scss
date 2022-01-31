@@ -1,0 +1,20 @@
+@import "../../../shared/styles/variables";
+
+.verification {
+  width: 80%;
+  margin: 50px auto 200px auto;
+
+  h1, a {
+    line-height: 1;
+    font-size: 40px;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  h1>a {
+    color: $violet;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+}

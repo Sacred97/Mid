@@ -1,0 +1,24 @@
+<div class="admin-subscribers">
+
+  <h1>Подписки на рассылки</h1>
+
+  <div class="admin-subscribers__list" *ngIf="subscribers.length; else load">
+
+    <div *ngFor="let s of subscribers">
+      <span>Рассылка на email: {{s.email}}</span>
+      <div>
+        <span>От пользователя: {{s.user.email}}</span>
+        <span>Подписан на: {{s.newsLetter.name}}</span>
+      </div>
+      <button (click)="remove(s.id)" [disabled]="action">Удалить</button>
+    </div>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

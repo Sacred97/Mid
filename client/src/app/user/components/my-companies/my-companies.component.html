@@ -1,0 +1,235 @@
+<div class="user-company">
+
+  <div class="companies" *ngIf="!loading; else load">
+
+    <div class="companies__error" *ngIf="error">
+      <span>Что-то пошло не так, повторите попытку позже.</span>
+    </div>
+
+    <div class="companies__info" *ngIf="user">
+
+      <span>Мои организации</span>
+
+      <div>
+        <div class="companies__info__company">
+          <span>Физическое лицо</span>
+          <span>ФИО: {{user.fullName}}</span>
+        </div>
+        <div class="companies__info__actions"></div>
+      </div>
+
+      <div *ngFor="let c of user.company; let idx = index">
+
+        <div class="companies__info__company">
+          <div>
+            <span>{{c.opf + ' ' + c.companyName}}</span>
+            <span>ИНН: {{c.inn}}</span>
+            <span>КПП: {{c.kpp}}</span>
+          </div>
+          <span>Адрес юридический: {{c.address}}</span>
+        </div>
+
+        <div class="companies__info__actions">
+          <button (click)="actOfReconciliation(c)">
+            <img src="../../../../assets/user/act.svg" alt="Изменить">
+            <span>Заказать акт-сверки</span>
+          </button>
+          <button (click)="prepareToUpdateCompany(c.id)">
+            <img src="../../../../assets/user/change-contact.svg" alt="Изменить">
+            <span>Изменить</span>
+          </button>
+          <button (click)="removeCompany(c.id)">
+            <img src="../../../../assets/user/remove-contact.svg" alt="Удалить">
+            <span>Удалить</span>
+          </button>
+        </div>
+
+      </div>
+
+      <button (click)="showHideForm()" [ngClass]="{'user-company-active': formVisible}">
+        + Добавить организацию
+      </button>
+    </div>
+
+    <form class="companies__add-company" *ngIf="formVisible" [formGroup]="formAdd" (ngSubmit)="createCompany()">
+      <span>Добавить организацию</span>
+
+      <div class="companies__add-company__search">
+        <label>
+          <span>Название организации</span>
+          <input type="text" placeholder="Введите название в свободной форме, адрес, ИНН или ОГРН" appDelayedInput
+                 (delayedInput)="searchCompany($event)" [delayTime]="500"
+                 [value]="selectedCompany ? selectedCompany.opf + ' ' + selectedCompany.name + ' ' + selectedCompany.inn : ''">
+        </label>
+        <span>Выберите вариант или продолжите ввод</span>
+        <ul>
+          <li *ngFor="let c of companyList" (click)="chooseCompany(c)">
+            <span>{{c.opf + ' ' + c.name + ' ИНН: ' + c.inn}}</span>
+            <span>{{'КПП: ' + c.kpp + ' ' + c.address}}</span>
+          </li>
+        </ul>
+        <label>
+          <input type="checkbox" formControlName="nothing">
+          <span>Не нашли свою организацию?</span>
+        </label>
+      </div>
+
+      <div class="companies__add-company__not-found" *ngIf="formAdd.value.nothing">
+
+        <label>
+          <span>Название организации</span>
+          <input type="text" placeholder="Название организации" formControlName="name">
+          <small *ngIf="formAdd.controls['name'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <label>
+          <span>Название формы собственности</span>
+          <input type="text" placeholder="Название формы собственности" formControlName="opf">
+          <small *ngIf="formAdd.controls['opf'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <label>
+          <span>ИНН</span>
+          <input type="text" placeholder="ИНН" formControlName="inn">
+          <small *ngIf="formAdd.controls['inn'].errors?.required">Поле не должно быть пустым</small>
+          <small *ngIf="formAdd.controls['inn'].errors?.uncorrected">ИНН введен не корректно</small>
+        </label>
+
+        <label>
+          <span>КПП</span>
+          <input type="text" placeholder="КПП" formControlName="kpp">
+          <small *ngIf="formAdd.controls['kpp'].errors?.required">Поле не должно быть пустым</small>
+          <small *ngIf="formAdd.controls['kpp'].errors?.uncorrected">КПП введен не корректно</small>
+        </label>
+
+        <label>
+          <span>Юридический адрес</span>
+          <input type="text" placeholder="Юридический адрес" formControlName="address" appDelayedInput
+                 (delayedInput)="searchAddress($event)" [delayTime]="500">
+          <ul>
+            <li *ngFor="let a of addressList" (click)="chooseAddressCompany(a)"><span>{{a}}</span></li>
+          </ul>
+          <small *ngIf="formAdd.controls['address'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+      </div>
+
+      <button type="submit" [disabled]="formAdd.invalid || action
+          || (formAdd.value.nothing ? false : !selectedCompany)">
+        Добавить организацию
+      </button>
+      <small *ngIf="formAddError">Что-то пошло не так.</small>
+
+    </form>
+
+  </div>
+
+  <ng-template #load>
+    <div class="user-my-company-loader-container">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>
+
+<div class="modal" *ngIf="modalWindow">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="modal-content">
+
+    <div class="modal-content__info" *ngIf="companyModal || modalError; else loadModal">
+
+      <form *ngIf="companyModal; else modalErrorEl" [formGroup]="modalForm" (ngSubmit)="updateCompany()">
+
+        <label>
+          <span>Название организации</span>
+          <input type="text" placeholder="Название организации" formControlName="name">
+          <small *ngIf="modalForm.controls['name'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <label>
+          <span>Название формы собственности</span>
+          <input type="text" placeholder="Название формы собственности" formControlName="opf">
+          <small *ngIf="modalForm.controls['opf'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <label>
+          <span>ИНН</span>
+          <input type="text" placeholder="ИНН" formControlName="inn">
+          <small *ngIf="modalForm.controls['inn'].errors?.required">Поле не должно быть пустым</small>
+          <small *ngIf="modalForm.controls['inn'].errors?.uncorrected">ИНН введен не корректно</small>
+        </label>
+
+        <label>
+          <span>КПП</span>
+          <input type="text" placeholder="КПП" formControlName="kpp">
+          <small *ngIf="modalForm.controls['kpp'].errors?.required">Поле не должно быть пустым</small>
+          <small *ngIf="modalForm.controls['kpp'].errors?.uncorrected">КПП введен не корректно</small>
+        </label>
+
+        <label>
+          <span>Юридический адрес</span>
+          <input type="text" placeholder="Юридический адрес" formControlName="address" appDelayedInput
+                 (delayedInput)="searchAddressModal($event)" [delayTime]="500">
+          <ul>
+            <li *ngFor="let a of addressListModal" (click)="chooseAddressCompanyModal(a)"><span>{{a}}</span></li>
+          </ul>
+          <small *ngIf="modalForm.controls['address'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <button type="submit" [disabled]="modalForm.invalid || action">Обновить адрес</button>
+        <small *ngIf="updateError">Что-то пошло не так, попробуйте позже.</small>
+      </form>
+
+      <ng-template #modalErrorEl>
+        <span>Что-то пошло не так, повторите попытку позже.</span>
+      </ng-template>
+
+    </div>
+
+    <ng-template #loadModal>
+      <div class="user-my-company-modal-loader-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="modalAct">
+
+  <div class="modal-background" (click)="closeModalAct()"></div>
+
+  <div class="modal-act-content">
+
+    <span>Заказать акт-сверки</span>
+    <small>Укажите период для {{forCompany!.opf + ' ' + forCompany!.companyName}}</small>
+
+    <form [formGroup]="actForm" (ngSubmit)="getAct()">
+
+      <span>Период:</span>
+
+      <div>
+        <label>
+          <input type="date" placeholder="дд.мм.гггг" formControlName="start">
+          <small *ngIf="actForm.controls['start'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <label>
+          <input type="date" placeholder="дд.мм.гггг" formControlName="end">
+          <small *ngIf="actForm.controls['end'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+      </div>
+
+      <button type="submit" [disabled]="action || actForm.invalid">Заказать акт-сверки</button>
+      <small *ngIf="actFormError">Что-то пошло не так. Повторите попытку позже</small>
+
+    </form>
+
+  </div>
+
+</div>
+
+

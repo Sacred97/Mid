@@ -1,0 +1,103 @@
+<div class="current-order">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <ng-container *ngIf="order || error; else load">
+    <div class="current-order__info" *ngIf="order; else empty">
+      <span>Заказ №{{order.orderNumber}}, создан {{cartService.toDate(order.orderDate)}}</span>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Наименование</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of order.orderItem; let idx = index">
+            <td>{{idx + 1}}</td>
+            <td>
+              <img [src]="getPhotoDetail(i.detailId)" alt="Изображение">
+            </td>
+            <td>
+              <span>{{i.productName}}</span>
+              <div>
+                <span>Артикул: {{i.vendorCode}}</span>
+                <span>Производитель: {{i.manufacturer ? i.manufacturer : 'Не указан'}}</span>
+              </div>
+            </td>
+            <td>{{cartService.toCurrency(i.price)}}</td>
+            <td>{{i.quantity}} шт</td>
+            <td>{{cartService.toCurrency(i.totalCost)}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div>
+
+        <div>
+
+          <div>
+            <span>Форма оплаты:</span>
+            <div>
+              <span>{{order.paymentMethod}}</span>
+            </div>
+          </div>
+
+          <div>
+            <span>Способ доставки:</span>
+            <div>
+              <span>{{order.deliveryMethod}}</span>
+            </div>
+          </div>
+
+          <div>
+            <span>Адрес доставки:</span>
+            <div>
+              <span>{{order.deliveryAddress}}</span>
+            </div>
+          </div>
+
+          <div *ngIf="order.company">
+            <span>Организация:</span>
+            <div>
+              <span>{{order.company}}</span>
+            </div>
+          </div>
+
+          <div>
+            <span>Заказчик:</span>
+            <div>
+              <span>{{order.contactFullName}}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div>
+          <h1>Итого: {{cartService.toCurrency(order.orderCost)}}</h1>
+          <span>Общий вес: {{order.orderWeight ? order.orderWeight + ' кг' : 'Не указан'}}</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <ng-template #empty>
+      <span>Не удалось получить данные о заказе.</span>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #load>
+    <div class="loader-container">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

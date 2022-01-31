@@ -1,0 +1,198 @@
+<div class="user-subscriptions">
+
+  <div class="subscriptions" *ngIf="!loading; else load">
+
+    <div class="subscriptions__error" *ngIf="error">
+      <span>Что-то пошло не так, повторите попытку позже.</span>
+    </div>
+
+    <div class="subscriptions__empty" *ngIf="!subscriptions.length">
+      <div>
+        <img src="../../../../assets/user/box.svg" alt="Товар">
+        <span>Рассылок не найдено</span>
+      </div>
+      <button (click)="showHideForm()" [ngClass]="{'user-subscription-active': formVisible}">
+        + Добавить рассылку
+      </button>
+    </div>
+
+    <div class="subscriptions__info" *ngIf="subscriptions.length">
+
+      <div *ngFor="let s of subscriptions; let idx = index">
+
+        <div class="subscriptions__info__sub">
+          <span>{{s.newsLetter.name}}</span>
+          <div>
+            <span>Профиль сотрудника: {{getProfileName(s.email)}}</span>
+            <span>Электронная почта: {{s.email}}</span>
+            <span>Примечение: {{s.notice || '-'}}</span>
+          </div>
+        </div>
+        <div class="subscriptions__info__actions">
+          <button (click)="prepareToUpdateSubscription(s.id)">
+            <img src="../../../../assets/user/change-contact.svg" alt="Изменить">
+            <span>Изменить</span>
+          </button>
+          <button (click)="removeSubscription(s.id)">
+            <img src="../../../../assets/user/remove-contact.svg" alt="Удалить">
+            <span>Удалить</span>
+          </button>
+        </div>
+
+      </div>
+
+      <button (click)="showHideForm()" [ngClass]="{'user-subscription-active': formVisible}">
+        + Добавить рассылку
+      </button>
+
+    </div>
+
+    <form [formGroup]="formAdd" (ngSubmit)="createSubscription()" class="subscriptions__add-sub"
+          *ngIf="formVisible && user">
+
+      <div class="subscriptions__add-sub__profiles">
+        <span>Профиль сотрудника</span>
+        <button type="button" (click)="dropdown($event)">
+          <span>{{formAdd.value.profile}}</span>
+          <div></div>
+        </button>
+        <ul>
+          <li>
+            <label (click)="upList($event)">
+              <input type="radio" formControlName="profile" value="Основной профиль">
+              <span>Основной профиль</span>
+            </label>
+          </li>
+          <li *ngFor="let p of user.manager">
+            <label (click)="upList($event)">
+              <input type="radio" formControlName="profile" [value]="p.fullName">
+              <span>{{p.fullName}}</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subscriptions__add-sub__email">
+        <span>Электронная почта</span>
+        <div>{{getEmail()}} (заполняется автоматически)</div>
+      </div>
+
+      <div class="subscriptions__add-sub__news-letters">
+        <span>Тип рассылки</span>
+        <button type="button" (click)="dropdown($event)">
+          <span>{{getNameNewsLetter()}}</span>
+          <div></div>
+        </button>
+        <ul>
+          <li *ngFor="let nl of newsLetter">
+            <label (click)="upList($event)">
+              <input type="radio" formControlName="newsLetter" [value]="nl.id">
+              <span>{{nl.name}}</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subscriptions__add-sub__notice">
+        <span>Примечания к рассылке</span>
+        <textarea formControlName="notice" placeholder="Можете указать:
+- желаемое время и дни для рассылок
+- дополнительные требования (при возможности)">
+        </textarea>
+      </div>
+
+      <button type="submit" [disabled]="formAdd.invalid || action">Добавить рассылку</button>
+      <small *ngIf="formAddError">Что-то пошло не так.</small>
+    </form>
+
+  </div>
+
+  <ng-template #load>
+    <div class="user-my-subscriptions-loader-container">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>
+
+<div class="modal" *ngIf="modalWindow">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="modal-content">
+
+    <div class="modal-content__info" *ngIf="subModal || modalError; else loadModal">
+
+      <form *ngIf="subModal; else modalErrorEl" [formGroup]="modalForm" (ngSubmit)="updateSub()">
+        <span>Изменить рассылку</span>
+
+        <div class="modal-content__info__profiles">
+          <span>Профиль сотрудника</span>
+          <button type="button" (click)="dropdown($event)">
+            <span>{{modalForm.value.profile}}</span>
+            <div></div>
+          </button>
+          <ul>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="profile" value="Основной профиль">
+                <span>Основной профиль</span>
+              </label>
+            </li>
+            <li *ngFor="let p of user!.manager">
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="profile" [value]="p.fullName">
+                <span>{{p.fullName}}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="modal-content__info__email">
+          <span>Электронная почта</span>
+          <div>{{getEmailModal()}} (заполняется автоматически)</div>
+        </div>
+
+        <div class="modal-content__info__news-letters">
+          <span>Тип рассылки</span>
+          <button type="button" (click)="dropdown($event)">
+            <span>{{getNameNewsLetterModal()}}</span>
+            <div></div>
+          </button>
+          <ul>
+            <li *ngFor="let nl of newsLetter">
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="newsLetter" [value]="nl.id">
+                <span>{{nl.name}}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="modal-content__info__notice">
+          <span>Примечания к рассылке</span>
+          <textarea formControlName="notice" placeholder="Можете указать:
+- желаемое время и дни для рассылок
+- дополнительные требования (при возможности)">
+        </textarea>
+        </div>
+
+        <button type="submit" [disabled]="modalForm.invalid || action">Обновить рассылку</button>
+        <small *ngIf="updateError">Что-то пошло не так, попробуйте позже.</small>
+      </form>
+
+      <ng-template #modalErrorEl>
+        <span>Что-то пошло не так, повторите попытку позже.</span>
+      </ng-template>
+
+    </div>
+
+    <ng-template #loadModal>
+      <div class="user-my-subscriptions-modal-loader-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

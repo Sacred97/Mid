@@ -1,0 +1,27 @@
+<div class="admin-country">
+
+  <h1>Список стран / городов</h1>
+
+  <div class="admin-country__info" *ngIf="errorMessage || country.length; else load">
+
+    <ng-container *ngIf="country.length; else empty">
+      <div *ngFor="let c of country; let idx = index">
+        <span>id: {{c.id}}</span>
+        <a [routerLink]="['/', 'admin', 'country', c.id]">Старан / город: {{c.country}}</a>
+        <span>Привязан к региону? {{c.region ? 'Да': 'Нет'}}</span>
+      </div>
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

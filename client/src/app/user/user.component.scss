@@ -1,0 +1,101 @@
+@import "../shared/styles/variables";
+
+.user {
+  width: 89.2%;
+  margin: 0 auto 20px;
+  min-height: 50vh;
+
+  > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    aside {
+      width: 25.7%;
+
+      ul {
+        width: 100%;
+        list-style: none;
+
+        li {
+          width: 100%;
+          margin-bottom: 17px;
+
+          a {
+            width: 100%;
+            height: 38px;
+            padding: 0 5px 0 13px;
+            display: flex;
+            align-items: center;
+            background-color: $grey_easy;
+            border-radius: 10px;
+
+            > div:first-child {
+              width: 25px;
+              height: 25px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              img {
+                max-height: 25px;
+                max-width: 100%;
+              }
+            }
+
+            >span {
+              display: block;
+              margin-left: 15px;
+              color: $black;
+              font-size: 17px;
+              line-height: 1;
+              font-family: 'Museo Sans Cyrl 500';
+            }
+
+            &:hover {
+             background-color: $yellow-hover;
+            }
+
+            div.quantity {
+              width: 54px;
+              margin-left: auto;
+              background-color: $yellow;
+              border-radius: 10px;
+              padding: 7px 0;
+              text-align: center;
+
+              span {
+                color: $black;
+                font-size: 17px;
+                line-height: 1;
+                font-family: 'Museo Sans Cyrl 500';
+              }
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+    > div {
+      width: 73.5%;
+    }
+  }
+
+}
+
+.breadcrumbs {
+  margin-bottom: 20px;
+}
+
+.user-active {
+  background-color: $yellow !important;
+  pointer-events: none;
+
+  div.quantity {
+    background-color: $grey_easy !important;
+  }
+}

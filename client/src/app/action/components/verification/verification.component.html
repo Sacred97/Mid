@@ -1,0 +1,9 @@
+<div class="verification">
+  <h1 *ngIf="!errorMessage; else error">
+    Спасибо за регистрацию. Можете пройти в
+    <a routerLink="/catalog">каталог</a>
+    или на
+    <a routerLink="/">главную</a>
+  </h1>
+  <ng-template #error><h1>{{errorMessage}}</h1></ng-template>
+</div>

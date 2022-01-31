@@ -1,0 +1,36 @@
+<div class="admin-applicability">
+
+  <h1>Список применяемости</h1>
+
+  <div class="admin-applicability__info" *ngIf="errorMessage || applicability.length; else load">
+
+    <form [formGroup]="form" (ngSubmit)="create()">
+      <span>Создать применяемость</span>
+      <label>
+        <input class="admin-input" type="text" placeholder="Автоприменяемость" formControlName="applicability">
+        <small *ngIf="form.controls['applicability'].errors?.required">Поле не должно быть пустым</small>
+      </label>
+      <button class="admin-btn-action" type="submit" [disabled]="action || form.invalid">Создать</button>
+      <small *ngIf="formError">{{formError}}</small>
+    </form>
+
+    <ng-container *ngIf="applicability.length; else empty">
+      <div *ngFor="let a of applicability; let idx = index">
+        <span>id: {{a.id}}</span>
+        <a [routerLink]="['/', 'admin', 'applicability', a.id]">Автоприменяемость: {{a.autoApplicabilityName}}</a>
+      </div>
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,21 @@
+<ng-container [ngSwitch]="action">
+
+  <ng-container *ngSwitchCase="'verification'">
+    <app-verification [token]="token"></app-verification>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'restore'">
+    <app-restore [token]="token"></app-restore>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'change'">
+    <app-change></app-change>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <div class="no-action">
+      <h1>Эта страница более не доступна, пройдите в каталог или на главную страницу</h1>
+    </div>
+  </ng-container>
+
+</ng-container>

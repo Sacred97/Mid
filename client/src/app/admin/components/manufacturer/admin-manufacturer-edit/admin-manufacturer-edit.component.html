@@ -1,0 +1,124 @@
+<div class="admin-manufacturer-edit">
+
+  <h1>Производитель</h1>
+
+  <div *ngIf="!loading; else load" class="admin-manufacturer-edit__info">
+
+    <ng-container *ngIf="!errorMessage && manufacturer; else empty">
+
+      <h2>Основная информация</h2>
+
+      <form [formGroup]="manufacturerForm" (ngSubmit)="update()">
+        <label>
+          <span>Производитель:</span>
+          <input class="admin-input" type="text" placeholder="Введите название производителя" formControlName="nameCompany">
+          <small *ngIf="manufacturerForm.controls['nameCompany'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+        <label>
+          <span>Описание / статья:</span>
+          <!--<textarea placeholder="Описание производителя / статья" formControlName="description"></textarea>-->
+          <editor
+            formControlName="description"
+            apiKey="0f9lormsql0w6b0ii16i0yfwmqcyeeco836d3kks5ia3wk2s"
+            [init]="{
+              base_url: '/tinymce',
+              height: 500,
+              suffix: '.min',
+              plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'table emoticons template paste help quickbars'
+              ],
+              toolbar: [
+                'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+                'forecolor backcolor emoticons | charmap hr pagebreak | help'
+              ]
+            }"
+          >
+          </editor>
+        </label>
+        <label>
+          <span>Привязка к стране / городу:</span>
+          <input class="admin-input" placeholder="Страна / город" formControlName="country" (change)="countryId = 0">
+          <div>
+            <button (click)="dropDown($event)" type="button">Список стран / городов</button>
+            <ul>
+              <li *ngFor="let c of country; let idx = index"
+                  (click)="chooseCountry($event, c.id, c.country)"
+                  [ngClass]="{'selected-country': !!manufacturer.country && c.id === manufacturer.country.id}">
+                {{c.country}}
+              </li>
+            </ul>
+          </div>
+          <small *ngIf="manufacturerForm.controls['country'].errors?.required || !countryId">
+            Поле не должно быть пустым
+          </small>
+        </label>
+        <button class="admin-btn-action" type="submit" [disabled]="manufacturerForm.invalid || action || !countryId">
+          Изменить
+        </button>
+        <small *ngIf="manufacturerFormError">{{manufacturerFormError}}</small>
+        <span *ngIf="manufacturerFormSuccess">Производитель успешно обновлен</span>
+      </form>
+
+      <h2>Логотип</h2>
+
+      <div class="admin-manufacturer-edit__info__logo" *ngIf="manufacturer.logoCompanyUrl; else no_logo">
+        <img [src]="manufacturer.logoCompanyUrl" alt="Логотип">
+      </div>
+
+      <ng-template #no_logo>
+        <span>Логотипа нет</span>
+      </ng-template>
+
+      <div class="admin-manufacturer-edit__info__new-logo">
+        <span>Загрузить / изменить логотип</span>
+        <small>При загрузке нового логотипа старый удалится безвозвратно</small>
+        <input class="admin-input" type="file" (change)="selectLogo($event)" #logoEl>
+        <button class="admin-btn-action" (click)="uploadLogo()" [disabled]="!file || action">Загрузить</button>
+        <small class="admin-manufacturer-edit__info__new-logo__error">{{logoError}}</small>
+      </div>
+
+      <h2>Сертификаты</h2>
+
+      <div class="admin-manufacturer-edit__info__new-certificate">
+        <span>Загрузить сертификат</span>
+        <input class="admin-input" type="file" (change)="selectCertificates($event)" multiple #certificateEl>
+        <button class="admin-btn-action" (click)="uploadCertificate()" [disabled]="!certificatesFiles || action">
+          Загрузить
+        </button>
+        <small class="admin-manufacturer-edit__info__new-certificate__error">{{certificateError}}</small>
+      </div>
+
+      <div class="admin-manufacturer-edit__info__certificate"
+           *ngIf="manufacturer.photoCertificate.length; else no_certificate">
+        <div *ngFor="let c of manufacturer.photoCertificate; let idx = index">
+          <div (click)="openCertificate($event)"><img [src]="c.certificatePhotoUrl" alt="Сертификат"></div>
+          <button class="admin-btn-remove" (click)="removeCertificate(c.id)">Удалить</button>
+        </div>
+      </div>
+
+      <ng-template #no_certificate>
+        <span>Сертификатов нет</span>
+      </ng-template>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>
+
+<div class="admin-modal" #modal (click)="close($event)">
+  <img src="" alt="Сертификат">
+</div>

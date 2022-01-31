@@ -1,0 +1,29 @@
+<div class="contacts">
+
+  <span>Контакты</span>
+
+  <div class="contacts__department">
+    <a routerLink="/contacts/selling" routerLinkActive="contacts__department_active">
+      Отдел продаж
+    </a>
+
+    <a routerLink="/contacts/purchase" routerLinkActive="contacts__department_active">
+      Отдел снабжения
+    </a>
+
+    <a routerLink="/contacts/marketing" routerLinkActive="contacts__department_active">
+      Отдел маркетинга
+    </a>
+
+    <a routerLink="/contacts/bookkeeping" routerLinkActive="contacts__department_active">
+      Бухгалтерия
+    </a>
+  </div>
+
+  <div class="contacts__content">
+
+    <router-outlet></router-outlet>
+
+  </div>
+
+</div>

@@ -1,0 +1,110 @@
+<div class="modal">
+
+  <div class="modal-background" (click)="close.emit()"></div>
+
+  <div class="send-price-modal-window" [style]="isSuccessful || isFailed || submitted?
+  'width: 25%; max-height: 300px; min-height: 300px; display: flex; flex-direction: column; justify-content: center;' +
+  'align-items: center; padding: 25px'
+  :''">
+
+    <ng-container *ngIf="!isSuccessful && !isFailed && !submitted">
+
+      <h1 class="send-price-modal-window__title">Отправить свой список</h1>
+
+      <form class="send-price-modal-window__form-control" [formGroup]="form" (ngSubmit)="sendPriceData()">
+
+        <div class="send-price-modal-window__input">
+          <input type="text" placeholder="Имя*" formControlName="name">
+          <div *ngIf="form.controls['name'].invalid && form.controls['name'].dirty">
+            <small *ngIf="form.controls['name'].errors?.required">Поле не должно быть пустым</small>
+          </div>
+        </div>
+
+        <div class="send-price-modal-window__file">
+          <span>Загрузите файл</span>
+          <input type="file" formControlName="file" (change)="selectFile($event)">
+        </div>
+
+        <div class="send-price-modal-window__textarea">
+          <span>Или заполинет данное поле</span>
+          <textarea placeholder="Артикул, название запчасти, количество" rows="5" formControlName="text"></textarea>
+        </div>
+
+        <div class="send-price-modal-window__textarea">
+          <span>Комментарий</span>
+          <textarea rows="3" formControlName="comment"></textarea>
+        </div>
+
+        <div class="send-price-modal-window__checkboxes">
+
+          <div>
+            <label>
+              <input type="checkbox" formControlName="isRecall">
+              <span>Перезвонить Вам</span>
+            </label>
+
+            <div class="send-price-modal-window__input" *ngIf="!!form.controls['phone']">
+              <input type="text" placeholder="Телефон*" formControlName="phone">
+              <div *ngIf="form.controls['phone'].invalid">
+                <small *ngIf="form.controls['phone'].errors?.required">Поле не должно быть пустым</small>
+                <small *ngIf="form.controls['phone'].errors?.minlength">
+                  Форматы телефона (8/+7)000 000 00 00 / (8/+7)+код города+стационарный телефон (+ доб: 111 если имеется)
+                </small>
+              </div>
+            </div>
+
+          </div>
+
+          <div>
+            <label>
+              <input type="checkbox" formControlName="isSendToMail">
+              <span>Отправить ответ на e-mail</span>
+            </label>
+
+            <div class="send-price-modal-window__input" *ngIf="!!form.controls['email']">
+              <input type="email" placeholder="Email*" formControlName="email">
+              <div *ngIf="form.controls['email'].invalid">
+                <small *ngIf="form.controls['email'].errors?.required">Поле не должно быть пустым</small>
+                <small *ngIf="form.controls['email'].errors?.email">Поле не является email'ом</small>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="send-price-modal-window__button">
+          <button [disabled]="form.invalid || submitted" type="submit">Отправить</button>
+          <div *ngIf="form.invalid">
+            <small *ngIf="form.errors?.atLeastOneRequired">{{form.errors?.atLeastOneRequired.text}}</small>
+            <small *ngIf="form.errors?.atLeastOneValidatorOfCheckBox">{{form.errors?.atLeastOneValidatorOfCheckBox.text}}</small>
+          </div>
+        </div>
+
+      </form>
+
+    </ng-container>
+
+    <ng-container *ngIf="isFailed || isSuccessful">
+
+      <ng-container *ngIf="isSuccessful; else failed">
+        <h1 class="send-price-modal-window__successful">Прайст отправлен успешно</h1>
+        <button class="send-price-modal-window__result-successful" (click)="close.emit()">Ок</button>
+      </ng-container>
+
+      <ng-template #failed>
+        <h1 class="send-price-modal-window__failed">Произошла ошибка</h1>
+        <button class="send-price-modal-window__result-failed" (click)="isFailed = false">Повторить попытку</button>
+      </ng-template>
+
+    </ng-container>
+
+    <ng-container *ngIf="submitted">
+      <div class="send-price-modal-window__load">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-container>
+
+  </div>
+
+</div>

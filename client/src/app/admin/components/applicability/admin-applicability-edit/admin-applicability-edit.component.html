@@ -1,0 +1,62 @@
+<div class="admin-applicability-edit">
+
+  <h1>Редактирование применяемости</h1>
+
+  <div class="admin-applicability-edit__info" *ngIf="applicability || errorMessage; else load">
+
+    <ng-container *ngIf="applicability; else empty">
+
+      <form [formGroup]="applicabilityForm" (ngSubmit)="update()">
+        <label>
+          <span>Применяемость</span>
+          <input class="admin-input" placeholder="Автопроименяемость" type="text" formControlName="applicability">
+          <small *ngIf="applicabilityForm.controls['applicability'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <button class="admin-btn-action" type="submit" [disabled]="applicabilityForm.invalid || action">Изменить</button>
+        <small class="successful" *ngIf="successful">Применяемость успешно обновлена</small>
+        <small class="error" *ngIf="updateError">{{updateError}}</small>
+      </form>
+
+      <div>
+        <button class="admin-btn-remove" type="button" (click)="confirmation()" [disabled]="action">Удалить</button>
+      </div>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>
+
+<div class="admin-modal" #modal>
+
+  <div class="admin-modal__background"></div>
+
+  <div class="admin-modal__content">
+    <ng-container *ngIf="!action">
+      <h1>Вы уверены?</h1>
+      <div>
+        <button (click)="remove()">Да</button>
+        <button (click)="cancel()">Нет</button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="action">
+      <h1>Удаляем...</h1>
+    </ng-container>
+    <ng-container *ngIf="removeError && !action">
+      <span>{{removeError}}</span>
+      <div><button (click)="cancel()">Закрыть окно</button></div>
+    </ng-container>
+  </div>
+
+</div>

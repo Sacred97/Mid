@@ -1,0 +1,90 @@
+<div class="admin-home">
+
+  <h1>Меню</h1>
+
+  <ul>
+
+    <li>
+      <span>Баннеры</span>
+      <a routerLink="/admin/banners">Список (добавить)</a>
+      <a routerLink="/admin/banners/:id">Баннер - выбор (изменить, удалить)</a>
+    </li>
+
+    <li>
+      <span>Пользователи</span>
+      <a routerLink="/admin/users">Список</a>
+    </li>
+
+    <li>
+      <span>Рассылки</span>
+      <a routerLink="/admin/news-letter">Список</a>
+      <a routerLink="/admin/news-letter-subscribers">Подписки</a>
+    </li>
+
+    <li>
+      <span>Товары</span>
+      <a routerLink="/admin/detail">Список скрытых товаров</a>
+      <div>
+        <button (click)="chooseId($event, ['/', 'admin', 'detail'])">Перейти на товар с id: </button>
+        <input type="text" placeholder="id товара">
+      </div>
+    </li>
+
+    <li>
+      <span>Дополнительные артикулы</span>
+      <a routerLink="/admin/additional-code">Список не привязанных артикулов</a>
+    </li>
+
+    <li>
+      <span>Альтернативные наименования</span>
+      <a routerLink="/admin/alternative-name">Список не привязанных наименований</a>
+    </li>
+
+    <li>
+      <span>Производители</span>
+      <a routerLink="/admin/manufacturer">Список производителей без привязки к стране / городу</a>
+      <div>
+        <button (click)="chooseId($event, ['/', 'admin', 'manufacturer'])">Перейти к производителю с id: </button>
+        <input type="text" placeholder="id производителя">
+      </div>
+    </li>
+
+    <li>
+      <span>Страны / города (производителей)</span>
+      <a routerLink="/admin/country">Список стран / городов</a>
+    </li>
+
+    <li>
+      <span>Регионы</span>
+      <a routerLink="/admin/region">Список регионов</a>
+    </li>
+
+    <li>
+      <span>Категория</span>
+      <a routerLink="/admin/category">Список категорий</a>
+    </li>
+
+    <li>
+      <span>Группа товаров</span>
+      <a routerLink="/admin/product-group">Список групп товаров</a>
+    </li>
+
+    <li>
+      <span>Применяемость</span>
+      <a routerLink="/admin/applicability">Список применяемости</a>
+    </li>
+
+    <li>
+      <span>Автозапчасти (Автомобильные группы)</span>
+      <a routerLink="/admin/parts">Список автозапчастей</a>
+    </li>
+
+    <li>
+      <span>Ключевые слова</span>
+      <a routerLink="/admin/key-words">Список (добавить)</a>
+      <a routerLink="/admin/key-words/:id">Ключевое слово - выбор (изменить, удалить)</a>
+    </li>
+
+  </ul>
+
+</div>

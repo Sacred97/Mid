@@ -1,0 +1,134 @@
+@import "../../../shared/styles/variables";
+
+.user-order {
+  width: 100%;
+
+  &__orders {
+    width: 100%;
+
+    > span {
+      display: block;
+      color: $grey_normal;
+      font-size: 20px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+    > div {
+      padding: 15px;
+      margin-top: 8px;
+      width: 100%;
+      border-radius: 10px;
+      background-color: $grey_light;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 17px 0;
+
+      > span {
+        display: block;
+        flex-basis: 100%;
+        color: $black;
+        font-size: 15px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+
+      a {
+        display: block;
+        width: fit-content;
+        color: $grey_normal;
+        font-size: 13px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 300';
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      button {
+        display: flex;
+        align-items: flex-end;
+        width: fit-content;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+
+        img {
+          width: 13px;
+          height: auto;
+        }
+
+        span {
+          display: block;
+          margin-left: 3px;
+          text-decoration: underline;
+          color: $black;
+          font-size: 13px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 500';
+        }
+      }
+
+    }
+
+  }
+
+  &__empty {
+    width: 100%;
+    padding: 38px 0 0;
+
+    > div {
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: fit-content;
+
+      div {
+        flex-basis: 100%;
+        display: flex;
+        align-items: center;
+
+        img {
+          height: 73px;
+          width: 93px;
+        }
+
+        span {
+          display: block;
+          width: fit-content;
+          margin-left: 25px;
+          color: $grey_normal;
+          font-size: 26px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 700';
+        }
+      }
+
+      a {
+        display: block;
+        margin-top: 5px;
+        padding: 10px 0;
+        width: 100%;
+        max-width: 185px;
+        background-color: #ffffff;
+        border: 2px solid $yellow;
+        border-radius: 10px;
+        text-align: center;
+        text-transform: uppercase;
+        color: $violet;
+        font-size: 15px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 700';
+
+        &:hover {
+          background-color: $yellow-hover;
+        }
+      }
+    }
+
+  }
+
+}

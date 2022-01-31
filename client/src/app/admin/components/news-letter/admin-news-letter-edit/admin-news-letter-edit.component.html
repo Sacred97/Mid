@@ -1,0 +1,13 @@
+<div class="admin-news-letter-edit">
+
+  <h1>Рассылка: {{newsLetter ? newsLetter.name : '-'}}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="update()">
+    <input type="text" placeholder="Название рассылки" formControlName="name">
+    <button type="submit" [disabled]="action || form.invalid">Изменить</button>
+    <small>{{errorMessage}}</small>
+  </form>
+
+  <a routerLink="/admin/news-letter">В список рассылок</a>
+
+</div>

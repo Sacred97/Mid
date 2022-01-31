@@ -1,0 +1,51 @@
+@import "../shared/styles/variables";
+
+.contacts {
+  width: 89.2%;
+  margin: 0 auto 78px;
+
+  > span {
+    display: block;
+    margin-bottom: 35px;
+    width: fit-content;
+    color: $violet;
+    font-size: 26px;
+    line-height: 1;
+    font-family: 'Museo Sans Cyrl 700';
+  }
+
+  &__department {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    a {
+      display: block;
+      flex-basis: 24%;
+      padding: 3px 0;
+      background-color: #ffffff;
+      border-bottom: 7px solid $yellow;
+      cursor: pointer;
+
+      text-align: center;
+      text-transform: uppercase;
+      color: $black;
+      font-size: 20px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 700';
+    }
+
+    &_active {
+      border-bottom: 7px solid $violet !important;
+    }
+
+  }
+
+  &__content {
+    margin-top: 33px;
+    width: 100%;
+  }
+
+
+}

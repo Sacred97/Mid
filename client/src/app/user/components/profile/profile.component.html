@@ -1,0 +1,74 @@
+<div class="user-profile">
+
+  <form [formGroup]="form" (ngSubmit)="update()">
+    <label>
+      <span>ФИО</span>
+      <input type="text" placeholder="Введите ФИО" formControlName="fullName">
+      <small *ngIf="form.controls['fullName'].errors?.required">Поле не должно быть пустым</small>
+    </label>
+
+    <label>
+      <span>Email / Логин</span>
+      <input type="email" placeholder="Ввведите email" formControlName="email">
+      <small *ngIf="form.controls['email'].errors?.required">Поле не должно быть пустым</small>
+      <small *ngIf="form.controls['email'].errors?.email">Поле заполнено не коректно</small>
+    </label>
+
+    <label>
+      <span>Телефон основной</span>
+      <input type="text" placeholder="Введите основной телефон" formControlName="phone">
+      <small *ngIf="form.controls['phone'].errors?.required">Поле не должно быть пустым</small>
+      <small *ngIf="form.controls['phone'].errors?.minlength">Минимальная длинна поля 11</small>
+    </label>
+
+    <label>
+      <span>Телефон дополнительный</span>
+      <input type="text" formControlName="additionalPhone">
+    </label>
+
+    <button *ngIf="isChange" type="submit" [disabled]="form.invalid || action">Сохранить данные</button>
+    <small *ngIf="formError">Произошла ошибка, повторите попытку</small>
+  </form>
+
+  <div>
+    <button type="button" (click)="updateStart()" [ngClass]="{'active': isChange}">
+      <div>
+        <img src="../../../../assets/user/change-profile-data-icon.svg" alt="Данные">
+      </div>
+      <span>Изменить учетные данные</span>
+    </button>
+
+    <button type="button" (click)="changePassword()">
+      <div>
+        <img src="../../../../assets/user/change-password-icon.svg" alt="Пароль">
+      </div>
+      <span>Сменить пароль</span>
+    </button>
+
+    <button type="button" (click)="logout()">
+      <div>
+        <img src="../../../../assets/user/logout-icon.svg" alt="Выйти">
+      </div>
+      <span>Выйти из учетной записи</span>
+    </button>
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="passwordModal">
+
+  <div class="modal-background"></div>
+
+  <div class="change-password-modal">
+    <h1></h1>
+    <form>
+      <label>
+        <span></span>
+        <input type="text">
+        <small></small>
+      </label>
+    </form>
+  </div>
+
+</div>
+

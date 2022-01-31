@@ -1,0 +1,59 @@
+@import "../../../../shared/styles/variables";
+
+.admin-country {
+  width: 100%;
+
+  > h1 {
+    color: $black;
+    font-size: 36px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  &__info {
+    width: 100%;
+    padding: 20px 0;
+
+    > span {
+      display: block;
+      margin: 0 auto;
+      width: fit-content;
+      color: $grey_normal;
+      font-size: 24px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 500";
+    }
+
+    > div {
+      width: 100%;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+
+      span {
+        display: block;
+        width: fit-content;
+        color: $black;
+        font-size: 16px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      a {
+        display: block;
+        width: fit-content;
+        margin: 0 10px;
+        color: $violet;
+        font-size: 16px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+        &:hover {
+          color: $violet-hover;
+        }
+      }
+
+    }
+
+  }
+
+}

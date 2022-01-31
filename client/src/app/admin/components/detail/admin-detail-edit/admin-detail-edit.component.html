@@ -1,0 +1,232 @@
+<div class="admin-detail-edit" *ngIf="!!detail; else load">
+
+  <h1>Редактирование товара</h1>
+
+  <form [formGroup]="form" (ngSubmit)="updateDetail()">
+
+    <div>
+      <span>Наименование</span>
+      <input type="text" placeholder="Наименование" formControlName="name">
+      <small *ngIf="form.controls['name'].errors?.required">Поле не должно быть пустым</small>
+    </div>
+
+    <div>
+      <span>Код продукта</span>
+      <input type="text" placeholder="Код продукта" formControlName="code">
+      <small *ngIf="form.controls['code'].errors?.required">Поле не должно быть пустым</small>
+    </div>
+
+    <div>
+      <span>Артикул</span>
+      <input type="text" placeholder="Артикул" formControlName="vendor">
+      <small *ngIf="form.controls['vendor'].errors?.required">Поле не должно быть пустым</small>
+    </div>
+
+    <div>
+      <span>Цена</span>
+      <input type="number" placeholder="Цена" formControlName="price">
+      <small *ngIf="form.controls['price'].errors?.uncorrected">Цена не может быть 0 или меньше</small>
+    </div>
+
+    <div>
+      <span>Вес</span>
+      <input type="number" placeholder="Вес" formControlName="weight">
+      <small *ngIf="form.controls['weight'].errors?.required">Поле не должно быть пустым</small>
+    </div>
+
+    <div>
+      <span>Описание</span>
+      <textarea placeholder="Описание" formControlName="description"></textarea>
+    </div>
+
+    <div>
+      <span>Единица измерения</span>
+      <input type="text" placeholder="Единица измерения" formControlName="unit">
+      <small *ngIf="form.controls['unit'].errors?.required">Поле не должно быть пустым</small>
+    </div>
+
+    <label>
+      <input type="checkbox" formControlName="isSale">
+      <span>По акции?</span>
+    </label>
+
+    <div *ngIf="form.controls['saleText']">
+      <span>Текст для скидки</span>
+      <textarea placeholder="Текст для скидки" formControlName="saleText"></textarea>
+    </div>
+
+    <label>
+      <input type="checkbox" formControlName="isPopular">
+      <span>В рекомендуемые / популярные?</span>
+    </label>
+
+    <div *ngIf="form.controls['popularText']">
+      <span>Текст рекомендуемые / популярные</span>
+      <textarea placeholder="Текст рекомендуемые / популярные" formControlName="popularText"></textarea>
+    </div>
+
+    <label>
+      <input type="checkbox" formControlName="isNewDetail">
+      <span>Новая?</span>
+    </label>
+
+    <label>
+      <input type="checkbox" formControlName="isHide">
+      <span>Скрыть?</span>
+    </label>
+
+    <div>
+      <span>id Производителя</span>
+      <input type="number" placeholder="id Производителя" formControlName="manufacturerId">
+    </div>
+
+    <div>
+      <span>id Категории</span>
+      <input type="text" placeholder="id Категории" formControlName="categoryId">
+      <small *ngIf="form.controls['categoryId'].errors?.required">Поле не должно быть пустым</small>
+    </div>
+
+    <div>
+      <span>id Автозапчастей</span>
+      <span>
+        Если нужно очистить список то оставьте поле пустым. <br>
+        Если нужно добавить к списку, через запятую перечислить id. <br>
+        Если нужно убарть из списка, уберите id и лишнюю запятую
+      </span>
+      <input type="text" placeholder="id Автозапчастей" formControlName="autoParts">
+    </div>
+
+    <div>
+      <span>id Применяемости</span>
+      <span>
+        Если нужно очистить список то оставьте поле пустым. <br>
+        Если нужно добавить к списку, через запятую перечислить id. <br>
+        Если нужно убарть из списка, уберите id и лишнюю запятую
+      </span>
+      <input type="text" placeholder="id Применяемости" formControlName="autoApplicability">
+    </div>
+
+    <div>
+      <span>id Ключевых слов</span>
+      <span>
+        Если нужно очистить список то оставьте поле пустым. <br>
+        Если нужно добавить к списку, через запятую перечислить id. <br>
+        Если нужно убарть из списка, уберите id и лишнюю запятую
+      </span>
+      <input type="text" placeholder="id Ключевых слов" formControlName="keyWords">
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || action">Изменить</button>
+    <span *ngIf="errorMessage">{{errorMessage}}</span>
+  </form>
+
+  <h1>Список дополнительных артикулов</h1>
+
+  <div class="admin-detail-edit__vendor-code">
+
+    <form class="admin-detail-edit__vendor-code__create"
+          [formGroup]="additionalCodeForm" (ngSubmit)="createAdditionalCode()">
+      <span>Добавить доп. артикул товару</span>
+      <input type="text" placeholder="Доп. артикул" formControlName="vendorCode">
+      <small *ngIf="additionalCodeForm.controls['vendorCode'].errors?.required">
+        Поле не должно быть пустым
+      </small>
+      <button [disabled]="additionalCodeForm.invalid || action" type="submit">Создать</button>
+      <small *ngIf="additionalCodeFormError">{{additionalCodeFormError}}</small>
+    </form>
+
+    <div class="admin-detail-edit__vendor-code__update"
+         *ngIf="!!detail && detail.additionalVendorCode.length; else additionalEmpty">
+
+      <div *ngFor="let a of detail.additionalVendorCode; let idx = index">
+        <span>Дополнительный артикул:</span>
+        <input type="text" placeholder="Доп. артикул" [value]="a.additionalCode">
+        <button (click)="updateAdditionalCode($event, a.id, idx)" [disabled]="action">Изменить</button>
+        <button (click)="removeAdditionalCode(a.id, idx)" [disabled]="action">Удалить</button>
+      </div>
+
+    </div>
+
+    <ng-template #additionalEmpty>
+      <span>Дополнительных артикулов нет</span>
+    </ng-template>
+
+  </div>
+
+  <h1>Список альтернативных наименований</h1>
+
+  <div class="admin-detail-edit__alternative">
+    <form class="admin-detail-edit__alternative__create"
+          [formGroup]="alternativeNameForm" (ngSubmit)="createAlternativeName()">
+      <span>Добавить альтернативное наименование товару</span>
+      <input type="text" placeholder="Алт. наименование" formControlName="name">
+      <small *ngIf="alternativeNameForm.controls['name'].errors?.required">Поле не должно быть пустым</small>
+      <button [disabled]="alternativeNameForm.invalid || action" type="submit">Создать</button>
+      <small *ngIf="alternativeNameFormError">{{alternativeNameFormError}}</small>
+    </form>
+
+    <div class="admin-detail-edit__alternative__update"
+         *ngIf="!!detail && detail.alternativeName.length; else alternativeEmpty">
+
+      <div *ngFor="let a of detail.alternativeName; let idx = index">
+        <span>Альтернативное наименование:</span>
+        <input type="text" placeholder="Доп. наименование" [value]="a.alternativeName">
+        <button (click)="updateAlternativeName($event, a.id, idx)" [disabled]="action">Изменить</button>
+        <button (click)="removeAlternativeName(a.id, idx)" [disabled]="action">Удалить</button>
+      </div>
+
+    </div>
+
+    <ng-template #alternativeEmpty>
+      <span>Альтернативных наименований нет</span>
+    </ng-template>
+
+  </div>
+
+  <h1>Список изображений товара</h1>
+
+  <div class="admin-detail-edit__images">
+
+    <div class="admin-detail-edit__images__upload">
+      <span>Добавить фото товару</span>
+      <input type="file" (change)="selectFile($event)">
+      <label *ngIf="file">
+        <input type="checkbox" [ngModel]="mainPhoto" (change)="fileTypeMainChange($event)">
+        <span>Основная?</span>
+      </label>
+      <small *ngIf="!file">Загрузите файл</small>
+      <button (click)="uploadPhoto()" [disabled]="action || !file">Загрузить</button>
+      <small *ngIf="uploadError">{{uploadError}}</small>
+    </div>
+
+    <div class="admin-detail-edit__images__update"
+         *ngIf="!!detail && detail.photoDetail.length; else imagesEmpty">
+
+      <div *ngFor="let p of detail.photoDetail; let idx = index">
+        <img [src]="p.url" [alt]="p.id">
+        <span>Основная: {{p.isMain ? 'Да' : 'Нет'}}</span>
+        <button (click)="updatePhoto(p.id, idx)" [disabled]="action || p.isMain">Сделать основной</button>
+        <button (click)="removePhoto(p.id, idx)" [disabled]="action">Удалить</button>
+      </div>
+
+    </div>
+
+    <ng-template #imagesEmpty>
+      <span>Фотографий товара нет</span>
+    </ng-template>
+
+  </div>
+
+</div>
+
+<ng-template #load>
+
+  <div class="admin-detail-edit-loading">
+    <h1>Редактирование товара</h1>
+
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </div>
+
+</ng-template>

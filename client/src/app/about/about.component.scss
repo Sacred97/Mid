@@ -1,0 +1,45 @@
+@import "../shared/styles/variables";
+
+.about {
+  width: 89.2%;
+  margin: 0 auto;
+  min-height: 50vh;
+
+  h1 {
+    width: 100%;
+    margin: 20px 0;
+    text-align: start;
+    color: $violet;
+    font-size: 36px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  div {
+    width: 100%;
+    margin: 0 0 20px 20px;
+
+    a {
+      display: block;
+      width: 200px;
+      margin-bottom: 10px;
+      padding: 10px 0;
+      background-color: $yellow;
+      border-radius: 10px;
+      text-align: center;
+      color: $violet;
+      font-size: 16px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 300";
+
+      &:hover {
+        background-color: $yellow-hover;
+      }
+    }
+
+    > a:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+}

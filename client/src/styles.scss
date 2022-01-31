@@ -1,0 +1,852 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/fonts/museo/stylesheet.css";
+@import "app/shared/styles/variables";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: $black;
+}
+
+blockquote {
+  border-left: 2px solid #ccc;
+  margin-left: 1.5rem !important;
+  padding-left: 1rem !important;
+}
+
+.posts * {
+  margin: revert;
+  padding: revert;
+  font-size: revert;
+  color: revert;
+}
+
+.btn {
+  outline: none;
+  text-decoration: none;
+  border: none;
+  background-color: $yellow;
+  color: $black;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: $black;
+}
+
+img {
+  display: block;
+}
+
+input {
+  outline: none;
+  border: none;
+}
+
+// Убираем стрелки в инпутах типа Number
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]:hover,
+input[type="number"]:focus {
+  -moz-appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+// Конец
+
+.catalog-type-container {
+  width: 89.2%;
+  margin: 0 auto 50px auto;
+
+  >div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+//---------------------------------------Router Link Active (Активные Роуты)--------------------------------------------
+
+.route-active-nav {
+  color: rgba(192, 192, 196, 0.5) !important;
+  pointer-events: none;
+  span {
+    border-color: rgba(192, 192, 196, 0.5) rgba(192, 192, 196, 0.5) transparent transparent !important;
+  }
+}
+
+.route-active-subnav {
+  color: $violet !important;
+  text-decoration: none !important;
+  pointer-events: none;
+}
+
+//-------------------------------------Radio Button для формы в заказе и профиле----------------------------------------
+
+.radio-make-order {
+  display: flex;
+  align-items: center;
+  padding: 7px 18px;
+  position: relative;
+  cursor: pointer;
+
+  div {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.4em;
+    height: 1.4em;
+    border: 2px solid $black;
+    border-radius: 50%;
+    position: relative;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: .7em;
+      height: .7em;
+      background-color: $grey_light;
+      opacity: 0;
+      border-radius: 50%;
+    }
+  }
+
+  input[type='radio']:checked + div{
+    border-color: $yellow;
+    background-color: $yellow;
+    &:before {
+      opacity: 1;
+    }
+  }
+
+  span {
+    font-family: 'Museo Sans Cyrl 500';
+    margin-left: 1em;
+    font-size: 18px;
+    line-height: 1;
+  }
+}
+
+//------------------------------------------------------Полоска наличия деталей------------------------------------------------------------
+
+.quantity-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $grey_easy;
+  border-radius: 5px;
+
+  >div {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: $yellow;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  >span {
+    position: absolute;
+    z-index: 3;
+    font-size: 13px;
+    line-height: 13px;
+    font-family: 'Museo Sans Cyrl 500';
+  }
+
+  .not-available {
+    left: 8px;
+  }
+
+  .not-available-analog {
+    left: 5px;
+    font-size: 10px;
+  }
+}
+
+//----------------------------------------------------Задний фон Модального Окна-----------------------------------------------------------
+
+.modal {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.modal-background {
+  z-index: 100;
+  background-color: #000000;
+  opacity: 0.3;
+  width: 100%;
+  height: 100vh;
+}
+
+//----------------------------------------------------------iframe Модальное окно----------------------------------------------------------
+
+.iframe-window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 101;
+  padding: 15px;
+  //width: 40%;
+  min-width: 332px;
+  min-height: 390px;
+  border: 2px solid $yellow;
+  border-radius: 15px;
+  background-color: #ffffff;
+}
+
+.iframe-load {
+  position: absolute;
+  z-index: 102;
+}
+
+//--------------------------------------------СТИЛИ ДЛЯ СЛАЙДЕРОВ, ПАГИНАЦИИ И ПРОЧИХ ПЛАГИНОВ---------------------------------------------
+
+//------------------------------------------------------Слайдер стрелки--------------------------------------------------------------------
+
+.slick-slider-main-class {
+
+  .slick-prev, .slick-next {
+    z-index: 10;
+    border-radius: 50%;
+    opacity: 0.7;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .slick-prev:before, .slick-next:before {
+    content: '';
+    position: absolute;
+    z-index: 10;
+    display: block;
+    opacity: 1;
+    border-width: 2px;
+    border-style: solid;
+    transform: rotate(45deg);
+  }
+}
+
+.home-page-main-slider, .detail-cart-page-main-slider {
+  .slick-prev, .slick-next {
+    width: 56px;
+    height: 56px;
+  }
+
+  .slick-prev:before, .slick-next:before {
+    top: 16px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .slick-prev:before {
+    border-color: transparent transparent $yellow $yellow;
+    left: 42%;
+  }
+
+  .slick-next:before {
+    border-color: $yellow $yellow transparent transparent;
+    right: 42%;
+  }
+}
+
+.home-page-main-slider {
+  .slick-prev, .slick-next {
+    background-color: $violet;
+    &:hover {
+      background-color: $violet;
+    }
+    &:focus {
+      background-color: $violet;
+    }
+  }
+
+  .slick-prev {
+    left: 177px;
+  }
+
+  .slick-next {
+    right: 177px;
+  }
+}
+
+.catalog-banners, .manufacturer-page-banners {
+
+  .slick-prev, .slick-next {
+    width: 36px;
+    height: 36px;
+    background-color: $grey_easy;
+    &:hover {
+      background-color: $grey_easy;
+    }
+    &:focus {
+      background-color: $grey_easy;
+    }
+  }
+  .slick-prev:before, .slick-next:before {
+    top: 10px;
+    width: 12px;
+    height: 12px;
+  }
+  .slick-prev {
+    left: 17px;
+    &:before {
+      border-color: transparent transparent $yellow $yellow;
+      left: 40%;
+    }
+  }
+  .slick-next {
+    right: 17px;
+    &:before {
+      border-color: $yellow $yellow transparent transparent;
+      right: 40%;
+    }
+  }
+}
+
+.manufacturer-catalog-certificate {
+  .slick-prev, .slick-next {
+    width: 36px;
+    height: 36px;
+    background-color: $grey_easy;
+    &:hover {
+      background-color: $grey_easy;
+    }
+    &:focus {
+      background-color: $grey_easy;
+    }
+  }
+  .slick-prev:before, .slick-next:before {
+    top: 10px;
+    width: 12px;
+    height: 12px;
+  }
+  .slick-prev {
+    left: 0;
+    &:before {
+      border-color: transparent transparent $yellow $yellow;
+      left: 40%;
+    }
+  }
+  .slick-next {
+    right: 0;
+    &:before {
+      border-color: $yellow $yellow transparent transparent;
+      right: 40%;
+    }
+  }
+}
+
+.detail-cart-page-main-slider {
+  .slick-prev, .slick-next {
+    background-color: $grey_easy;
+    &:hover {
+      background-color: $grey_easy;
+    }
+    &:focus {
+      background-color: $grey_easy;
+    }
+  }
+  .slick-prev:before, .slick-next:before {
+    opacity: 1 !important;
+  }
+  .slick-prev {
+    left: 0;
+  }
+
+  .slick-next {
+    right: 0;
+  }
+}
+
+//-----------------------------------------------------Слайдер доты------------------------------------------------------------------------
+
+.slick-slider-main-class {
+
+  .slick-dots>li {
+    margin: 0 7px;
+    width: 13px;
+    height: 13px;
+    background-color: $violet;
+    border-radius: 50%;
+    opacity: 0.6;
+
+    button {
+      width: 13px;
+      height: 13px;
+      padding: 0;
+      &:before {
+        content: none;
+      }
+    }
+
+    &.slick-active {
+      opacity: 1;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.home-page-details-carousel, .details-list-slider {
+  .slick-dots {
+    bottom: -30px !important;
+  }
+  .slick-list {
+    margin: 0 auto;
+  }
+}
+
+.catalog-banners, .manufacturer-page-banners {
+
+  .slick-dots {
+    bottom: 12px;
+    >li {
+      width: 10px !important;
+      height: 10px !important;
+      button {
+        width: 10px !important;
+        height: 10px !important;
+      }
+    }
+  }
+
+  .slick-prev, .slick-next {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50%;
+    z-index: 10;
+    background-color: $grey_easy !important;
+    opacity: 0.8;
+  }
+
+  .slick-prev:hover, .slick-next:hover {
+    opacity: 1;
+  }
+
+  .slick-prev {
+    left: 17px !important;
+  }
+
+  .slick-next {
+    right: 17px !important;
+  }
+
+  .slick-prev:before, .slick-next:before {
+      content: '' !important;
+      position: absolute !important;
+      top: 10px;
+      display: block;
+      width: 12px !important;
+      height: 12px !important;
+      margin: 0 !important;
+      opacity: 1 !important;
+      border-style: solid;
+      border-width: 2px;
+      border-color: $yellow $yellow transparent transparent;
+      z-index: 10;
+  }
+
+  .slick-prev:before {
+    left: 40%;
+    transform: rotate(225deg);
+  }
+
+  .slick-next:before {
+    right: 40%;
+    transform: rotate(45deg);
+  }
+}
+
+//---------------------------------------------------------Слайдер прочее------------------------------------------------------------------
+
+//Рамка активного слайдера в корточке товара
+.detail-cart-page-syncing-slider {
+  .slick-current {
+    img {
+      border: 2px solid $yellow;
+      border-radius: 10px;
+    }
+  }
+}
+
+//---------------------------------------------------------Стили Для пагинации-------------------------------------------------------------
+
+.pagination ul {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.pagination li, .pagination a {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+}
+
+
+.pagination a, .pagination span {
+  font-family: 'Museo Sans Cyrl 300';
+  font-size: 14px;
+  line-height: 14px;
+  cursor: pointer;
+  padding: 0 !important;
+}
+
+.pagination li {
+  margin: 0 2.5px !important;
+  border: none;
+}
+
+.pagination a {
+  border: 2px solid #eaeaea;
+  border-radius: 5px !important;
+}
+
+.pagination a:hover {
+  background-color: $yellow !important;
+  border: none;
+}
+
+.current {
+  background-color: $yellow !important;
+  border-radius: 5px !important;
+  color: #000000 !important;
+}
+
+.ellipsis a {
+  border: none;
+}
+
+.pagination-next a:after, .pagination-previous a:after, .pagination-next a:before, .pagination-previous a:before {
+  content: '' !important;
+}
+
+.pagination-next a, .pagination-previous a {
+
+  border: none;
+
+  &:hover {
+    background-color: unset !important;
+  }
+
+}
+
+.pagination-next, .pagination-previous {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  outline: none;
+  border: none;
+  background-color: #ffffff;
+  cursor: pointer;
+  padding: 0 !important;
+
+  &:before {
+    content: '' !important;
+    position: absolute;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $grey_normal $grey_normal transparent transparent;
+    margin: 0 !important;
+  }
+
+  &:hover {
+    &:before {
+      border-color: $yellow $yellow transparent transparent;
+    }
+  }
+}
+
+.pagination-previous {
+  &:before {
+    right: 0;
+    transform: rotate(225deg);
+  }
+}
+
+.pagination-next {
+  &:before {
+    left: 0;
+    transform: rotate(45deg);
+  }
+}
+
+.pagination .small-screen {
+  display: none !important;
+}
+
+//---------------------------------------------------------------Быстрая навигация (плагин)------------------------------------------------
+
+.breadcrumbs {
+  margin-bottom: 44px;
+}
+
+.breadcrumbs-links {
+
+  ul {
+    padding: 0 !important;
+  }
+
+  ul>span>li{
+    position: relative;
+    margin-right: 18px;
+    display: inline-flex !important;
+    align-items: center;
+    width: fit-content;
+    &:after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      width: 5px;
+      height: 5px;
+      border-top: 1px solid $black;
+      border-right: 1px solid $black;
+      transform: rotate(45deg);
+    }
+  }
+
+  ul>span:last-child>li{
+    >span {
+      color: $grey_normal !important;
+      font-size: 14px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 300';
+    }
+    &:after {
+      display: none;
+    }
+  }
+
+  ul>span>li>a {
+    color: $black !important;
+    font-size: 14px;
+    line-height: 1;
+    font-family: 'Museo Sans Cyrl 300';
+
+    &:hover {
+      text-decoration: none !important;
+      color: $black-hover !important;
+    }
+  }
+}
+
+//-----------------------------------------------------------------Индикатор Загрузки------------------------------------------------------
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid $yellow;
+  border-color: $yellow transparent $yellow transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.user-loader-container {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+//--------------------------------------------Стили Админ Панели--------------------------------------------------------
+
+.admin-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  width: 100%;
+}
+
+.admin-btn-remove {
+  display: block;
+  padding: 10px 0;
+  background-color: red;
+  border: none;
+  border-radius: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1;
+  font-family: "Museo Sans Cyrl 500";
+  cursor: pointer;
+  &:disabled {
+    background-color: $grey_easy !important;
+    cursor: not-allowed;
+  }
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.6);
+  }
+}
+
+.admin-btn-action {
+  display: block;
+  padding: 10px 0;
+  background-color: $yellow;
+  border: none;
+  border-radius: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  color: $black;
+  font-size: 16px;
+  line-height: 1;
+  font-family: "Museo Sans Cyrl 500";
+  cursor: pointer;
+  &:disabled {
+    background-color: $grey_easy !important;
+    cursor: not-allowed;
+  }
+  &:hover {
+    background-color: $yellow-hover;
+  }
+}
+
+.admin-input {
+  background-color: $grey_easy;
+  border-radius: 10px;
+  padding: 10px 13px;
+  color: $black;
+  font-size: 16px;
+  line-height: 1;
+  font-family: "Museo Sans Cyrl 500";
+  &:disabled {
+    background-color: $grey_light;
+    cursor: not-allowed;
+  }
+}
+
+.admin-modal {
+  position: fixed;
+  z-index: 200;
+  display: none;
+  //display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  &__background {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &__content {
+    position: absolute;
+    z-index: 201;
+    width: 30%;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 2px solid $yellow;
+    border-radius: 10px;
+
+    > h1 {
+      display: block;
+      width: 100%;
+      text-align: center;
+      color: $violet;
+      font-size: 26px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 700";
+    }
+
+    > div {
+      margin: 15px auto 0;
+      display: flex;
+      gap: 10px;
+      width: fit-content;
+
+      button {
+        display: block;
+        width: 150px;
+        padding: 10px 0;
+        background-color: #ffffff;
+        border: 2px solid $yellow;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        text-transform: uppercase;
+        color: $black;
+        font-size: 16px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 500";
+
+        &:hover {
+          background-color: $yellow-hover;
+        }
+      }
+
+      > button:first-child {
+      }
+
+      > button:last-child {
+
+      }
+
+    }
+
+    span {
+      display: block;
+      width: 100%;
+      text-align: center;
+      color: red;
+      font-size: 20px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 300";
+    }
+  }
+
+}

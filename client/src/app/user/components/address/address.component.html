@@ -1,0 +1,509 @@
+<div class="user-address">
+
+  <div class="addresses" *ngIf="!loading; else load">
+
+    <div class="addresses__error" *ngIf="error">
+      <span>Что-то пошло не так, повторите попытку позже.</span>
+    </div>
+
+    <div class="addresses__empty" *ngIf="!address.length">
+      <div>
+        <img src="../../../../assets/user/box.svg" alt="Товар">
+        <div>
+          <span>Список адресов доставки пуст</span>
+          <small>Добавьте адрес и укажите метод доставки, чтобы удобнее оформлять покупки</small>
+        </div>
+      </div>
+      <button (click)="showHide()" [ngClass]="{'user-address-active': formVisible}">
+        + Добавить адерс доставки
+      </button>
+    </div>
+
+    <div class="addresses__info" *ngIf="address.length">
+
+      <div *ngFor="let a of address; let idx = index">
+
+        <div class="addresses__info__address">
+          <span>{{a.addressName}} <div *ngIf="a.isMain">Основной адрес</div></span>
+          <div>
+            <span>Метод доставки: {{a.deliveryMethod}}</span>
+            <span>
+              {{a.deliveryMethod === 'Самовывоз'
+              ? 'Пункт вывоза: ' + a.deliveryAddress
+              : 'Транспортная компания: ' + a.transportCompany}}
+            </span>
+            <span>Адрес: {{a.deliveryAddress === 'Сидоровка'
+              ? 'г. Набережные Челны, пр. Казанский, дом 123'
+              : a.deliveryAddress === 'Орловка'
+                ? 'г. Набережные Челны, ул. Орловская, дом 186'
+                : a.deliveryAddress === 'Гараж-2000'
+                  ? 'г. Набережные Челны, пр. Казанский, 224/4 блок 4'
+                  : a.deliveryAddress
+              }}</span>
+          </div>
+        </div>
+        <div class="addresses__info__actions">
+          <button (click)="prepareToUpdateAddress(a.id)">
+            <img src="../../../../assets/user/change-contact.svg" alt="Изменить">
+            <span>Изменить</span>
+          </button>
+          <button (click)="removeAddress(a.id)">
+            <img src="../../../../assets/user/remove-contact.svg" alt="Удалить">
+            <span>Удалить</span>
+          </button>
+        </div>
+
+      </div>
+
+      <button (click)="showHide()" [ngClass]="{'user-address-active': formVisible}">
+        + Добавить адерс доставки
+      </button>
+
+    </div>
+
+    <form [formGroup]="formAdd" (ngSubmit)="createAddress()" class="addresses__add-address" *ngIf="formVisible">
+      <span>Выберите способ доставки</span>
+      <div class="addresses__add-address__choice">
+        <label>
+          <input type="radio" formControlName="delivery" value="pickup">
+          <span>Самовывоз</span>
+        </label>
+        <label>
+          <input type="radio" formControlName="delivery" value="city">
+          <span>Транспортной компанией «до терминала»</span>
+        </label>
+        <label>
+          <input type="radio" formControlName="delivery" value="home">
+          <span>Транспортной компанией «до двери»</span>
+        </label>
+      </div>
+
+      <div class="addresses__add-address__pickup" *ngIf="formAdd.controls['delivery'].value === 'pickup'">
+        <span>Самовывоз</span>
+        <div>
+          <button type="button" (click)="dropdown($event)">
+            <span>{{formAdd.controls['pickup'].value}}</span>
+            <div></div>
+          </button>
+          <ul>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="pickup" value="Сидоровка">
+                <span>Сидоровка</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="pickup" value="Орловка">
+                <span>Орловка</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="pickup" value="Гараж-2000">
+                <span>Гараж-2000</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="addresses__add-address__pickup__place" *ngIf="formAdd.controls['pickup'].value === 'Сидоровка'">
+          <span>{{formAdd.controls['pickup'].value}}</span>
+          <div>
+            <span>Местоположение:</span>
+            <p>
+              РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, дом 123 <br>
+              (трасса М-7 Волга, направление Уфа-Казань, 1046 километр)
+            </p>
+          </div>
+
+          <div>
+            <span>Время работы:</span>
+            <p>
+              с 8:00 по 17:00 с понедельника по пятницу <br>
+              с 8:00 по 13:00 по субботам
+            </p>
+          </div>
+
+          <div>
+            <span>Телефоны:</span>
+            <p>
+              +7 8552 927-111 <br>
+              8-800-700-31-32
+            </p>
+          </div>
+        </div>
+
+        <div class="addresses__add-address__pickup__place" *ngIf="formAdd.controls['pickup'].value === 'Орловка'">
+          <span>{{formAdd.controls['pickup'].value}}</span>
+          <div>
+            <span>Местоположение:</span>
+            <p>
+              РФ, Республика Татарстан, г. Набережные Челны, ул. Орловская, дом 186 <br>
+              (ул. Центральная, дом 186)
+            </p>
+          </div>
+
+          <div>
+            <span>Время работы:</span>
+            <p>
+              с 8:00 по 17:00 с понедельника по пятницу <br>
+              с 8:00 по 12:00 по субботам
+            </p>
+          </div>
+
+          <div>
+            <span>Телефоны:</span>
+            <p>
+              +7 8552 32‒23‒23 <br>
+              8-800-700-31-32
+            </p>
+          </div>
+        </div>
+
+        <div class="addresses__add-address__pickup__place" *ngIf="formAdd.controls['pickup'].value === 'Гараж-2000'">
+          <span>{{formAdd.controls['pickup'].value}}</span>
+          <div>
+            <span>Местоположение:</span>
+            <p>РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, 224/4 блок 4</p>
+          </div>
+
+          <div>
+            <span>Время работы:</span>
+            <p>с 8:00 по 17:00 с понедельника по пятницу</p>
+          </div>
+
+          <div>
+            <span>Телефоны:</span>
+            <p>
+              +7 8552 44‒55‒55 <br>
+              8-800-700-31-32
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="addresses__add-address__transport"
+           *ngIf="formAdd.controls['delivery'].value === 'home' || formAdd.controls['delivery'].value === 'city'">
+        <span>Транспортная компания</span>
+
+        <div>
+          <button type="button" (click)="dropdown($event)">
+            <span>{{formAdd.controls['transport'].value}}</span>
+            <div></div>
+          </button>
+          <ul>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="transport" value="ПЭК">
+                <span>ПЭК</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="transport" value="Деловые Линии">
+                <span>Деловые Линии</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="transport" value="Байкал Сервис">
+                <span>Байкал Сервис</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="transport" value="Энергия">
+                <span>Энергия</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="transport" value="КИТ">
+                <span>КИТ</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="transport" value="СДЭК">
+                <span>СДЭК</span>
+              </label>
+            </li>
+            <li>
+              <label (click)="upList($event)">
+                <input type="radio" formControlName="transport" value="Другая">
+                <span>Другая</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <label class="addresses__add-address__transport__another" *ngIf="formAdd.controls['transport'].value === 'Другая'">
+          <span>Название транспортной компании (если выбрано другая)</span>
+          <input type="text" placeholder="Название транспортной компании" formControlName="another">
+          <small *ngIf="formAdd.controls['another'].errors?.required">Полне не должно быть пустым</small>
+        </label>
+
+        <label class="addresses__add-address__transport__city" *ngIf="formAdd.controls['delivery'].value === 'city'">
+          <span>Город терминала</span>
+          <input type="text" placeholder="Город терминала" formControlName="place">
+          <small *ngIf="formAdd.controls['place'].errors?.required">Полне не должно быть пустым</small>
+        </label>
+
+
+        <div class="addresses__add-address__transport__home" *ngIf="formAdd.controls['delivery'].value === 'home'">
+          <span>Адрес</span>
+
+          <label>
+            <span>Населенный пункт</span>
+            <input type="text" placeholder="Населенный пункт" formControlName="city">
+            <small *ngIf="formAdd.controls['city'].errors?.required">Полне не должно быть пустым</small>
+          </label>
+
+          <label>
+            <span>Улица</span>
+            <input type="text" placeholder="Улица" formControlName="street">
+            <small *ngIf="formAdd.controls['street'].errors?.required">Полне не должно быть пустым</small>
+          </label>
+
+          <label>
+            <span>Дом</span>
+            <input type="text" placeholder="Дом" formControlName="building">
+            <small *ngIf="formAdd.controls['building'].errors?.required">Полне не должно быть пустым</small>
+          </label>
+
+          <label>
+            <span>Квартира / офис</span>
+            <input type="text" placeholder="Квартира / офис" formControlName="office">
+            <small *ngIf="formAdd.controls['office'].errors?.required">Полне не должно быть пустым</small>
+          </label>
+
+        </div>
+
+        <label class="addresses__add-address__transport__address-name">
+          <span>Название адреса</span>
+          <input type="text" placeholder="Придумайте или оставьте пустым" formControlName="addressName">
+        </label>
+
+      </div>
+
+      <label>
+        <input type="checkbox" formControlName="isMain">
+        <span>Сохиранить как основной адрес</span>
+      </label>
+
+      <button type="submit" [disabled]="formAdd.invalid || action">Добавить адерс</button>
+      <small *ngIf="formAddError">Что-то пошло не так.</small>
+
+    </form>
+
+  </div>
+
+  <ng-template #load>
+    <div class="user-my-address-loader-container">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+  <div class="map" id="map_container" [style]="mapVisible ?
+           'position: relative; z-index: 1; opacity: 1; margin: 20px 0;'
+           : 'position: absolute; top: 0; left: 0; z-index: -1; opacity: 0; margin: 0;'">
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="modalWindow">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="modal-content">
+
+    <div class="modal-content__info" *ngIf="addressModal || modalError; else loadModal">
+
+      <form *ngIf="addressModal; else modalErrorEl" [formGroup]="modalForm" (ngSubmit)="updateAddress()">
+        <span>Изменить адрес</span>
+        <span>Метод доставки: {{addressModal.deliveryMethod}}</span>
+
+        <div class="modal-content__info__pickup"
+             *ngIf="addressModal.deliveryMethod === 'Самовывоз'; else transportModalEl">
+
+          <div>
+            <label>
+              <input type="radio" formControlName="pickup" value="Сидоровка">
+              <span>Сидоровка</span>
+            </label>
+            <label>
+              <input type="radio" formControlName="pickup" value="Орловка">
+              <span>Орловка</span>
+            </label>
+            <label>
+              <input type="radio" formControlName="pickup" value="Гараж-2000">
+              <span>Гараж-2000</span>
+            </label>
+          </div>
+
+          <div class="modal-content__info__pickup__place" *ngIf="modalForm.controls['pickup'].value === 'Сидоровка'">
+            <span>{{modalForm.controls['pickup'].value}}</span>
+            <div>
+              <span>Местоположение:</span>
+              <p>
+                РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, дом 123 <br>
+                (трасса М-7 Волга, направление Уфа-Казань, 1046 километр)
+              </p>
+            </div>
+
+            <div>
+              <span>Время работы:</span>
+              <p>
+                с 8:00 по 17:00 с понедельника по пятницу <br>
+                с 8:00 по 13:00 по субботам
+              </p>
+            </div>
+
+            <div>
+              <span>Телефоны:</span>
+              <p>
+                +7 8552 927-111 <br>
+                8-800-700-31-32
+              </p>
+            </div>
+          </div>
+
+          <div class="modal-content__info__pickup__place" *ngIf="modalForm.controls['pickup'].value === 'Орловка'">
+            <span>{{modalForm.controls['pickup'].value}}</span>
+            <div>
+              <span>Местоположение:</span>
+              <p>
+                РФ, Республика Татарстан, г. Набережные Челны, ул. Орловская, дом 186 <br>
+                (ул. Центральная, дом 186)
+              </p>
+            </div>
+
+            <div>
+              <span>Время работы:</span>
+              <p>
+                с 8:00 по 17:00 с понедельника по пятницу <br>
+                с 8:00 по 12:00 по субботам
+              </p>
+            </div>
+
+            <div>
+              <span>Телефоны:</span>
+              <p>
+                +7 8552 32‒23‒23 <br>
+                8-800-700-31-32
+              </p>
+            </div>
+          </div>
+
+          <div class="modal-content__info__pickup__place" *ngIf="modalForm.controls['pickup'].value === 'Гараж-2000'">
+            <span>{{modalForm.controls['pickup'].value}}</span>
+            <div>
+              <span>Местоположение:</span>
+              <p>РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, 224/4 блок 4</p>
+            </div>
+
+            <div>
+              <span>Время работы:</span>
+              <p>с 8:00 по 17:00 с понедельника по пятницу</p>
+            </div>
+
+            <div>
+              <span>Телефоны:</span>
+              <p>
+                +7 8552 44‒55‒55 <br>
+                8-800-700-31-32
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <ng-template #transportModalEl>
+          <div class="modal-content__info__transport">
+            <span>Транспортная компания:</span>
+
+            <div>
+              <label>
+                <input type="radio" formControlName="transport" value="ПЭК">
+                <span>ПЭК</span>
+              </label>
+              <label>
+                <input type="radio" formControlName="transport" value="Деловые Линии">
+                <span>Деловые Линии</span>
+              </label>
+              <label>
+                <input type="radio" formControlName="transport" value="Байкал Сервис">
+                <span>Байкал Сервис</span>
+              </label>
+              <label>
+                <input type="radio" formControlName="transport" value="Энергия">
+                <span>Энергия</span>
+              </label>
+              <label>
+                <input type="radio" formControlName="transport" value="КИТ">
+                <span>КИТ</span>
+              </label>
+              <label>
+                <input type="radio" formControlName="transport" value="СДЭК">
+                <span>СДЭК</span>
+              </label>
+              <label>
+                <input type="radio" formControlName="transport" value="Другая">
+                <span>Другая</span>
+              </label>
+            </div>
+
+            <label class="modal-content__info__transport__another" *ngIf="modalForm.controls['another']">
+              <span>Название транспортной компании (если выбрано другая)</span>
+              <input type="text" placeholder="Название транспортной компании" formControlName="another">
+              <small *ngIf="modalForm.controls['another'].errors?.required">Полне не должно быть пустым</small>
+            </label>
+
+            <label class="modal-content__info__transport__city"
+                   *ngIf="addressModal.deliveryMethod === 'Транспортной компанией «до терминала»'">
+              <span>Город терминала</span>
+              <input type="text" placeholder="Город терминала" formControlName="place">
+              <small *ngIf="modalForm.controls['place'].errors?.required">Полне не должно быть пустым</small>
+            </label>
+
+            <label class="modal-content__info__transport__home"
+                 *ngIf="addressModal.deliveryMethod === 'Транспортной компанией «до двери»'">
+              <span>Адрес доставки</span>
+              <input type="text" placeholder="Квартира / офис" formControlName="home">
+              <small *ngIf="modalForm.controls['home'].errors?.required">Полне не должно быть пустым</small>
+            </label>
+
+            <label class="modal-content__info__transport__address-name">
+              <span>Название адреса</span>
+              <input type="text" placeholder="Придумайте название адресу" formControlName="addressName">
+              <small *ngIf="modalForm.controls['addressName'].errors?.required">Полне не должно быть пустым</small>
+            </label>
+
+          </div>
+        </ng-template>
+
+        <label>
+          <input type="checkbox" formControlName="isMain">
+          <span>Сохиранить как основной адрес</span>
+        </label>
+        <button type="submit" [disabled]="modalForm.invalid || action">Обновить адрес</button>
+        <small *ngIf="updateError">Что-то пошло не так, попробуйте позже.</small>
+      </form>
+
+      <ng-template #modalErrorEl>
+        <span>Что-то пошло не так, повторите попытку позже.</span>
+      </ng-template>
+
+    </div>
+
+    <ng-template #loadModal>
+      <div class="user-my-address-modal-loader-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

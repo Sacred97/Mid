@@ -1,0 +1,98 @@
+<div class="modal">
+
+  <div class="modal-background" (click)="close.emit()"></div>
+
+  <div class="get-price-modal-window" [style]="submitted?'max-height: 400px;'
+  :(isFailed && !submitted) || (isSuccessful && !submitted)?'max-height: 200px':''">
+
+    <ng-container *ngIf="!isSuccessful && !isFailed && !submitted">
+      <h1 class="get-price-modal-window__title">Получить прайс-лист</h1>
+
+      <p class="get-price-modal-window__footnote">
+        После заполнения полей, вам на почту
+        автоматически будет отправлен наш прайс
+        запчастей
+      </p>
+
+      <form class="get-price-modal-window__form-control" [formGroup]="form" (ngSubmit)="priceOnSubmit()">
+
+        <div class="get-price-modal-window__input">
+          <input type="email" placeholder="E-mail*" formControlName="email">
+          <div *ngIf="form.controls['email'].invalid && form.controls['email'].dirty">
+            <small *ngIf="form.controls['email'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="form.controls['email'].errors?.email">Поле не является email</small>
+          </div>
+        </div>
+
+        <div class="get-price-modal-window__input">
+          <input type="text" placeholder="Имя*" formControlName="name">
+          <div *ngIf="form.controls['name'].invalid && form.controls['name'].dirty">
+            <small *ngIf="form.controls['name'].errors?.required">Поле не должно быть пустым</small>
+          </div>
+        </div>
+
+        <div class="get-price-modal-window__input">
+          <input type="text" placeholder="Телефон*" formControlName="phone">
+          <div *ngIf="form.controls['phone'].invalid && form.controls['phone'].dirty">
+            <small *ngIf="form.controls['phone'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="form.controls['phone'].errors?.minlength">Телефон введене не коректно, пример +7/8 0000000000</small>
+          </div>
+        </div>
+
+        <div class="get-price-modal-window__price-list">
+
+          <div>
+            <ng-container *ngIf="chooseList.length>0; else no_choose">
+              <div *ngFor="let chooseItem of chooseList; let idx=index">
+                <span>{{chooseItem.slice(0, chooseItem.indexOf('.'))}}</span>
+                <span (click)="removeItem(idx)">&#xd7;</span>
+              </div>
+            </ng-container>
+            <span class="price-drop" (click)="isDropDown = !isDropDown"></span>
+            <ng-template #no_choose>
+              <span>Выберите необходимые прайсы</span>
+            </ng-template>
+            <select multiple (change)="selectList()" formControlName="price" [style]="isDropDown?'max-height: 6em':''">
+              <option *ngFor="let item of priceList" [ngValue]="item" [disabled]="chooseList.includes(item)">
+                {{item.slice(0, item.indexOf('.'))}}
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="form.controls['price'].invalid">
+            <small>Выберите хотя бы 1 прайс</small>
+          </div>
+
+        </div>
+
+        <button [disabled]="form.invalid || submitted">Получить прайс</button>
+      </form>
+    </ng-container>
+
+    <ng-container *ngIf="(isFailed && !submitted) || (isSuccessful && !submitted)">
+
+      <ng-container *ngIf="isSuccessful">
+        <div class="get-price-modal-window__successful">
+          <h1>Письмо было отправлено</h1>
+          <button (click)="close.emit()">Ок</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isFailed">
+        <div class="get-price-modal-window__failed">
+          <h1>Произошла ошибка</h1>
+          <button (click)="retry()">Повторить?</button>
+        </div>
+      </ng-container>
+
+    </ng-container>
+
+    <ng-container *ngIf="submitted">
+      <div class="get-price-modal-window__load">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-container>
+
+  </div>
+
+</div>

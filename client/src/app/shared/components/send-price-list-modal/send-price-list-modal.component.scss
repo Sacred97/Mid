@@ -1,0 +1,289 @@
+@import "../../styles/variables";
+
+.send-price-modal-window {
+  position: absolute;
+  z-index: 201;
+  width: 47%;
+  max-height: 800px;
+  overflow: hidden;
+  padding: 25px 45px;
+  border: 2px solid $yellow;
+  border-radius: 15px;
+  background-color: #ffffff;
+
+  transition: width 1.5s, padding 1.5s, max-height 1.5s;
+
+  &__title {
+    text-align: center;
+
+    color: $violet;
+    font-family: "Museo Sans Cyrl 700";
+    font-size: 24px;
+    text-transform: uppercase;
+  }
+
+  &__form-control {
+    width: 100%;
+
+    input[type='text'], input[type='email'] {
+      width: 100%;
+      border: none;
+      outline: none;
+      border-bottom: 1px solid $black;
+      padding: 5px;
+
+      font-size: 20px;
+      color: $grey_dark;
+      font-family: "Museo Sans Cyrl 100";
+    }
+
+    small {
+      margin-top: 5px;
+      font-size: 10px;
+      font-family: "Museo Sans Cyrl 100";
+      color: red;
+    }
+
+    input[type="checkbox"] {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+      display: block;
+      width: 0;
+      height: 0;
+    }
+
+  }
+
+  &__input {
+    margin-top: 15px;
+  }
+
+  &__file {
+    margin: 20px 0;
+    display: flex;
+    width: 100%;
+
+    span {
+      font-size: 22px;
+      font-family: "Museo Sans Cyrl 700";
+      color: $grey_dark;
+    }
+
+    input {
+      margin-left: 15px;
+      font-family: "Museo Sans Cyrl 300";
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    input::-webkit-file-upload-button {
+      margin: 0 13px 0 0;
+      padding: 5px;
+      font-size: 13px;
+      font-family: "Museo Sans Cyrl 700";
+      color: $black;
+      background-color: $grey_easy;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      outline: none;
+    }
+
+  }
+
+  &__textarea {
+    width: 100%;
+    margin-top: 15px;
+
+    span {
+      display: block;
+      font-size: 22px;
+      font-family: "Museo Sans Cyrl 700";
+      color: $grey_dark;
+      margin-bottom: 9px;
+    }
+
+    textarea {
+      resize: none;
+      width: 100%;
+      font-size: 14px;
+      padding: 1em;
+      border: 1px solid $black;
+      border-radius: 10px;
+      outline: none;
+
+      &::-webkit-scrollbar {
+        //это фон самого скроллбара
+        background-color: $grey_easy;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        width: 10px;
+      }
+
+      &::-webkit-scrollbar-button {
+        //кнопки направления на полосе прокрутки
+        display: none;
+      }
+
+      &::-webkit-scrollbar-track {
+        //пустое пространство под индикатором прокрутки
+      }
+
+      &::-webkit-scrollbar-thumb {
+        //индикатор прокрутки, перетаскиваемый элемент.
+        background-color: $black;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+    }
+
+  }
+
+  &__checkboxes {
+    margin: 25px 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    label {
+      display: flex;
+      cursor: pointer;
+      position: relative;
+      line-height: 20px;
+      height: 1em;
+      width: 100%;
+      align-items: center;
+
+      span {
+        display: inline-block;
+        position: relative;
+        padding-left: 25px;
+        font-family: 'Museo Sans Cyrl 100';
+        font-size: 16px;
+        color: $grey_dark;
+      }
+
+      >span:before {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        width: 1em;
+        height: 1em;
+        border: 1px solid $violet;
+        border-radius: 4px;
+        background-color: transparent;
+        left: 0;
+        top: 0;
+      }
+
+      input[type='checkbox']:checked + span:before {
+        background-color: $violet;
+      }
+
+      &:hover {
+        span {
+          color: $grey_dark-hover;
+        }
+      }
+
+    }
+
+    >div {
+      width: 45%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      div {
+        width: 100%;
+      }
+    }
+
+  }
+
+  &__button {
+    width: 100%;
+    text-align: center;
+
+    button {
+      display: block;
+      width: 18%;
+      margin: 0 auto;
+      padding: 15px 0;
+      background-color: $yellow;
+      border: none;
+      outline: none;
+      border-radius: 10px;
+      cursor: pointer;
+
+      color: $grey_dark;
+      font-size: 13px;
+      font-family: "Museo Sans Cyrl 700";
+      text-transform: uppercase;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      background-color: $grey_easy;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+
+  }
+
+  &__successful {
+    text-align: center;
+    color: $green;
+    font-family: "Museo Sans Cyrl 700";
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  &__result-successful {
+    display: block;
+    padding: 15px 0;
+    width: 100px;
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    background-color: $yellow;
+    border-radius: 10px;
+    cursor: pointer;
+
+    color: $violet;
+    font-size: 13px;
+    font-family: "Museo Sans Cyrl 700";
+    text-transform: uppercase;
+  }
+
+  &__failed {
+    text-align: center;
+    color: red;
+    font-family: "Museo Sans Cyrl 700";
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  &__result-failed {
+    display: block;
+    padding: 15px 0;
+    width: 200px;
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    background-color: $black;
+    border-radius: 10px;
+    cursor: pointer;
+
+    color: #ffffff;
+    font-size: 13px;
+    font-family: "Museo Sans Cyrl 700";
+    text-transform: uppercase;
+  }
+
+
+
+}

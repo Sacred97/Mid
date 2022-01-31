@@ -1,0 +1,343 @@
+<ng-template appRef></ng-template>
+<header>
+  <nav class="navbar">
+
+    <ul class="navbar__menu">
+      <li>
+        <a routerLink="/about" routerLinkActive="route-active-nav" [routerLinkActiveOptions]="{exact: true}">
+          Компания <span></span>
+        </a>
+        <ul>
+          <li><a routerLink="/about/us" routerLinkActive="route-active-subnav">О компании</a></li>
+          <li><a routerLink="/about/history" routerLinkActive="route-active-subnav">История</a></li>
+          <li><a routerLink="/about/presentation" routerLinkActive="route-active-subnav">Презентация</a></li>
+          <li><a routerLink="/about/video" routerLinkActive="route-active-subnav">Видеоролик</a></li>
+        </ul>
+      </li>
+      <li>
+        <a routerLink="/help">Покупателю <span></span></a>
+        <ul>
+          <li><a routerLink="/help/buy">Где купить?</a></li>
+          <li><a routerLink="/help/site">Помощь по сайту</a></li>
+          <li><a routerLink="/help/payment">Оплата</a></li>
+          <li><a routerLink="/help/delivery">Доставка</a></li>
+          <li><a routerLink="/help/guarantee">Гарантия и возврат</a></li>
+          <li><a routerLink="/help/individual">Индивидуальный заказ</a></li>
+          <li><a routerLink="/help/policy">Политика конфиденциальности</a></li>
+          <li><a routerLink="/help/offer">Договор оферты</a></li>
+        </ul>
+      </li>
+      <li>
+        <a routerLink="/contacts" routerLinkActive="route-active-nav" [routerLinkActiveOptions]="{exact: true}">
+          Контакты <span></span>
+        </a>
+        <ul>
+          <li><a routerLink="/contacts/selling" routerLinkActive="route-active-subnav">Отдел продаж</a></li>
+          <li><a routerLink="/contacts/purchase" routerLinkActive="route-active-subnav">Отдел снабжения</a></li>
+          <li><a routerLink="/contacts/marketing" routerLinkActive="route-active-subnav">Отдел маркетинга</a></li>
+          <li><a routerLink="/contacts/bookkeeping" routerLinkActive="route-active-subnav">Бухгалтерия</a></li>
+        </ul>
+      </li>
+      <li>
+        <a routerLink="/supplier">Поставщикам <span></span></a>
+        <ul>
+          <li><a routerLink="/supplier/find">Мы ищем поставщиков</a></li>
+          <li><a routerLink="/supplier/become">Стать поставщиком</a></li>
+        </ul>
+      </li>
+      <li><a routerLink="/jobs">Вакансии</a></li>
+    </ul>
+
+    <div class="navbar__phone">
+      <span>звонок бесплатный</span>
+      <a href="tel:88007003132">8 800 700 31-32</a>
+    </div>
+
+  </nav>
+
+  <div class="bucket">
+    <div>
+      <span>Корзина</span>
+      <div class="bucket__quantity"><span>{{shoppingCartService.itemsQuantity}}</span></div>
+      <a routerLink="/shopping-cart">
+        {{shoppingCartService.totalCost && shoppingCartService.itemsQuantity ?
+        shoppingCartService.toCurrency(shoppingCartService.totalCost) : 'Нет товаров'}}
+      </a>
+    </div>
+
+    <div (click)="logout()" *ngIf="userService.user$ | async as user; else no_user">
+      <img src="" alt="Выход">
+    </div>
+    <ng-template #no_user>
+      <div (click)="showAuthModal()">
+        <img src="../../../../assets/icon/auth.svg" alt="">
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="search-bar">
+    <a routerLink="/" class="search-bar__logo">
+      <img src="../../../../assets/logo.png" alt="">
+    </a>
+
+    <div class="search-bar__bar">
+
+      <ul>
+        <li><a routerLink="/">Новинки</a></li>
+        <li><a routerLink="/">Рекомендуем</a></li>
+        <li><a routerLink="/">Акции</a></li>
+        <li><a (click)="showGetPriceModal()">Получить прайс-лист</a></li>
+        <li><a (click)="showSendPriceModal()">Отправить свой список</a></li>
+        <li><a (click)="showCityModal()"><img src="../../../../assets/icon/geoposition.svg" alt="">
+          <span>{{getCity()}}</span>
+        </a></li>
+      </ul>
+
+      <div>
+        <input type="text" placeholder="Поиск по артикулу или названию" appDelayedInput (delayedInput)="search($event)"
+        [delayTime]="1000">
+
+        <button class="btn">
+          <img src="../../../../assets/icon/search.svg" alt="">
+          <span>Поиск</span>
+        </button>
+
+        <div class="search-bar__list" [style.display]=" isSearch ? 'block' : 'none' ">
+          <ul>
+            <li *ngFor="let detail of position; let idx=index" (click)="openDetail()">
+              <a [routerLink]="['/', 'catalog', detail.id]">
+                <span>{{detail.name}}</span>
+                <span>{{detail.vendorCode}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="catalog-bar">
+
+    <div class="catalog-bar__catalog-menu">
+      <button (click)="addClassActive()" [disabled]="isDisabled">
+        <div class="burger" [ngClass]="{active: active}">
+          <span></span>
+        </div>
+        <div>Каталог товаров</div>
+      </button>
+
+      <ul [style.transform]="active?'scaleY(1)':'scaleY(0)'">
+
+        <li *ngFor="let using of detailMenu">
+          <a routerLink="/">
+            <div>
+              <img [src]="using.imgSrc" alt="">
+            </div>
+            <span>{{using.usability}}</span>
+          </a>
+          <div class="catalog-bar__drop-menu">
+
+            <div>
+              <span [style.color]="isViewOnGroup?'#373736':'#724684'">по виду</span>
+              <button (click)="isViewOnGroup=!isViewOnGroup" [style.backgroundColor]="isViewOnGroup?'#724684':'#a1b0b8'">
+                <span [style.left]="isViewOnGroup?'50%':'0%'"></span>
+              </button>
+              <span [style.color]="isViewOnGroup?'#724684':'#373736'">по группам</span>
+            </div>
+
+            <ul [style.display]="isViewOnGroup?'none':'block'">
+              <li *ngFor="let product of using.productGroup">
+                <a routerLink="/catalog">
+                  {{product.productName}}
+                </a>
+                <ul>
+                  <li *ngFor="let category of product.category"><a routerLink="/catalog/byView">{{category}}</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <ul [style.display]="isViewOnGroup?'block':'none'">
+              <li *ngFor="let byGroup of using.detailByGroup"><a routerLink="/">{{byGroup}}</a></li>
+            </ul>
+
+          </div>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <div class="catalog-bar__quick-filters">
+
+      <a routerLink="/type" routerLinkActive="catalog-bar__quick-filters_active"
+         [routerLinkActiveOptions]="{exact: true}">
+        <img src="../../../../assets/quick-catalog-filter-1.png" alt="">
+        <div>
+          <span>Весь ассортимент</span>
+          <b>по виду товара</b>
+        </div>
+      </a>
+
+      <a routerLink="/parts" routerLinkActive="catalog-bar__quick-filters_active"
+         [routerLinkActiveOptions]="{exact: true}">
+        <img src="../../../../assets/quick-catalog-filter-2.png" alt="">
+        <div>
+          <span>Автозапчасти</span>
+          <b>по каталогу</b>
+        </div>
+      </a>
+
+      <a routerLink="/manufacturer" routerLinkActive="catalog-bar__quick-filters_active"
+         [routerLinkActiveOptions]="{exact: true}">
+        <img src="../../../../assets/quick-catalog-filter-3.png" alt="">
+        <div>
+          <span>Каталог</span>
+          <b>по производителю</b>
+        </div>
+      </a>
+
+      <a routerLink="/catalog" routerLinkActive="catalog-bar__quick-filters_active"
+         [routerLinkActiveOptions]="{exact: true}">
+        <img src="../../../../assets/quick-catalog-filter-4.png" alt="">
+        <div>
+          <span>Online</span>
+          <b>автокаталог</b>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+<div class="hidden-header" #hiddenHeader>
+
+  <div class="hidden-header__search-bar">
+
+    <a routerLink="/" class="hidden-header__logo"><img src="../../../../assets/hidden-header-logo.png" alt=""></a>
+
+    <div class="hidden-header__menu-button">
+
+      <button class="btn" (click)="addClassActiveHiddenHeader()" [disabled]="isDisabledHiddenHeader">
+        <div class="hidden-header-burger"[ngClass]="{activeHiddenHeader: activeHiddenHeader}">
+          <span></span>
+        </div>
+        <span>Каталог</span>
+      </button>
+
+      <ul [style.transform]="activeHiddenHeader?'scaleY(1)':'scaleY(0)'">
+        <li *ngFor="let detail of detailMenu">
+          <a routerLink="/">
+            <div>
+              <img [src]="detail.imgSrc" alt="">
+            </div>
+            <span>{{detail.usability}}</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="hidden-header__input">
+      <input type="text" placeholder="Поиск по артикулу или названию">
+      <button class="btn">
+        <img src="../../../../assets/icon/search.svg" alt="">
+        <span>Поиск</span>
+      </button>
+    </div>
+
+    <a class="hidden-header__phone" routerLink="tel:88007003132">8 800 700-31-32</a>
+
+
+    <div class="hidden-header__bucket">
+      <span>Корзина</span>
+      <div><span>{{shoppingCartService.itemsQuantity ? shoppingCartService.itemsQuantity : 0}}</span></div>
+      <a routerLink="/shopping-cart">
+        {{shoppingCartService.totalCost && shoppingCartService.itemsQuantity ?
+        shoppingCartService.toCurrency(shoppingCartService.totalCost) : 'Нет товаров'}}
+      </a>
+    </div>
+
+    <div (click)="logout()" *ngIf="userService.user$ | async as user; else no_user_hidden_header">
+      <img src="" alt="Выход">
+    </div>
+    <ng-template #no_user_hidden_header>
+      <div class="hidden-header__auth-modal" (click)="showAuthModal()">
+        <img src="../../../../assets/icon/auth.svg" alt="">
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>
+
+<div class="quick-bar">
+  <a routerLink="/">
+    <img src="../../../../assets/marker.svg" alt="">
+    <span>Зайти в закладки</span>
+  </a>
+  <a routerLink="/">
+    <img src="../../../../assets/email.svg" alt="">
+    <span>Напиши нам</span>
+  </a>
+  <a routerLink="/">
+    <img src="../../../../assets/phone.svg" alt="">
+    <span>Позвони нам</span>
+  </a>
+</div>
+
+<div class="arrow-to-start" (click)="goToStart()">
+</div>
+
+<router-outlet></router-outlet>
+
+<footer>
+
+  <div class="footer-left">
+    <ul class="footer-left__list">
+      <li><a routerLink="/about">Компания</a></li>
+      <li><a routerLink="/help">Покупателю</a></li>
+      <li><a routerLink="/contacts">Контакты</a></li>
+      <li><a routerLink="/supplier">Поставщикам</a></li>
+      <li><a routerLink="/jobs">Вакансии</a></li>
+    </ul>
+    <div class="footer-left__quick-catalog">
+      <h1>Запасные части на грузовые автомобили</h1>
+      <ul>
+        <li>
+          <a routerLink="/parts">Каталог <br> по группам</a>
+        </li>
+        <li>
+          <a routerLink="/type">Каталог <br> по виду товара</a>
+        </li>
+        <li>
+          <a routerLink="/catalog">Онлайн <br> автокаталог</a>
+        </li>
+<!--        <li>-->
+<!--          <a routerLink="/">Каталог <br> по алфавиту</a>-->
+<!--        </li>-->
+        <li>
+          <a routerLink="/manufacturer">Каталог <br> по производителю</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-right">
+
+    <ul>
+      <li>
+        <span>звонок по России бесплатный</span>
+        <a href="tel:88007003132">8 800 700-31-32</a>
+      </li>
+      <li><a href="/">Написать нам</a></li>
+      <li><a href="/">Заказать звонок</a></li>
+    </ul>
+
+    <img src="../../../../assets/home/footer-logo.png" alt="">
+
+  </div>
+
+</footer>

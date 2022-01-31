@@ -1,0 +1,106 @@
+<div class="user">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <div>
+    <aside>
+      <ul>
+
+        <li>
+          <a routerLink="/user/profile" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-profile-icon.svg" alt="Профиль">
+            </div>
+            <span>Профиль пользователя</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-orders" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-order-icon.svg" alt="Заказы">
+            </div>
+            <span>Ваши заказы</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-favorites" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-favorite-icon.svg" alt="Избранные">
+            </div>
+            <span>Избранные товары</span>
+            <div class="quantity">
+              <span>{{markerService.getMarkStorage().length}}</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-history" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-history-icon.svg" alt="Запросы">
+            </div>
+            <span>История запросов и просмотров</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-waiting-list" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-waiting-list-icon.svg" alt="Ожидание">
+            </div>
+            <span>Лист ожидания</span>
+            <div class="quantity">
+              <span *ngIf="user">{{user.waitingList.waitingItem.length}}</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-subscriptions" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-subscriptions-icon.svg" alt="Подписки">
+            </div>
+            <span>Рассылки новостей и прайсов</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-companies" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-companies-icon.svg" alt="Организации">
+            </div>
+            <span>Ваши организации</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-addresses" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-addresses-icon.svg" alt="Адреса">
+            </div>
+            <span>Ваши адреса доставки</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/my-contacts" routerLinkActive="user-active" [routerLinkActiveOptions]="{exact: true}">
+            <div>
+              <img src="../../assets/user/my-contacts-icon.svg" alt="Контакты">
+            </div>
+            <span>Ваши контакты</span>
+          </a>
+        </li>
+
+      </ul>
+    </aside>
+
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</div>

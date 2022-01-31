@@ -1,0 +1,84 @@
+@import "../../../../shared/styles/variables";
+
+.admin-news-letter-edit {
+  width: 100%;
+
+  h1 {
+    color: $black;
+    font-size: 36px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  form {
+    display: block;
+    margin: 20px 0;
+    width: 100%;
+
+    input {
+      display: block;
+      margin-bottom: 10px;
+      width: 300px;
+      background-color: $grey_light;
+      padding: 10px 13px;
+      border-radius: 10px;
+      color: $black;
+      font-size: 15px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 300";
+      &:disabled {
+        background-color: $grey_easy;
+      }
+    }
+
+    button {
+      display: block;
+      width: 200px;
+      padding: 12px 13px;
+      background-color: transparent;
+      border: 2px solid $yellow;
+      border-radius: 10px;
+      text-align: center;
+      text-transform: uppercase;
+      color: $violet;
+      font-size: 15px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 500";
+      cursor: pointer;
+      &:disabled {
+        background-color: $grey_easy !important;
+        border-color: $grey_easy !important;
+      }
+      &:hover {
+        background-color: $yellow-hover;
+      }
+    }
+
+    small {
+      display: block;
+      width: fit-content;
+      margin-top: 10px;
+      color: red;
+      font-size: 10px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 100";
+    }
+
+  }
+
+  a {
+    display: block;
+    width: fit-content;
+    margin-top: 10px;
+    text-decoration: underline;
+    color: $black;
+    font-size: 16px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 300";
+    &:hover {
+      color: $black-hover;
+      text-decoration: none;
+    }
+  }
+
+}

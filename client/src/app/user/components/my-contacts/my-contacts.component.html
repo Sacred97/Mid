@@ -1,0 +1,132 @@
+<div class="my-contacts">
+
+  <div class="my-contacts__contact">
+    <div class="my-contacts__contact__info">
+      <span>Основной профиль</span>
+      <div>
+        <span>Электронная почта: <b>{{user ? user.email : '.....'}}</b></span>
+        <span>Телефон: <b>{{user ? user.phone : '.....'}}</b></span>
+        <span>Дополнительный телефон: <b>{{user && user.additionalPhone ? user.additionalPhone : ''}}</b></span>
+      </div>
+    </div>
+    <div class="my-contacts__contact__actions"></div>
+  </div>
+
+  <ng-container *ngIf="user">
+    <div class="my-contacts__contact" *ngFor="let m of user.manager; let idx = index">
+      <div class="my-contacts__contact__info">
+        <span>{{m.fullName}}</span>
+        <div>
+          <span>Электронная почта: <b>{{m.fullName}}</b></span>
+          <span>Телефон: <b>{{m.phone}}</b></span>
+          <span>Дополнительный телефон: <b>{{m.additionalPhone ? m.additionalPhone : ''}}</b></span>
+        </div>
+      </div>
+      <div class="my-contacts__contact__actions">
+        <button (click)="prepareToUpdateManager(m.id)">
+          <img src="../../../../assets/user/change-contact.svg" alt="Изменить">
+          <span>Изменить</span>
+        </button>
+        <button (click)="removeManager(m.id)">
+          <img src="../../../../assets/user/remove-contact.svg" alt="Удалить">
+          <span>Удалить</span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <button (click)="formVisible = !formVisible" [ngClass]="{'my-contacts-button-active': formVisible}">
+    + Добавить новый контакт
+  </button>
+
+  <form *ngIf="formVisible" [formGroup]="formAdd" (ngSubmit)="addNewContact()">
+    <span>Добавить контакт</span>
+    <div>
+      <label>
+        <span>ФИО</span>
+        <input type="text" placeholder="Введите ФИО" formControlName="fullName">
+        <small *ngIf="formAdd.controls['fullName'].errors?.required">Поле не должно быть пустым</small>
+      </label>
+
+      <label>
+        <span>Телефон</span>
+        <input type="text" placeholder="Телефон" formControlName="phone">
+        <small *ngIf="formAdd.controls['phone'].errors?.required">Поле не должно быть пустым</small>
+        <small *ngIf="formAdd.controls['phone'].errors?.minlength">В поле должно быть не менее 11 цифр</small>
+      </label>
+
+      <label>
+        <span>Электронная почта</span>
+        <input type="email" placeholder="Почта" formControlName="email">
+        <small *ngIf="formAdd.controls['email'].errors?.required">Поле не должно быть пустым</small>
+        <small *ngIf="formAdd.controls['email'].errors?.email">Электронная почта введена не верно</small>
+      </label>
+
+      <label>
+        <span>Дополнительный телефон</span>
+        <input type="text" formControlName="additionalPhone">
+      </label>
+    </div>
+    <button type="submit" [disabled]="formAdd.invalid || action">Добавить</button>
+    <small *ngIf="formError">Что-то пошло не так, попробуйте позже.</small>
+  </form>
+
+</div>
+
+<div class="modal" *ngIf="modalWindow">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="modal-content">
+
+    <div class="modal-content__info" *ngIf="manager || modalError; else loadModal">
+
+      <form *ngIf="manager; else modalErrorEl" [formGroup]="formUpdate" (ngSubmit)="updateManager()">
+        <span>Изменить контакт</span>
+        <div>
+          <input type="hidden" formControlName="id">
+
+          <label>
+            <span>ФИО</span>
+            <input type="text" placeholder="Введите ФИО" formControlName="fullName">
+            <small *ngIf="formUpdate.controls['fullName'].errors?.required">Поле не должно быть пустым</small>
+          </label>
+
+          <label>
+            <span>Телефон</span>
+            <input type="text" placeholder="Телефон" formControlName="phone">
+            <small *ngIf="formUpdate.controls['phone'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="formUpdate.controls['phone'].errors?.minlength">В поле должно быть не менее 11 цифр</small>
+          </label>
+
+          <label>
+            <span>Электронная почта</span>
+            <input type="email" placeholder="Почта" formControlName="email">
+            <small *ngIf="formUpdate.controls['email'].errors?.required">Поле не должно быть пустым</small>
+            <small *ngIf="formUpdate.controls['email'].errors?.email">Электронная почта введена не верно</small>
+          </label>
+
+          <label>
+            <span>Дополнительный телефон</span>
+            <input type="text" formControlName="additionalPhone">
+          </label>
+        </div>
+        <button type="submit" [disabled]="formUpdate.invalid || action">Обновить</button>
+        <small *ngIf="formUpdateError">Что-то пошло не так, попробуйте позже.</small>
+      </form>
+
+      <ng-template #modalErrorEl>
+        <span>Что-то пошло не так, повторите попытку позже.</span>
+      </ng-template>
+
+    </div>
+
+    <ng-template #loadModal>
+      <div class="user-my-contacts-modal-loader-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

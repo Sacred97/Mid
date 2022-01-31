@@ -1,0 +1,40 @@
+<div class="admin-users">
+
+  <h1>Список пользователей</h1>
+
+  <label>
+    <span>Найти пользователя</span>
+    <input type="email" placeholder="Email" appDelayedInput [delayTime]="1000" (delayedInput)="searchUser($event)">
+  </label>
+
+  <ul class="admin-users__result" *ngIf="!loading; else load">
+
+    <ng-container *ngIf="!!usersList.length; else not_found">
+      <li *ngFor="let u of usersList | paginate: {itemsPerPage: 20, currentPage: page, totalItems: total};
+            let idx = index">
+        <span>id: {{u.id}}</span>
+        <span>email: {{u.email}}</span>
+
+        <button (click)="removeUser(u.id, idx)" [disabled]="action">Удалить</button>
+      </li>
+
+      <ng-container *ngIf="total > 20">
+        <pagination-controls class="pagination" (pageChange)="changePage($event)"
+                             previousLabel="" nextLabel="" [maxSize]="9">
+        </pagination-controls>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #not_found>
+      <span>Пользователи не найдены</span>
+    </ng-template>
+
+  </ul>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

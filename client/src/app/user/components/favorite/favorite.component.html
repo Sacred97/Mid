@@ -1,0 +1,106 @@
+<div class="user-favorite">
+
+  <div *ngIf="markerService.getMarkStorage().length; else empty">
+
+    <div class="user-favorite__info" *ngIf="!loading; else load">
+
+      <div *ngIf="details.length; else error">
+
+        <hr/>
+
+        <div *ngFor="let d of details; let idx = index">
+
+          <div class="user-favorite__info__image">
+            <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="Изображение">
+            <span *ngIf="d.photoDetail.length">
+              <img [src]="d.photoDetail[0].url">
+            </span>
+          </div>
+
+          <div class="user-favorite__info__title">
+            <a [routerLink]="['/', 'catalog', d.id]"
+               (click)="viewedService.addToRecentlyViewed(d.id)">
+              {{d.name}}
+            </a>
+          </div>
+
+          <div class="user-favorite__info__text">
+            <span>{{d.vendorCode}} / {{d.productCode}}</span>
+          </div>
+
+          <div class="user-favorite__info__manufacturer">
+            <a [routerLink]="!!d.manufacturer ? ['/', 'manufacturer', d.manufacturer.id] : undefined">
+              <ng-container *ngIf="d.manufacturer; else without_manufacturer">
+                <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
+                  <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+                </ng-container>
+
+                <ng-template #without_logo>
+                  <span>{{d.manufacturer!.nameCompany}}</span>
+                </ng-template>
+              </ng-container>
+
+              <ng-template #without_manufacturer>
+                <span>Производитель не указан</span>
+              </ng-template>
+            </a>
+          </div>
+
+          <div class="user-favorite__info__price">
+            <span>{{cartService.toCurrency(d.price)}}</span>
+          </div>
+
+          <div class="user-favorite__info__quantity">
+            <div class="quantity-bar">
+              <div [style.width]="d.quantityRatio + '%'"
+                   [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                   [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+              </div>
+              <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+              <ng-template #no_available_analog_view>
+                <span class="not-available-analog">нет в наличии</span>
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="user-favorite__info__to-order">
+            <div *ngIf="cartService.check(d.id); else to_cart">
+              <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+              <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
+              <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+            </div>
+            <ng-template #to_cart>
+              <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
+            </ng-template>
+          </div>
+
+          <div class="user-favorite__info__delete">
+            <button (click)="removeFromFavorite(idx)">&#xd7;</button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <ng-template #error>
+        <span>Не удалось получить список избранных товаров.</span>
+      </ng-template>
+
+    </div>
+
+    <ng-template #load>
+      <div class="user-loader-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+  <ng-template #empty>
+    <div class="user-favorite__empty">
+      <img src="../../../../assets/user/box.svg" alt="Товар">
+      <span>Товары в разделе «Избранное» отсутствуют</span>
+    </div>
+  </ng-template>
+
+</div>

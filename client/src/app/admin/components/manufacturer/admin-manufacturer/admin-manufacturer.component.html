@@ -1,0 +1,29 @@
+<div class="admin-manufacturer">
+
+  <h1>Список производителей без привязки к стране / городу</h1>
+
+  <div class="admin-manufacturer__info" *ngIf="!loading; else load">
+
+    <ng-container *ngIf="manufacturer.length; else empty">
+
+      <div *ngFor="let m of manufacturer; let idx = index">
+        <img *ngIf="m.logoCompanyUrl" [src]="m.logoCompanyUrl" alt="Логотип">
+        <span>id: {{m.id}}</span>
+        <a [routerLink]="['/', 'admin', 'manufacturer', m.id]">Производитель: {{m.nameCompany}}</a>
+      </div>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>
