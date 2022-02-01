@@ -67,70 +67,70 @@ export class UserService {
   //---------------------------------------------Аутентификация---------------------------------------------------------
 
   registration(newUser: NewUserInterface): Promise<any> {
-    return this.http.post('http://localhost:3000/midkam_api/auth/registration',
+    return this.http.post('http://midkam.pro:3000/midkam_api/auth/registration',
       newUser, {withCredentials: true}).toPromise()
   }
 
   restorePassword(email: string): Promise<void> {
-    return this.http.post<void>('http://localhost:3000/midkam_api/auth/password/restore',
+    return this.http.post<void>('http://midkam.pro:3000/midkam_api/auth/password/restore',
       {email: email}, {withCredentials: true}).toPromise()
   }
 
   changePassword(token: string, password: string): Promise<ResponseMessage> {
-    return this.http.post<ResponseMessage>('http://localhost:3000/midkam_api/auth/password/change',
+    return this.http.post<ResponseMessage>('http://midkam.pro:3000/midkam_api/auth/password/change',
       {token: token, password: password}, {withCredentials: true}).toPromise()
   }
 
   login(email: string, password: string): Promise<UserInterface> {
     const user = {email: email, password: password}
-    return this.http.post<UserInterface>('http://localhost:3000/midkam_api/auth/login',
+    return this.http.post<UserInterface>('http://midkam.pro:3000/midkam_api/auth/login',
       user, {withCredentials: true}).toPromise()
   }
 
   logout(): Promise<void> {
-    return this.http.post<void>('http://localhost:3000/midkam_api/auth/logout',
+    return this.http.post<void>('http://midkam.pro:3000/midkam_api/auth/logout',
       {void: 'void'}, {withCredentials: true}).toPromise()
   }
 
   emailVerification(token: string): Promise<ResponseMessage> {
-    return this.http.post<ResponseMessage>('http://localhost:3000/midkam_api/auth/verification/verify',
+    return this.http.post<ResponseMessage>('http://midkam.pro:3000/midkam_api/auth/verification/verify',
       {token: token}, {withCredentials: true}).toPromise()
   }
 
   resendLetter(email: string): Promise<ResponseMessage> {
-    return this.http.post<ResponseMessage>('http://localhost:3000/midkam_api/auth/verification/verify',
+    return this.http.post<ResponseMessage>('http://midkam.pro:3000/midkam_api/auth/verification/verify',
       {email: email}, {withCredentials: true}).toPromise()
   }
 
   //------------------------------------------------Корзина пользователя------------------------------------------------
 
   addCartItem(data: CartItemInfoInterface | CartItemInfoInterface[]): Promise<ShoppingCartUserInterface> {
-    return this.http.post<ShoppingCartUserInterface>('http://localhost:3000/midkam_api/users/shoppingCart',
+    return this.http.post<ShoppingCartUserInterface>('http://midkam.pro:3000/midkam_api/users/shoppingCart',
       data, {withCredentials: true}).toPromise()
   }
 
   deleteCartItem(id: number): Promise<ShoppingCartUserInterface> {
-    return this.http.delete<ShoppingCartUserInterface>(`http://localhost:3000/midkam_api/users/shoppingCart/${id}`,
+    return this.http.delete<ShoppingCartUserInterface>(`http://midkam.pro:3000/midkam_api/users/shoppingCart/${id}`,
       {withCredentials: true}).toPromise()
   }
 
   recountTotalCost(): Promise<ShoppingCartUserInterface> {
-    return this.http.put<ShoppingCartUserInterface>('http://localhost:3000/midkam_api/users/shoppingCart',
+    return this.http.put<ShoppingCartUserInterface>('http://midkam.pro:3000/midkam_api/users/shoppingCart',
       {void: 'void'}, {withCredentials: true}).toPromise()
   }
 
   cleanShoppingCart(): Promise<ShoppingCartUserInterface> {
-    return this.http.post<ShoppingCartUserInterface>('http://localhost:3000/midkam_api/users/shoppingCartClean',
+    return this.http.post<ShoppingCartUserInterface>('http://midkam.pro:3000/midkam_api/users/shoppingCartClean',
       {void: 'void'}, {withCredentials: true}).toPromise()
   }
 
   addToWaitingList(data: WaitingListDetailId): Promise<WaitingListInterface> {
-    return this.http.post<WaitingListInterface>('http://localhost:3000/midkam_api/users/waiting',
+    return this.http.post<WaitingListInterface>('http://midkam.pro:3000/midkam_api/users/waiting',
       data, {withCredentials: true}).toPromise()
   }
 
   deleteFromWaitingList(waitingItemId: number): Promise<WaitingListInterface> {
-    return this.http.delete<WaitingListInterface>('http://localhost:3000/midkam_api/users/waiting/' + waitingItemId,
+    return this.http.delete<WaitingListInterface>('http://midkam.pro:3000/midkam_api/users/waiting/' + waitingItemId,
       {withCredentials: true}).toPromise()
   }
 
