@@ -11,7 +11,7 @@ export class AdminGuardGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    return this.http.get<any>('http://localhost:3000/midkam_api/auth/admin',
+    return this.http.get<any>('http://midkam.pro:3000/midkam_api/auth/admin',
       {withCredentials: true})
       .toPromise()
       .then(status => {
