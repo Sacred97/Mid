@@ -29,15 +29,15 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  private hostname: string = 'http://'+location.hostname+':3000/midkam_api/'
+  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
 
   user$: BehaviorSubject<UserInterface | undefined> = new BehaviorSubject<UserInterface | undefined>(undefined)
 
   async refreshToken(): Promise<boolean> {
     try {
-      await this.http.get('http://localhost:3000/midkam_api/auth/refresh', {withCredentials: true})
+      await this.http.get('http://midkam.pro:3000/midkam_api/auth/refresh', {withCredentials: true})
         .toPromise()
-      const user = await this.http.get<UserInterface>(`http://localhost:3000/midkam_api/users/profile`,
+      const user = await this.http.get<UserInterface>(`http://midkam.pro:3000/midkam_api/users/profile`,
         {withCredentials: true}).toPromise()
       const shoppingCart: ShoppingCartInterface[] = user.shoppingCart.cartItem.map(i => ({
         id: i.detail.id, quantity: i.quantity
