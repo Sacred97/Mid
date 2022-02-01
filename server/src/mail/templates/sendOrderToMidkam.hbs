@@ -1,0 +1,66 @@
+<style type="text/css">
+    td, th {
+        border: 1px solid #595959;
+        padding: 10px;
+    }
+    td > img {
+        max-width: 100%;
+    }
+    @media (max-width: 850px) {
+        td > img {
+            max-width: 100%;
+        }
+    }
+</style>
+
+<p style="width: 100%;"><b>Содержимое заказа {{order.orderNumber}}</b></p>
+<table width="98%" style="border-collapse: collapse; border-spacing: 0; width: 98%;">
+    <tr>
+        <th width="6%">№ п/п</th>
+        <th width="50%">Товар</th>
+        <th width="14%">Артикул</th>
+        <th width="11%">Цена, руб</th>
+        <th width="8%">Кол-во</th>
+        <th width="11%">Сумма, руб</th>
+    </tr>
+    {{#order.orderItem}}
+        <tr>
+            <td width="6%">{{index}}</td>
+            <td width="50%">{{productName}}</td>
+            <td width="14%">{{vendorCode}}</td>
+            <td width="11%">{{price}}</td>
+            <td width="8%">{{quantity}}</td>
+            <td width="11%">{{finalPrice}}</td>
+        </tr>
+    {{/order.orderItem}}
+    <tr>
+        <td colspan="5" width="89%"><b>Итого:</b></td>
+        <td><b>{{order.totalCost}}</b></td>
+    </tr>
+    <tr>
+        <td colspan="5" width="89%"><b>{{order.deliveryMethod}}</b></td>
+        <td><b>0</b></td>
+    </tr>
+</table>
+<p>Вес заказа:
+    {{#if order.totalWeight}}
+        {{order.totalWeight}}
+    {{else}}
+        Не указан
+    {{/if}}
+</p>
+<p style="display: block; width: 100%;"><b>Данные заказчика:</b></p>
+<p style="display: block; width: 100%;">ФИО: {{order.fullName}}</p>
+<p style="display: block; width: 100%;">Телефон: {{order.phone}}</p>
+<p style="display: block; width: 100%;">Эл. почта: {{order.email}}</p>
+{{#if order.additionalPhone}}
+    <p style="display: block; width: 100%;">Доп. телефон: {{order.additionalPhone}}</p>
+{{/if}}
+<p style="display: block; width: 100%;">Способ оплаты: {{order.paymentMethod}}</p>
+<p style="display: block; width: 100%;">Способ доставки: {{order.deliveryMethod}}</p>
+<p style="display: block; width: 100%;">Адрес: {{order.deliveryAddress}}</p>
+<p style="display: block; width: 100%;">--------------</p>
+<p style="display: block; width: 100%;">С уважение</p>
+<p style="display: block; width: 100%;">Мидкам</p>
+<p style="display: block; width: 100%;">https://midkam.ru</p>
+

@@ -1,0 +1,80 @@
+<div class="background">
+
+    <div class="container">
+        <img src="https://midkam-cloud.s3.eu-central-1.amazonaws.com/logo.svg" alt="Мидкам">
+
+        <h1>Поступление</h1>
+
+        <p>Один из товаров на который вы были подписаны поступил в наличие</p>
+
+        <a href="http://midkam.pro/catalog/{{id}}">{{name}}</a>
+    </div>
+
+</div>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .background {
+        width: 100%;
+        padding: 28px 0 47px;
+        background-color: #ebecec;
+    }
+
+    .container {
+        margin: 0 auto;
+        padding: 30px 30px 40px;
+        max-width: 532px;
+        background-color: #ffffff;
+    }
+
+    .container img {
+        display: block;
+        max-width: 100%;
+        max-height: 60px;
+        margin: 0 auto;
+    }
+
+    .container h1, .container p, .container a{
+        display: block;
+    }
+
+    .container h1{
+        margin-top: 39px;
+        margin-bottom: 21px;
+        font-family: 'Museo Sans Cyrl 700', 'Verdana', 'Geneva', sans-serif;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 1;
+    }
+
+    .container p{
+        font-family: 'Museo Sans Cyrl 500', 'Verdana', 'Geneva', sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 1;
+    }
+
+    .container a{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 10px;
+        color: #724684;
+        text-decoration: none;
+        font-size: 11px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 700', 'Verdana', 'Geneva', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .container a:hover {
+        color: rgba(114, 70, 132, 0.4);
+    }
+
+</style>

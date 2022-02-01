@@ -1,0 +1,171 @@
+<div class="background">
+
+    <div class="container">
+
+        <div class="main">
+
+            <img src="https://midkam-cloud.s3.eu-central-1.amazonaws.com/logo.svg" alt="Мидкам">
+
+            <h1>Завершение регистрации</h1>
+            <p>
+                Осталось совсем немного! <br>
+                Пройдите по кнопке «Перейти на сайт», чтобы подтвердить свою
+                электронную почту {{email}}
+            </p>
+
+            <span>Данная почта является логином для входа на сайт.</span>
+            <a href="{{url}}">Перейти на сайт</a>
+            <hr>
+
+            <p>
+                Если вы не понимаете о чем речь – просто проигнорируйте это
+                сообщение.
+            </p>
+            <p>
+                С уважением, <br>
+                Администрация МИДКАМ
+            </p>
+
+
+
+        </div>
+
+        <div class="footer">
+            <span>© www.midkam.ru 1997-2021</span>
+            <a href="http://midkam.ru/profile">Перейти в личный кабинет</a>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .background {
+        width: 100%;
+        padding: 28px 0 47px;
+        background-color: #ebecec;
+    }
+
+    .container {
+        margin: 0 auto;
+        max-width: 532px;
+    }
+
+    .main {
+        padding: 30px 30px 40px;
+        background-color: #ffffff;
+    }
+
+    .main img {
+        display: block;
+        max-width: 100%;
+        max-height: 60px;
+        margin: 0 auto;
+    }
+
+    .main h1, .main p, .main a, .main span {
+        display: block;
+    }
+
+    .main h1 {
+        margin-top: 39px;
+        margin-bottom: 21px;
+        font-family: 'Museo Sans Cyrl 700', 'Verdana', 'Geneva', sans-serif;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 1;
+    }
+
+    .main p {
+        font-family: 'Museo Sans Cyrl 500', 'Verdana', 'Geneva', sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 1;
+    }
+
+    .main span {
+        margin-top: 20px;
+        font-family: 'Museo Sans Cyrl 500', 'Verdana', 'Geneva', sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 1;
+        color: #724684;
+    }
+
+    .main a {
+        font-family: 'Museo Sans Cyrl 700', 'Verdana', 'Geneva', sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 1;
+        color: #724684;
+        text-decoration: none;
+
+        margin-top: 5px;
+        margin-bottom: 8px;
+        width: fit-content;
+        padding: 8px 16px;
+        background-color: #fdcb00;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .main hr {
+        border: none;
+        border-top: 2px solid #808080;
+        margin-bottom: 10px;
+    }
+
+    .main>p:last-child {
+        margin-top: 20px;
+    }
+
+
+    .footer {
+        background-color: transparent;
+        margin-top: 18px;
+        padding: 0 30px;
+    }
+
+    .footer>span, .footer>a {
+        font-family: 'Museo Sans Cyrl 300', 'Verdana', 'Geneva', sans-serif;
+        font-size: 14px;
+        line-height: 1;
+        font-weight: 300;
+        color: #808080;
+        display: block;
+        width: fit-content;
+    }
+
+    .footer>span:first-child {
+        margin-right: auto;
+        float: left;
+    }
+
+    .footer>a:last-child {
+        margin-left: auto;
+        text-decoration: underline;
+    }
+
+    .footer>a:last-child:hover {
+        text-decoration: none;
+    }
+
+    @media (max-width: 500px) {
+        .footer>span:first-child {
+            float: none;
+        }
+
+        .footer>a:last-child, .footer>span:first-child {
+            width: fit-content;
+            margin: 0 auto 10px;
+        }
+    }
+
+</style>
