@@ -5,15 +5,15 @@ services:
     container_name: client
     build:
       context: ./client
-#      target: production
-      target: development
+      target: production
+#      target: development
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-#      - "80:80"
-      - "4200:4200"
-    command: ng serve --host 0.0.0.0 --disable-host-check
+      - "80:80"
+#      - "4200:4200"
+#    command: ng serve --host 0.0.0.0 --disable-host-check
     networks:
       - webserver
     links:
@@ -57,22 +57,22 @@ services:
     networks:
       - postgres
 
-  pgadmin:
-    links:
-      - postgres:postgres
-    container_name: pgadminDataBase
-    image: dpage/pgadmin4:latest
-    ports:
-      - "8080:80"
-    volumes:
-      - /data/pgadmin:/root/.pgadmin
-    env_file:
-      - ./server/.env
-    depends_on:
-      - postgres
-#    tty: true
-    networks:
-      - postgres
+#  pgadmin:
+#    links:
+#      - postgres:postgres
+#    container_name: pgadminDataBase
+#    image: dpage/pgadmin4:latest
+#    ports:
+#      - "8080:80"
+#    volumes:
+#      - /data/pgadmin:/root/.pgadmin
+#    env_file:
+#      - ./server/.env
+#    depends_on:
+#      - postgres
+##    tty: true
+#    networks:
+#      - postgres
 
   redis:
     image: redis:alpine

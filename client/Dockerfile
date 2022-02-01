@@ -12,7 +12,7 @@ RUN npm install
 
 COPY . .
 
-#RUN ng build --prod
+RUN ng build --prod
 
 #CMD ng serve --host 0.0.0.0 --disable-host-check
 
