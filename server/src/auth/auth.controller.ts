@@ -27,7 +27,7 @@ export class AuthController {
 
   constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
-  @UseGuards(GuestGuard)
+//  @UseGuards(GuestGuard)
   @Post('registration')
   async registration(@Body() data: RegistrationUserDto) {
     return await this.authService.registration(data)

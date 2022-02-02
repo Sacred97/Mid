@@ -12,7 +12,7 @@ export class MailService {
   }
 
   async sendUserEmailVerification(email: string, token: string) {
-    const url = `https://start.midkam.ru/action?mode=verification&token=${token}`
+    const url = `http://midkam.pro/action?mode=verification&token=${token}`
     await this.mailerService.sendMail({
       to: email,
       subject: 'Регистрация на сайте Midkam.ru',
@@ -27,7 +27,7 @@ export class MailService {
   }
 
   async sendEmailChangeLink(newEmail: string, token) {
-    const url = `https://start.midkam.ru/action?mode=change&token=${token}`
+    const url = `http://midkam.pro/action?mode=change&token=${token}`
     await this.mailerService.sendMail({
       to: newEmail,
       subject: 'Смена электронной почты Midkam.ru',
@@ -41,7 +41,7 @@ export class MailService {
   }
 
   async sendRestoreEmailLink(email: string, token: string) {
-    const url = `https://start.midkam.ru/action?mode=restore&token=${token}`
+    const url = `http://midkam.pro/action?mode=restore&token=${token}`
     await this.mailerService.sendMail({
       to: email,
       subject: 'Процедура восстановления пароля',

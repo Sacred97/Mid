@@ -16,7 +16,7 @@ export class ManufacturerService {
   constructor(private http: HttpClient) {
   }
 
-  private hostname: string = 'http://'+location.hostname+':3000/midkam_api/'
+  private hostname: string = 'http://' + 'midkam.pro' + ':3000/midkam_api/'
 
   search(query: string): Promise<SearchManufacturerInterface[]> {
     const url: string = this.hostname + 'manufacturer_search' + '?search=' + query

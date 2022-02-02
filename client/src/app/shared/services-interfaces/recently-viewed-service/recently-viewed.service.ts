@@ -16,7 +16,7 @@ export class RecentlyViewedService {
   }
 
   getRecentlyViewedDetails(): Promise<DetailInterface[]> {
-    const url = 'http://' + location.hostname + ':3000/midkam_api/' + 'details/random'
+    const url = 'http://' + 'midkam.pro' + ':3000/midkam_api/' + 'details/random'
     const viewed = this.getViewedStorage()
     return this.http.post<DetailInterface[]>(url, viewed, {withCredentials: true}).toPromise()
   }

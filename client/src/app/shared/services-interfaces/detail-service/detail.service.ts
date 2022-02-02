@@ -11,7 +11,7 @@ export class DetailService {
   constructor( private http: HttpClient) {
   }
 
-  private hostname: string = 'http://'+location.hostname+':3000/midkam_api/details/'
+  private hostname: string = 'http://' + 'midkam.pro' + ':3000/midkam_api/details/'
 
   search(query: string, limit?: number, offset?: number): Promise<CountAndDetailsInterface> {
     const url: string = this.hostname + 'search?' +
