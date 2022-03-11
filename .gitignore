@@ -18,7 +18,7 @@ redis
 
 # OS
 /server/.DS_Store
-/server/*.env
+#/server/*.env
 
 # Tests
 /server/coverage
