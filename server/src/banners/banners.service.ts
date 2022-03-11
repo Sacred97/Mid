@@ -15,7 +15,10 @@ export class BannersService {
     }
 
     async getAllBanners() {
-        return await this.bannersRepository.find()
+        const banners = await this.bannersRepository.find()
+        return banners.sort((a,b) => {
+            return a.serialNumber > b.serialNumber ? -1 : a.serialNumber === b.serialNumber ? 0 : 1
+        })
     }
 
     async getBanner(id: number) {

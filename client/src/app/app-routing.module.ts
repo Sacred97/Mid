@@ -64,6 +64,8 @@ import {MyCompaniesComponent} from "./user/components/my-companies/my-companies.
 import {AddressComponent} from "./user/components/address/address.component";
 import {MyContactsComponent} from "./user/components/my-contacts/my-contacts.component";
 import {CurrentOrderComponent} from "./user/components/current-order/current-order.component";
+import { OrderUserComponent } from './order-user/order-user.component';
+import { UserGuard } from './shared/guards/user.guard';
 
 const about: Routes = [
   {path: 'about', component: AboutComponent},
@@ -192,6 +194,15 @@ const routes: Routes = [
             {label: 'Главная', url: '/'},
             {label: 'Корзина', url: '/shopping-cart'},
             {label: 'Оформление заказа', url: ''},
+          ]
+        }
+      },
+      {
+        path: 'shopping-cart/order-user', component: OrderUserComponent, canActivate: [UserGuard], 
+        data: {
+          title: 'Оформление заказа', breadcrumb: [
+            {label: 'Главная', url: '/'},
+            {label: 'Личный кабинет', url: ''},
           ]
         }
       },

@@ -1,4 +1,5 @@
-FROM node:15.14.0-alpine as development
+# FROM node:15.14.0-alpine as development
+FROM node:16.13.2-alpine as development
 
 WORKDIR /usr/src/app
 
@@ -12,11 +13,8 @@ RUN npm install
 
 COPY . .
 
-RUN ng build --prod
-
-#CMD ng serve --host 0.0.0.0 --disable-host-check
-
-#CMD ['node', 'dist/midkam-frontend/main']
+# FOR PRODUCTION
+# RUN ng build --prod
 
 FROM nginx:alpine AS production
 

@@ -1,0 +1,268 @@
+<ng-template appRef></ng-template>
+
+<div class="order-user">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb class="breadcrumbs-links" symbol="" [bgColor]="'#ffffff'"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <form class="order-user-data" [formGroup]="form">
+
+    <div>
+
+      <div class="order-user-data__title">
+
+        <h1>Информация о заказе</h1>
+
+        <span></span>
+
+        <div class="order-user-data__title__info">
+
+          <div>
+
+            <div>
+              <span>Количество позиций:</span>
+              <span>{{quantityDetails}}</span>
+            </div>
+
+            <hr>
+
+            <div>
+              <span>Приблизительный вес заказа:</span>
+              <span>{{totalWeight ? totalWeight + ' кг' : 'Не указано'}}</span>
+            </div>
+
+          </div>
+
+          <div>
+            <span>Общая сумма:</span>
+            <span>{{cartService.toCurrency(cartService.totalCost)}}</span>
+          </div>
+
+        </div>
+
+        <a routerLink="/shopping-cart">Посмотреть заказ еще раз</a>
+
+      </div>
+
+      <div class="order-user-data__contacts">
+
+        <h1>Контактные данные для связи</h1>
+        <span></span>
+
+        <small>Выберите контакт или создайте новый</small>
+
+        <div *ngIf="user">
+
+          <label>
+            <input type="radio" formControlName="contact" [value]="-1">
+            <div></div>
+            <span>
+                <span>Основной профиль</span>
+                <div>
+                    <span>Электронная почта: {{user.email}}</span>
+                    <span>Телефон: {{user.phone}}</span>
+                    <span>Дополнительный телефон: {{user.additionalPhone ? user.additionalPhone : ''}}</span>
+                </div>
+            </span>
+          </label>
+
+          <label *ngFor="let m of user.manager; let idx = index">
+            <input type="radio" formControlName="contact" [value]="idx">
+            <div></div>
+            <span>
+                <span>{{m.fullName}}</span>
+                <div>
+                    <span>Электронная почта: {{m.email}}</span>
+                    <span>Телефон: {{m.phone}}</span>
+                    <span>Дополнительный телефон: {{m.additionalPhone ? m.additionalPhone : ''}}</span>
+                </div>
+            </span>
+          </label>
+
+        </div>
+
+        <a href="/user/my-contacts">+ Добавить новый контакт</a>
+
+      </div>
+
+      <div class="order-user-data__customer">
+
+        <h1>Покупатель</h1>
+        <span></span>
+
+        <small>Выберите физическое лицо или организацию на кого выставлять счет</small>
+
+        <div *ngIf="user">
+
+            <label>
+                <input type="radio" formControlName="customer" [value]="-1">
+                <div></div>
+                <span>
+                    <span>ФИЗИЧЕСКОЕ ЛИЦО</span>
+                    <div>{{user.fullName}}</div>
+                </span>
+            </label>
+
+            <label *ngFor="let c of user.company; let idx = index">
+                <input type="radio" formControlName="customer" [value]="idx">
+                <div></div>
+                <span>
+                    <span>{{c.opf + ' ' + c.companyName}}</span>
+                    <div>{{c.inn + ' ' + c.address}}</div>
+                </span>
+            </label>
+            
+        </div>
+
+        <a href="/user/my-companies">+ Добавить организацию</a>
+
+      </div>
+
+      <div class="order-user-data__payment">
+
+        <h1>Способ оплаты</h1>
+        <span></span>
+
+        <div>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Наличными">
+            <div>
+              <img src="../../assets/detail-cart/payment-cash.svg" alt="">
+              <div>
+                <span>Наличными</span>
+                <span></span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Банковской картой">
+            <div>
+              <img src="../../assets/detail-cart/payment-card-in-shop.svg" alt="">
+              <div>
+                <span>Банковской картой</span>
+                <span>VISA MASTERCARD МИР</span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Иное">
+            <div>
+              <img src="../../assets/detail-cart/ruble.svg" alt="">
+              <div>
+                <span>Иное</span>
+                <span>Индивидуально</span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Безналичным платежом с НДС">
+            <div>
+              <img src="../../assets/detail-cart/wire-transfer.svg" alt="">
+              <div>
+                <span>Безналичным платежом</span>
+                <span>С НДС</span>
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <input type="radio" formControlName="payment" value="Безналичным платежом без НДС">
+            <div>
+              <img src="../../assets/detail-cart/wire-transfer.svg" alt="">
+              <div>
+                <span>Безналичным платежом</span>
+                <span>Без НДС</span>
+              </div>
+            </div>
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div>
+
+      <div class="order-user-data__delivery">
+
+        <h1>Адрес и метод доставки</h1>
+        <span></span>
+
+        <small>Выберите из ранее сохраненных или создайте новый</small>
+
+        <div *ngIf="user">
+
+            <label *ngFor="let a of user.address; let idx = index">
+                <input type="radio" formControlName="address" [value]="idx">
+                <div></div>
+                <span>
+                    <span>{{a.addressName}}</span>
+                    <div>{{a.deliveryMethod === 'Самовывоз' ? a.deliveryMethod + ' | ' + a.deliveryAddress + ' | ' + getPickUpAddress(a.deliveryAddress)
+                      : a.deliveryMethod + ' | ' + a.transportCompany + ' | ' + a.deliveryAddress}}</div>
+                </span>
+            </label>
+            
+        </div>
+
+        <a href="/user/my-addresses">+ Добавить новый адрес</a>        
+
+      </div>
+
+      <button type="button" (click)="orderDataAssembly()" [disabled]="form.invalid">
+        Оформить заказ
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+
+<div class="modal" *ngIf="makingOrder">
+
+  <div class="modal-background"></div>
+
+  <div class="modal-user-continue">
+
+    <ng-container *ngIf="!action; else loading">
+
+      <div class="modal-user-continue__success" *ngIf="!orderError && orderSuccess && !orderWarning && orderNumber">
+        <p>
+          Заказ под номером {{orderNumber}} успешно создан, <br>
+          так же на указанную почту отправлен дубликат заказа.
+        </p>
+        <a routerLink="/">На главную</a>
+      </div>
+
+      <div class="modal-user-continue__warning" *ngIf="!orderError && !orderSuccess && orderWarning && user">
+        <p>
+          Цены на некоторые товары были изменены. <br>
+          На данный момент сумма заказа - {{cartService.toCurrency(cartService.totalCost)}},
+          прошлая сумма заказа - {{cartService.toCurrency(prevCost)}}
+        </p>
+        <a routerLink="/shopping-cart">В корзину</a>
+      </div>
+
+      <div class="modal-user-continue__error" *ngIf="orderError">
+        <p>Произошла ошибка, повторите попытку позже</p>
+        <button (click)="close()">Закрыть окно</button>
+      </div>
+
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="loading-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>
+

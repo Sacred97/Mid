@@ -23,12 +23,13 @@ export class GetPriceListModalComponent implements OnInit {
   isSuccessful: boolean = false
   isFailed: boolean = false
 
+  hostname: string = 'localhost:3000'
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
 
-    this.http.get<string[]>('http://localhost:3000/midkam_api/price-list/get', {withCredentials: true}).toPromise()
+    this.http.get<string[]>('http://' + this.hostname + '/midkam_api/price-list/get', {withCredentials: true}).toPromise()
       .then((files: string[]) => {
         this.priceList = files
       }).catch((error: HttpErrorResponse) => {
@@ -67,7 +68,7 @@ export class GetPriceListModalComponent implements OnInit {
       price: this.form.controls['price'].value
     }
 
-    this.http.post('http://localhost:3000/midkam_api/price-list/get', data, {withCredentials: true}).toPromise()
+    this.http.post('http://' + this.hostname + '/midkam_api/price-list/get', data, {withCredentials: true}).toPromise()
       .then((okStatus: any) => {
         console.log(okStatus);
       }).catch((error: HttpErrorResponse) => {

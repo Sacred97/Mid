@@ -29,15 +29,16 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  //private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  private hostname: string = 'http://localhost:3000/midkam_api/'
 
   user$: BehaviorSubject<UserInterface | undefined> = new BehaviorSubject<UserInterface | undefined>(undefined)
 
   async refreshToken(): Promise<boolean> {
     try {
-      await this.http.get('http://midkam.pro:3000/midkam_api/auth/refresh', {withCredentials: true})
+      await this.http.get(this.hostname + 'auth/refresh', {withCredentials: true})
         .toPromise()
-      const user = await this.http.get<UserInterface>(`http://midkam.pro:3000/midkam_api/users/profile`,
+      const user = await this.http.get<UserInterface>(this.hostname + 'users/profile',
         {withCredentials: true}).toPromise()
       const shoppingCart: ShoppingCartInterface[] = user.shoppingCart.cartItem.map(i => ({
         id: i.detail.id, quantity: i.quantity
@@ -67,71 +68,71 @@ export class UserService {
   //---------------------------------------------Аутентификация---------------------------------------------------------
 
   registration(newUser: NewUserInterface): Promise<any> {
-    return this.http.post('http://midkam.pro:3000/midkam_api/auth/registration',
-      newUser, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'auth/registration'
+    return this.http.post(url, newUser, {withCredentials: true}).toPromise()
   }
 
   restorePassword(email: string): Promise<void> {
-    return this.http.post<void>('http://midkam.pro:3000/midkam_api/auth/password/restore',
-      {email: email}, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'auth/password/restore'
+    return this.http.post<void>(url, {email: email}, {withCredentials: true}).toPromise()
   }
 
   changePassword(token: string, password: string): Promise<ResponseMessage> {
-    return this.http.post<ResponseMessage>('http://midkam.pro:3000/midkam_api/auth/password/change',
-      {token: token, password: password}, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'auth/password/change'
+    return this.http.post<ResponseMessage>(url, {token: token, password: password}, {withCredentials: true}).toPromise()
   }
 
   login(email: string, password: string): Promise<UserInterface> {
+    const url = this.hostname + 'auth/login'
     const user = {email: email, password: password}
-    return this.http.post<UserInterface>('http://midkam.pro:3000/midkam_api/auth/login',
-      user, {withCredentials: true}).toPromise()
+    return this.http.post<UserInterface>(url, user, {withCredentials: true}).toPromise()
   }
 
   logout(): Promise<void> {
-    return this.http.post<void>('http://midkam.pro:3000/midkam_api/auth/logout',
-      {void: 'void'}, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'auth/logout'
+    return this.http.post<void>(url, {void: 'void'}, {withCredentials: true}).toPromise()
   }
 
   emailVerification(token: string): Promise<ResponseMessage> {
-    return this.http.post<ResponseMessage>('http://midkam.pro:3000/midkam_api/auth/verification/verify',
-      {token: token}, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'auth/verification/verify'
+    return this.http.post<ResponseMessage>(url, {token: token}, {withCredentials: true}).toPromise()
   }
 
   resendLetter(email: string): Promise<ResponseMessage> {
-    return this.http.post<ResponseMessage>('http://midkam.pro:3000/midkam_api/auth/verification/verify',
-      {email: email}, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'auth/verification/re-check'
+    return this.http.post<ResponseMessage>(url, {email: email}, {withCredentials: true}).toPromise()
   }
 
   //------------------------------------------------Корзина пользователя------------------------------------------------
 
   addCartItem(data: CartItemInfoInterface | CartItemInfoInterface[]): Promise<ShoppingCartUserInterface> {
-    return this.http.post<ShoppingCartUserInterface>('http://midkam.pro:3000/midkam_api/users/shoppingCart',
-      data, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'users/shoppingCart'
+    return this.http.post<ShoppingCartUserInterface>(url, data, {withCredentials: true}).toPromise()
   }
 
   deleteCartItem(id: number): Promise<ShoppingCartUserInterface> {
-    return this.http.delete<ShoppingCartUserInterface>(`http://midkam.pro:3000/midkam_api/users/shoppingCart/${id}`,
-      {withCredentials: true}).toPromise()
+    const url = this.hostname + 'users/shoppingCart/' + id
+    return this.http.delete<ShoppingCartUserInterface>(url, {withCredentials: true}).toPromise()
   }
 
   recountTotalCost(): Promise<ShoppingCartUserInterface> {
-    return this.http.put<ShoppingCartUserInterface>('http://midkam.pro:3000/midkam_api/users/shoppingCart',
-      {void: 'void'}, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'users/shoppingCart'
+    return this.http.put<ShoppingCartUserInterface>(url, {void: 'void'}, {withCredentials: true}).toPromise()
   }
 
   cleanShoppingCart(): Promise<ShoppingCartUserInterface> {
-    return this.http.post<ShoppingCartUserInterface>('http://midkam.pro:3000/midkam_api/users/shoppingCartClean',
-      {void: 'void'}, {withCredentials: true}).toPromise()
+    const url = this.hostname + 'users/shoppingCartClean'
+    return this.http.post<ShoppingCartUserInterface>(url, {void: 'void'}, {withCredentials: true}).toPromise()
   }
 
   addToWaitingList(data: WaitingListDetailId): Promise<WaitingListInterface> {
-    return this.http.post<WaitingListInterface>('http://midkam.pro:3000/midkam_api/users/waiting',
-      data, {withCredentials: true}).toPromise()
+    const url = this.hostname + '/users/waiting'
+    return this.http.post<WaitingListInterface>(url, data, {withCredentials: true}).toPromise()
   }
 
   deleteFromWaitingList(waitingItemId: number): Promise<WaitingListInterface> {
-    return this.http.delete<WaitingListInterface>('http://midkam.pro:3000/midkam_api/users/waiting/' + waitingItemId,
-      {withCredentials: true}).toPromise()
+    const url = this.hostname + 'users/waiting/' + waitingItemId
+    return this.http.delete<WaitingListInterface>(url, {withCredentials: true}).toPromise()
   }
 
   //-----------------------------------------------Контакты пользователя------------------------------------------------

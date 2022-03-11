@@ -81,6 +81,7 @@ import { AddressComponent } from './user/components/address/address.component';
 import { MyContactsComponent } from './user/components/my-contacts/my-contacts.component';
 import { CurrentOrderComponent } from './user/components/current-order/current-order.component';
 import {EditorModule} from "@tinymce/tinymce-angular";
+import { OrderUserComponent } from './order-user/order-user.component';
 
 
 @NgModule({
@@ -156,6 +157,7 @@ import {EditorModule} from "@tinymce/tinymce-angular";
     AddressComponent,
     MyContactsComponent,
     CurrentOrderComponent,
+    OrderUserComponent,
   ],
     imports: [
       BrowserModule,

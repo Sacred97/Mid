@@ -28,7 +28,10 @@ export class OneCService {
             'Content-Type': 'application/json; charset=utf-8'
         }
 
-        await this.http.post('http://95.78.125.227:8787/midkam/hs/ExchangeSite', order, {headers: headerOptions})
+        const ip: string = '172.16.1.35:8787'
+        let ipPrev = '95.78.125.227:8787'
+
+        await this.http.post('http://172.16.1.35:8787/midkam/hs/ExchangeSite/CreatingOrders', order, {headers: headerOptions})
             .toPromise().catch((error) => {
                 console.log(error);
             })

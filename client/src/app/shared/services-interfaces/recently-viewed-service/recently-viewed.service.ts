@@ -7,8 +7,12 @@ import {DetailIdInterface} from "../global-interfaces/detail-id.interface";
   providedIn: 'root'
 })
 export class RecentlyViewedService {
+
   constructor(private http: HttpClient) {
   }
+
+  private hostname: string = 'http://localhost:3000/midkam_api/'
+  // private hostname: string = 'http://midkam.pro:3000/midkam_api/'
 
   getViewedStorage(): DetailIdInterface[] {
     return !!localStorage.getItem('recently_viewed') ? JSON.parse(localStorage.getItem('recently_viewed')!)
@@ -16,7 +20,7 @@ export class RecentlyViewedService {
   }
 
   getRecentlyViewedDetails(): Promise<DetailInterface[]> {
-    const url = 'http://' + 'midkam.pro' + ':3000/midkam_api/' + 'details/random'
+    const url = this.hostname + 'details/random'
     const viewed = this.getViewedStorage()
     return this.http.post<DetailInterface[]>(url, viewed, {withCredentials: true}).toPromise()
   }

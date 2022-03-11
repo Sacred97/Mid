@@ -1,5 +1,7 @@
 .idea
 .git
+data
+redis
 #Server
 # compiled output
 /server/dist

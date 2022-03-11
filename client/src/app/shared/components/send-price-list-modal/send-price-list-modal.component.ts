@@ -21,7 +21,11 @@ export class SendPriceListModalComponent implements OnInit, OnDestroy {
   isFailed: boolean = false
   file: File | null = null
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+   
+  }
+
+  hostname: string = 'http://localhost:3000/midkam_api/price-list/send'
 
   ngOnInit(): void {
     this.form = new  FormGroup({
@@ -112,7 +116,7 @@ export class SendPriceListModalComponent implements OnInit, OnDestroy {
     this.form.value.isRecall?formData.append('phone', this.form.value.phone):null
     this.form.value.isSendToMail?formData.append('email', this.form.value.email):null
 
-    this.http.post('http://localhost:3000/midkam_api/price-list/send', formData).toPromise().then((res:any) => {
+    this.http.post(this.hostname, formData).toPromise().then((res:any) => {
       console.log(res);
     }).catch((error: HttpErrorResponse) => {
       console.log(error);

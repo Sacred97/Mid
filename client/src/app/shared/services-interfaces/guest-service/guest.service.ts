@@ -13,7 +13,8 @@ export class GuestService {
   constructor(private http: HttpClient) {
   }
 
-  private hostname: string = 'http://' + 'midkam.pro' + ':3000/midkam_api/guest/'
+  // private hostname: string = 'http://midkam.pro:3000/midkam_api/guest/'
+  private hostname: string = 'http://localhost:3000/midkam_api/guest/'
 
   recountTotalCost(data: CartItemInfoInterface[]): Promise<ResponseTotalCost> {
     return this.http.post<ResponseTotalCost>(this.hostname + 'recount',

@@ -35,6 +35,7 @@ import {PartsInterface} from "../../shared/services-interfaces/detail-service/pa
 import {KeyWordsInterface} from "../../shared/services-interfaces/detail-service/key-words.interface";
 import {AdminUpdateKeyWords} from "../interfaces/admin-key-words.interface";
 import {AdminCreateParts, AdminUpdateParts} from "../interfaces/admin-parts.interface";
+import { AdminBannerUpdate, AdminBannerUpload, BannerTest } from '../interfaces/admin-banner.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,8 @@ export class AdminService {
   constructor(private http: HttpClient) {
   }
 
-  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  // private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  private hostname: string = 'http://localhost:3000/midkam_api/'
 
   getUsers(offset: number, query?: string): Promise<AdminUsersAndCount> {
     let url= this.hostname + 'users/list' + '?offset=' + offset
@@ -391,6 +393,33 @@ export class AdminService {
   deleteKeyWord(id: number): Promise<ResponseMessage> {
     const url: string = this.hostname + 'key-words/' + id
     return this.http.delete<ResponseMessage>(url, {withCredentials: true}).toPromise()
+  }
+
+  //--------------------------------------------------Баннеры-----------------------------------------------------------
+
+  getBannerList(): Promise<BannerTest[]> {
+    const url: string = this.hostname + 'banner'
+    return this.http.get<BannerTest[]>(url, {withCredentials: true}).toPromise()
+  }
+
+  getBanner(id: number): Promise<BannerTest> {
+    const url: string = this.hostname + 'banner/' + id
+    return this.http.get<BannerTest>(url, {withCredentials: true}).toPromise()
+  }
+
+  uploadBanner(data: FormData): Promise<BannerTest[]> {
+    const url: string = this.hostname + 'banner'
+    return this.http.post<BannerTest[]>(url, data, {withCredentials: true}).toPromise()
+  }
+
+  updateBanner(data: AdminBannerUpdate): Promise<BannerTest> {
+    const url: string = this.hostname + 'banner'
+    return this.http.put<BannerTest>(url, data, {withCredentials: true}).toPromise()
+  }
+
+  deleteBanner(id: number): Promise<BannerTest[]> {
+    const url: string = this.hostname + 'banner/' + id
+    return this.http.delete<BannerTest[]>(url, {withCredentials: true}).toPromise()
   }
 
   //--------------------------------------------------------------------------------------------------------------------
