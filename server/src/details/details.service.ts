@@ -423,7 +423,7 @@ export class DetailsService {
     if (detail) {
       if (detail.photoDetail.length > 0) {
         for (let photo of detail.photoDetail) {
-          await this.filesService.deleteDetailPhoto(photo.key)
+          await this.filesService.removeSelectel(photo.key)
           await this.photoDetailRepository.delete(photo.id)
         }
       }
@@ -459,7 +459,7 @@ export class DetailsService {
 
       if (detail.photoDetail && detail.photoDetail.length > 0) {
         for (let item of detail.photoDetail) {
-          await this.filesService.deleteDetailPhoto(item.key)
+          await this.filesService.removeSelectel(item.key)
           await this.photoDetailRepository.delete(item.id)
         }
       }
@@ -469,7 +469,7 @@ export class DetailsService {
         let imageData: any = Object.values(uploadData)[i]
         console.log(imageData);
         let buffer = Buffer.from(imageData.img, 'base64')
-        let uploadedImage = await this.filesService.uploadDetailPhoto('details', buffer, imageData.fileName, detail.id)
+        let uploadedImage = await this.filesService.uploadSelectel(buffer,'details', detail.id, imageData.fileName)
         let instanceEntity = await this.photoDetailRepository.create({
           url: uploadedImage.Location,
           key: uploadedImage.Key,
@@ -495,7 +495,7 @@ export class DetailsService {
       }
 
       let uploadedData = await this.filesService
-          .uploadDetailPhoto('details', file.buffer, file.originalname, data.detailId)
+          .uploadSelectel(file.buffer, 'details', data.detailId, file.originalname)
       const photoInstance = await this.photoDetailRepository.create({
         url: uploadedData.Location,
         key: uploadedData.Key,
@@ -524,7 +524,7 @@ export class DetailsService {
   async deletePhotoDetail(id: number) {
     const photoDetail = await this.photoDetailRepository.findOne(id)
     if (photoDetail) {
-      await this.filesService.deleteDetailPhoto(photoDetail.key)
+      await this.filesService.removeSelectel(photoDetail.key)
       await this.photoDetailRepository.delete(id)
       return {message: 'Фотография удалена'}
     }

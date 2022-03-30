@@ -157,10 +157,10 @@ export class ManufacturerService {
         if (manufacturer) {
             if (file) {
                 if (manufacturer.logoCompanyKey) {
-                    await this.filesService.deleteDetailPhoto(manufacturer.logoCompanyKey)
+                    await this.filesService.removeSelectel(manufacturer.logoCompanyKey)
                 }
-                const uploadedData = await this.filesService.uploadDetailPhoto(
-                    'manufacturer', file.buffer, file.originalname, updateData.id.toString()
+                const uploadedData = await this.filesService.uploadSelectel(
+                    file.buffer, 'manufacturer', updateData.id.toString(), file.originalname
                 )
                 Object.assign(updateData, {
                     logoCompanyUrl: uploadedData.Location,
@@ -188,12 +188,12 @@ export class ManufacturerService {
         if (manufacturer) {
             if (manufacturer.photoCertificate.length > 0) {
                 for (let certificate of manufacturer.photoCertificate) {
-                    await this.filesService.deleteDetailPhoto(certificate.certificatePhotoKey)
+                    await this.filesService.removeSelectel(certificate.certificatePhotoKey)
                     await this.photoCertificateRepository.delete(certificate.id)
                 }
             }
             if (manufacturer.logoCompanyKey) {
-                await this.filesService.deleteDetailPhoto(manufacturer.logoCompanyKey)
+                await this.filesService.removeSelectel(manufacturer.logoCompanyKey)
             }
             await this.manufacturerRepository.delete(id)
             await this.redisCacheService.deleteCacheKey(GET_MANUFACTURER_CACHE_KEY)
@@ -218,8 +218,8 @@ export class ManufacturerService {
         const manufacturer = await this.getById(createData.manufacturerId)
         if (manufacturer) {
             for (let file of files) {
-                const uploadedData = await this.filesService.uploadDetailPhoto(
-                    'manufacturer', file.buffer, file.originalname, createData.manufacturerId.toString()
+                const uploadedData = await this.filesService.uploadSelectel(
+                    file.buffer, 'manufacturer', createData.manufacturerId.toString(), file.originalname
                 )
                 const newCertificate = await this.photoCertificateRepository.create({
                     certificatePhotoUrl: uploadedData.Location,
@@ -238,7 +238,7 @@ export class ManufacturerService {
     async deleteCertificate(id: number) {
         const certificate = await this.photoCertificateRepository.findOne(id, {relations: ['manufacturer']})
         if (certificate) {
-            await this.filesService.deleteDetailPhoto(certificate.certificatePhotoKey)
+            await this.filesService.removeSelectel(certificate.certificatePhotoKey)
             await this.photoCertificateRepository.delete(id)
             await this.redisCacheService.deleteCacheKey(GET_MANUFACTURER_CACHE_KEY)
             return await this.getById(certificate.manufacturer.id)

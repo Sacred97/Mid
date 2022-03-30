@@ -129,8 +129,9 @@ export class AdminBannersComponent implements OnInit {
     this.croppedImage = event.base64;
 
     if (!!event.base64) {
+      const date = new Date()
       const originalName: string = 'Banner ' + (this.form.value.homePage ? 'Main ' : 'Catalog ')
-        + this.getLastSerialNumberBanners(this.form.value.homePage) + '.jpeg'
+        + this.getLastSerialNumberBanners(this.form.value.homePage) + '_Time' +  date.getTime() + '.jpeg'
       const type: string = "image/jpeg"
       this.file = this.base64ToFile(event.base64, originalName, type)
     }
