@@ -1,1 +1,39 @@
-<p>my-history works!</p>
+<div class="user-history">
+
+  <div>
+    <h1>История запросов</h1>
+    <p>
+      Здесь хранится история Ваших поисковых запросов за последние 30 дней. <br/>
+      Если товар по запросу не был найден в вашем каталоге - справа будет надпись: <span>«Не найдено в каталоге»</span>
+    </p>
+  </div>
+
+  <div class="user-history__history" *ngIf="user">
+    <span>Дата: {{getCurrentDay()}}</span>
+    <ul>
+      <li *ngFor="let h of getRequestHistory(user.requestHistory)">
+        <span>{{getDay(h.requestDate)}}</span>
+        <span>{{getTime(h.requestDate)}}</span>
+        <span>{{h.requestString}}</span>
+        <span [style.color]="h.result && h.result > 0 ? '#373736' : 'red'">
+          {{h.result && h.result > 0 ? 'Найдено: ' + h.result: 'Не найдено в каталоге'}}
+        </span>
+        <a [routerLink]="['/', 'catalog', h.detailCart]" *ngIf="h.detailCart">{{getDetailName(h.detailCart)}}</a>
+      </li>
+
+      <button (click)="dropDownHistory($event)">
+        <div></div>
+        <span>Раскрыть</span>
+      </button>
+    </ul>
+  </div>
+
+  <ul>
+    <h1>Недавно просмотренные товары</h1>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+  </ul>
+
+</div>

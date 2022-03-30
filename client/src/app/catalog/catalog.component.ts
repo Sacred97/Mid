@@ -326,22 +326,21 @@ export class CatalogComponent implements OnInit, OnDestroy {
       this.applicability = filters.autoApplicability
     })
 
+    if (history.state.filter) {
+      switch (history.state.filter) {
+        case 'recent':
+          this.additionalFilterChange("recent", 'Рекомендуемые')
+          break;
+        case 'popular':
+          this.additionalFilterChange("popular", 'Новинки')
+          break;
+        case 'sale':
+          this.additionalFilterChange("sale", 'По акции')
+          break;
+      }
+    }
+
     if (history.state.numberViewDetails) {
-      //   this.dropFilters[1] = true
-      //   this.filterAvtoGroup.find((itemFilter, index) => {
-      //     if (Number(itemFilter.value) === history.state.numberViewDetails) {
-      //       this.onChangeFilter(index, 'avto')
-      //     }
-      //   })
-      // }
-      //
-      // if (history.state.viewCategory) {
-      //   this.dropFilters[0] = true
-      //   this.filterViewGroup.find( (itemFilter, index) => {
-      //     if (itemFilter.label === history.state.viewCategory) {
-      //       this.onChangeFilter(index, 'category')
-      //     }
-      //   })
     }
 
     this.page = Number(localStorage.getItem('page')) || 1
@@ -376,8 +375,18 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   async increase(id: string, idx: number) {
     this.action = true
-    await this.shoppingService.increase(this.details, idx)
-    this.action = false
+    if (this.shoppingService.check(id)) {
+      await this.shoppingService.increase(this.details, idx)
+      this.action = false
+    } else {
+      try {
+        await this.shoppingService.addItem(id, this.details[idx].quantity)
+        await this.shoppingService.increase(this.details, idx)
+      } catch (error) {
+        console.log(error);
+      }
+      this.action = false
+    }
   }
 
   async decrease(id: string, idx: number) {

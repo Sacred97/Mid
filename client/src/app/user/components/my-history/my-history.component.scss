@@ -1,0 +1,161 @@
+@import "../../../shared/styles/variables";
+
+.user-history {
+  width: 100%;
+
+  > div:first-child{
+    width: 100%;
+    margin: 10px 0 32px;
+
+    h1 {
+      margin-bottom: 8px;
+      color: $grey_normal;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 500;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+    p {
+      display: block;
+      color: $grey_normal;
+      font-size: 13px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 300';
+
+      span {
+        color: red;
+        font-size: 13px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+    }
+  }
+
+  &__history {
+    width: 100%;
+    margin-bottom: 34px;
+
+    > span {
+      display: block;
+      margin-bottom: 12px;
+      color: $grey_normal;
+      font-size: 20px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+    ul {
+      position: relative;
+      list-style: none;
+      width: 100%;
+      background-color: $grey_light;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 15px;
+      overflow: hidden;
+      max-height: calc(2em + 15px + 15px + ((10px * 2) - 10px));
+      transition: max-height 1.5s;
+
+      > li {
+        width: 100%;
+        display: flex;
+        gap: 10px 10px;
+        margin-bottom: 10px;
+
+        span {
+          display: inline-block;
+          color: $black;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 300';
+        }
+
+        a {
+          display: inline-block;
+          color: $green;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 300';
+
+          &:hover {
+            color: $green-hover;
+          }
+        }
+      }
+
+      > button {
+        position: absolute;
+        padding-left: 21px;
+        bottom: 10px;
+        right: 21px;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        cursor: pointer;
+
+        > span {
+          color: $grey_normal;
+          font-size: 13px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 300';
+        }
+
+        > div {
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          top: -2px;
+          right: 61px;
+          background-color: transparent;
+          border-style: solid;
+          border-width: 1px;
+          border-color: transparent $violet $violet transparent;
+          transform: rotateX(0deg) rotate(45deg);
+          transition: transform 1s, top 0.5s;
+        }
+
+      }
+
+    }
+
+    ul.drop {
+      max-height: calc(15px + 15px + (2em * 10) + (10px * 10 - 10px));
+      overflow: auto;
+
+      > button {
+        div {
+          top: 6px;
+          transform: rotateX(180deg) rotate(45deg);
+        }
+      }
+    }
+
+  }
+
+  > ul {
+    width: 100%;
+    list-style: none;
+
+    h1 {
+      margin-bottom: 10px;
+      color: $grey_normal;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 500;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+    li {
+      display: flex;
+      width: 100%;
+      padding: 1px 3px;
+      border-bottom: 2px solid $border_grey;
+    }
+
+    > li:nth-child(2) {
+      border-top: 2px solid $border_grey;
+    }
+  }
+
+}

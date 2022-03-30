@@ -106,7 +106,7 @@ export class DetailsController {
     return await this.detailsService.getDetailById(id, false)
   }
 
-  // @UseGuards(OneCGuard)
+  @UseGuards(OneCGuard)
   @UseInterceptors(TransformToArrayInterceptor)
   @Post('detail')
   async createDetail(@Body(new ParseArrayPipe({items: DetailCreateDto})) data: DetailCreateDto[]) {
@@ -116,7 +116,7 @@ export class DetailsController {
       result.push(created)
     }
     const message = `Получено всего: ${data.length}, Загруженно: ${result.length}, 
-    Пропущено: ${data.length - result.length}, Данные: ${result}`
+    Пропущено: ${data.length - result.length}`
     console.log(message)
     // this.logLargeArray(result)
     return {statusCode: 201}
@@ -135,7 +135,7 @@ export class DetailsController {
     return await this.detailsService.updateDetail(data)
   }
 
-  // @UseGuards(OneCGuard)
+  @UseGuards(OneCGuard)
   @UseInterceptors(TransformToArrayInterceptor)
   @Patch('detail')
   async detailFastUpdate(@Body(new ParseArrayPipe({items: DetailPatchDto})) data: DetailPatchDto[]) {
@@ -147,7 +147,7 @@ export class DetailsController {
       }
     }
     const message = `Получено всего: ${data.length}, Загружено: ${result.length}, 
-      Пропущено: ${data.length - result.length}, Данные: ${result}`
+      Пропущено: ${data.length - result.length}`
     console.log(message)
     return {statusCode: 200}
   }

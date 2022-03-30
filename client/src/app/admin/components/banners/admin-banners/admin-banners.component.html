@@ -1,51 +1,85 @@
 <div class="admin-banners">
 
-    <div *ngIf="load; else loading">
+  <div class="admin-banners__wrapper" *ngIf="!load; else loading">
 
-        <div *ngif="!error; else empty">
+    <h1>Баннеры</h1>
 
-            <form [formGroup]="form" (ngSubmit)="uploadBanner()">
-                
-                <label>
-                    <span>Порядковый номер баннера</span>
-                    <input type="number" formControlName="serialNumber">
-                </label>
+    <div class="admin-banners-content" *ngIf="!error; else empty">
 
-                <label>
-                    <span>Ссылка на страницу</span>
-                    <input type="url" formControlName="pageReference">
-                </label>
+      <form [formGroup]="form" (ngSubmit)="uploadBanner()">
 
-                <label>
-                    <div></div>
-                    <span>Баннер главной страницы</span>
-                    <input type="checkbox" formControlName="homePage">
-                </label>
+        <h1>Добавить баннер</h1>
 
-                <button type="submit">Загрузить</button>
+        <label>
+          <span>Порядковый номер баннера</span>
+          <input type="number" formControlName="serialNumber">
+        </label>
 
-            </form>
+        <label>
+          <span>Ссылка на страницу</span>
+          <input type="url" formControlName="pageReference">
+        </label>
 
-            <div *ngFor="let b of banners; let idx = index">
-                <div>
-                    <img [src]="b.url" alt="">
-                </div>
-                <a>Изменить</a>
-            </div>
+        <label>
+          <input type="checkbox" formControlName="homePage" (change)="bannerStatusChange($event)">
+          <span>Баннер главной страницы</span>
+        </label>
 
+        <label>
+          <span>Загрузите файл</span>
+          <input type="file" formControlName="file" (change)="fileChangeEvent($event)">
+          <small *ngIf="form.controls['file'].invalid">Необоходимо загрузить файл</small>
+          <small *ngIf="uncorrectedFile">Тип файла некорректный. Испоьзуйте только формат файлов JPG/JPEG/PNG</small>
+        </label>
+
+        <label>
+          <span>Выбирите размер баннера</span>
+          <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="aspectRatio"
+            format="jpeg"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded($event)"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"
+          ></image-cropper>
+        </label>
+
+        <label *ngIf="this.croppedImage">
+          <span>Итоговая картинка</span>
+          <img [src]="croppedImage" alt="Итоговый баннер" #preview>
+        </label>
+
+        <button type="submit" [disabled]="action || form.invalid || uncorrectedFile">Загрузить</button>
+        <small *ngIf="uploadError">Баннер не удалось загрузить</small>
+
+      </form>
+
+      <div *ngFor="let b of banners; let idx = index">
+        <div>
+          <img [src]="b.url" alt="Баннер">
         </div>
-
-        <ng-template #empty>
-            <span>Что-то произошло не так. Повторите попытку позже.</span>
-        </ng-template>
+        <span>id: {{b.id}}</span>
+        <span>Баннер: {{b.homePage ? 'Главной страницы' : 'Каталога'}}</span>
+        <span>Порядковый номер: {{b.serialNumber}}</span>
+        <span>Имеется ссылка: {{b.pageReference ? 'Да' : 'Нет'}}</span>
+        <a [routerLink]="['/', 'admin', 'banners', b.id]">Изменить</a>
+      </div>
 
     </div>
 
-
-    <ng-template #loading>
-        <div class="admin-banners__loader">
-        </div>
+    <ng-template #empty>
+      <span>Что-то произошло не так. Повторите попытку позже.</span>
     </ng-template>
+
+  </div>
+
+  <ng-template #loading>
+    <div class="admin-banners__loader">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
 
 </div>
 

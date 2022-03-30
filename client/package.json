@@ -23,6 +23,7 @@
     "http-server": "^0.12.3",
     "jquery": "^3.6.0",
     "ng-dynamic-breadcrumb": "^5.0.1",
+    "ngx-image-cropper": "^4.0.1",
     "ngx-pagination": "^5.1.0",
     "ngx-slick-carousel": "^0.5.1",
     "rxjs": "~6.6.0",

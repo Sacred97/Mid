@@ -16,8 +16,20 @@ export class BannersService {
 
     async getAllBanners() {
         const banners = await this.bannersRepository.find()
-        return banners.sort((a,b) => {
-            return a.serialNumber > b.serialNumber ? -1 : a.serialNumber === b.serialNumber ? 0 : 1
+        return banners.sort((a, b) => {
+            if (a.homePage > b.homePage) {
+                return -1
+            } else if (a.homePage === b.homePage) {
+                if (a.serialNumber > b.serialNumber) {
+                    return 1
+                } else if (a.serialNumber === b.serialNumber) {
+                    return 0
+                } else {
+                    return -1
+                }
+            } else {
+                return 1
+            }
         })
     }
 
@@ -26,19 +38,45 @@ export class BannersService {
     }
 
     async uploadBanner(data: BannerCreateDto, file: Express.Multer.File) {
-        const position: string = data.homePage ? 'home' : 'catalog'
+        let banners = (await this.bannersRepository.find({where: {homePage: data.homePage}}))
+            .filter(i => i.serialNumber >= data.serialNumber)
+        const directory: string = data.homePage ? 'home' : 'catalog'
         const uploadData = await this.filesService
-            .uploadDetailPhoto('banners', file.buffer, file.originalname, position)
+            .uploadSelectel(file.buffer, 'banners', directory, file.originalname)
         const instanceEntity = await this.bannersRepository.create({
             url: uploadData.Location, key: uploadData.Key, ...data
         })
+        for (let b of banners) {
+            await this.bannersRepository.update(b.id, {serialNumber: b.serialNumber + 1})
+        }
         await this.bannersRepository.save(instanceEntity)
         return await this.getAllBanners()
     }
 
     async updateBanner(data: BannerUpdateDto) {
         const banner = await this.bannersRepository.findOne(data.id)
+        let banners = (await this.bannersRepository.find({where: {homePage: banner.homePage}}))
         if (banner) {
+            if (!data.serialNumber) {
+                let lastNumber = 0
+                banners.forEach(i => {
+                    if (i.serialNumber >= lastNumber) lastNumber = i.serialNumber
+                })
+                await this.bannersRepository.update(data.id, {...data, serialNumber: lastNumber + 1})
+                return await this.getBanner(data.id)
+            }
+            if (banners.find(i => i.serialNumber === data.serialNumber)) {
+                if (banner.id === data.id) {
+                    await this.bannersRepository.update(data.id, {...data})
+                    return await this.getBanner(data.id)
+                }
+                banners = banners.filter(i => i.serialNumber >= data.serialNumber)
+                for (let b of banners) {
+                    await this.bannersRepository.update(b.id, {serialNumber: b.serialNumber + 1})
+                }
+                await this.bannersRepository.update(data.id, {...data})
+                return await this.getBanner(data.id)
+            }
             await this.bannersRepository.update(data.id, {...data})
             return await this.getBanner(data.id)
         }
@@ -48,7 +86,7 @@ export class BannersService {
     async removeBanner(id: number) {
         const banner = await this.bannersRepository.findOne(id)
         if (banner) {
-            await this.filesService.deleteDetailPhoto(banner.key)
+            await this.filesService.removeSelectel(banner.key)
             await this.bannersRepository.delete(id)
             return await this.getAllBanners()
         }

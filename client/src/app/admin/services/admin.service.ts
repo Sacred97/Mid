@@ -35,7 +35,7 @@ import {PartsInterface} from "../../shared/services-interfaces/detail-service/pa
 import {KeyWordsInterface} from "../../shared/services-interfaces/detail-service/key-words.interface";
 import {AdminUpdateKeyWords} from "../interfaces/admin-key-words.interface";
 import {AdminCreateParts, AdminUpdateParts} from "../interfaces/admin-parts.interface";
-import { AdminBannerUpdate, AdminBannerUpload, BannerTest } from '../interfaces/admin-banner.interface';
+import { AdminBannerUpdate, AdminBanner } from '../interfaces/admin-banner.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -397,29 +397,29 @@ export class AdminService {
 
   //--------------------------------------------------Баннеры-----------------------------------------------------------
 
-  getBannerList(): Promise<BannerTest[]> {
-    const url: string = this.hostname + 'banner'
-    return this.http.get<BannerTest[]>(url, {withCredentials: true}).toPromise()
+  getBannerList(): Promise<AdminBanner[]> {
+    const url: string = this.hostname + 'banners'
+    return this.http.get<AdminBanner[]>(url, {withCredentials: true}).toPromise()
   }
 
-  getBanner(id: number): Promise<BannerTest> {
-    const url: string = this.hostname + 'banner/' + id
-    return this.http.get<BannerTest>(url, {withCredentials: true}).toPromise()
+  getBanner(id: number): Promise<AdminBanner> {
+    const url: string = this.hostname + 'banners/' + id
+    return this.http.get<AdminBanner>(url, {withCredentials: true}).toPromise()
   }
 
-  uploadBanner(data: FormData): Promise<BannerTest[]> {
-    const url: string = this.hostname + 'banner'
-    return this.http.post<BannerTest[]>(url, data, {withCredentials: true}).toPromise()
+  uploadBanner(data: FormData): Promise<AdminBanner[]> {
+    const url: string = this.hostname + 'banners'
+    return this.http.post<AdminBanner[]>(url, data, {withCredentials: true}).toPromise()
   }
 
-  updateBanner(data: AdminBannerUpdate): Promise<BannerTest> {
-    const url: string = this.hostname + 'banner'
-    return this.http.put<BannerTest>(url, data, {withCredentials: true}).toPromise()
+  updateBanner(data: AdminBannerUpdate): Promise<AdminBanner> {
+    const url: string = this.hostname + 'banners'
+    return this.http.put<AdminBanner>(url, data, {withCredentials: true}).toPromise()
   }
 
-  deleteBanner(id: number): Promise<BannerTest[]> {
-    const url: string = this.hostname + 'banner/' + id
-    return this.http.delete<BannerTest[]>(url, {withCredentials: true}).toPromise()
+  deleteBanner(id: number): Promise<AdminBanner[]> {
+    const url: string = this.hostname + 'banners/' + id
+    return this.http.delete<AdminBanner[]>(url, {withCredentials: true}).toPromise()
   }
 
   //--------------------------------------------------------------------------------------------------------------------

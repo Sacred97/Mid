@@ -1,0 +1,140 @@
+@import "../shared/styles/variables";
+
+.search-page {
+  width: 89.2%;
+  margin: 0 auto;
+
+  > h1 {
+    margin-bottom: 20px;
+    color:  $black;
+    font-size: 36px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  > span {
+    display: block;
+    width: fit-content;
+    margin: 130px auto 150px;
+    color: $grey_normal;
+    font-size: 24px;
+    line-height: 1;
+    font-family: "Museo Sans Cyrl 500";
+  }
+
+  &__content {
+    width: 100%;
+    margin-bottom: 20px;
+
+    > span {
+      display: block;
+      margin-bottom: 5px;
+      color: $black;
+      font-size: 16px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 300";
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid $border_grey;
+      margin-bottom: 20px;
+    }
+
+    > ul {
+      width: 100%;
+      margin-bottom: 20px;
+      list-style: none;
+
+      li {
+        display: flex;
+        width: 100%;
+        padding: 5px 0;
+        margin-bottom: 10px;
+        border-bottom: 2px solid $border_grey;
+
+        > div:first-child {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-basis: 14%;
+          height: 160px;
+
+          > img {
+            max-height: 160px;
+            max-width: 100%;
+          }
+        }
+
+        > div:nth-child(2) {
+          flex-basis: 40%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+
+          > a {
+            display: block;
+            width: fit-content;
+            color: $violet;
+            font-size: 16px;
+            line-height: 1;
+            font-family: "Museo Sans Cyrl 500";
+            cursor: pointer;
+
+            &:hover {
+              color: $violet-hover;
+            }
+          }
+
+          span {
+            font-size: 14px;
+            line-height: 1;
+            font-family: "Museo Sans Cyrl 300";
+          }
+
+          > span:nth-child(2) {
+            color: $black;
+          }
+
+          > span:last-child {
+            color: $grey_normal;
+          }
+
+        }
+
+        > div:nth-child(3) {
+          display: flex;
+          flex-basis: 10%;
+          align-items: center;
+          justify-content: center;
+
+          span {
+            color: $black;
+            font-size: 16px;
+            line-height: 1;
+            font-family: "Museo Sans Cyrl 500";
+          }
+        }
+
+      }
+
+      > li:first-child {
+        border-top: 2px solid $border_grey;
+      }
+
+      > li:last-child {
+        margin-bottom: 0;
+      }
+
+    }
+
+  }
+
+}
+
+.loader-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 130px 0 150px;
+}

@@ -28,17 +28,17 @@ export class OneCService {
             'Content-Type': 'application/json; charset=utf-8'
         }
 
-        const ip: string = '172.16.1.35:8787'
-        let ipPrev = '95.78.125.227:8787'
+        const ipVnutrenii: string = '172.16.1.35:8787'
+        let ipVneshnii = '95.78.125.227:8787'
 
-        await this.http.post('http://172.16.1.35:8787/midkam/hs/ExchangeSite/CreatingOrders', order, {headers: headerOptions})
+        await this.http.post('http://95.78.125.227:8787/midkam/hs/ExchangeSite/CreatingOrders', order, {headers: headerOptions})
             .toPromise().catch((error) => {
                 console.log(error);
             })
     }
 
     async getAccessForOneC() {
-        return await this.accessKeyRepository.findOne({where: {access: 'one_c'}})
+        return await this.accessKeyRepository.findOne({where: {access: 'one_c_ip'}})
     }
 
 }

@@ -2,7 +2,7 @@ import {
   Component,
   ComponentFactoryResolver,
   ElementRef,
-  HostListener,
+  HostListener, OnDestroy,
   OnInit,
   Renderer2,
   ViewChild
@@ -19,6 +19,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ShoppingCartService} from "../../services-interfaces/shopping-cart-service/shopping-cart.service";
 import {MenuInterface} from "../../services-interfaces/global-interfaces/menu.interface";
 import {DetailInterface} from "../../services-interfaces/detail-service/detail.interface";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -26,7 +27,7 @@ import {DetailInterface} from "../../services-interfaces/detail-service/detail.i
   templateUrl: './header-layout.component.html',
   styleUrls: ['./header-layout.component.scss']
 })
-export class HeaderLayoutComponent implements OnInit {
+export class HeaderLayoutComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2, private detailService: DetailService, private router: Router,
               private resolver: ComponentFactoryResolver, public userService: UserService,
@@ -51,7 +52,7 @@ export class HeaderLayoutComponent implements OnInit {
   isDisabled: boolean = false
   activeHiddenHeader: boolean = false
   isDisabledHiddenHeader: boolean = false
-  isViewOnGroup: boolean = false
+  isViewOnGroup: boolean = true
   isSearch: boolean = false
 
   position: DetailInterface[] = []
@@ -138,7 +139,7 @@ export class HeaderLayoutComponent implements OnInit {
         {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']}
       ]
     },
-    {usability: 'Запчасти на мосты', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/KRAZ_URAL.svg', productGroup: [
+    {usability: 'Запчасти на мосты', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/MOST.svg', productGroup: [
         {productName: 'Валы вторичные', category: ['Валы вторичные']},
         {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']},
         {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']}
@@ -177,6 +178,8 @@ export class HeaderLayoutComponent implements OnInit {
     }
   ]
 
+  navigateSubscription: Subscription | null = null
+
   async ngOnInit() {
     try {
       await this.userService.refreshToken()
@@ -197,6 +200,13 @@ export class HeaderLayoutComponent implements OnInit {
 
     this.userService.user$.subscribe(credentials => {
       // MAGIC
+    })
+
+    this.navigateSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.active = false
+        this.activeHiddenHeader = false
+      }
     })
 
   }
@@ -280,16 +290,38 @@ export class HeaderLayoutComponent implements OnInit {
     this.position = []
   }
 
-  logout() {
-    this.userService.logout().then(() => {
-      localStorage.setItem('shopping_cart', JSON.stringify([]))
-      this.userService.user$.next(undefined)
-      this.shoppingCartService.totalCost = 0
-      this.shoppingCartService.itemsQuantity = 0
-      this.router.navigate(['/'])
-    }, (error: HttpErrorResponse) => {
-      console.log(error);
-    })
+  // logout() {
+  //   this.userService.logout().then(() => {
+  //     localStorage.setItem('shopping_cart', JSON.stringify([]))
+  //     this.userService.user$.next(undefined)
+  //     this.shoppingCartService.totalCost = 0
+  //     this.shoppingCartService.itemsQuantity = 0
+  //     this.router.navigate(['/'])
+  //   }, (error: HttpErrorResponse) => {
+  //     console.log(error);
+  //   })
+  // }
+
+  toSearch(event: Event) {
+    const $target = (event.currentTarget as HTMLButtonElement).parentElement!.querySelector('input')!
+    const searchValue = $target.value
+    this.position = []
+    this.isSearch = false
+    this.router.navigate(['/'], {skipLocationChange: true})
+      .then(() => {
+        this.router.navigate(['/', 'search'], {queryParams: {text: searchValue}})
+      })
+  }
+
+  navigateToCatalogForFilter(filter: string) {
+    this.router.navigate(['/'], {skipLocationChange: true})
+      .then(() => {
+        this.router.navigate(['/', 'catalog'], {state: {filter: filter}})
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.navigateSubscription?.unsubscribe()
   }
 
 }

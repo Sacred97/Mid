@@ -207,7 +207,7 @@ header {
 
   }
 
-  > div:last-child {
+  > div:last-child, > a:last-child {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -496,7 +496,7 @@ header {
             font-family: 'Museo Sans Cyrl 300';
             font-size: 15px;
             line-height: 1;
-            padding: 1em 0;
+            padding: 9px 0;
           }
         }
         &:hover {
@@ -566,11 +566,18 @@ header {
 
         a {
           display: block;
-          padding: 7px 16px;
+          padding: 9px 16px;
           font-size: 15px;
           font-family: 'Museo Sans Cyrl 300';
           line-height: 1;
           color: $black;
+
+          b {
+            font-size: 15px;
+            font-family: 'Museo Sans Cyrl 700';
+            line-height: 1;
+            color: $black;
+          }
         }
 
         &:hover {

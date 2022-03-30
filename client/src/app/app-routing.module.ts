@@ -66,6 +66,9 @@ import {MyContactsComponent} from "./user/components/my-contacts/my-contacts.com
 import {CurrentOrderComponent} from "./user/components/current-order/current-order.component";
 import { OrderUserComponent } from './order-user/order-user.component';
 import { UserGuard } from './shared/guards/user.guard';
+import {SearchPageComponent} from "./search-page/search-page.component";
+import {AdminCertificateComponent} from "./admin/components/certificate/admin-certificate/admin-certificate.component";
+import {AdminCertificateEditComponent} from "./admin/components/certificate/admin-certificate-edit/admin-certificate-edit.component";
 
 const about: Routes = [
   {path: 'about', component: AboutComponent},
@@ -122,6 +125,8 @@ const admin: Routes = [
       {path: '', component: AdminHomeComponent},
       {path: 'banners', component: AdminBannersComponent},
       {path: 'banners/:id', component: AdminBannersEditComponent},
+      {path: 'certificate', component: AdminCertificateComponent},
+      {path: 'certificate/:id', component: AdminCertificateEditComponent},
       {path: 'users', component: AdminUsersListComponent},
       {path: 'news-letter', component: AdminNewsLetterComponent},
       {path: 'news-letter/:id', component: AdminNewsLetterEditComponent},
@@ -198,7 +203,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'shopping-cart/order-user', component: OrderUserComponent, canActivate: [UserGuard], 
+        path: 'shopping-cart/order-user', component: OrderUserComponent, canActivate: [UserGuard],
         data: {
           title: 'Оформление заказа', breadcrumb: [
             {label: 'Главная', url: '/'},
@@ -238,6 +243,7 @@ const routes: Routes = [
         ]
       },
       {path: 'action', component: ActionComponent},
+      {path: 'search', component: SearchPageComponent},
       {path: '**', redirectTo: '/'}
     ]
   }

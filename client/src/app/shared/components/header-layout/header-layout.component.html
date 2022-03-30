@@ -65,9 +65,9 @@
       </a>
     </div>
 
-    <div (click)="logout()" *ngIf="userService.user$ | async as user; else no_user">
-      <img src="" alt="Выход">
-    </div>
+    <a routerLink="/user/profile" *ngIf="userService.user$ | async as user; else no_user">
+      <img src="../../../../assets/user/my-profile-icon.svg" alt="Кабинет">
+    </a>
     <ng-template #no_user>
       <div (click)="showAuthModal()">
         <img src="../../../../assets/icon/auth.svg" alt="">
@@ -83,9 +83,12 @@
     <div class="search-bar__bar">
 
       <ul>
-        <li><a routerLink="/">Новинки</a></li>
-        <li><a routerLink="/">Рекомендуем</a></li>
-        <li><a routerLink="/">Акции</a></li>
+<!--        <li><a routerLink="/catalog" [state]="{filter: 'recent'}">Новинки</a></li>-->
+<!--        <li><a routerLink="/catalog" [state]="{filter: 'popular'}">Рекомендуем</a></li>-->
+<!--        <li><a routerLink="/catalog" [state]="{filter: 'sale'}">Акции</a></li>-->
+        <li><a (click)="navigateToCatalogForFilter('popular')">Новинки</a></li>
+        <li><a (click)="navigateToCatalogForFilter('recent')">Рекомендуем</a></li>
+        <li><a (click)="navigateToCatalogForFilter('sale')">Акции</a></li>
         <li><a (click)="showGetPriceModal()">Получить прайс-лист</a></li>
         <li><a (click)="showSendPriceModal()">Отправить свой список</a></li>
         <li><a (click)="showCityModal()"><img src="../../../../assets/icon/geoposition.svg" alt="">
@@ -97,7 +100,7 @@
         <input type="text" placeholder="Поиск по артикулу или названию" appDelayedInput (delayedInput)="search($event)"
         [delayTime]="1000">
 
-        <button class="btn">
+        <button class="btn" (click)="toSearch($event)">
           <img src="../../../../assets/icon/search.svg" alt="">
           <span>Поиск</span>
         </button>
@@ -130,7 +133,7 @@
       <ul [style.transform]="active?'scaleY(1)':'scaleY(0)'">
 
         <li *ngFor="let using of detailMenu">
-          <a routerLink="/">
+          <a>
             <div>
               <img [src]="using.imgSrc" alt="">
             </div>
@@ -138,26 +141,27 @@
           </a>
           <div class="catalog-bar__drop-menu">
 
-            <div>
-              <span [style.color]="isViewOnGroup?'#373736':'#724684'">по виду</span>
-              <button (click)="isViewOnGroup=!isViewOnGroup" [style.backgroundColor]="isViewOnGroup?'#724684':'#a1b0b8'">
-                <span [style.left]="isViewOnGroup?'50%':'0%'"></span>
-              </button>
-              <span [style.color]="isViewOnGroup?'#724684':'#373736'">по группам</span>
-            </div>
+<!--            <div>-->
+<!--              <span [style.color]="isViewOnGroup?'#373736':'#724684'">по виду</span>-->
+<!--              <button (click)="isViewOnGroup=!isViewOnGroup" [style.backgroundColor]="isViewOnGroup?'#724684':'#a1b0b8'">-->
+<!--                <span [style.left]="isViewOnGroup?'50%':'0%'"></span>-->
+<!--              </button>-->
+<!--              <span [style.color]="isViewOnGroup?'#724684':'#373736'">по группам</span>-->
+<!--            </div>-->
 
-            <ul [style.display]="isViewOnGroup?'none':'block'">
-              <li *ngFor="let product of using.productGroup">
-                <a routerLink="/catalog">
-                  {{product.productName}}
-                </a>
-                <ul>
-                  <li *ngFor="let category of product.category"><a routerLink="/catalog/byView">{{category}}</a></li>
-                </ul>
-              </li>
-            </ul>
+<!--            <ul [style.display]="isViewOnGroup?'none':'block'">-->
+<!--              <li *ngFor="let product of using.productGroup">-->
+<!--                <a routerLink="/catalog">-->
+<!--                  {{product.productName}}-->
+<!--                </a>-->
+<!--                <ul>-->
+<!--                  <li *ngFor="let category of product.category"><a routerLink="/catalog/byView">{{category}}</a></li>-->
+<!--                </ul>-->
+<!--              </li>-->
+<!--            </ul>-->
 
             <ul [style.display]="isViewOnGroup?'block':'none'">
+              <li><a routerLink="/"><b>Все товары раздела</b></a></li>
               <li *ngFor="let byGroup of using.detailByGroup"><a routerLink="/">{{byGroup}}</a></li>
             </ul>
 
@@ -242,14 +246,13 @@
 
     <div class="hidden-header__input">
       <input type="text" placeholder="Поиск по артикулу или названию">
-      <button class="btn">
+      <button class="btn" (click)="toSearch($event)">
         <img src="../../../../assets/icon/search.svg" alt="">
         <span>Поиск</span>
       </button>
     </div>
 
     <a class="hidden-header__phone" routerLink="tel:88007003132">8 800 700-31-32</a>
-
 
     <div class="hidden-header__bucket">
       <span>Корзина</span>
@@ -260,9 +263,10 @@
       </a>
     </div>
 
-    <div (click)="logout()" *ngIf="userService.user$ | async as user; else no_user_hidden_header">
-      <img src="" alt="Выход">
-    </div>
+    <a routerLink="/user/profile" class="hidden-header__auth-modal"
+       *ngIf="userService.user$ | async as user; else no_user_hidden_header">
+      <img src="../../../../assets/user/my-profile-icon.svg" alt="Кабинет">
+    </a>
     <ng-template #no_user_hidden_header>
       <div class="hidden-header__auth-modal" (click)="showAuthModal()">
         <img src="../../../../assets/icon/auth.svg" alt="">

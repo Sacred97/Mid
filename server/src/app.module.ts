@@ -25,6 +25,7 @@ import { KeyWordsModule } from './key-words/key-words.module';
 import { AutoPartsModule } from './auto-parts/auto-parts.module';
 import { AutoApplicabilityModule } from './auto-applicability/auto-applicability.module';
 import { BannersModule } from './banners/banners.module';
+import { UsCertificateModule } from './us-certificate/us-certificate.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -55,7 +56,11 @@ import { BannersModule } from './banners/banners.module';
       REDIS_PORT: Joi.number().required(),
       EMAIL_SERVICE: Joi.string().required(),
       EMAIL_USER: Joi.string().required(),
-      EMAIL_PASSWORD: Joi.string().required()
+      EMAIL_PASSWORD: Joi.string().required(),
+      SELECTEL_REGION: Joi.string().required(),
+      SELECTEL_ACCESS_KEY_ID: Joi.string().required(),
+      SELECTEL_SECTET_KEY: Joi.string().required(),
+      SELECTEL_BUSKET_NAME: Joi.string().required()
     })
   }),
     DatabaseModule,
@@ -80,6 +85,7 @@ import { BannersModule } from './banners/banners.module';
     AutoPartsModule,
     AutoApplicabilityModule,
     BannersModule,
+    UsCertificateModule,
     ],
   controllers: [AppController],
   providers: [AppService],

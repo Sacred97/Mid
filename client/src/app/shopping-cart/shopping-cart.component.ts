@@ -219,7 +219,7 @@ export class ShoppingCartComponent implements OnInit {
   makeOrder() {
     const user = this.userService.user$.getValue()
     if (!!user) {
-      this.router.navigate(['/', 'profile', 'order'])
+      this.router.navigate(['/', 'shopping-cart', 'order-user'])
     } else {
       this.router.navigate(['/', 'shopping-cart', 'order'])
     }

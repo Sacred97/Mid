@@ -1,1 +1,55 @@
-<p>admin-banners-edit works!</p>
+<div class="admin-banner-edit">
+
+  <h1>Редактирование баннера</h1>
+
+  <div class="admin-banner-edit__content">
+
+    <ng-container *ngIf="banner; else empty">
+
+      <form [formGroup]="form" (ngSubmit)="updateBanner()">
+
+        <div>
+          <img [src]="banner.url" alt="Баннер">
+          <span>Баннер: {{banner.homePage ? 'Главной страницы' : 'Каталога'}}</span>
+        </div>
+
+        <label>
+          <span>Порядковый номер баннера</span>
+          <input type="number" formControlName="serialNumber">
+          <small>Если хотите автоматически поставить последний номер, оставьте поле пустым</small>
+        </label>
+
+        <label>
+          <span>Ссылка на страницу</span>
+          <input type="url" formControlName="pageReference">
+          <small>Если хотите убрать ссылку, оставьте поле пустым</small>
+        </label>
+
+        <button type="submit" [disabled]="form.invalid || action">Обновить</button>
+        <span *ngIf="updateSuccess">Обновление прошло успешно</span>
+        <small *ngIf="errorUpdate">Произошла ошибка, повторите запрос позже</small>
+
+      </form>
+
+      <div>
+        <button (click)="remove()" [disabled]="action">Удалить</button>
+        <small *ngIf="errorDeleteMessage">{{errorDeleteMessage}}</small>
+      </div>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+    <a routerLink="/admin/banners">Вернуться к списку</a>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

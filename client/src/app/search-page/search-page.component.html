@@ -1,0 +1,56 @@
+<div class="search-page">
+
+  <h1>Результат поиска</h1>
+
+  <ng-container *ngIf="!loading; else load">
+
+    <div class="search-page__content" *ngIf="details.length; else empty">
+
+      <span>Найдено товаров: {{totalQuantity}}</span>
+
+      <hr>
+
+      <ul>
+
+        <li *ngFor="let d of details | paginate: {itemsPerPage: 20, currentPage: page, totalItems: totalQuantity};
+          let idx = index">
+
+          <div>
+            <img [src]="d.photoDetail[0] ? d.photoDetail[0] : '../../assets/catalog/not-have-photo.jpg'" alt="">
+          </div>
+
+          <div>
+            <a (click)="toDetailCart(d.id)">{{d.name}}</a>
+            <span>Код товара: {{d.productCode}}</span>
+            <span>Артикул: {{d.vendorCode}}</span>
+          </div>
+
+          <div>
+            <span>{{cartService.toCurrency(d.price)}}</span>
+          </div>
+
+          <div>
+          </div>
+        </li>
+
+      </ul>
+
+      <pagination-controls class="pagination" (pageChange)="nextPackage($event)"
+                           previousLabel="" nextLabel="" [maxSize]="9">
+      </pagination-controls>
+
+    </div>
+
+    <ng-template #empty>
+      <span>Товар не найден</span>
+    </ng-template>
+
+  </ng-container>
+
+  <ng-template #load>
+    <div class="loader-container">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

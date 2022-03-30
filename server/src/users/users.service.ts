@@ -335,7 +335,8 @@ export class UsersService {
 
   async addRequestToHistory(user: User, requestData: RequestHistoryCreateDto) {
     const newRequestString = await this.requestHistoryRepository.create({...requestData, user: user})
-    return await this.requestHistoryRepository.save(newRequestString)
+    await this.requestHistoryRepository.save(newRequestString)
+    return await this.getAllRequestHistoryOfUser(user.id)
   }
 
   async updateRequestToHistory(user: User, data: RequestHistoryUpdateDto) {
@@ -343,7 +344,7 @@ export class UsersService {
     if (request) {
       if (request.user.id === user.id) {
         await this.requestHistoryRepository.update(data.id, {...data})
-        return await this.requestHistoryRepository.findOne(data.id)
+        return await this.getAllRequestHistoryOfUser(user.id)
       }
       throw new HttpException('Изменение запрещено', HttpStatus.FORBIDDEN)
     }
@@ -654,7 +655,7 @@ export class UsersService {
     await this.shoppingCartRepository.update(userCredentials.shoppingCart.id, {totalCost: 0, totalWeight: 0})
     const shoppingCart = await this.shoppingCartRepository.findOne(userCredentials.shoppingCart.id)
     await this.sendOrder(order.id, orderOneC, orderMail)
-    return shoppingCart
+    return await this.getById(userCredentials.id)
   }
 
   async getMaxNumberOrder(): Promise<string> {

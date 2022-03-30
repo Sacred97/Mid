@@ -82,6 +82,10 @@ import { MyContactsComponent } from './user/components/my-contacts/my-contacts.c
 import { CurrentOrderComponent } from './user/components/current-order/current-order.component';
 import {EditorModule} from "@tinymce/tinymce-angular";
 import { OrderUserComponent } from './order-user/order-user.component';
+import {ImageCropperModule} from "ngx-image-cropper";
+import { SearchPageComponent } from './search-page/search-page.component';
+import { AdminCertificateEditComponent } from './admin/components/certificate/admin-certificate-edit/admin-certificate-edit.component';
+import { AdminCertificateComponent } from './admin/components/certificate/admin-certificate/admin-certificate.component';
 
 
 @NgModule({
@@ -158,6 +162,9 @@ import { OrderUserComponent } from './order-user/order-user.component';
     MyContactsComponent,
     CurrentOrderComponent,
     OrderUserComponent,
+    SearchPageComponent,
+    AdminCertificateEditComponent,
+    AdminCertificateComponent,
   ],
     imports: [
       BrowserModule,
@@ -169,7 +176,8 @@ import { OrderUserComponent } from './order-user/order-user.component';
       NgxPaginationModule,
       FormsModule,
       ReactiveFormsModule,
-      EditorModule
+      EditorModule,
+      ImageCropperModule
     ],
   providers: [],
   bootstrap: [AppComponent]

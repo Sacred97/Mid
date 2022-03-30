@@ -1,3 +1,5 @@
+import {RequisitesRequestInterface} from "../global-interfaces/requisites.interface";
+
 export interface NewUserInterface {
   email: string
   password: string
@@ -58,9 +60,11 @@ export interface SubscriptionUserInterface {
 }
 
 export interface RequestHistoryUserInterface {
-  id: string
+  id: number
   requestDate: string
+  result: number
   requestString: string
+  detailCart: string | null
 }
 
 export interface NewsLetter {
@@ -201,4 +205,27 @@ export interface UserSubscriptionUpdate {
   email?: string
   newsLetterId?: number
   notice?: string
+}
+
+
+export interface UserMakeOrder {
+  fullName: string
+  phone: string
+  email: string
+  additionalPhone?: string
+  customer: string
+  requisites?: RequisitesRequestInterface
+  payment: string
+  delivery: string
+  address: string
+}
+
+export interface AddRequestHistoryUser {
+  result: number
+  requestString: string
+}
+
+export interface UpdateRequestHistoryUser {
+  id: number
+  detailCart: string
 }

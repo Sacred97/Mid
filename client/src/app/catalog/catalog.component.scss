@@ -257,15 +257,19 @@
     display: flex;
     justify-content: space-between;
 
-    > div {
-      flex-basis: 49%;
+    > div:first-child {
+      flex-basis: 57%;
+    }
+
+    > div:last-child {
+      flex-basis: 35%;
     }
 
     > div:first-child {
       display: flex;
       align-items: center;
       padding: 0 0 0 10px;
-      gap: 10px 4px;
+      gap: 10px 8px;
       background-color: $grey_easy;
       border-radius: 10px;
 

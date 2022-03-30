@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {
+  AddRequestHistoryUser,
   AddressUserInterface, CompanyUserInterface,
   ManagerInterface, NewsLetter,
-  NewUserInterface,
-  ShoppingCartUserInterface, SubscriptionUserInterface,
+  NewUserInterface, RequestHistoryUserInterface,
+  ShoppingCartUserInterface, SubscriptionUserInterface, UpdateRequestHistoryUser,
   UpdateUser,
   UserAddressCreate,
   UserAddressUpdate,
   UserCompanyCreate,
   UserCompanyUpdate,
-  UserInterface,
+  UserInterface, UserMakeOrder,
   UserManagerCreate,
   UserManagerUpdate, UserSubscriptionCreate, UserSubscriptionUpdate,
   WaitingListDetailId,
@@ -133,6 +134,13 @@ export class UserService {
   deleteFromWaitingList(waitingItemId: number): Promise<WaitingListInterface> {
     const url = this.hostname + 'users/waiting/' + waitingItemId
     return this.http.delete<WaitingListInterface>(url, {withCredentials: true}).toPromise()
+  }
+
+  //--------------------------------------------------Оформить заказ----------------------------------------------------
+
+  makeOrder(data: UserMakeOrder): Promise<UserInterface> {
+    const url = this.hostname + 'users/order'
+    return this.http.post<UserInterface>(url, data, {withCredentials: true}).toPromise()
   }
 
   //-----------------------------------------------Контакты пользователя------------------------------------------------
@@ -260,6 +268,23 @@ export class UserService {
   removeItemFromWaitingList(id: number): Promise<WaitingListInterface> {
     const url = this.hostname + 'users/waiting/' + id
     return this.http.delete<WaitingListInterface>(url, {withCredentials: true}).toPromise()
+  }
+
+  //----------------------------------------------------История поиска--------------------------------------------------
+
+  addRequestHistory(data: AddRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
+    const url = this.hostname + 'users/history'
+    return this.http.post<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
+  }
+
+  updateRequestHistory(data: UpdateRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
+    const url = this.hostname + 'users/history'
+    return this.http.put<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
+  }
+
+  deleteRequestHistory(id: number): Promise<RequestHistoryUserInterface[]> {
+    const url = this.hostname + 'users/history/' + id
+    return this.http.delete<RequestHistoryUserInterface[]>(url, {withCredentials: true}).toPromise()
   }
 
 
