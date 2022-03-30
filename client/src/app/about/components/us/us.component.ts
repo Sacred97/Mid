@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {DomSanitizer} from "@angular/platform-browser";
-import tinymce from "tinymce";
-import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-us',
@@ -11,7 +9,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class UsComponent implements OnInit {
 
-  constructor(private sanitizer: DomSanitizer, private http: HttpClient) {
+  constructor(private sanitizer: DomSanitizer) {
     sanitizer.bypassSecurityTrustHtml(this.output)
     sanitizer.bypassSecurityTrustResourceUrl(this.output)
     sanitizer.bypassSecurityTrustScript(this.output)
@@ -29,8 +27,6 @@ export class UsComponent implements OnInit {
   }
 
   sbm() {
-    const post = '<div class="posts">' + this.form.value.content + '</div>'
-    const url: string = 'http://localhost:3000/midkam_api/banners'
   }
 
 }

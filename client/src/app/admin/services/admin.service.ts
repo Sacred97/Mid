@@ -45,8 +45,8 @@ export class AdminService {
   constructor(private http: HttpClient) {
   }
 
-  // private hostname: string = 'http://midkam.pro:3000/midkam_api/'
-  private hostname: string = 'http://localhost:3000/midkam_api/'
+  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  // private hostname: string = 'http://localhost:3000/midkam_api/'
 
   getUsers(offset: number, query?: string): Promise<AdminUsersAndCount> {
     let url= this.hostname + 'users/list' + '?offset=' + offset

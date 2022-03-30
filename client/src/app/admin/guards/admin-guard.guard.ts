@@ -10,8 +10,8 @@ export class AdminGuardGuard implements CanActivate {
   constructor(private http: HttpClient, private router: Router) {
   }
 
-  // private hostname: string = 'http://midkam.pro:3000/midkam_api/'
-  private hostname: string = 'http://localhost:3000/midkam_api/'
+  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  // private hostname: string = 'http://localhost:3000/midkam_api/'
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const url = this.hostname + 'auth/admin'

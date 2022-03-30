@@ -11,8 +11,8 @@ export class RecentlyViewedService {
   constructor(private http: HttpClient) {
   }
 
-  private hostname: string = 'http://localhost:3000/midkam_api/'
-  // private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  // private hostname: string = 'http://localhost:3000/midkam_api/'
+  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
 
   getViewedStorage(): DetailIdInterface[] {
     return !!localStorage.getItem('recently_viewed') ? JSON.parse(localStorage.getItem('recently_viewed')!)

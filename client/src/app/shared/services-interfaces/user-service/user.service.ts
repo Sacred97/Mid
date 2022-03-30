@@ -30,8 +30,8 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  //private hostname: string = 'http://midkam.pro:3000/midkam_api/'
-  private hostname: string = 'http://localhost:3000/midkam_api/'
+  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
+  // private hostname: string = 'http://localhost:3000/midkam_api/'
 
   user$: BehaviorSubject<UserInterface | undefined> = new BehaviorSubject<UserInterface | undefined>(undefined)
 

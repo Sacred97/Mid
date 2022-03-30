@@ -22,10 +22,11 @@ export class SendPriceListModalComponent implements OnInit, OnDestroy {
   file: File | null = null
 
   constructor(private http: HttpClient) {
-   
+
   }
 
-  hostname: string = 'http://localhost:3000/midkam_api/price-list/send'
+  private hostname: string = 'http://midkam.pro:3000/midkam_api/price-list/send'
+  // private hostname: string = 'http://localhost:3000/midkam_api/price-list/send'
 
   ngOnInit(): void {
     this.form = new  FormGroup({
