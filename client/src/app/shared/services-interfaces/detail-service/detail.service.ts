@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Filters, FilterRequest} from "../global-interfaces/filter.interface";
-import {CountAndDetailsInterface, DetailInterface} from "./detail.interface";
+import {CountAndDetailsInterface, DetailInterface, PackageDetailsForHomPage} from "./detail.interface";
 import {DetailIdInterface} from "../global-interfaces/detail-id.interface";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,7 @@ export class DetailService {
   constructor( private http: HttpClient) {
   }
 
-  private hostname: string = 'http://midkam.pro:3000/midkam_api/details/'
-  // private hostname: string = 'http://localhost:3000/midkam_api/details/'
+  private hostname: string = environment.apiUrl + 'details/'
 
   search(query: string, limit?: number, offset?: number): Promise<CountAndDetailsInterface> {
     const url: string = this.hostname + 'search?' +
@@ -52,6 +52,11 @@ export class DetailService {
   getListFilters(): Promise<Filters> {
     const url: string = this.hostname + 'filter'
     return this.http.get<Filters>(url, {withCredentials: true}).toPromise()
+  }
+
+  getRandomDetailsForHomePage(): Promise<PackageDetailsForHomPage> {
+    const url: string = this.hostname + 'random-new-sale-recent'
+    return this.http.get<PackageDetailsForHomPage>(url, {withCredentials: true}).toPromise()
   }
 
   getById(id:string): Promise<DetailInterface> {

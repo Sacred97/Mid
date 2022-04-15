@@ -16,7 +16,6 @@
         </label>
         <label>
           <span>Описание / статья:</span>
-          <!--<textarea placeholder="Описание производителя / статья" formControlName="description"></textarea>-->
           <editor
             formControlName="description"
             apiKey="0f9lormsql0w6b0ii16i0yfwmqcyeeco836d3kks5ia3wk2s"
@@ -33,6 +32,15 @@
                 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
                 'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
                 'forecolor backcolor emoticons | charmap hr pagebreak | help'
+              ],
+              image_advtab: true,
+              style_formats_merge: true,
+              style_formats: [
+                {title: 'Div (Flex)', items: [
+                  {title: 'Space-between', inline: 'span', styles: {'display': 'flex', 'justify-content': 'space-between'}},
+                  {title: 'Space-around', inline: 'span', styles: {'display': 'flex', 'justify-content': 'space-around'}},
+                  {title: 'Space-evenly', inline: 'span', styles: {'display': 'flex', 'justify-content': 'space-evenly'}},
+                ]}
               ]
             }"
           >

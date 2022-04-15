@@ -59,6 +59,11 @@ export class ManufacturerController {
 
     //------------------------------------------------------------------------------------------------------------------
 
+    @Get('random-manufacturer')
+    async getRandomManufacturer() {
+        return await this.manufacturerService.getRandomManufacturer()
+    }
+
     @UseInterceptors(HttpCacheInterceptor)
     @CacheKey(GET_MANUFACTURER_CACHE_KEY)
     @Get('manufacturer')

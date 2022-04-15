@@ -3,7 +3,6 @@ import {NgDynamicBreadcrumbService} from "ng-dynamic-breadcrumb";
 import {DetailService} from "../shared/services-interfaces/detail-service/detail.service";
 import {
   FilterOptions,
-  Filters,
   FilterRequest, FilterLetter, FilterSelected
 } from "../shared/services-interfaces/global-interfaces/filter.interface";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -11,6 +10,9 @@ import {ShoppingCartService} from "../shared/services-interfaces/shopping-cart-s
 import {MarkerService} from "../shared/services-interfaces/marker-service/marker.service";
 import {DetailInterface} from "../shared/services-interfaces/detail-service/detail.interface";
 import {RecentlyViewedService} from "../shared/services-interfaces/recently-viewed-service/recently-viewed.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AdminBanner} from "../admin/interfaces/admin-banner.interface";
+import {BannersService} from "../shared/services-interfaces/banners-service/banners.service";
 
 
 @Component({
@@ -19,7 +21,9 @@ import {RecentlyViewedService} from "../shared/services-interfaces/recently-view
   styleUrls: ['./catalog.component.scss']
 })
 export class CatalogComponent implements OnInit, OnDestroy {
-  constructor(private ngDynamicBreadcrumbService: NgDynamicBreadcrumbService,
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
+              private bannersService: BannersService,
+              private ngDynamicBreadcrumbService: NgDynamicBreadcrumbService,
               private detailService: DetailService,
               public shoppingService: ShoppingCartService,
               public markerService: MarkerService,
@@ -30,27 +34,25 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   //-------------------------------------------------Слайдер------------------------------------------------------------
 
-  banners = [
-    {src: '../../assets/catalog/banner.jpg'},
-    {src: '../../assets/catalog/banner.jpg'},
-    {src: '../../assets/catalog/banner.jpg'},
-    {src: '../../assets/catalog/banner.jpg'},
-    {src: '../../assets/catalog/banner.jpg'}
-  ]
+  banners: AdminBanner[] = []
 
   bannersConfig = {
     "slidesToShow": 1,
+    "slidesToScroll": 1,
     "dots": true,
     "arrows": true,
     "infinite": true,
-    "centerMode": false,
-    "variableWidth": false,
-    "autoplay": false
+    "variableWidth": true,
+    "autoplay": true,
+    "autoplaySpeed": 10000
   }
 
-  //-------------------------------------------Стили для выпадающего фильтра-----------------------------------------------------------
+  slickInit(event: any) {
+    setTimeout(() => {
+      event.slick.setPosition()
+    }, 500)
+  }
 
-  dropFilters: boolean[] = [false, false, false, true, true]
 
   //-------------------------------------------------Сортировка---------------------------------------------------------
 
@@ -75,6 +77,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   //-----------------------------------------Сортировка по первой букве-------------------------------------------------
+
   private CHAR_CODE: { start: number, end: number, exceptions: number[] } = {
     start: 1040, end: 1071, exceptions: [1049, 1066, 1067, 1068]
   }
@@ -172,6 +175,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
     this.selectedFilters.splice(idx, 1)
     this.afterChanges()
+    this.router.navigate([], {relativeTo: this.activatedRoute, queryParamsHandling: null})
   }
 
   clearFilter() {
@@ -194,6 +198,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
     this.selectedFilters = []
     this.afterChanges()
+    this.router.navigate([], {relativeTo: this.activatedRoute, queryParamsHandling: null})
   }
 
   afterChanges(): void {
@@ -216,42 +221,62 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   //-----------------------------------------------Поиск товара---------------------------------------------------------
 
-  searchList: DetailInterface[] = []
 
   search(event: Event) {
-    this.searchList = []
     const query = (event.target as HTMLInputElement).value
     if (!query) return
-    const filter: FilterRequest[] = this.selectedFilters.map(f => ({type: f.type, value: f.value}))
-    this.detailService.getWithFilter(
-      filter, this.getSort(), this.getOrder(),
-      this.availability, this.recent, this.sale, this.popular,
-      query, '', 10, 0
-    )
-      .then(data => {
-        this.searchList = data.items
-      }, error => {
-        console.log(error);
-        this.searchList = []
-      })
+
+    // Отключаем букву если она есть
+    const letterCandidateIdx = this.letters.findIndex(i => i.checked = true)
+    if (letterCandidateIdx >= 0) this.letters[letterCandidateIdx].checked = false
+    // Чистим слово или букву, под типом letters может быть и Слово поиска (query)
+    const selectedCandidateIdx = this.selectedFilters.findIndex(i => i.type === 'letters')
+    if (selectedCandidateIdx >= 0) this.removeFilter(selectedCandidateIdx)
+
+    this.selectedFilters.push({type: 'letters', label: 'Поиск: ' + query, value: '-'})
+    this.letter = query
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute, queryParams: null, queryParamsHandling: null
+    }).then(() => {
+      this.page = 1
+      this.getDetailWithFilter(1, false, 0)
+    })
+
   }
 
   //---------------------------------------------Запросы на сервер------------------------------------------------------
   details: DetailInterface[] = []
   total: number = 0
   offsetEnd: boolean = false
-  page: number = 1
+  page: number = this.activatedRoute.snapshot.queryParams['p'] ? +this.activatedRoute.snapshot.queryParams['p'] : 1
   errorMessage: string = ''
   defaultImage: string = '../../assets/catalog/not-have-photo.jpg'
 
-  nextPackage(nextPage: number, onGetMore: boolean) {
+  changePage(nextPage: number, onGetMore: boolean) {
     const offset: number = (nextPage * 20) - 20
-    if (this.selectedFilters.length > 0) {
-      this.getDetailWithFilter(nextPage, onGetMore, offset)
-    } else {
-      this.getDetailWithoutFilter(nextPage, onGetMore, offset)
+
+    if (onGetMore) {
+      if (this.selectedFilters.length > 0) {
+        this.getDetailWithFilter(nextPage, onGetMore, offset)
+      } else {
+        this.getDetailWithoutFilter(nextPage, onGetMore, offset)
+      }
+      return
     }
-    if (!onGetMore) window.scrollTo({behavior: "smooth", top: 300})
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {p: nextPage},
+      queryParamsHandling: "merge"
+    }).then(() => {
+      this.page = nextPage
+      if (this.selectedFilters.length > 0) {
+        this.getDetailWithFilter(nextPage, onGetMore, offset)
+      } else {
+        this.getDetailWithoutFilter(nextPage, onGetMore, offset)
+      }
+    })
+
   }
 
   getDetailWithFilter(page: number, onGetMore: boolean, offset: number) {
@@ -262,7 +287,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
       this.letter , '', 20, offset
     )
       .then(data => {
-        console.log(data);
         this.total = data.count
         this.page = page
         localStorage.setItem('page', page.toString())
@@ -317,17 +341,27 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   //------------------------------------------Инициализация компонента--------------------------------------------------
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    const offset = (this.page * 20) - 20
 
-    this.detailService.getListFilters().then((filters: Filters) => {
-      this.category = filters.category
-      this.manufacturer = filters.manufacturer
-      this.parts = filters.autoParts
-      this.applicability = filters.autoApplicability
-    })
+    try {
+      this.banners = await this.bannersService.getBannerForPage(false)
+    } catch (error) {
+      console.log(error);
+    }
 
-    if (history.state.filter) {
-      switch (history.state.filter) {
+    try {
+      const responseFilters = await this.detailService.getListFilters()
+      this.category = responseFilters.category
+      this.manufacturer = responseFilters.manufacturer
+      this.parts = responseFilters.autoParts
+      this.applicability = responseFilters.autoApplicability
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (history.state.quickFilter) {
+      switch (history.state.quickFilter) {
         case 'recent':
           this.additionalFilterChange("recent", 'Рекомендуемые')
           break;
@@ -340,11 +374,52 @@ export class CatalogComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (history.state.numberViewDetails) {
+    if (history.state.usability) {
+      const usability: string = history.state.usability
+      const usabilityArr: string[] = usability.split(';').map(i => i.trim())
+      usabilityArr.forEach(i => {
+        let idx = 0
+        const candidate = this.applicability.find((item, index) => {
+          if (item.label === i) {
+            idx = index
+            return true
+          }
+          return false
+        })
+        if (candidate) {
+          this.applicability[idx].checked = true
+          this.selectedFilters.push({type: 'applicability', value: candidate.id, label: candidate.label})
+        }
+      })
     }
 
-    this.page = Number(localStorage.getItem('page')) || 1
-    const offset = (this.page * 20) - 20
+    if (history.state.filter) {
+      const filter: string = history.state.filter
+      let idx = 0
+      let candidate = this.parts.find((i, index) => {
+        if (i.label === filter) {
+          idx = index
+          return true
+        }
+        return false
+      })
+      if (candidate) {
+        this.parts[idx].checked = true
+        this.selectedFilters.push({type: 'parts', value: candidate.id, label: candidate.label})
+      } else {
+        candidate = this.category.find((i, index) => {
+          if (i.label === filter) {
+            idx = index
+            return true
+          }
+          return false
+        })
+        if (candidate) {
+          this.category[idx].checked = true
+          this.selectedFilters.push({type: 'category', value: candidate.id, label: candidate.label})
+        }
+      }
+    }
 
     if (this.selectedFilters.length) {
       this.getDetailWithFilter(this.page, false, offset)
@@ -354,15 +429,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   }
 
-
   //-------------------------------------------Уничтожение компонента---------------------------------------------------
+
   ngOnDestroy(): void {
-    // Надо сделать так: Выбираем фильтры -> Смотрим товары и переходим на страницу с товаром ->
-    // -> Сохраняем выбранные фильтра и страницу -> На странице с товаром при кнопке назад переходим обратно в каталог ->
-    // -> Из переменных ставим сохраненные фильтра и страницу
-    // Важно: Если перейти из страницы с товаром в другую страницу то очистить сохраненные данные
-    // Временно: Очищаем данные
-    localStorage.removeItem('page')
   }
 
   //---------------------------------------------Действия с товаром-----------------------------------------------------

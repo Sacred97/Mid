@@ -462,6 +462,34 @@ export class UsersService {
 
   }
 
+  async analogNotifications() {
+    //Найти всех пользователей у которых есть оповещение о поступлении товара
+    const users = await this.userRepository.find()
+    if (!users) return
+
+    for (let u of users) {
+      const detailArr: {id: string, name: string, wId: number}[] = []
+
+      for (let w of u.waitingList.waitingItem) {
+        const max: number = Math.max(w.detail.storageGES, w.detail.storageOrlovka, w.detail.storageGarage2000)
+        if (max === -10) continue;
+        detailArr.push({id: w.detail.id, name: w.detail.name, wId: w.id})
+      }
+
+      if (!detailArr.length) continue;
+
+      //Отправить пользователю одно письмо с 1 или несколькими поступлениями
+
+
+      //Очистить лист ожидания
+      for (let d of detailArr) {
+        await this.waitingItemRepository.delete(d.wId)
+      }
+
+    }
+
+  }
+
   //------------------------------------------Товары в корзине (CartItem)-----------------------------------------------------------
 
   async createUpdateCartItem(userCredentials: User, cartItemData: CartItemDto) {
@@ -529,6 +557,7 @@ export class UsersService {
       SELECT SUM("c_i"."finalPrice") as totalCost, SUM("c_i"."finalWeight") as totalWeight
       FROM shopping_cart sh_c
       LEFT JOIN cart_item c_i ON c_i."shoppingCartId" = sh_c.id
+      WHERE sh_c.id = ${shoppingCartId}
     `)
     await this.shoppingCartRepository.update(shoppingCartId, {
       totalCost: result[0].totalcost | 0,

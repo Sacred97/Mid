@@ -14,6 +14,8 @@ import {RecentlyViewedService} from "../../../shared/services-interfaces/recentl
 import {HttpErrorResponse} from "@angular/common/http";
 import {MarkerService} from "../../../shared/services-interfaces/marker-service/marker.service";
 import { DomSanitizer } from '@angular/platform-browser';
+import {BannersService} from "../../../shared/services-interfaces/banners-service/banners.service";
+import {AdminBanner} from "../../../admin/interfaces/admin-banner.interface";
 
 @Component({
   selector: 'app-manufacturer-page',
@@ -23,6 +25,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ManufacturerPageComponent implements OnInit {
 
   constructor(private manufacturerService: ManufacturerService, private detailService: DetailService,
+              private bannersService: BannersService,
               public shoppingService: ShoppingCartService, public viewedService: RecentlyViewedService,
               public markerService: MarkerService, private breadcrumb: NgDynamicBreadcrumbService,
               private activatedRoute: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) {
@@ -33,38 +36,34 @@ export class ManufacturerPageComponent implements OnInit {
 
   //--------------------------------------------------Слайдеры----------------------------------------------------------
 
-  certificates = [
-    '../../../../assets/manufacturer/default-manufacturer.jpg',
-    '../../../../assets/manufacturer/default-manufacturer.jpg',
-    '../../../../assets/manufacturer/default-manufacturer.jpg',
-    '../../../../assets/manufacturer/default-manufacturer.jpg'
-  ]
-
-  banners = [
-    '../../../assets/catalog/banner.jpg',
-    '../../../assets/catalog/banner.jpg',
-    '../../../assets/catalog/banner.jpg',
-    '../../../assets/catalog/banner.jpg'
-  ]
+  banners: AdminBanner[] = []
 
   certificateConfig = {
     "slidesToShow": 1,
+    "slidesToScroll": 1,
     "dots": false,
     "arrows": true,
     "infinite": true,
-    "centerMode": false,
     "variableWidth": false,
-    "autoplay": false
+    "autoplay": true,
+    "autoplaySpeed": 10000
   }
 
   bannersConfig = {
     "slidesToShow": 1,
+    "slidesToScroll": 1,
     "dots": true,
     "arrows": true,
     "infinite": true,
-    "centerMode": false,
-    "variableWidth": false,
-    "autoplay": false
+    "variableWidth": true,
+    "autoplay": true,
+    "autoplaySpeed": 10000
+  }
+
+  slickInit(event: any) {
+    setTimeout(() => {
+      event.slick.setPosition()
+    }, 500)
   }
 
   //-------------------------------------------------Сортировка---------------------------------------------------------
@@ -215,22 +214,27 @@ export class ManufacturerPageComponent implements OnInit {
 
   //------------------------------------------------Поиск товара--------------------------------------------------------
 
-  searchList: DetailInterface[] = []
-
   search(event: Event) {
-    this.searchList = []
     const query = (event.target as HTMLInputElement).value
-    const filter: FilterRequest[] = this.assembleFilter()
-    this.detailService.getWithFilter(
-      filter, this.getSort(), this.getOrder(),
-      this.availability, this.recent, this.sale, this.popular,
-      query, '', 10, 0
-    ).then(data => {
-      this.searchList = data.items
-    }, error => {
-      console.log(error);
-      this.searchList = []
+    if (!query) return
+
+    // Отключаем букву если она есть
+    const letterCandidateIdx = this.letters.findIndex(i => i.checked = true)
+    if (letterCandidateIdx >= 0) this.letters[letterCandidateIdx].checked = false
+    // Чистим слово или букву, под типом letters может быть и Слово поиска (query)
+    const selectedCandidateIdx = this.selectedFilters.findIndex(i => i.type === 'letters')
+    if (selectedCandidateIdx >= 0) this.removeFilter(selectedCandidateIdx)
+
+    this.selectedFilters.push({type: 'letters', label: 'Поиск: ' + query, value: '-'})
+    this.letter = query
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute, queryParams: null, queryParamsHandling: null
+    }).then(() => {
+      this.page = 1
+      this.breadcrumb.updateBreadcrumbLabels({dynamicText: this.manufacturer!.nameCompany})
+      this.getDetails(this.page, false, 0)
     })
+
   }
 
   //----------------------------------------------Запросы на сервер-----------------------------------------------------
@@ -238,7 +242,7 @@ export class ManufacturerPageComponent implements OnInit {
   details: DetailInterface[] = []
   total: number = 0
   offsetEnd: boolean = false
-  page = 1
+  page = this.activatedRoute.snapshot.queryParams['p'] ? +this.activatedRoute.snapshot.queryParams['p'] : 1
   errorMessage: string = ''
   defaultImage: string = '../../assets/catalog/not-have-photo.jpg'
 
@@ -249,8 +253,19 @@ export class ManufacturerPageComponent implements OnInit {
 
   nextDetails(nextPage: number, onGetMore: boolean) {
     const offset: number = (nextPage * 20) - 20
-    this.getDetails(nextPage, onGetMore, offset)
-    if (!onGetMore) window.scrollTo({behavior: "smooth", top: 300})
+
+    if (onGetMore) {
+      this.getDetails(nextPage, onGetMore, offset)
+      return
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute, queryParams: {p: nextPage}, queryParamsHandling: "merge"
+    }).then(() => {
+      this.getDetails(nextPage, onGetMore, offset)
+      this.breadcrumb.updateBreadcrumbLabels({dynamicText: this.manufacturer!.nameCompany})
+    })
+
   }
 
   private getDetails(page: number, onGetMore: boolean, offset: number) {
@@ -263,7 +278,6 @@ export class ManufacturerPageComponent implements OnInit {
       .then(data => {
         this.total = data.count
         this.page = page
-        localStorage.setItem('m_page', page.toString())
         if (data.items.length) {
           this.paramsChange(data.items, onGetMore)
         } else {
@@ -296,31 +310,40 @@ export class ManufacturerPageComponent implements OnInit {
   //------------------------------------------Инициализация компонента--------------------------------------------------
 
   manufacturer: ManufacturerInterface | null = null
-  manufacturerId: number = 0
+  manufacturerId: number = +this.activatedRoute.snapshot.params['id']
 
-  ngOnInit(): void {
-    this.manufacturerId = +this.activatedRoute.snapshot.params['id']
+  async ngOnInit() {
 
-    this.manufacturerService.getFilters(this.manufacturerId)
-      .then(data => {
-        this.category = data.category
-        this.applicability = data.autoApplicability
-        this.parts = data.autoParts
-      }, error => {
-        console.log(error);
-      })
+    try {
+      this.banners = await this.bannersService.getBannerForPage(false)
+    } catch (error) {
+      console.log(error);
+    }
 
-    this.manufacturerService.getManufacturerById(this.manufacturerId)
-      .then(data => {
-        this.breadcrumb.updateBreadcrumbLabels({dynamicText: data.nameCompany})
-        this.manufacturer = data
-      }, error => {
-        console.log(error);
-        console.log('Произошла ошибка, вас отправило назад')
-        this.router.navigate(['/', 'manufacturer'])
-      })
+    try {
+      const response = await this.manufacturerService.getFilters(this.manufacturerId)
+      this.category = response.category
+      this.applicability = response.autoApplicability
+      this.parts = response.autoParts
+    } catch (error) {
+      console.log(error);
+    }
 
-    this.page = Number(localStorage.getItem('m_page')) || 1
+    try {
+      const response = await this.manufacturerService.getManufacturerById(this.manufacturerId)
+      const urls = [
+        {label: 'Главная', url: '/'},
+        {label: 'Каталог', url: '/catalog'},
+        {label: response.nameCompany, url: ''}
+      ]
+      this.breadcrumb.updateBreadcrumb(urls)
+      this.breadcrumb.updateBreadcrumbLabels({dynamicText: response.nameCompany})
+      this.manufacturer = response
+    } catch (error) {
+      console.log(error);
+      this.router.navigate(['/', 'manufacturer'])
+    }
+
     const offset = (this.page * 20) - 20
     this.getDetails(this.page, false, offset)
 
@@ -332,8 +355,18 @@ export class ManufacturerPageComponent implements OnInit {
 
   async increase(id: string, idx: number) {
     this.action = true
-    await this.shoppingService.increase(this.details, idx)
-    this.action = false
+    if (this.shoppingService.check(id)) {
+      await this.shoppingService.increase(this.details, idx)
+      this.action = false
+    } else {
+      try {
+        await this.shoppingService.addItem(id, this.details[idx].quantity)
+        await this.shoppingService.increase(this.details, idx)
+      } catch (error) {
+        console.log(error);
+      }
+      this.action = false
+    }
   }
 
   async decrease(id: string, idx: number) {

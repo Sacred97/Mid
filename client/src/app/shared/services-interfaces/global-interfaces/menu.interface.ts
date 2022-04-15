@@ -1,4 +1,5 @@
 export interface MenuInterface {
+  label: string
   usability: string
   detailByGroup: string[]
   imgSrc: string

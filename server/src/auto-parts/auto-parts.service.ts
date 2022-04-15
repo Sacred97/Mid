@@ -20,7 +20,8 @@ export class AutoPartsService {
             'FROM auto_parts a_p ' +
             'LEFT JOIN detail_auto_parts_auto_parts d ON cast(d."autoPartsId" as bigint) = a_p.id ' +
             'LEFT JOIN detail dt ON dt."id" = d."detailId" WHERE dt."isHide" != true ' +
-            'GROUP BY a_p.id ORDER BY a_p.id')
+            'GROUP BY a_p.id ORDER BY label'
+        )
     }
 
     async getAll() {

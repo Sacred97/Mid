@@ -8,6 +8,7 @@ import {
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AdminManufacturerUpdate} from "../../../interfaces/admin-manufacturer.interface";
 import { DomSanitizer } from '@angular/platform-browser';
+import tinymce from "tinymce";
 
 @Component({
   selector: 'app-admin-manufacturer-edit',
@@ -112,6 +113,7 @@ export class AdminManufacturerEditComponent implements OnInit {
       }, error => {
         console.log(error);
       })
+
   }
 
   //---------------------------------------------------DOM манипуляции--------------------------------------------------

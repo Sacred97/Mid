@@ -5,6 +5,7 @@ import {Express} from "express";
 import * as fs from 'fs'
 import * as path from 'path'
 import {PriceListGetDto} from "./dto/price-list-get.dto";
+import {PriceListUploadDto} from "./dto/price-list-upload.dto";
 
 
 @Injectable()
@@ -51,6 +52,25 @@ export class PriceListService {
             console.log(error);
             throw new HttpException('Произошла ошибка, повторите попытку', HttpStatus.INTERNAL_SERVER_ERROR)
         }
+    }
+
+    async uploadToServerFiles(data: PriceListUploadDto) {
+        try {
+            if (!fs.existsSync(path.join(__dirname, 'files'))) {
+                fs.mkdirSync(path.join(__dirname, 'files'))
+            }
+
+            const p = path.join(__dirname, 'files', data.fileName)
+
+            let buffer = Buffer.from(data.file, "base64")
+
+            fs.writeFileSync(p, buffer)
+            return {status: 201}
+        } catch (e) {
+            console.log(e);
+            throw new HttpException('Ошибка в загрузке', HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+
     }
 
 }

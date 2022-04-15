@@ -1,5 +1,6 @@
 <ng-template appRef></ng-template>
 <header>
+
   <nav class="navbar">
 
     <ul class="navbar__menu">
@@ -65,57 +66,51 @@
       </a>
     </div>
 
-    <a routerLink="/user/profile" *ngIf="userService.user$ | async as user; else no_user">
-      <img src="../../../../assets/user/my-profile-icon.svg" alt="Кабинет">
+    <a *ngIf="userService.user$ | async as user; else no_user" routerLink="/user/profile" >
+      <img src="../../../../assets/header/profile.svg" alt="">
+      <span>Кабинет</span>
     </a>
+
     <ng-template #no_user>
-      <div (click)="showAuthModal()">
-        <img src="../../../../assets/icon/auth.svg" alt="">
-      </div>
+      <button (click)="showAuthModal()">Войти</button>
     </ng-template>
   </div>
 
   <div class="search-bar">
-    <a routerLink="/" class="search-bar__logo">
-      <img src="../../../../assets/logo.png" alt="">
-    </a>
+    <a routerLink="/"><img src="../../../../assets/header/logo.svg" alt=""></a>
 
     <div class="search-bar__bar">
 
       <ul>
-<!--        <li><a routerLink="/catalog" [state]="{filter: 'recent'}">Новинки</a></li>-->
-<!--        <li><a routerLink="/catalog" [state]="{filter: 'popular'}">Рекомендуем</a></li>-->
-<!--        <li><a routerLink="/catalog" [state]="{filter: 'sale'}">Акции</a></li>-->
-        <li><a (click)="navigateToCatalogForFilter('popular')">Новинки</a></li>
-        <li><a (click)="navigateToCatalogForFilter('recent')">Рекомендуем</a></li>
-        <li><a (click)="navigateToCatalogForFilter('sale')">Акции</a></li>
+        <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'popular'})">Новинки</a></li>
+        <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'recent'})">Рекомендуем</a></li>
+        <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'sale'})">Акции</a></li>
         <li><a (click)="showGetPriceModal()">Получить прайс-лист</a></li>
         <li><a (click)="showSendPriceModal()">Отправить свой список</a></li>
-        <li><a (click)="showCityModal()"><img src="../../../../assets/icon/geoposition.svg" alt="">
+        <li><a (click)="showCityModal()"><img src="../../../../assets/header/geoposition.svg" alt="">
           <span>{{getCity()}}</span>
         </a></li>
       </ul>
 
-      <div>
+      <form>
         <input type="text" placeholder="Поиск по артикулу или названию" appDelayedInput (delayedInput)="search($event)"
-        [delayTime]="1000">
+               [delayTime]="500">
 
-        <button class="btn" (click)="toSearch($event)">
-          <img src="../../../../assets/icon/search.svg" alt="">
+        <ul>
+          <li *ngFor="let detail of searchingDetails; let idx=index">
+            <a (click)="onSamePage(['/', 'catalog', detail.id])">
+              <span>{{detail.name}}</span>
+              <span>{{detail.vendorCode}}</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="btn" (click)="toSearch($event)" type="submit">
+          <img src="../../../../assets/header/search.svg" alt="">
           <span>Поиск</span>
         </button>
 
-        <div class="search-bar__list" [style.display]=" isSearch ? 'block' : 'none' ">
-          <ul>
-            <li *ngFor="let detail of position; let idx=index" (click)="openDetail()">
-              <a [routerLink]="['/', 'catalog', detail.id]">
-                <span>{{detail.name}}</span>
-                <span>{{detail.vendorCode}}</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </form>
 
     </div>
   </div>
@@ -123,7 +118,7 @@
   <div class="catalog-bar">
 
     <div class="catalog-bar__catalog-menu">
-      <button (click)="addClassActive()" [disabled]="isDisabled">
+      <button (click)="dropDownMenu()" [disabled]="isDisabled">
         <div class="burger" [ngClass]="{active: active}">
           <span></span>
         </div>
@@ -132,39 +127,728 @@
 
       <ul [style.transform]="active?'scaleY(1)':'scaleY(0)'">
 
-        <li *ngFor="let using of detailMenu">
-          <a>
-            <div>
-              <img [src]="using.imgSrc" alt="">
-            </div>
-            <span>{{using.usability}}</span>
-          </a>
-          <div class="catalog-bar__drop-menu">
-
+<!--        <li *ngFor="let using of detailMenu">-->
+<!--          <a>-->
 <!--            <div>-->
-<!--              <span [style.color]="isViewOnGroup?'#373736':'#724684'">по виду</span>-->
-<!--              <button (click)="isViewOnGroup=!isViewOnGroup" [style.backgroundColor]="isViewOnGroup?'#724684':'#a1b0b8'">-->
-<!--                <span [style.left]="isViewOnGroup?'50%':'0%'"></span>-->
-<!--              </button>-->
-<!--              <span [style.color]="isViewOnGroup?'#724684':'#373736'">по группам</span>-->
+<!--              <img [src]="using.imgSrc" alt="">-->
 <!--            </div>-->
+<!--            <span>{{using.label}}</span>-->
+<!--          </a>-->
+<!--          <div class="catalog-bar__drop-menu">-->
 
-<!--            <ul [style.display]="isViewOnGroup?'none':'block'">-->
-<!--              <li *ngFor="let product of using.productGroup">-->
-<!--                <a routerLink="/catalog">-->
-<!--                  {{product.productName}}-->
-<!--                </a>-->
-<!--                <ul>-->
-<!--                  <li *ngFor="let category of product.category"><a routerLink="/catalog/byView">{{category}}</a></li>-->
-<!--                </ul>-->
+<!--&lt;!&ndash;            <div>&ndash;&gt;-->
+<!--&lt;!&ndash;              <span [style.color]="isViewOnGroup?'#373736':'#724684'">по виду</span>&ndash;&gt;-->
+<!--&lt;!&ndash;              <button (click)="isViewOnGroup=!isViewOnGroup" [style.backgroundColor]="isViewOnGroup?'#724684':'#a1b0b8'">&ndash;&gt;-->
+<!--&lt;!&ndash;                <span [style.left]="isViewOnGroup?'50%':'0%'"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;              </button>&ndash;&gt;-->
+<!--&lt;!&ndash;              <span [style.color]="isViewOnGroup?'#724684':'#373736'">по группам</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <ul [style.display]="isViewOnGroup?'none':'block'">&ndash;&gt;-->
+<!--&lt;!&ndash;              <li *ngFor="let product of using.productGroup">&ndash;&gt;-->
+<!--&lt;!&ndash;                <a routerLink="/catalog">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{product.productName}}&ndash;&gt;-->
+<!--&lt;!&ndash;                </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <li *ngFor="let category of product.category"><a routerLink="/catalog/byView">{{category}}</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;              </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            </ul>&ndash;&gt;-->
+
+<!--            <ul [style.display]="isViewOnGroup ? 'block' : 'none'">-->
+<!--              <li>-->
+<!--                <a routerLink="/catalog" [state]="{usability: using.usability}"><b>Все товары раздела</b></a>-->
+<!--              </li>-->
+<!--              <li *ngFor="let byGroup of using.detailByGroup">-->
+<!--                <a routerLink="/catalog" [state]="{usability: using.usability, filter: byGroup}">{{byGroup}}</a>-->
 <!--              </li>-->
 <!--            </ul>-->
 
-            <ul [style.display]="isViewOnGroup?'block':'none'">
-              <li><a routerLink="/"><b>Все товары раздела</b></a></li>
-              <li *ngFor="let byGroup of using.detailByGroup"><a routerLink="/">{{byGroup}}</a></li>
-            </ul>
+<!--          </div>-->
+<!--        </li>-->
 
+        <li>
+          <a>
+            <div>
+              <img src="../../../../assets/menu/KAMAZ.svg" alt="">
+            </div>
+            <span>Запчасти на а/м КАМАЗ</span>
+          </a>
+          <div class="catalog-bar__drop-menu">
+<!--            <div></div>-->
+<!--            <ul></ul>-->
+            <ul>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ'})">
+                  <b>Все товары раздела</b>
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '10. Двигатель'})">
+                  10. Двигатель
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '11. Система питания двигателя'})">
+                  11. Система питания двигателя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '12. Система выпуска газов двигателя'})">
+                  12. Система выпуска газов двигателя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '13. Система охлаждения'})">
+                  13. Система охлаждения
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '14. Система смазки'})">
+                  14. Система смазки
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '16. Сцепление'})">
+                  16. Сцепление
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '17. Коробка передач'})">
+                  17. Коробка передач
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '18. Коробка раздаточная'})">
+                  18. Коробка раздаточная
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '22. Передача карданная'})">
+                  22. Передача карданная
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '23. Мост передний (ведущий)'})">
+                  23. Мост передний (ведущий)
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '24. Мост задний'})">
+                  24. Мост задний
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '25. Мост средний (промежуточный)'})">
+                  25. Мост средний (промежуточный)
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '27. Устройство седельно-сцепное'})">
+                  27. Устройство седельно-сцепное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '28. Рама'})">
+                  28. Рама
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '29. Подвеска автомобиля'})">
+                  29. Подвеска автомобиля
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '30. Ось передняя, задняя для переднеприводных'})">
+                  30. Ось передняя, задняя для переднеприводных
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '31. Колеса, шины и ступицы'})">
+                  31. Колеса, шины и ступицы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '34. Управление рулевое'})">
+                  34. Управление рулевое
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '35. Тормоза'})">
+                  35. Тормоза
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '37. Электрооборудование'})">
+                  37. Электрооборудование
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '38. Приборы'})">
+                  38. Приборы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '39. Инструменты и принадлежности'})">
+                  39. Инструменты и принадлежности
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '42. Коробка отбора мощности'})">
+                  42. Коробка отбора мощности
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '45. Лебедка и принадлежности'})">
+                  45. Лебедка и принадлежности
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '46. Оборудование навесное'})">
+                  46. Оборудование навесное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '47. Оборудование дополнительное'})">
+                  47. Оборудование дополнительное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '50. Кабина'})">
+                  50. Кабина
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '51. Основание, пол кабины'})">
+                  51. Основание, пол кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '52. Окно ветровое и заднее'})">
+                  52. Окно ветровое и заднее
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '53. Передок кабины'})">
+                  53. Передок кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '54. Боковина кабины'})">
+                  54. Боковина кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '56. Задок кабины'})">
+                  56. Задок кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '57. Крыша кабины'})">
+                  57. Крыша кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '61. Дверь кабины передняя'})">
+                  61. Дверь кабины передняя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '62. Дверь задняя'})">
+                  62. Дверь задняя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '63. Дверь задка кузова'})">
+                  63. Дверь задка кузова
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '68. Сиденье водительское'})">
+                  68. Сиденье водительское
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '69. Сиденье пассажирское'})">
+                  69. Сиденье пассажирское
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '80. Оборудование специализированное'})">
+                  80. Оборудование специализированное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '81. Отопление и вентиляция кабины'})">
+                  81. Отопление и вентиляция кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '82. Принадлежности кабины'})">
+                  82. Принадлежности кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '84. Оперение кабины (капот, крылья, облицовка)'})">
+                  84. Оперение кабины (капот, крылья, облицовка)
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '85. Платформа'})">
+                  85. Платформа
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: '86. Устройство подъемное и опрокидывающее платформы'})">
+                  86. Устройство подъемное и опрокидывающее платформы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: 'Метизы'})">
+                  Метизы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: 'Подшипники'})">
+                  Подшипники
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ', filter: 'Ремни'})">
+                  Ремни
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a>
+            <div>
+              <img src="../../../../assets/menu/MAZ.svg" alt="">
+            </div>
+            <span>Запчасти на а/м МАЗ</span>
+          </a>
+          <div class="catalog-bar__drop-menu">
+            <!--            <div></div>-->
+            <!--            <ul></ul>-->
+            <ul>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м МАЗ'})">
+                  <b>Все товары раздела</b>
+                </a>
+              </li>
+              <li>
+                <a href="https://midkam.ru/catalog/maz">
+                  Раздел запчастей на автомобили МАЗ, к сожалению, пока доступен только на старом сайте
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a>
+            <div>
+              <img src="../../../../assets/menu/GAZ.svg" alt="">
+            </div>
+            <span>Запчасти на а/м ГАЗ и УАЗ</span>
+          </a>
+          <div class="catalog-bar__drop-menu">
+            <!--            <div></div>-->
+            <!--            <ul></ul>-->
+            <ul>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ'})">
+                  <b>Все товары раздела</b>
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '10. Двигатель'})">
+                  10. Двигатель
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '11. Система питания двигателя'})">
+                  11. Система питания двигателя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '12. Система выпуска газов двигателя'})">
+                  12. Система выпуска газов двигателя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '13. Система охлаждения'})">
+                  13. Система охлаждения
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '16. Сцепление'})">
+                  16. Сцепление
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '17. Коробка передач'})">
+                  17. Коробка передач
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '18. Коробка раздаточная'})">
+                  18. Коробка раздаточная
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '22. Передача карданная'})">
+                  22. Передача карданная
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '23. Мост передний (ведущий)'})">
+                  23. Мост передний (ведущий)
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '24. Мост задний'})">
+                  24. Мост задний
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '25. Мост средний (промежуточный)'})">
+                  25. Мост средний (промежуточный)
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '27. Устройство седельно-сцепное'})">
+                  27. Устройство седельно-сцепное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '28. Рама'})">
+                  28. Рама
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '29. Подвеска автомобиля'})">
+                  29. Подвеска автомобиля
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '30. Ось передняя, задняя для переднеприводных'})">
+                  30. Ось передняя, задняя для переднеприводных
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '31. Колеса, шины и ступицы'})">
+                  31. Колеса, шины и ступицы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '34. Управление рулевое'})">
+                  34. Управление рулевое
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '35. Тормоза'})">
+                  35. Тормоза
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '37. Электрооборудование'})">
+                  37. Электрооборудование
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '38. Приборы'})">
+                  38. Приборы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '39. Инструменты и принадлежности'})">
+                  39. Инструменты и принадлежности
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '42. Коробка отбора мощности'})">
+                  42. Коробка отбора мощности
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '45. Лебедка и принадлежности'})">
+                  45. Лебедка и принадлежности
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '46. Оборудование навесное'})">
+                  46. Оборудование навесное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '47. Оборудование дополнительное'})">
+                  47. Оборудование дополнительное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '50. Кабина'})">
+                  50. Кабина
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '51. Основание, пол кабины'})">
+                  51. Основание, пол кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '52. Окно ветровое и заднее'})">
+                  52. Окно ветровое и заднее
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '53. Передок кабины'})">
+                  53. Передок кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '54. Боковина кабины'})">
+                  54. Боковина кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '56. Задок кабины'})">
+                  56. Задок кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '57. Крыша кабины'})">
+                  57. Крыша кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '61. Дверь кабины передняя'})">
+                  61. Дверь кабины передняя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '62. Дверь задняя'})">
+                  62. Дверь задняя
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '63. Дверь задка кузова'})">
+                  63. Дверь задка кузова
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '68. Сиденье водительское'})">
+                  68. Сиденье водительское
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '69. Сиденье пассажирское'})">
+                  69. Сиденье пассажирское
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '80. Оборудование специализированное'})">
+                  80. Оборудование специализированное
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '81. Отопление и вентиляция кабины'})">
+                  81. Отопление и вентиляция кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '82. Принадлежности кабины'})">
+                  82. Принадлежности кабины
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '84. Оперение кабины (капот, крылья, облицовка)'})">
+                  84. Оперение кабины (капот, крылья, облицовка)
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '85. Платформа'})">
+                  85. Платформа
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '86. Устройство подъемное и опрокидывающее платформы'})">
+                  86. Устройство подъемное и опрокидывающее платформы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: 'Метизы'})">
+                  Метизы
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: 'Подшипники'})">
+                  Подшипники
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: 'Ремни'})">
+                  Ремни
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a>
+            <div>
+              <img src="../../../../assets/menu/PRIZEP.svg" alt="">
+            </div>
+            <span>Прицепы и полуприцепы</span>
+          </a>
+          <div class="catalog-bar__drop-menu">
+            <!--            <div></div>-->
+            <!--            <ul></ul>-->
+            <ul>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы АМКАР; Отечественные прицепы МАЗ; Отечественные прицепы НЕФАЗ; Отечественные прицепы ОДАЗ; Отечественные прицепы СЗАП; Отечественные прицепы ТОНАР; Отечественные прицепы ЧМЗАП'})">
+                  <b>Все товары раздела</b>
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы АМКАР'})">
+                  Запчасти для грузовых прицепов АМКАР
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы МАЗ'})">
+                  Запчасти для грузовых прицепов МАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы НЕФАЗ'})">
+                  Запчасти для грузовых прицепов НЕФАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы ОДАЗ'})">
+                  Запчасти для грузовых прицепов ОДАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы СЗАП'})">
+                  Запчасти для грузовых прицепов СЗАП
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы ТОНАР'})">
+                  Запчасти для грузовых прицепов ТОНАР
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы ЧМЗАП'})">
+                  Запчасти для грузовых прицепов ЧМЗАП
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a>
+            <div>
+              <img src="../../../../assets/menu/KRAZ_URAL.svg" alt="">
+            </div>
+            <span>Прочие отечественные автомобили</span>
+          </a>
+          <div class="catalog-bar__drop-menu">
+            <!--            <div></div>-->
+            <!--            <ul></ul>-->
+            <ul>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м БЕЛАЗ; Отечественные а/м ВАЗ; Отечественные а/м ЗИЛ; Отечественные а/м КРАЗ; Отечественные а/м МОАЗ; Отечественные а/м УРАЛ'})">
+                  <b>Все товары раздела</b>
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м БЕЛАЗ'})">
+                  Запчасти на а/м БЕЛАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ВАЗ'})">
+                  Запчасти на а/м ВАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ЗИЛ'})">
+                  Запчасти на а/м ЗИЛ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КРАЗ'})">
+                  Запчасти на а/м КРАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м МОАЗ'})">
+                  Запчасти на а/м МОАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м УРАЛ'})">
+                  Запчасти на а/м УРАЛ
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a>
+            <div>
+              <img src="../../../../assets/menu/KRAZ_URAL.svg" alt="">
+            </div>
+            <span>Запчасти на автобусы</span>
+          </a>
+          <div class="catalog-bar__drop-menu">
+            <!--            <div></div>-->
+            <!--            <ul></ul>-->
+            <ul>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б Волжанин; Отечественные а/б ИКАРУС; Отечественные а/б КАВЗ; Отечественные а/б ЛАЗ; Отечественные а/б ЛИАЗ; Отечественные а/б ПАЗ'})">
+                  <b>Все товары раздела</b>
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б Волжанин'})">
+                  Волжанин
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б ИКАРУС'})">
+                  ИКАРУС
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б КАВЗ'})">
+                  КАВЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б ЛАЗ'})">
+                  ЛАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б ЛИАЗ'})">
+                  ЛИАЗ
+                </a>
+              </li>
+              <li>
+                <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б ПАЗ'})">
+                  ПАЗ
+                </a>
+              </li>
+            </ul>
           </div>
         </li>
 
@@ -174,9 +858,9 @@
 
     <div class="catalog-bar__quick-filters">
 
-      <a routerLink="/type" routerLinkActive="catalog-bar__quick-filters_active"
+      <a routerLink="/catalog" routerLinkActive="catalog-bar__quick-filters_active"
          [routerLinkActiveOptions]="{exact: true}">
-        <img src="../../../../assets/quick-catalog-filter-1.png" alt="">
+        <img src="../../../../assets/header/quick-catalog-filter-1.png" alt="">
         <div>
           <span>Весь ассортимент</span>
           <b>по виду товара</b>
@@ -185,7 +869,7 @@
 
       <a routerLink="/parts" routerLinkActive="catalog-bar__quick-filters_active"
          [routerLinkActiveOptions]="{exact: true}">
-        <img src="../../../../assets/quick-catalog-filter-2.png" alt="">
+        <img src="../../../../assets/header/quick-catalog-filter-2.png" alt="">
         <div>
           <span>Автозапчасти</span>
           <b>по каталогу</b>
@@ -194,19 +878,21 @@
 
       <a routerLink="/manufacturer" routerLinkActive="catalog-bar__quick-filters_active"
          [routerLinkActiveOptions]="{exact: true}">
-        <img src="../../../../assets/quick-catalog-filter-3.png" alt="">
+        <img src="../../../../assets/header/quick-catalog-filter-3.png" alt="">
         <div>
           <span>Каталог</span>
           <b>по производителю</b>
         </div>
       </a>
 
-      <a routerLink="/catalog" routerLinkActive="catalog-bar__quick-filters_active"
-         [routerLinkActiveOptions]="{exact: true}">
-        <img src="../../../../assets/quick-catalog-filter-4.png" alt="">
+      <!--      <a routerLink="/catalog" routerLinkActive="catalog-bar__quick-filters_active"-->
+      <!--         [routerLinkActiveOptions]="{exact: true}">      -->
+      <a class="in-dev">
+        <img src="../../../../assets/header/quick-catalog-filter-4.png" alt="">
         <div>
           <span>Online</span>
           <b>автокаталог</b>
+          <small>В разработке</small>
         </div>
       </a>
 
@@ -218,13 +904,13 @@
 
 <div class="hidden-header" #hiddenHeader>
 
-  <div class="hidden-header__search-bar">
+  <div class="hidden-header__navbar">
 
-    <a routerLink="/" class="hidden-header__logo"><img src="../../../../assets/hidden-header-logo.png" alt=""></a>
+    <a routerLink="/" class="hidden-header__navbar__logo"><img src="../../../../assets/header/logo-hidden.svg" alt=""></a>
 
-    <div class="hidden-header__menu-button">
+    <div class="hidden-header__navbar__menu">
 
-      <button class="btn" (click)="addClassActiveHiddenHeader()" [disabled]="isDisabledHiddenHeader">
+      <button class="btn" (click)="dropDownMenuHidden()" [disabled]="isDisabledHiddenHeader">
         <div class="hidden-header-burger"[ngClass]="{activeHiddenHeader: activeHiddenHeader}">
           <span></span>
         </div>
@@ -232,29 +918,76 @@
       </button>
 
       <ul [style.transform]="activeHiddenHeader?'scaleY(1)':'scaleY(0)'">
-        <li *ngFor="let detail of detailMenu">
-          <a routerLink="/">
+
+        <li>
+          <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м КАМАЗ'})">
             <div>
-              <img [src]="detail.imgSrc" alt="">
+              <img src="../../../../assets/menu/KAMAZ.svg" alt="">
             </div>
-            <span>{{detail.usability}}</span>
+            <span>Запчасти на а/м КАМАЗ</span>
           </a>
         </li>
+
+        <li>
+          <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м МАЗ'})">
+            <div>
+              <img src="../../../../assets/menu/MAZ.svg" alt="">
+            </div>
+            <span>Запчасти на а/м МАЗ</span>
+          </a>
+        </li>
+
+        <li>
+          <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ'})">
+            <div>
+              <img src="../../../../assets/menu/GAZ.svg" alt="">
+            </div>
+            <span>Запчасти на а/м ГАЗ и УАЗ</span>
+          </a>
+        </li>
+
+        <li>
+          <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные прицепы АМКАР; Отечественные прицепы МАЗ; Отечественные прицепы НЕФАЗ; Отечественные прицепы ОДАЗ; Отечественные прицепы СЗАП; Отечественные прицепы ТОНАР; Отечественные прицепы ЧМЗАП'})">
+            <div>
+              <img src="../../../../assets/menu/PRIZEP.svg" alt="">
+            </div>
+            <span>Прицепы и полуприцепы</span>
+          </a>
+        </li>
+
+        <li>
+          <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/м БЕЛАЗ; Отечественные а/м ВАЗ; Отечественные а/м ЗИЛ; Отечественные а/м КРАЗ; Отечественные а/м МОАЗ; Отечественные а/м УРАЛ'})">
+            <div>
+              <img src="../../../../assets/menu/KRAZ_URAL.svg" alt="">
+            </div>
+            <span>Прочие отечественные автомобили</span>
+          </a>
+        </li>
+
+        <li>
+          <a (click)="onSamePage(['/', 'catalog'], {usability: 'Отечественные а/б Волжанин; Отечественные а/б ИКАРУС; Отечественные а/б КАВЗ; Отечественные а/б ЛАЗ; Отечественные а/б ЛИАЗ; Отечественные а/б ПАЗ'})">
+            <div>
+              <img src="../../../../assets/menu/KRAZ_URAL.svg" alt="">
+            </div>
+            <span>Запчасти на автобусы</span>
+          </a>
+        </li>
+
       </ul>
 
     </div>
 
-    <div class="hidden-header__input">
+    <div class="hidden-header__navbar__search">
       <input type="text" placeholder="Поиск по артикулу или названию">
       <button class="btn" (click)="toSearch($event)">
-        <img src="../../../../assets/icon/search.svg" alt="">
+        <img src="../../../../assets/header/search.svg" alt="">
         <span>Поиск</span>
       </button>
     </div>
 
-    <a class="hidden-header__phone" routerLink="tel:88007003132">8 800 700-31-32</a>
+    <a class="hidden-header__navbar__phone" routerLink="tel:88007003132">8 800 700-31-32</a>
 
-    <div class="hidden-header__bucket">
+    <div class="hidden-header__navbar__bucket">
       <span>Корзина</span>
       <div><span>{{shoppingCartService.itemsQuantity ? shoppingCartService.itemsQuantity : 0}}</span></div>
       <a routerLink="/shopping-cart">
@@ -263,73 +996,72 @@
       </a>
     </div>
 
-    <a routerLink="/user/profile" class="hidden-header__auth-modal"
+    <a class="hidden-header__navbar__profile" routerLink="/user/profile"
        *ngIf="userService.user$ | async as user; else no_user_hidden_header">
-      <img src="../../../../assets/user/my-profile-icon.svg" alt="Кабинет">
+      <img src="../../../../assets/header/profile.svg" alt="">
+      <span>Кабинет</span>
     </a>
+
     <ng-template #no_user_hidden_header>
-      <div class="hidden-header__auth-modal" (click)="showAuthModal()">
-        <img src="../../../../assets/icon/auth.svg" alt="">
-      </div>
+      <button class="hidden-header__navbar__login" (click)="showAuthModal()">Войти</button>
     </ng-template>
 
   </div>
 
 </div>
 
-<div class="quick-bar">
-  <a routerLink="/">
-    <img src="../../../../assets/marker.svg" alt="">
-    <span>Зайти в закладки</span>
-  </a>
-  <a routerLink="/">
-    <img src="../../../../assets/email.svg" alt="">
-    <span>Напиши нам</span>
-  </a>
-  <a routerLink="/">
-    <img src="../../../../assets/phone.svg" alt="">
-    <span>Позвони нам</span>
-  </a>
-</div>
+<!--<div class="quick-bar">-->
+<!--  <a routerLink="/">-->
+<!--    <img src="../../../../assets/header/marker.svg" alt="">-->
+<!--    <span>Зайти в закладки</span>-->
+<!--  </a>-->
+<!--  <a routerLink="/">-->
+<!--    <img src="../../../../assets/header/email.svg" alt="">-->
+<!--    <span>Напиши нам</span>-->
+<!--  </a>-->
+<!--  <a routerLink="/">-->
+<!--    <img src="../../../../assets/header/phone.svg" alt="">-->
+<!--    <span>Позвони нам</span>-->
+<!--  </a>-->
+<!--</div>-->
 
-<div class="arrow-to-start" (click)="goToStart()">
-</div>
+<div class="arrow-to-start" (click)="goToStart()"></div>
 
 <router-outlet></router-outlet>
 
 <footer>
 
-  <div class="footer-left">
-    <ul class="footer-left__list">
+  <div>
+
+    <ul>
       <li><a routerLink="/about">Компания</a></li>
       <li><a routerLink="/help">Покупателю</a></li>
       <li><a routerLink="/contacts">Контакты</a></li>
       <li><a routerLink="/supplier">Поставщикам</a></li>
       <li><a routerLink="/jobs">Вакансии</a></li>
     </ul>
-    <div class="footer-left__quick-catalog">
+
+    <div>
       <h1>Запасные части на грузовые автомобили</h1>
       <ul>
         <li>
           <a routerLink="/parts">Каталог <br> по группам</a>
         </li>
         <li>
-          <a routerLink="/type">Каталог <br> по виду товара</a>
+          <a routerLink="/catalog">Каталог <br> по виду товара</a>
         </li>
         <li>
           <a routerLink="/catalog">Онлайн <br> автокаталог</a>
         </li>
-<!--        <li>-->
-<!--          <a routerLink="/">Каталог <br> по алфавиту</a>-->
-<!--        </li>-->
         <li>
           <a routerLink="/manufacturer">Каталог <br> по производителю</a>
         </li>
       </ul>
     </div>
+
   </div>
 
-  <div class="footer-right">
+  <div>
 
     <ul>
       <li>

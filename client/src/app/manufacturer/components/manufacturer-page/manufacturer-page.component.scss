@@ -255,10 +255,31 @@
     width: 100%;
 
     .slick-slide {
+
       img {
-        width: 100%;
+        width: 99.9%;
       }
+
+      a {
+        display: block;
+        padding: 15px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #ffffff;
+        font-size: 14px;
+        line-height: 1;
+        font-weight: 300;
+        font-family: "Museo Sans Cyrl 300";
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
+
     }
+
   }
 
   &__quick-search {
@@ -272,10 +293,11 @@
     }
 
     > div:first-child {
+      flex-basis: 57%;
       display: flex;
       align-items: center;
       padding: 0 0 0 10px;
-      gap: 10px 4px;
+      gap: 10px 8px;
       background-color: $grey_easy;
       border-radius: 10px;
 
@@ -310,6 +332,7 @@
     }
 
     > div:last-child {
+      flex-basis: 35%;
       position: relative;
 
       input {
@@ -323,72 +346,8 @@
         font-family: 'Museo Sans Cyrl 300';
       }
 
-      ul {
-        visibility: hidden;
-        list-style: none;
-        position: absolute;
-        z-index: 10;
-        background-color: #ffffff;
-        top: 100%;
-        left: 0;
-        right: 0;
-        max-height: 300px;
-        overflow: auto;
-        box-shadow: 0 4px 11px rgba(0, 0, 0, .5);
-
-        &:hover {
-          visibility: visible;
-        }
-
-        li {
-          width: 100%;
-
-          a {
-            display: flex;
-            width: 100%;
-            padding: 10px;
-            color: $black;
-            font-size: 16px;
-            line-height: 1;
-            font-family: "Museo Sans Cyrl 300";
-
-            &:hover {
-              background-color: $yellow-hover;
-            }
-
-            div {
-              padding: 0 5px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              color: $black;
-              font-size: 14px;
-              line-height: 1;
-              font-family: "Museo Sans Cyrl 300";
-            }
-
-            > div:first-child {
-              flex-basis: 60%;
-            }
-
-            > div:nth-child(2) {
-              flex-basis: 20%;
-              text-align: center;
-            }
-
-            > div:last-child {
-              flex-basis: 20%;
-              text-align: center;
-            }
-          }
-        }
-
-      }
-
-      input:focus + ul {
-        visibility: visible;
-      }
     }
+
   }
 
   &__info {
@@ -717,9 +676,10 @@
     text-align: center;
 
     span {
-      color: $grey_easy-hover;
+      color: $grey_normal;
       font-size: 20px;
       line-height: 1;
+      font-weight: 500;
       font-family: "Museo Sans Cyrl 500";
     }
   }
@@ -738,11 +698,15 @@
     border-bottom: 2px solid $border_grey;
 
     &__image {
-      flex-basis: 21%;
       position: relative;
+      flex-basis: 21%;
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       img {
-        margin: 0 auto;
+        max-height: 180px;
         max-width: 100%;
       }
 
@@ -776,7 +740,7 @@
     }
 
     &__text {
-      flex-basis: 54%;
+      flex-basis: 52%;
       margin-left: 1%;
       padding-right: 1.5em;
       display: flex;
@@ -789,6 +753,7 @@
         color: $black;
         font-size: 17px;
         line-height: 1;
+        font-weight: 700;
         font-family: 'Museo Sans Cyrl 700';
 
         &:hover {
@@ -900,7 +865,7 @@
     }
 
     &__to-order {
-      flex-basis: 13%;
+      flex-basis: 15%;
       display: flex;
       margin-left: 1%;
       flex-direction: column;
@@ -916,6 +881,86 @@
         > div:first-child {
           width: 100px;
           height: 25px;
+
+          > ul {
+            visibility: hidden;
+            list-style: none;
+            position: absolute;
+            z-index: 4;
+            padding: 10px;
+            width: 400px;
+            right: 100%;
+            top: 0;
+            background-color: #ffffff;
+            box-shadow: 1px -1px 6px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+
+            li {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 5px 0;
+              border-bottom: 2px solid $grey_easy;
+
+              > div:first-child {
+                color: $black;
+                font-size: 12px;
+                line-height: 1;
+                font-weight: 300;
+                font-family: "Museo Sans Cyrl 300";
+              }
+
+              > div:last-child {
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                > span:first-child {
+                  margin-right: 6px;
+                  height: 8px;
+                  width: 4px;
+                  border-style: solid;
+                  border-width: 0 1px 1px 0;
+                  border-color: $green;
+                  transform: rotate(45deg);
+                }
+
+                > div:first-child {
+                  margin-right: 4px;
+                  color: red;
+                  font-size: 16px;
+                  line-height: 1;
+                  font-weight: 300;
+                }
+
+                > span:last-child {
+                  display: inline-block;
+                  color: $violet;
+                  font-size: 12px;
+                  line-height: 1;
+                  font-weight: 300;
+                  font-family: "Museo Sans Cyrl 300";
+                }
+
+              }
+
+            }
+
+            > li:first-child {
+              padding-top: 0;
+            }
+
+            > li:last-child {
+              border-bottom: none;
+              padding-bottom: 0;
+            }
+
+          }
+
+          &:hover > ul {
+            visibility: visible;
+          }
+
         }
 
         > div:last-child {
@@ -943,15 +988,17 @@
       }
 
       > span:nth-child(2) {
+        height: 70px;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+
         img {
           max-width: 100%;
           max-height: 70px;
-          margin: 0 auto;
         }
+
         span {
           display: -webkit-box;
           -webkit-line-clamp: 2;
@@ -961,8 +1008,10 @@
           color: $black;
           font-size: 12px;
           line-height: 1;
+          font-weight: 300;
           font-family: "Museo Sans Cyrl 300";
         }
+
       }
 
       > span:nth-child(3) {
@@ -971,7 +1020,7 @@
         color: $black;
         font-size: 21px;
         line-height: 1;
-        font-family: 'Museo Sans Cyrl 700';
+        font-family: 'Museo Sans Cyrl 700', Arial, sans-serif;
       }
 
       button {
@@ -1013,12 +1062,16 @@
     border-bottom: 2px solid $border_grey;
 
     &__image {
-      flex-basis: 8%;
       position: relative;
+      flex-basis: 8%;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       > img {
         max-width: 100%;
-        margin: 0 auto;
+        max-height: 70px;
       }
 
       &:hover > span {
@@ -1049,7 +1102,7 @@
 
     }
 
-    &__title{
+    &__title {
       flex-basis: 33%;
       display: flex;
       align-items: center;
@@ -1060,6 +1113,7 @@
         color: $black;
         font-size: 13px;
         line-height: 1;
+        font-weight: 700;
         font-family: 'Museo Sans Cyrl 700';
         &:hover {
           color: $black-hover;
@@ -1117,13 +1171,10 @@
       display: flex;
       align-items: center;
       padding-right: 5px;
-
-      span {
-        color: $black;
-        font-size: 15px;
-        line-height: 1;
-        font-family: 'Museo Sans Cyrl 700';
-      }
+      color: $black;
+      font-size: 15px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 700', Arial, sans-serif;
     }
 
     &__quantity {
@@ -1279,7 +1330,33 @@
   border: 3px solid $yellow;
   border-radius: 15px;
   width: 90%;
+  max-height: 90vh;
+  overflow: auto;
   background-color: #ffffff;
+
+  &::-webkit-scrollbar {
+    //это фон самого скроллбара
+    background-color: $grey_easy;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+
+  &::-webkit-scrollbar-button {
+    //кнопки направления на полосе прокрутки
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    //пустое пространство под индикатором прокрутки
+  }
+
+  &::-webkit-scrollbar-thumb {
+    //индикатор прокрутки, перетаскиваемый элемент.
+    background-color: $yellow;
+    border-top-right-radius: 11px;
+    border-bottom-right-radius: 11px;
+  }
+
 }
 
 .m-certificate-modal {

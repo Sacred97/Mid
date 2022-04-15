@@ -19,37 +19,47 @@ import {Express} from 'express'
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
 import {AdminGuard} from "../auth/guards/admin.guard";
 
-@Controller('banners')
+@Controller()
 export class BannersController {
 
     constructor(private readonly bannersService: BannersService) {
     }
 
-    @Get()
+    @Get('home-page')
+    async getHomePageBanners() {
+        return await this.bannersService.getPageBanners(true)
+    }
+
+    @Get('catalog-page')
+    async getCatalogPageBanners() {
+        return await this.bannersService.getPageBanners(false)
+    }
+
+    @Get('banners')
     async getBanners() {
         return await this.bannersService.getAllBanners()
     }
 
-    @Get(':id')
+    @Get('banners/:id')
     async getBanner(@Param() {id}: FindOneParams) {
         return await this.bannersService.getBanner(+id)
     }
 
     @UseGuards(JwtAuthGuard, AdminGuard)
     @UseInterceptors(FileInterceptor('file'))
-    @Post()
+    @Post('banners')
     async uploadBanner(@Body() data: BannerCreateDto, @UploadedFile() file: Express.Multer.File) {
         return await this.bannersService.uploadBanner(data, file)
     }
 
     @UseGuards(JwtAuthGuard, AdminGuard)
-    @Put()
+    @Put('banners')
     async updateBanner(@Body() data: BannerUpdateDto) {
         return await this.bannersService.updateBanner(data)
     }
 
     @UseGuards(JwtAuthGuard, AdminGuard)
-    @Delete(':id')
+    @Delete('banners/:id')
     async removeBanner(@Param() {id}: FindOneParams) {
         return await this.bannersService.removeBanner(+id)
     }

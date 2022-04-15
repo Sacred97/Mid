@@ -141,7 +141,452 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 
-//------------------------------------------------------Полоска наличия деталей------------------------------------------------------------
+//------------------------------------------------Вкладка Контактов-----------------------------------------------------
+
+.general-contacts {
+  width: 100%;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+
+  &__work-time {
+    width: 360px;
+
+    > div {
+      margin-bottom: 19px;
+      width: 100%;
+      display: flex;
+      align-items: start;
+
+      >div {
+        width: 30px;
+        height: 24px;
+
+        img {
+          display: block;
+          margin: 0 auto;
+          max-height: 24px;
+          max-width: 20px;
+        }
+
+      }
+
+      span {
+        display: block;
+        width: fit-content;
+        margin-left: 7px;
+        color: $black;
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 300;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+
+    }
+
+  }
+
+  &__contact-info {
+    flex-basis: calc(100% - 1% - 360px);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 48px 0;
+
+    > div {
+      flex-basis: 45%;
+
+      > span {
+        display: block;
+        margin-bottom: 9px;
+        width: fit-content;
+        color: $black;
+        font-size: 20px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+
+      small {
+        display: block;
+        width: fit-content;
+        margin-bottom: 20px;
+        color: $grey_normal;
+        font-size: 13px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+
+      div {
+        width: 100%;
+
+        a {
+          width: fit-content;
+          display: flex;
+          align-items: center;
+          margin-bottom: 12px;
+
+          img {
+            width: 21px;
+          }
+
+          span {
+            display: block;
+            margin-left: 9px;
+            color: $black;
+            font-size: 18px;
+            line-height: 1;
+            font-family: 'Museo Sans Cyrl 500';
+          }
+
+          &:hover > span {
+            text-decoration: underline;
+            color: $violet;
+          }
+
+        }
+
+        > a:last-child {
+          margin-bottom: 0;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+//------------------------------------------------Вид Списка Товара-----------------------------------------------------
+
+.detail-view-analog {
+  list-style: none;
+  width: 100%;
+
+  li {
+    display: flex;
+    width: 100%;
+    padding: 2px 0;
+    border-bottom: 2px solid $border_grey;
+  }
+
+  > li:first-child {
+    border-top: 2px solid $border_grey;
+  }
+
+  &__image {
+    flex-basis: 8%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+
+    > img {
+      max-height: 70px;
+      max-width: 100%;
+    }
+
+    &:hover > span {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    span {
+      visibility: hidden;
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      left: 100%;
+      display: block;
+      border-radius: 10px;
+      background-color: #ffffff;
+      opacity: 0;
+      box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.5s;
+
+      img {
+        max-width: 160px;
+        border-radius: 10px;
+        position: relative;
+        z-index: 3;
+      }
+    }
+
+  }
+
+  &__title {
+    flex-basis: 33%;
+    display: flex;
+    align-items: center;
+    padding-left: 7px;
+    padding-right: 34px;
+
+    a {
+      color: $black;
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: 'Museo Sans Cyrl 700';
+      &:hover {
+        color: $black-hover;
+      }
+    }
+
+  }
+
+  &__text {
+    flex-basis: 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: $grey_normal;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 500;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+  }
+
+  &__manufacturer {
+    flex-basis: 12%;
+    margin: 0 1%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      width: 100%;
+      display: flex;
+      align-items: center;
+
+      img {
+        margin: 0 auto;
+        max-width: 100%;
+        max-height: 70px;
+        opacity: 1;
+      }
+
+      &:hover {
+        img {
+          opacity: 0.7;
+        }
+        span {
+          color: $grey_normal-hover;
+        }
+      }
+
+    }
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: $grey_normal;
+      font-size: 12px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+  }
+
+  &__price {
+    flex-basis: 12%;
+    display: flex;
+    align-items: center;
+    padding-right: 5px;
+    color: $black;
+    font-size: 15px;
+    line-height: 1;
+    font-family: 'Museo Sans Cyrl 700', Arial, sans-serif;
+  }
+
+  &__quantity {
+    flex-basis: 11%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    > div:first-child {
+      width: 78px;
+      height: 25px;
+    }
+
+    div.marker {
+      position: relative;
+      width: 15px;
+      height: 25px;
+      border: 2px solid $yellow;
+      margin-left: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $yellow-hover !important;
+      }
+
+      span {
+        display: block;
+        position: absolute;
+        width: 9px;
+        height: 9px;
+        background-color: #ffffff;
+        bottom: -5px;
+        left: 1px;
+        transform: rotate(45deg);
+        border-top: 2px solid $yellow;
+        border-left: 2px solid $yellow;
+      }
+    }
+
+  }
+
+  &__to-order {
+    flex-basis: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 36px;
+      width: 100%;
+      max-width: 100px;
+      background-color: #ffffff;
+      border: 2px solid $yellow;
+      border-radius: 10px;
+      text-transform: uppercase;
+      color: $black;
+      font-size: 14px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 300';
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(255, 208, 28, 0.3);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+
+    > div {
+      width: 100%;
+      max-width: 100px;
+      height: 36px;
+      display: flex;
+
+      input, button {
+        width: 33.3%;
+        height: 100%;
+      }
+
+      input {
+        background-color: $yellow-hover;
+        color: $black;
+        font-size: 16px;
+        line-height: 1;
+        text-align: center;
+        font-family: 'Museo Sans Cyrl 500';
+        &:disabled {
+          background-color: $yellow-hover;
+        }
+      }
+
+      button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background-color: $yellow;
+        cursor: pointer;
+
+        &:before, span {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 40%;
+          height: 0;
+          border-top: 2px solid $black;
+        }
+        span {
+          transform: rotate(90deg);
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+
+      > button:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
+
+      > button:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+    }
+
+  }
+
+  //При указании этого класса нужно так же указать селектору LI класс analog-delete
+  &__delete {
+    flex-basis: 3%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    button {
+      width: fit-content;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: $grey_normal;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: "Museo Sans Cyrl 300";
+
+      &:hover {
+        color: $grey_normal-hover;
+      }
+    }
+
+  }
+
+}
+
+li.analog-delete {
+
+  > div:first-child {
+    flex-basis: 8%;
+  }
+
+  > div:nth-child(6) {
+    flex-basis: 9%;
+  }
+
+}
+
+
+//---------------------------------------------Полоска наличия деталей--------------------------------------------------
 
 .quantity-bar {
   position: relative;
@@ -170,6 +615,28 @@ input[type=number]::-webkit-outer-spin-button {
     font-family: 'Museo Sans Cyrl 500';
   }
 
+  > span, > small {
+    position: absolute;
+    color: $black;
+    z-index: 3;
+    line-height: 1;
+    font-weight: 500;
+    font-family: 'Museo Sans Cyrl 500';
+  }
+
+  > span {
+    font-size: 13px;
+  }
+
+  small.main {
+    left: 8px;
+  }
+
+  small.analog {
+    left: 5px;
+    font-size: 10px;
+  }
+
   .not-available {
     left: 8px;
   }
@@ -178,6 +645,7 @@ input[type=number]::-webkit-outer-spin-button {
     left: 5px;
     font-size: 10px;
   }
+
 }
 
 //----------------------------------------------------Задний фон Модального Окна-----------------------------------------------------------

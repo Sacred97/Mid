@@ -67,6 +67,7 @@ export class DetailsController {
   }
 
   //---------------------------------------------------Случайные товары-------------------------------------------------------------
+  //---------------------------------------Случайные товары популярных, новинок и распродаж-----------------------------
 
   // Случайные товары по производителю
   @Get('random')
@@ -78,6 +79,13 @@ export class DetailsController {
   @Post('random')
   async getDetailsByIds(@Body(new ParseArrayPipe({items: DetailIdDto})) ids: DetailIdDto[]) {
     return await this.detailsService.getDetailsByIds(ids)
+  }
+
+  //---------------------------------------Случайные товары популярных, новинок и распродаж-----------------------------
+
+  @Get('random-new-sale-recent')
+  async getRandomDetails() {
+    return await this.detailsService.getRandomDetailsForHomePage()
   }
 
   //---------------------------------------------------------Поиск------------------------------------------------------------------

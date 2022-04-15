@@ -47,53 +47,47 @@
       <small *ngIf="formAddError">Что-то пошло не так.</small>
     </form>
 
-    <div class="waiting-list__items" *ngIf="details.length && user">
+    <ul class="detail-view-analog" *ngIf="details.length && user">
 
-      <hr/>
+      <li class="analog-delete" *ngFor="let d of details; let idx = index">
 
-      <div *ngFor="let d of details; let idx = index">
-
-        <div class="waiting-list__items__image">
-          <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="Изображение">
+        <div class="detail-view-analog__image">
+          <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="">
           <span *ngIf="d.photoDetail.length">
               <img [src]="d.photoDetail[0].url">
             </span>
         </div>
 
-        <div class="waiting-list__items__title">
+        <div class="detail-view-analog__title">
           <a [routerLink]="['/', 'catalog', d.id]"
              (click)="viewedService.addToRecentlyViewed(d.id)">
             {{d.name}}
           </a>
         </div>
 
-        <div class="waiting-list__items__text">
+        <div class="detail-view-analog__text">
           <span>{{d.vendorCode}} / {{d.productCode}}</span>
         </div>
 
-        <div class="waiting-list__items__manufacturer">
-          <a [routerLink]="!!d.manufacturer ? ['/', 'manufacturer', d.manufacturer.id] : undefined">
-            <ng-container *ngIf="d.manufacturer; else without_manufacturer">
-              <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
-                <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
-              </ng-container>
-
-              <ng-template #without_logo>
-                <span>{{d.manufacturer!.nameCompany}}</span>
-              </ng-template>
+        <div class="detail-view-analog__manufacturer">
+          <a *ngIf="d.manufacturer; else without_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+            <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
+              <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
             </ng-container>
 
-            <ng-template #without_manufacturer>
-              <span>Производитель не указан</span>
+            <ng-template #without_logo>
+              <span>{{d.manufacturer!.nameCompany}}</span>
             </ng-template>
           </a>
+
+          <ng-template #without_manufacturer>
+            <span>Производитель не указан</span>
+          </ng-template>
         </div>
 
-        <div class="waiting-list__items__price">
-          <span>{{cartService.toCurrency(d.price)}}</span>
-        </div>
+        <div class="detail-view-analog__price">{{cartService.toCurrency(d.price)}}</div>
 
-        <div class="waiting-list__items__quantity">
+        <div class="detail-view-analog__quantity">
           <div class="quantity-bar">
             <div [style.width]="d.quantityRatio + '%'"
                  [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
@@ -106,7 +100,7 @@
           </div>
         </div>
 
-        <div class="waiting-list__items__to-order">
+        <div class="detail-view-analog__to-order">
           <div *ngIf="cartService.check(d.id); else to_cart">
             <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
             <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
@@ -117,13 +111,13 @@
           </ng-template>
         </div>
 
-        <div class="waiting-list__items__delete">
+        <div class="detail-view-analog__delete">
           <button (click)="removeFromWaitingList(d.id, idx)">&#xd7;</button>
         </div>
 
-      </div>
+      </li>
 
-    </div>
+    </ul>
 
   </div>
 

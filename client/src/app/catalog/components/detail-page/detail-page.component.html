@@ -302,7 +302,7 @@
         <div>
           <div>
             <div>
-              <img src="../../../../assets/detail-cart/pickup.svg" alt="">
+              <img src="../../../../assets/general-icon/pickup.svg" alt="">
             </div>
           </div>
           <div>
@@ -322,7 +322,7 @@
         <div>
           <div>
             <div>
-              <img src="../../../../assets/detail-cart/delivery.svg" alt="">
+              <img src="../../../../assets/general-icon/delivery.svg" alt="">
             </div>
           </div>
           <div>
@@ -360,7 +360,7 @@
         <div>
           <div>
             <div>
-              <img src="../../../../assets/detail-cart/payment-cash.svg" alt="">
+              <img src="../../../../assets/general-icon/payment-cash.svg" alt="">
             </div>
           </div>
           <div>
@@ -374,7 +374,7 @@
         <div>
           <div>
             <div>
-              <img src="../../../../assets/detail-cart/payment-card-in-shop.svg" alt="">
+              <img src="../../../../assets/general-icon/payment-card-in-shop.svg" alt="">
             </div>
           </div>
           <div>
@@ -390,7 +390,7 @@
         <div>
           <div>
             <div>
-              <img src="../../../../assets/detail-cart/wire-transfer.svg" alt="">
+              <img src="../../../../assets/general-icon/wire-transfer.svg" alt="">
             </div>
           </div>
           <div>
@@ -412,7 +412,7 @@
         <div>
           <div>
             <div>
-              <img src="../../../../assets/detail-cart/payment-card-on-site.svg" alt="">
+              <img src="../../../../assets/general-icon/payment-card-on-site.svg" alt="">
             </div>
           </div>
           <div>
@@ -451,8 +451,7 @@
                 <span></span>
                 <span></span>
               </div>
-              <img [src]="slide.photoDetail.length > 0 ? slide.photoDetail[0].url
-              : '../../../../assets/home/logo-on-details.jpg'"
+              <img [src]="slide.photoDetail.length > 0 ? slide.photoDetail[0].url : defaultImg"
                    [style.maxWidth]="slideWidth*0.7+'px'">
               <a [routerLink]="['/', 'manufacturer', detail.manufacturer.id]"
                  *ngIf="detail.manufacturer.logoCompanyUrl">
@@ -507,9 +506,8 @@
             <div>
               <div [style.backgroundColor]="slide.marked ? '#fdcb00' : '#ffffff'"
                    (click)="markByArray(recentlyViewed, idx, detailsByManufacturer)"></div>
-              <img [src]="slide.photoDetail && slide.photoDetail.length > 0 && !!slide.photoDetail[0].url
-                ? slide.photoDetail[0].url : '../../../../assets/home/logo-on-details.jpg'"
-                [style.maxWidth]="slideWidth*0.7+'px'">
+              <img [src]="slide.photoDetail.length > 0 ? slide.photoDetail[0].url : defaultImg"
+                [style.maxWidth]="slideWidth * 0.7 + 'px'">
               <a [routerLink]="['/', 'manufacturer', slide.manufacturer.id]"
                  *ngIf="slide.manufacturer && slide.manufacturer.logoCompanyUrl">
                 <img [src]="slide.manufacturer.logoCompanyUrl">

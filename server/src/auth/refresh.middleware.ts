@@ -21,9 +21,17 @@ export class RefreshMiddleware implements NestMiddleware {
     const authToken: string = req.cookies.Authentication
 
     let expirationTime: number = 0
+    const onRefreshTime: number = 0
     if (!!authToken) {
       const data: any = this.jwtService.decode(authToken, {json: true})
       expirationTime = data.exp - (Date.now()/1000)
+
+      // const raznicaVChasah = ((data.exp - (Date.now() / 1000)) / 60) / 60
+      // const sravnenie = 12
+      //
+      // console.log(raznicaVChasah)
+      // console.log(sravnenie)
+
     }
 
     if ( (!!refreshToken && !authToken) || (!!refreshToken && !!authToken && expirationTime < 10)) {

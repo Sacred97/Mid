@@ -136,11 +136,11 @@
 
   <div class="catalog">
 
-    <ngx-slick-carousel class="slick-slider-main-class catalog-banners" [config]="bannersConfig">
-      <div ngxSlickItem *ngFor="let banner of banners" class="slide">
-<!--        <a routerLink="/">-->
-          <img [src]="banner.src" alt="">
-<!--        </a>-->
+    <ngx-slick-carousel class="slick-slider-main-class catalog-banners" [config]="bannersConfig"
+                        (init)="slickInit($event)">
+      <div ngxSlickItem *ngFor="let b of banners" class="slide">
+        <img [src]="b.url" alt="">
+        <a *ngIf="b.pageReference" [href]="b.pageReference">Узнать подробнее</a>
       </div>
     </ngx-slick-carousel>
 
@@ -154,17 +154,7 @@
       </div>
 
       <div>
-        <input type="text" placeholder="Поиск по разделу"
-               appDelayedInput [delayTime]="1000" (delayedInput)="search($event)">
-        <ul>
-          <li *ngFor="let i of searchList">
-            <a [routerLink]="['/', 'catalog', i.id]">
-              <div>{{i.name}}</div>
-              <div>{{i.vendorCode}}</div>
-              <div>{{shoppingService.toCurrency(i.price)}}</div>
-            </a>
-          </li>
-        </ul>
+        <input type="text" placeholder="Поиск по разделу" (keyup.enter)="search($event)">
       </div>
 
     </div>
@@ -296,15 +286,107 @@
                 </div>
                 <span *ngIf="d.quantityRatio; else no_available_main">в наличии</span>
                 <ng-template #no_available_main><span class="not-available">нет в наличии</span></ng-template>
+                <ul>
+                  <li>
+                    <div>
+                        пр. Казанский, 123 <br/>
+                        Сидоровка
+                    </div>
+                    <div *ngIf="d.storageGES >= 70">
+                      <span></span>
+                      <span>Очень много</span>
+                    </div>
+                    <div *ngIf="d.storageGES >= 50 && d.storageGES < 70">
+                      <span></span>
+                      <span>Много</span>
+                    </div>
+                    <div *ngIf="d.storageGES >= 20 && d.storageGES < 50">
+                      <span></span>
+                      <span>Достаточно</span>
+                    </div>
+                    <div *ngIf="d.storageGES >= 10 && d.storageGES < 20">
+                      <span></span>
+                      <span>Мало</span>
+                    </div>
+                    <div *ngIf="d.storageGES >= 0 && d.storageGES < 10">
+                      <span></span>
+                      <span>Очень много</span>
+                    </div>
+                    <div *ngIf="d.storageGES < 0">
+                      <div>&#xd7;</div>
+                      <span>Нет в наличии</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      ул. Центральная, 186 <br/>
+                      Орловка
+                    </div>
+                    <div *ngIf="d.storageOrlovka >= 70">
+                      <span></span>
+                      <span>Очень много</span>
+                    </div>
+                    <div *ngIf="d.storageOrlovka >= 50 && d.storageOrlovka < 70">
+                      <span></span>
+                      <span>Много</span>
+                    </div>
+                    <div *ngIf="d.storageOrlovka >= 20 && d.storageOrlovka < 50">
+                      <span></span>
+                      <span>Достаточно</span>
+                    </div>
+                    <div *ngIf="d.storageOrlovka >= 10 && d.storageOrlovka < 20">
+                      <span></span>
+                      <span>Мало</span>
+                    </div>
+                    <div *ngIf="d.storageOrlovka >= 0 && d.storageOrlovka < 10">
+                      <span></span>
+                      <span>Очень много</span>
+                    </div>
+                    <div *ngIf="d.storageOrlovka < 0">
+                      <div>&#xd7;</div>
+                      <span>Нет в наличии</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      пр. Казанский, 224/4 блок 4 <br/>
+                      "Гараж-2000"
+                    </div>
+                    <div *ngIf="d.storageGarage2000 >= 70">
+                      <span></span>
+                      <span>Очень много</span>
+                    </div>
+                    <div *ngIf="d.storageGarage2000 >= 50 && d.storageGarage2000 < 70">
+                      <span></span>
+                      <span>Много</span>
+                    </div>
+                    <div *ngIf="d.storageGarage2000 >= 20 && d.storageGarage2000 < 50">
+                      <span></span>
+                      <span>Достаточно</span>
+                    </div>
+                    <div *ngIf="d.storageGarage2000 >= 10 && d.storageGarage2000 < 20">
+                      <span></span>
+                      <span>Мало</span>
+                    </div>
+                    <div *ngIf="d.storageGarage2000 >= 0 && d.storageGarage2000 < 10">
+                      <span></span>
+                      <span>Очень много</span>
+                    </div>
+                    <div *ngIf="d.storageGarage2000 < 0">
+                      <div>&#xd7;</div>
+                      <span>Нет в наличии</span>
+                    </div>
+                  </li>
+                </ul>
               </div>
               <div (click)="mark(d.id, idx)" [style.backgroundColor]="d.marked ? '#fdcb00' : '#ffffff'">
                 <span></span>
               </div>
             </div>
 
-            <a [routerLink]="!!d.manufacturer ? ['/', 'manufacturer', d.manufacturer.id] : undefined">
+            <div>
 
-              <ng-container *ngIf="d.manufacturer; else without_manufacturer">
+              <a *ngIf="d.manufacturer; else without_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
                 <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else manufacturer_no_logo">
                   <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
                 </ng-container>
@@ -312,13 +394,13 @@
                 <ng-template #manufacturer_no_logo>
                   <span>{{d.manufacturer!.nameCompany}}</span>
                 </ng-template>
-              </ng-container>
+              </a>
 
               <ng-template #without_manufacturer>
                 <span>Производитель не указан</span>
               </ng-template>
 
-            </a>
+            </div>
 
             <span>{{shoppingService.toCurrency(d.price)}}</span>
 
@@ -372,7 +454,7 @@
           </div>
 
           <div class="catalog__display-analog__price">
-            <span>{{shoppingService.toCurrency(d.price)}}</span>
+            {{shoppingService.toCurrency(d.price)}}
           </div>
 
           <div class="catalog__display-analog__quantity">
@@ -405,13 +487,13 @@
       </li>
 
       <li class="catalog__result__more">
-        <button (click)="nextPackage(page + 1, true)"
+        <button (click)="changePage(page + 1, true)"
                 [disabled]="offsetEnd || action">
           Показать еще
         </button>
       </li>
 
-      <pagination-controls class="pagination" (pageChange)="nextPackage($event, false)"
+      <pagination-controls class="pagination" (pageChange)="changePage($event, false)"
                            previousLabel="" nextLabel="" [maxSize]="9">
       </pagination-controls>
     </ul>

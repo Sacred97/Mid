@@ -20,20 +20,81 @@
         </span>
         <a [routerLink]="['/', 'catalog', h.detailCart]" *ngIf="h.detailCart">{{getDetailName(h.detailCart)}}</a>
       </li>
-
-      <button (click)="dropDownHistory($event)">
-        <div></div>
-        <span>Раскрыть</span>
-      </button>
     </ul>
+    <button (click)="dropDownHistory($event)">
+      <div></div>
+      <span>Раскрыть</span>
+    </button>
   </div>
 
-  <ul>
-    <h1>Недавно просмотренные товары</h1>
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
+  <h1>Недавно просмотренные товары</h1>
+
+  <ul class="detail-view-analog">
+
+    <li *ngFor="let d of details; let idx = index">
+
+      <div class="detail-view-analog__image">
+        <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="">
+        <span *ngIf="d.photoDetail.length">
+              <img [src]="d.photoDetail[0].url">
+            </span>
+      </div>
+
+      <div class="detail-view-analog__title">
+        <a [routerLink]="['/', 'catalog', d.id]">{{d.name}}</a>
+      </div>
+
+      <div class="detail-view-analog__text">
+        <span>{{d.vendorCode}} / {{d.productCode}}</span>
+      </div>
+
+      <div class="detail-view-analog__manufacturer">
+        <a *ngIf="d.manufacturer; else without_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+          <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
+            <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+          </ng-container>
+
+          <ng-template #without_logo>
+            <span>{{d.manufacturer.nameCompany}}</span>
+          </ng-template>
+        </a>
+
+        <ng-template #without_manufacturer>
+          <span>Производитель не указан</span>
+        </ng-template>
+      </div>
+
+      <div class="detail-view-analog__price">{{cartService.toCurrency(d.price)}}</div>
+
+      <div class="detail-view-analog__quantity">
+        <div class="quantity-bar">
+          <div [style.width]="d.quantityRatio + '%'"
+               [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+               [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+          </div>
+          <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+          <ng-template #no_available_analog_view>
+            <small class="analog">нет в наличии</small>
+          </ng-template>
+        </div>
+
+        <div class="marker" (click)="mark(d.id, idx)" [style.backgroundColor]="d.marked ? '#fdcb00' : '#ffffff'">
+          <span></span>
+        </div>
+      </div>
+
+      <div class="detail-view-analog__to-order">
+        <div *ngIf="cartService.check(d.id); else to_cart">
+          <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+          <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
+          <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+        </div>
+        <ng-template #to_cart>
+          <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
+        </ng-template>
+      </div>
+
+    </li>
   </ul>
 
 </div>

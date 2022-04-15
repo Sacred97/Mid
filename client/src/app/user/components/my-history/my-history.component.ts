@@ -8,6 +8,9 @@ import {ShoppingCartService} from "../../../shared/services-interfaces/shopping-
 import {DetailService} from "../../../shared/services-interfaces/detail-service/detail.service";
 import {DetailInterface} from "../../../shared/services-interfaces/detail-service/detail.interface";
 import {DetailIdInterface} from "../../../shared/services-interfaces/global-interfaces/detail-id.interface";
+import {RecentlyViewedService} from "../../../shared/services-interfaces/recently-viewed-service/recently-viewed.service";
+import {HttpErrorResponse} from "@angular/common/http";
+import {MarkerService} from "../../../shared/services-interfaces/marker-service/marker.service";
 
 @Component({
   selector: 'app-my-history',
@@ -17,7 +20,11 @@ import {DetailIdInterface} from "../../../shared/services-interfaces/global-inte
 export class MyHistoryComponent implements OnInit {
 
   constructor(private userService: UserService, private detailService: DetailService,
-              public cartService: ShoppingCartService) { }
+              public cartService: ShoppingCartService, private viewedService: RecentlyViewedService,
+              private markerService: MarkerService) {
+  }
+
+  defaultImage: string = '../../../../assets/catalog/not-have-photo.jpg'
 
   user: UserInterface | null = null
   detailsInRequestHistory: DetailInterface[] = []
@@ -39,9 +46,66 @@ export class MyHistoryComponent implements OnInit {
       console.log(error);
     }
 
-
+    try {
+      this.details = await this.viewedService.getRecentlyViewedDetails()
+      this.cartService.recountQuantity(this.details)
+    } catch (error) {
+      console.log(error);
+    }
 
   }
+
+  //--------------------------------------------------------------------------------------------------------------------
+
+  mark(id: string, idx: number) {
+    this.markerService.markAndUnmark(this.details, id, idx)
+  }
+
+  async increase(id: string, idx: number) {
+    this.action = true
+    await this.cartService.increase(this.details, idx)
+    this.action = false
+  }
+
+  async decrease(id: string, idx: number) {
+    this.action = true
+    await this.cartService.decrease(this.details, idx)
+    this.action = false
+  }
+
+  manualInput(event: Event, id: string, idx: number) {
+    const $target = event.target as HTMLInputElement
+    if (+$target.value < 1) {
+      $target.value = '1'
+    }
+    this.details[idx].quantity = +$target.value
+    if (this.cartService.check(id)) {
+      this.action = true
+      this.cartService.changes(id, +$target.value)
+        .catch(error => {
+          console.log(error);
+          $target.value = '1'
+          this.details[idx].quantity = 1
+        })
+        .finally(() => {
+          this.action = false
+        })
+    }
+  }
+
+
+  addProduct(id: string, idx: number) {
+    this.action = true
+    this.cartService.addItem(id, this.details[idx].quantity)
+      .catch((error: HttpErrorResponse) => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.action = false
+      })
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
 
   getCurrentDay() {
     const date = new Date()
@@ -73,16 +137,16 @@ export class MyHistoryComponent implements OnInit {
   }
 
   dropDownHistory(event: Event) {
-    const $target = event.currentTarget as HTMLButtonElement
-    const $list = $target.parentElement
-    if (!$list) return;
+    const $target = (event.currentTarget as HTMLButtonElement)
+    const $parent = $target.parentElement
+    if (!$parent) return;
     if (this.maxView) {
-      $list.classList.remove('drop')
+      $parent.classList.remove('drop')
       setTimeout(() => {
         this.maxView = !this.maxView
       }, 1400)
     } else {
-      $list.classList.add('drop')
+      $parent.classList.add('drop')
       this.maxView = !this.maxView
     }
   }

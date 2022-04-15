@@ -55,6 +55,8 @@ export class DetailPageComponent implements OnInit {
     "autoplay": true
   }
 
+  defaultImg: string = '../../../../assets/general-icon/no-photo.jpg'
+
   //------------------------------------------Инициализация компонента--------------------------------------------------
 
   detail!: DetailInterface

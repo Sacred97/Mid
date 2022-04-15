@@ -145,6 +145,34 @@ export class DetailsService {
     return items
   }
 
+  async getRandomDetailsForHomePage() {
+    const saleCount = await this.detailRepository.count({where: {isSale: true}})
+    const saleRandomOffset = saleCount <= 10 ? 0 : Math.round(Math.random() * (saleCount - 10))
+    const saleDetails = await this.detailRepository.find({
+      where: {isSale: true},
+      skip: saleRandomOffset,
+      take: 10
+    })
+
+    const recentCount = await this.detailRepository.count({where: {isPopular: true}})
+    const recentRandomOffset = recentCount <= 10 ? 0 : Math.round(Math.random() * (recentCount - 10))
+    const recentDetails = await this.detailRepository.find({
+      where: {isPopular: true},
+      skip: recentRandomOffset,
+      take: 10
+    })
+
+    const newCount = await this.detailRepository.count({where: {isNewDetail: true}})
+    const newRandomOffset = newCount <= 10 ? 0 : Math.round(Math.random() * (newCount - 10))
+    const newDetails = await this.detailRepository.find({
+      where: {isNewDetail: true},
+      skip: newRandomOffset,
+      take: 10
+    })
+
+    return {new: newDetails, recent: recentDetails, sale: saleDetails}
+  }
+
   //--------------------------------------------------Автомат фильтра---------------------------------------------------------------
 
   async getFiltersWithCount() {
@@ -164,12 +192,13 @@ export class DetailsService {
 
   async getSearchedDetail(queryRequest: string, limit: number = 10, offset: number = 0) {
 
-    const query: string = `detail.name ILIKE '%${queryRequest}%' OR 
+    const query: string = `detail.isHide = false AND (
+      detail.name ILIKE '%${queryRequest}%' OR 
       detail.vendorCode ILIKE '%${queryRequest}%' OR 
       alternative_name.shortName ILIKE '%${queryRequest}%' OR 
       additional_vendor_code.shortName ILIKE '%${queryRequest}%' OR 
-      key_words.shortName ILIKE '%${queryRequest}%' AND 
-      detail.isHide != true`
+      key_words.shortName ILIKE '%${queryRequest}%'
+      )`
 
     const [items, count] = await getRepository(Detail).createQueryBuilder('detail')
         .leftJoinAndSelect('detail.photoDetail', 'photo_detail')

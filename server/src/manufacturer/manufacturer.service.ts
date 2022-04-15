@@ -3,7 +3,7 @@ import {FilesService} from "../files/files.service";
 import {CountryService} from "./country/country.service";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Manufacturer} from "./entity/manufacturer.entity";
-import {ILike, Repository} from "typeorm";
+import {ILike, IsNull, Not, Repository} from "typeorm";
 import {ManufacturerCreateDto} from "./dto/manufacturer-create.dto";
 import {ManufacturerUpdateDto} from "./dto/manufacturer-update.dto";
 import {Express} from 'express'
@@ -95,6 +95,17 @@ export class ManufacturerService {
         return relations ? ['country'] : []
     }
 
+    async getRandomManufacturer() {
+        const count = await this.manufacturerRepository.count({where: {logoCompanyUrl: true}})
+        const offset = count <= 50 ? 0 : Math.round(Math.random() * (count - 50))
+        return await this.manufacturerRepository.find({
+            where: {logoCompanyUrl: Not(IsNull())},
+            select: ['id', 'nameCompany', 'shortName', 'logoCompanyUrl'],
+            take: 50,
+            skip: offset
+        })
+    }
+
     async getAllWithLimit(offset: number = 0, limit: number = 20) {
         const query: string = 'detail.isHide != true'
         const [items, count] = await this.manufacturerRepository.createQueryBuilder('manufacturer')
@@ -131,7 +142,7 @@ export class ManufacturerService {
             'FROM manufacturer m ' +
             'LEFT JOIN detail d ON d."manufacturerId" = m.id ' +
             'WHERE d."isHide" != true ' +
-            'GROUP BY m.id ORDER BY m.id'
+            'GROUP BY m.id ORDER BY label'
         return await this.manufacturerRepository.query(query)
     }
 

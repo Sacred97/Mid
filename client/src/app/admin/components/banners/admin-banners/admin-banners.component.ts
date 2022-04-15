@@ -102,12 +102,12 @@ export class AdminBannersComponent implements OnInit {
 
   imageChangedEvent: any = '';
   croppedImage: any = '';
-  aspectRatio: number = 16 / 3
+  aspectRatio: number = 16 / 2
   uncorrectedFile: boolean = true
 
   bannerStatusChange(event: Event) {
     const $target = event.currentTarget as HTMLInputElement
-    $target.checked ? this.aspectRatio = 16 / 9 : this.aspectRatio = 16 / 3
+    $target.checked ? this.aspectRatio = 16 / 6 : this.aspectRatio = 16 / 2
   }
 
   fileChangeEvent(event: Event): void {

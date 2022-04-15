@@ -61,3 +61,9 @@ export interface PhotoDetailInterface {
   url: string
   isMain: boolean
 }
+
+export interface PackageDetailsForHomPage {
+  new: DetailInterface[]
+  recent: DetailInterface[]
+  sale: DetailInterface[]
+}

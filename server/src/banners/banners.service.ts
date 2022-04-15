@@ -14,6 +14,13 @@ export class BannersService {
                 private readonly filesService: FilesService) {
     }
 
+    async getPageBanners(homePage: boolean) {
+        return await this.bannersRepository.find({
+            where: {homePage: homePage},
+            order: {serialNumber: "ASC"}
+        })
+    }
+
     async getAllBanners() {
         const banners = await this.bannersRepository.find()
         return banners.sort((a, b) => {

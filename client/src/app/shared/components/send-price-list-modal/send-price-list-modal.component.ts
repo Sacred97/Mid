@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-send-price-list-modal',
@@ -22,11 +23,7 @@ export class SendPriceListModalComponent implements OnInit, OnDestroy {
   file: File | null = null
 
   constructor(private http: HttpClient) {
-
   }
-
-  private hostname: string = 'http://midkam.pro:3000/midkam_api/price-list/send'
-  // private hostname: string = 'http://localhost:3000/midkam_api/price-list/send'
 
   ngOnInit(): void {
     this.form = new  FormGroup({
@@ -117,7 +114,7 @@ export class SendPriceListModalComponent implements OnInit, OnDestroy {
     this.form.value.isRecall?formData.append('phone', this.form.value.phone):null
     this.form.value.isSendToMail?formData.append('email', this.form.value.email):null
 
-    this.http.post(this.hostname, formData).toPromise().then((res:any) => {
+    this.http.post(environment.apiUrl, formData).toPromise().then((res:any) => {
       console.log(res);
     }).catch((error: HttpErrorResponse) => {
       console.log(error);

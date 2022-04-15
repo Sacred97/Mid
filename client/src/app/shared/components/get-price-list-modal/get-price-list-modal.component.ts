@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-get-price-list-modal',
@@ -23,14 +24,11 @@ export class GetPriceListModalComponent implements OnInit {
   isSuccessful: boolean = false
   isFailed: boolean = false
 
-  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
-  // private hostname: string = 'http://localhost:3000/midkam_api/'
-
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
 
-    const url = this.hostname + 'price-list/get'
+    const url = environment.apiUrl + 'price-list/get'
     this.http.get<string[]>(url, {withCredentials: true}).toPromise()
       .then((files: string[]) => {
         this.priceList = files
@@ -70,7 +68,7 @@ export class GetPriceListModalComponent implements OnInit {
       price: this.form.controls['price'].value
     }
 
-    const url = this.hostname + 'price-list/get'
+    const url = environment.apiUrl + 'price-list/get'
 
     this.http.post(url, data, {withCredentials: true}).toPromise()
       .then((okStatus: any) => {

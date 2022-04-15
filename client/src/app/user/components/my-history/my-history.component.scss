@@ -35,6 +35,7 @@
   &__history {
     width: 100%;
     margin-bottom: 34px;
+    position: relative;
 
     > span {
       display: block;
@@ -84,78 +85,66 @@
         }
       }
 
-      > button {
+    }
+
+    > button {
+      position: absolute;
+      padding-left: 21px;
+      bottom: 10px;
+      right: 21px;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      cursor: pointer;
+
+      > span {
+        color: $grey_normal;
+        font-size: 13px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+
+      > div {
         position: absolute;
-        padding-left: 21px;
-        bottom: 10px;
-        right: 21px;
-        border: none;
-        outline: none;
+        width: 10px;
+        height: 10px;
+        top: -2px;
+        right: 61px;
         background-color: transparent;
-        cursor: pointer;
-
-        > span {
-          color: $grey_normal;
-          font-size: 13px;
-          line-height: 1;
-          font-family: 'Museo Sans Cyrl 300';
-        }
-
-        > div {
-          position: absolute;
-          width: 10px;
-          height: 10px;
-          top: -2px;
-          right: 61px;
-          background-color: transparent;
-          border-style: solid;
-          border-width: 1px;
-          border-color: transparent $violet $violet transparent;
-          transform: rotateX(0deg) rotate(45deg);
-          transition: transform 1s, top 0.5s;
-        }
-
+        border-style: solid;
+        border-width: 1px;
+        border-color: transparent $violet $violet transparent;
+        transform: rotateX(0deg) rotate(45deg);
+        transition: transform 1s, top 0.5s;
       }
 
     }
 
-    ul.drop {
+  }
+
+  div.drop {
+
+    ul {
       max-height: calc(15px + 15px + (2em * 10) + (10px * 10 - 10px));
       overflow: auto;
+    }
 
-      > button {
-        div {
-          top: 6px;
-          transform: rotateX(180deg) rotate(45deg);
-        }
+    > button {
+      div {
+        top: 6px;
+        transform: rotateX(180deg) rotate(45deg);
       }
     }
 
   }
 
-  > ul {
-    width: 100%;
-    list-style: none;
-
-    h1 {
-      margin-bottom: 10px;
-      color: $grey_normal;
-      font-size: 20px;
-      line-height: 1;
-      font-weight: 500;
-      font-family: 'Museo Sans Cyrl 500';
-    }
-
-    li {
-      display: flex;
-      width: 100%;
-      padding: 1px 3px;
-      border-bottom: 2px solid $border_grey;
-    }
-
-    > li:nth-child(2) {
-      border-top: 2px solid $border_grey;
-    }
+  > h1 {
+    margin-bottom: 10px;
+    color: $grey_normal;
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 500;
+    font-family: 'Museo Sans Cyrl 500';
   }
 
 }

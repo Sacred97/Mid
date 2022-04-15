@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DetailInterface} from "../detail-service/detail.interface";
 import {DetailIdInterface} from "../global-interfaces/detail-id.interface";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,13 @@ export class RecentlyViewedService {
   constructor(private http: HttpClient) {
   }
 
-  // private hostname: string = 'http://localhost:3000/midkam_api/'
-  private hostname: string = 'http://midkam.pro:3000/midkam_api/'
-
   getViewedStorage(): DetailIdInterface[] {
     return !!localStorage.getItem('recently_viewed') ? JSON.parse(localStorage.getItem('recently_viewed')!)
       : []
   }
 
   getRecentlyViewedDetails(): Promise<DetailInterface[]> {
-    const url = this.hostname + 'details/random'
+    const url = environment.apiUrl + 'details/random'
     const viewed = this.getViewedStorage()
     return this.http.post<DetailInterface[]>(url, viewed, {withCredentials: true}).toPromise()
   }

@@ -21,7 +21,8 @@ export class AutoApplicabilityService {
                 'FROM auto_applicability a_ap ' +
                 'LEFT JOIN detail_auto_applicability_auto_applicability d ON cast(d."autoApplicabilityId" as bigint) = a_ap.id ' +
                 'LEFT JOIN detail dt ON dt."id" = d."detailId" WHERE dt."isHide" != true ' +
-                'GROUP BY a_ap.id ORDER BY a_ap.id')
+                'GROUP BY a_ap.id ORDER BY label'
+            )
     }
 
     async getAll() {

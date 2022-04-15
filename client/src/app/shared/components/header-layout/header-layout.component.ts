@@ -15,11 +15,13 @@ import {UserService} from "../../services-interfaces/user-service/user.service";
 import {CityModalComponent} from "../city-modal/city-modal.component";
 import {GetPriceListModalComponent} from "../get-price-list-modal/get-price-list-modal.component";
 import {SendPriceListModalComponent} from "../send-price-list-modal/send-price-list-modal.component";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ShoppingCartService} from "../../services-interfaces/shopping-cart-service/shopping-cart.service";
 import {MenuInterface} from "../../services-interfaces/global-interfaces/menu.interface";
 import {DetailInterface} from "../../services-interfaces/detail-service/detail.interface";
 import {Subscription} from "rxjs";
+import {environment} from "../../../../environments/environment";
+import {DaDataResponse} from "../../services-interfaces/global-interfaces/response.interface";
 
 
 @Component({
@@ -31,7 +33,7 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2, private detailService: DetailService, private router: Router,
               private resolver: ComponentFactoryResolver, public userService: UserService,
-              public shoppingCartService: ShoppingCartService) {
+              public shoppingCartService: ShoppingCartService, private http: HttpClient) {
   }
 
   // @ts-ignore
@@ -53,132 +55,175 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
   activeHiddenHeader: boolean = false
   isDisabledHiddenHeader: boolean = false
   isViewOnGroup: boolean = true
-  isSearch: boolean = false
 
-  position: DetailInterface[] = []
+  searchingDetails: DetailInterface[] = []
 
   detailMenu: MenuInterface[] = [
-    {usability: 'Запчасти на а/м КАМАЗ', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/KAMAZ.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Валы вторичные', category: ['Валы вторичные']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']},
-        {productName: 'Индуктора', category: ['Индуктора']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']},
-        {productName: 'Шестерни', category: ['Шестерни']},
-        {productName: 'Ящики', category: ['Ящики']}
-      ]
-    },
-    {usability: 'Запчасти на а/м МАЗ', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/MAZ.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']},
-        {productName: 'Шестерни', category: ['Шестерни']},
-        {productName: 'Ящики', category: ['Ящики']}
-      ]
-    },
-    {usability: 'Запчасти на а/м ГАЗ, ПАЗ, УАЗ', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/GAZ.svg', productGroup: [
-        {productName: 'Валы вторичные', category: ['Валы вторичные']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']},
-        {productName: 'Индуктора', category: ['Индуктора']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-        {productName: 'Ящики', category: ['Ящики']}
-      ]
-    },
-    {usability: 'Прицепы и полуприцепы', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/PRIZEP.svg', productGroup: [
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-      ]
-    },
-    {usability: 'Запчасти на а/м КРАЗ', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/KRAZ_URAL.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Валы вторичные', category: ['Валы вторичные']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']},
-        {productName: 'Индуктора', category: ['Индуктора']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-      ]
-    },
-    {usability: 'Запчасти на а/м УРАЛ', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/KRAZ_URAL.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Валы вторичные', category: ['Валы вторичные']}
-      ]
-    },
-    {usability: 'Запчасти на а/м ЗИЛ', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/ZIL.svg', productGroup: [
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']}
-      ]
-    },
-    {usability: 'Трактора и спецтехника', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/TRAKTOR.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']}
-      ]
-    },
-    {usability: 'Запчасти на двс CUMMINS', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/DVS.svg', productGroup: [
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Валы вторичные', category: ['Валы вторичные']},
-        {productName: 'Индуктора', category: ['Индуктора']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']},
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']}
-      ]
-    },
-    {usability: 'Запчасти на КПП ZF', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/KPP.svg', productGroup: [
-        {productName: 'Валы вторичные', category: ['Валы вторичные']},
-        {productName: 'Шестерни', category: ['Шестерни']}
-      ]
-    },
-    {usability: 'Запчасти на а/м ВАЗ', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/VAZ.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Индуктора', category: ['Индуктора']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']}
-      ]
-    },
-    {usability: 'Запчасти на мосты', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/MOST.svg', productGroup: [
-        {productName: 'Валы вторичные', category: ['Валы вторичные']},
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']}
-      ]
-    },
-    {usability: 'Метизы', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/METIZ.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Индуктора', category: ['Индуктора']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']}
-      ]
-    },
-    {usability: 'Разное', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/RAZNOE.svg', productGroup: [
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']},
-        {productName: 'Шестерни', category: ['Шестерни']},
-        {productName: 'Ящики', category: ['Ящики']}
-      ]
-    },
-    {usability: 'Автохимия', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/HIMIA.svg', productGroup: [
-        {productName: 'Авмтомасла, автохимия, чистящие средства', category: ['Авмтомасла', 'Автохимия', 'Чистящие средства']},
-      ]
-    },
-    {usability: 'Автокомпоненты КМД', detailByGroup: ['10 Двигатели', '11 Система питания двигателя', '28 Рама', '30 Ось передняя, задняя для переднеприводных'], imgSrc: '../../../../assets/menu/KMD.svg', productGroup: [
-        {productName: 'Автокамеры, аккумуляторы', category: ['Автокамеры', 'Аккумуляторы']},
-        {productName: 'Баки топлвиные, барабаны', category: ['Баки топлвиные', 'Барабаны']},
-        {productName: 'Валы вторичные', category: ['Валы вторичные']},
-        {productName: 'Втулки, гайковерты, болты, гайки', category: ['Втулки', 'Гайковерты', 'Болты', 'Гайки']},
-        {productName: 'Индуктора', category: ['Индуктора']},
-        {productName: 'Лампочки, фары, фонари', category: ['Лампочки', 'Фары', 'Фонари']},
-        {productName: 'Шатуны, шайбы, шкворни', category: ['Шатуны', 'Шайбы', 'Шкворни']},
-        {productName: 'Шестерни', category: ['Шестерни']},
-        {productName: 'Ящики', category: ['Ящики']}
-      ]
-    }
+    // {
+    //   usability: 'Трактора и спецтехника',
+    //   imgSrc: '../../../../assets/menu/TRAKTOR.svg'
+    // },
+    // {
+    //   usability: 'Запчасти на двс CUMMINS',
+    //   imgSrc: '../../../../assets/menu/DVS.svg'
+    // },
+    // {
+    //   usability: 'Запчасти на КПП ZF',
+    //   imgSrc: '../../../../assets/menu/KPP.svg'
+    // },
+    // {
+    //   usability: 'Запчасти на мосты',
+    //   imgSrc: '../../../../assets/menu/MOST.svg'
+    // },
+    // {
+    //   usability: 'Метизы',
+    //   imgSrc: '../../../../assets/menu/METIZ.svg'
+    // },
+    // {
+    //   usability: 'Разное',
+    //   imgSrc: '../../../../assets/menu/RAZNOE.svg'
+    // },
+    // {
+    //   usability: 'Автохимия',
+    //   imgSrc: '../../../../assets/menu/HIMIA.svg'
+    // },
+    // {
+    //   usability: 'Автокомпоненты КМД',
+    //   imgSrc: '../../../../assets/menu/KMD.svg'
+    // }
   ]
 
   navigateSubscription: Subscription | null = null
+
+  cityList: {city: string, cityTo: string, startLetter?: string}[] = [
+    {city: 'А', cityTo: 'А', startLetter: 'А'},
+    {city: 'Абакан', cityTo: 'Абакан'},
+    {city: 'Адлер', cityTo: 'Адлер'},
+    {city: 'Архангельск', cityTo: 'Архангельск'},
+    {city: 'Астрахань', cityTo: 'Астрахань'},
+    {city: 'Б', cityTo: 'Б', startLetter: 'Б'},
+    {city: 'Балаково', cityTo: 'Балаково'},
+    {city: 'Барнаул', cityTo: 'Барнаул'},
+    {city: 'Белгород', cityTo: 'Белгород'},
+    {city: 'Бийск', cityTo: 'Бийск'},
+    {city: 'Благовещенск', cityTo: 'Благовещенск'},
+    {city: 'Братск', cityTo: 'Братск'},
+    {city: 'Брянск', cityTo: 'Брянск'},
+    {city: 'Бугульма', cityTo: 'Бугульму'},
+    {city: 'В', cityTo: 'Б', startLetter: 'В'},
+    {city: 'Великие Луки', cityTo: 'Великие Луки'},
+    {city: 'Великий Новгород', cityTo: 'Великий Новгород'},
+    {city: 'Владивосток', cityTo: 'Владивосток'},
+    {city: 'Владимир', cityTo: 'Владимир'},
+    {city: 'Волгоград', cityTo: 'Волгоград'},
+    {city: 'Волгодонск', cityTo: 'Волгодонск'},
+    {city: 'Волжский', cityTo: 'Волжский'},
+    {city: 'Вологда', cityTo: 'Вологду'},
+    {city: 'Воронеж', cityTo: 'Воронеж'},
+    {city: 'Д', cityTo: 'Д', startLetter: 'Д'},
+    {city: 'Дзержинск', cityTo: 'Дзержинск'},
+    {city: 'Димитровград', cityTo: 'Димитровград'},
+    {city: 'Е', cityTo:'Е', startLetter: 'Е'},
+    {city: 'Екатеринбург', cityTo: 'Екатеринбург'},
+    {city: 'Ж', cityTo:'Ж', startLetter: 'Ж'},
+    {city: 'Железнодорожный', cityTo: 'Железнодорожный'},
+    {city: 'З', cityTo:'З', startLetter: 'З'},
+    {city: 'Забайкальск', cityTo: 'Забайкальск'},
+    {city: 'И', cityTo:'И', startLetter: 'И'},
+    {city: 'Иваново', cityTo: 'Иваново'},
+    {city: 'Ижевск', cityTo: 'Ижевск'},
+    {city: 'Иркутск', cityTo: 'Иркутск'},
+    {city: 'Й', cityTo:'Й', startLetter: 'Й'},
+    {city: 'Йошкар-Ола', cityTo: 'Йошкар-Олу'},
+    {city: 'К', cityTo:'К', startLetter: 'К'},
+    {city: 'Казань', cityTo: 'Казань'},
+    {city: 'Калининград', cityTo: 'Калининград'},
+    {city: 'Калуга', cityTo: 'Калугу'},
+    {city: 'Камышин', cityTo: 'Камышино'},
+    {city: 'Кемерово', cityTo: 'Кемерово'},
+    {city: 'Киров', cityTo: 'Киров'},
+    {city: 'Коломна', cityTo: 'Коломну'},
+    {city: 'Кострома', cityTo: 'Кострому'},
+    {city: 'Котлас', cityTo: 'Котлас'},
+    {city: 'Краснодар', cityTo: 'Краснодар'},
+    {city: 'Красноярск', cityTo: 'Красноярск'},
+    {city: 'Курган', cityTo: 'Курган'},
+    {city: 'Курск', cityTo: 'Курск'},
+    {city: 'Л', cityTo: 'Л', startLetter: 'Л'},
+    {city: 'Липецк', cityTo: 'Липецк'},
+    {city: 'М', cityTo: 'М', startLetter: 'М'},
+    {city: 'Магнитогорск', cityTo: 'Магнитогорск'},
+    {city: 'Миасс', cityTo: 'Миасс'},
+    {city: 'Москва', cityTo: 'Москву'},
+    {city: 'Мурманск', cityTo: 'Мурманск'},
+    {city: 'Н', cityTo: 'Н', startLetter: 'Н'},
+    {city: 'Набережные Челны', cityTo: 'Набережные Челны'},
+    {city: 'Нижневартовск', cityTo: 'Нижневартовск'},
+    {city: 'Нижний Новгород', cityTo: 'Нижний Новгород'},
+    {city: 'Нижний Тагил', cityTo: 'Нижний Тагил'},
+    {city: 'Новокузнецк', cityTo: 'Новокузнецк'},
+    {city: 'Новомосковск', cityTo: 'Новомосковск'},
+    {city: 'Новороссийск', cityTo: 'Новороссийск'},
+    {city: 'Новосибирск', cityTo: 'Новосибирск'},
+    {city: 'Ногинск', cityTo: 'Ногинск'},
+    {city: 'О', cityTo: 'О', startLetter: 'О'},
+    {city: 'Обнинск', cityTo: 'Обнинск'},
+    {city: 'Омск', cityTo: 'Омск'},
+    {city: 'Орел', cityTo: 'Орел'},
+    {city: 'Оренбург', cityTo: 'Оренбург'},
+    {city: 'Орск', cityTo: 'Орск'},
+    {city: 'П', cityTo: 'П', startLetter: 'П'},
+    {city: 'Пенза', cityTo: 'Пензу'},
+    {city: 'Пермь', cityTo: 'Пермь'},
+    {city: 'Петрозаводск', cityTo: 'Петрозаводск'},
+    {city: 'Подольск', cityTo: 'Подольск'},
+    {city: 'Псков', cityTo: 'Псков'},
+    {city: 'Пушкино', cityTo: 'Пушкино'},
+    {city: 'Р', cityTo: 'Р', startLetter: 'Р'},
+    {city: 'Ростов-на-Дону', cityTo: 'Ростов-на-Дону'},
+    {city: 'Рыбинск', cityTo: 'Рыбинск'},
+    {city: 'Рязань', cityTo: 'Рязань'},
+    {city: 'С', cityTo: 'С', startLetter: 'С'},
+    {city: 'Самара', cityTo: 'Самару'},
+    {city: 'Санкт-Петербург', cityTo: 'Санкт-Петербург'},
+    {city: 'Саранск', cityTo: 'Саранск'},
+    {city: 'Саратов', cityTo: 'Саратов'},
+    {city: 'Северодвинск', cityTo: 'Северодвинск'},
+    {city: 'Серпухов', cityTo: 'Серпухов'},
+    {city: 'Смоленск', cityTo: 'Смоленск'},
+    {city: 'Солнечногорск', cityTo: 'Солнечногорск'},
+    {city: 'Сочи', cityTo: 'Сочи'},
+    {city: 'Ставрополь', cityTo: 'Ставрополь'},
+    {city: 'Старый Оскол', cityTo: 'Старый Оскол'},
+    {city: 'Стерлитамак', cityTo: 'Стерлитамак'},
+    {city: 'Сургут', cityTo: 'Сургут'},
+    {city: 'Сызрань', cityTo: 'Сызрань'},
+    {city: 'Сыктывкар', cityTo: 'Сыктывкар'},
+    {city: 'Т', cityTo: 'Т', startLetter: 'Т'},
+    {city: 'Тамбов', cityTo: 'Тамбов'},
+    {city: 'Тверь', cityTo: 'Тверь'},
+    {city: 'Тольятти', cityTo: 'Тольятти'},
+    {city: 'Томилино', cityTo: 'Томилино'},
+    {city: 'Томск', cityTo: 'Томск'},
+    {city: 'Тула', cityTo: 'Тулу'},
+    {city: 'Тюмень', cityTo: 'Тюмень'},
+    {city: 'У', cityTo: 'У', startLetter: 'У'},
+    {city: 'Улан-Удэ', cityTo: 'Улан-Удэ'},
+    {city: 'Ульяновск', cityTo: 'Ульяновск'},
+    {city: 'Уфа', cityTo: 'Уфу'},
+    {city: 'Ухта', cityTo: 'Ухту'},
+    {city: 'Х', cityTo: 'Х', startLetter: 'Х'},
+    {city: 'Хабаровск', cityTo: 'Хабаровск'},
+    {city: 'Ч', cityTo: 'Ч', startLetter: 'Ч'},
+    {city: 'Чебоксары', cityTo: 'Чебоксары'},
+    {city: 'Челябинск', cityTo: 'Челябинск'},
+    {city: 'Череповец', cityTo: 'Череповец'},
+    {city: 'Чита', cityTo: 'Читу'},
+    {city: 'Э', cityTo: 'Э', startLetter: 'Э'},
+    {city: 'Энгельс', cityTo: 'Энгельс'},
+    {city: 'Я', cityTo: 'Я', startLetter: 'Я'},
+    {city: 'Ярославль', cityTo: 'Ярославль'}
+  ]
 
   async ngOnInit() {
     try {
@@ -198,50 +243,102 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
       console.log(e);
     }
 
-    this.userService.user$.subscribe(credentials => {
-      // MAGIC
-    })
-
     this.navigateSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.active = false
         this.activeHiddenHeader = false
+        this.searchingDetails = []
       }
     })
 
+    navigator.geolocation.getCurrentPosition(position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      const headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Token " + environment.daDataConfig.apiKey
+      }
+      const body = {lat: latitude, lon: longitude}
+      this.http.post<DaDataResponse>('https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
+        JSON.stringify(body), {headers: headers}).toPromise()
+        .then(response => {
+          const city = response.suggestions[0].data.city
+          const candidate = this.cityList.find(i => i.city.toLowerCase() === city.toLowerCase())
+          if (candidate) {
+            localStorage.setItem('city', JSON.stringify({city: candidate.city, cityTo: candidate.cityTo}))
+          } else {
+            localStorage.setItem('city', JSON.stringify({city: 'Набережные Челны', cityTo: 'Набережные Челны'}))
+          }
+        }, error => {
+          console.log(error);
+        })
+    })
+
+  }
+
+  ngOnDestroy(): void {
+    this.navigateSubscription?.unsubscribe()
   }
 
   goToStart() {
     window.scrollTo( {behavior: "smooth", top: 0})
   }
 
-  addClassActive() {
+  dropDownMenu() {
     this.active = !this.active
     this.isDisabled = true
     setTimeout(() => {this.isDisabled=false}, 1000)
   }
 
-  addClassActiveHiddenHeader() {
+  dropDownMenuHidden() {
     this.activeHiddenHeader = !this.activeHiddenHeader
     this.isDisabledHiddenHeader = true
     setTimeout(() => {this.isDisabledHiddenHeader = false}, 1000)
   }
 
   search(event: Event) {
-    const query: string = (event.target as HTMLInputElement).value.trim()
+    const query = (event.target as HTMLInputElement).value.trim()
     if (!!query) {
       this.detailService.search(query, 10, 0)
         .then(itemsAndCount => {
-          this.position = itemsAndCount.items
-          this.isSearch = true
+          this.searchingDetails = itemsAndCount.items
         }, (error: HttpErrorResponse) => {
           console.log(error);
         })
     } else {
-      this.position = []
-      this.isSearch = false
+      this.searchingDetails = []
     }
   }
+
+  toSearch(event: Event) {
+    const $parent = (event.currentTarget as HTMLButtonElement).parentElement
+    if (!$parent) return
+    const $target = $parent.querySelector('input')
+    if (!$target) return;
+    const searchValue = $target.value
+    this.searchingDetails = []
+    this.router.navigate(['/'], {skipLocationChange: true})
+      .then(() => {
+        this.router.navigate(['/', 'search'], {queryParams: {text: searchValue}})
+      })
+  }
+
+  onSamePage(path: string[], state?: Object) {
+    this.router.navigate(['/'], {skipLocationChange: true})
+      .then(() => {
+        this.router.navigate(path, {state: state})
+      })
+  }
+
+  getCity(): string {
+    const city: {city: string, cityTo: string} = localStorage.getItem('city')?
+      JSON.parse(localStorage.getItem('city')!):{city: 'Выберите город', cityTo: 'Ваш город'}
+    return city.city
+  }
+
+  //-----------------------------Модальные окна-------------------------------------------------------------------------
 
   showAuthModal() {
     const modalFactory = this.resolver.resolveComponentFactory(AuthModalComponent)
@@ -277,51 +374,6 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     component.instance.close.subscribe(() => {
       this.refDir.containerRef.clear()
     })
-  }
-
-  getCity(): string {
-    const city: {city: string, cityTo: string} = localStorage.getItem('city')?
-      JSON.parse(localStorage.getItem('city')!):{city: 'Выберите город', cityTo: 'Ваш город'}
-    return city.city
-  }
-
-  openDetail() {
-    //пока так
-    this.position = []
-  }
-
-  // logout() {
-  //   this.userService.logout().then(() => {
-  //     localStorage.setItem('shopping_cart', JSON.stringify([]))
-  //     this.userService.user$.next(undefined)
-  //     this.shoppingCartService.totalCost = 0
-  //     this.shoppingCartService.itemsQuantity = 0
-  //     this.router.navigate(['/'])
-  //   }, (error: HttpErrorResponse) => {
-  //     console.log(error);
-  //   })
-  // }
-
-  toSearch(event: Event) {
-    const $target = (event.currentTarget as HTMLButtonElement).parentElement!.querySelector('input')!
-    const searchValue = $target.value
-    this.position = []
-    this.isSearch = false
-    this.router.navigate(['/'], {skipLocationChange: true})
-      .then(() => {
-        this.router.navigate(['/', 'search'], {queryParams: {text: searchValue}})
-      })
-  }
-
-  navigateToCatalogForFilter(filter: string) {
-    this.router.navigate(['/'], {skipLocationChange: true})
-      .then(() => {
-        this.router.navigate(['/', 'catalog'], {state: {filter: filter}})
-      })
-  }
-
-  ngOnDestroy(): void {
-    this.navigateSubscription?.unsubscribe()
   }
 
 }
