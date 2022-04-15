@@ -164,6 +164,7 @@ volumes:
 #      - "5432:5432"
 #    volumes:
 #      - ./data/postgres:/var/lib/postgresql/data
+#      - pgdata:/var/lib/postgresql/data
 #    env_file:
 #      - ./server/.env
 #    networks:
@@ -205,6 +206,7 @@ volumes:
 #volumes:
 #  postgres:
 #  pgadmin:
+#  pgdata:
 
 # ------------------------------------------------------------------------------For Development--------------------------------------------------------------------------------------
 
