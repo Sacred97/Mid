@@ -1,6 +1,6 @@
 import {IsNotEmpty, IsString} from "class-validator";
 
-export class ProductGroupCreateDto {
+export class ProductGroupDto {
     @IsNotEmpty()
     @IsString()
     id: string

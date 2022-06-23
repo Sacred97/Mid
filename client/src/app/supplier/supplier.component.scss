@@ -1,0 +1,265 @@
+@import "../shared/styles/variables";
+
+.supplier {
+  width: 100%;
+  min-height: 50vh;
+  margin: 0 auto 100px;
+
+  > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    > div, > form {
+      padding: 40px;
+      background-color: $grey_light;
+      border-radius: 30px;
+    }
+
+    > div {
+      flex-basis: 60%;
+
+      > h1 {
+        margin: 0;
+        color: $black;
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 500;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      > ul {
+        margin: 20px 0;
+        width: 100%;
+        list-style: none;
+
+        li {
+          position: relative;
+          margin: 0;
+          width: 100%;
+          color: $black;
+          font-size: 18px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+
+          &:before {
+            content: "•";
+            margin-right: 3px;
+          }
+
+        }
+
+      }
+
+      > span {
+        display: block;
+        margin-bottom: 20px;
+        width: 100%;
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 500;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      > span:last-child {
+        margin-bottom: 0;
+      }
+
+    }
+
+    > form {
+      flex-basis: 38%;
+
+      > h1 {
+        width: 100%;
+        text-align: center;
+        color: $black;
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 500;
+        font-family: "Museo Sans Cyrl 500";
+      }
+
+      > p {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        text-align: center;
+        color: $black;
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 300;
+        font-family: "Museo Sans Cyrl 300";
+
+        b {
+          color: $black;
+          font-size: 16px;
+          line-height: 1;
+          font-weight: 500;
+          font-family: "Museo Sans Cyrl 500";
+        }
+
+      }
+
+      > hr {
+        margin-bottom: 10px;
+        width: 100%;
+        border: none;
+        border-top: 1px solid $border_grey;
+      }
+
+      > label {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+
+        input[type="number"], input[type="text"], input[type="email"], textarea {
+          width: 100%;
+          padding: 10px;
+          background-color: $grey_easy;
+          border: 1px solid $border_grey;
+          color: $black;
+          font-size: 16px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 90px;
+        }
+
+      }
+
+      > div {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: $grey_easy;
+        border: 1px solid $border_grey;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 5px 5px;
+
+        > span {
+          display: block;
+          width: 100%;
+          color: $black;
+          font-size: 16px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
+        > label {
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          background-color: $grey_easy;
+          border: 1px solid $border_grey;
+          padding: 10px;
+          cursor: pointer;
+
+          input[type="checkbox"] {
+          }
+
+          span {
+            display: block;
+            width: fit-content;
+            margin-left: 4px;
+            color: $black;
+            font-size: 16px;
+            line-height: 1;
+            font-weight: 300;
+            font-family: "Museo Sans Cyrl 300";
+          }
+
+        }
+
+      }
+
+      > label:nth-child(15) {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        padding: 2px 0;
+        margin: 0 auto 10px;
+        cursor: pointer;
+
+        input[type='checkbox'] {
+          cursor: pointer;
+        }
+
+        > span {
+          display: block;
+          width: fit-content;
+          margin-left: 4px;
+          color: $black;
+          font-size: 12px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+
+          a {
+            color: $violet;
+            text-decoration: underline;
+            font-size: 12px;
+            line-height: 1;
+            font-weight: 300;
+            font-family: "Museo Sans Cyrl 300";
+
+            &:hover {
+              text-decoration: none;
+            }
+          }
+
+        }
+
+      }
+
+      > button {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        background-color: $violet;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #ffffff;
+        text-align: center;
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 500;
+        font-family: "Museo Sans Cyrl 500";
+
+        &:hover {
+          background-color: $violet-hover;
+        }
+
+        &:disabled {
+          color: $black;
+          background-color: $grey_easy;
+          cursor: not-allowed;
+        }
+
+      }
+
+      > small {
+        display: block;
+        width: fit-content;
+        margin: 5px auto 0;
+        color: red;
+        font-size: 12px;
+        line-height: 1;
+        font-weight: 100;
+        font-family: "Museo Sans Cyrl 100";
+      }
+
+    }
+
+  }
+
+}

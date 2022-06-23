@@ -1,0 +1,47 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:МИДКАМ Автозапчасти
+N:Автозапчасти;МИДКАМ;;;
+item1.EMAIL;TYPE=INTERNET:info@midkam.ru
+item1.X-ABLabel:Общий e-mail
+item2.EMAIL;TYPE=INTERNET:sid@midkam.ru
+item2.X-ABLabel:Сидоровка
+item3.EMAIL;TYPE=INTERNET:orl@midkam.ru
+item3.X-ABLabel:Орловка
+item4.EMAIL;TYPE=INTERNET:gar@midkam.ru
+item4.X-ABLabel:Гараж-2000
+item5.TEL:8 (800) 700-31-32
+item5.X-ABLabel:Многоканальный
+item6.TEL:+7 (855) 292-71-11
+item6.X-ABLabel:Сидоровка
+item7.TEL:+7 855 291-71-11
+item7.X-ABLabel:Орловка
+item8.TEL:+7 855 291-81-11
+item8.X-ABLabel:Гараж-2000
+item9.ADR:;;Казанский пр.\, 123;Набережные Челны;Республика Татарстан;42380
+ 0;RU;Казанский пр.\, 123\nНабережные Челны\nРеспублика Татарстан\nRU\n4238
+ 00
+item9.X-ABLabel:Сидоровка
+item10.ADR:;;Центральная ул.\, 186;Набережные Челны;Республика Татарстан;42
+ 3802;RU;Центральная ул.\, 186\nНабережные Челны\nРеспублика Татарстан\nRU
+ \n423802
+item10.X-ABLabel:Орловка
+item11.ADR:;;Казанский пр.\, 226;Набережные Челны;;423800;RU;Казанский пр.
+ \, 226\nНабережные Челны\nRU\n423800
+item11.X-ABLabel:Гараж-2000
+item12.URL:https\://www.midkam.ru
+item12.X-ABLabel:Website
+item13.URL:https\://wa.me/78007003132
+item13.X-ABLabel:WhatsApp
+item14.URL:https\://t.me/midkam_bot?start
+item14.X-ABLabel:Telegram
+item15.URL:viber\://pa?chatURI=midkam
+item15.X-ABLabel:Viber
+item16.URL:https\://vk.com/midkam_auto
+item16.X-ABLabel:Vkontakte
+item17.URL:https\://www.facebook.com/midkam.ru
+item17.X-ABLabel:Facebook
+PHOTO:https://lh4.googleusercontent.com/-ZZAtkf99ciw/YSTZByyEnFI/AAAAAAAAAA
+ A/Gy3xrHwqoEwh4TBwyCJOLrr60mPFGqGuQCOQCEAE/photo.jpg
+CATEGORIES:myContacts
+END:VCARD

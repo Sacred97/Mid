@@ -1,0 +1,81 @@
+@import "../../../shared/styles/variables";
+
+.own-cert {
+  width: 100%;
+  margin: 0 auto;
+  min-height: 50vh;
+
+  &__certificates {
+    width: 100%;
+    margin-bottom: 60px;
+    padding: 40px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: $grey_light;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 30px 0;
+      margin-bottom: 40px;
+
+      > div {
+        flex-basis: 21%;
+        width: 21%;
+        height: 340px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-in;
+
+        img {
+          max-width: 100%;
+          max-height: 340px;
+        }
+
+      }
+
+    }
+
+    > button {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 60px;
+      border: 2px solid $yellow;
+      border-radius: 10px;
+      background-color: #ffffff;
+      cursor: pointer;
+
+      color: $black-hover;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: "Museo Sans Cyrl 300";
+
+      &:hover {
+        background-color: $yellow-hover;
+      }
+
+      &:disabled {
+        background-color: $grey_easy;
+        border-color: $grey_easy;
+        cursor: not-allowed;
+      }
+
+    }
+
+  }
+
+}
+
+.own-cert-modal {
+  position: absolute;
+  z-index: 101;
+
+  img {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+
+}

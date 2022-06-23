@@ -1,0 +1,47 @@
+@import "../../../shared/styles/variables";
+
+.individual-order {
+  width: 100%;
+  min-height: 50vh;
+  margin: 0 auto 60px;
+
+  p {
+    display: block;
+    width: 100%;
+    margin-bottom: 35px;
+    color: $black;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 300;
+    font-family: "Museo Sans Cyrl 300";
+
+    b {
+      color: $black;
+      text-decoration: underline;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 500;
+      font-family: "Museo Sans Cyrl 500";
+    }
+
+  }
+
+  > div:nth-child(4) {
+    width: 40%;
+    margin-bottom: 35px;
+
+    img {
+      max-width: 100%;
+    }
+
+  }
+
+  > div:last-child {
+    width: 50%;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+}

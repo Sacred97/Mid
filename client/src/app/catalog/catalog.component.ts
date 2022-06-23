@@ -53,6 +53,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }, 500)
   }
 
+  bannerMaxWidth: number = 996
+
 
   //-------------------------------------------------Сортировка---------------------------------------------------------
 
@@ -342,6 +344,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   //------------------------------------------Инициализация компонента--------------------------------------------------
 
   async ngOnInit() {
+    this.bannerMaxWidth = (document.documentElement.clientWidth * 0.892) * 0.735
     const offset = (this.page * 20) - 20
 
     try {

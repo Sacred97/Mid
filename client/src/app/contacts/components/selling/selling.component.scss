@@ -9,7 +9,7 @@
     width: 360px;
     margin-bottom: 24px;
 
-    button {
+    > button {
       position: relative;
       display: block;
       width: 100%;
@@ -60,9 +60,19 @@
           display: block;
           margin-bottom: 13px;
           color: $grey_normal;
-          font-family: 'Museo Sans Cyrl 300';
           font-size: 13px;
           line-height: 1;
+          font-weight: 300;
+          font-family: 'Museo Sans Cyrl 300';
+
+          b {
+            color: $black;
+            font-size: 13px;
+            line-height: 1;
+            font-weight: 500;
+            font-family: "Museo Sans Cyrl 500";
+          }
+
         }
 
         > a {
@@ -121,6 +131,33 @@
 
         > div:last-child {
           margin-bottom: 0;
+        }
+
+        > button {
+          display: flex;
+          width: fit-content;
+          margin-top: 13px;
+          padding: 5px 13px;
+          background-color: $grey_easy;
+          outline: none;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+
+          img {
+            max-width: 12px;
+          }
+
+          span {
+            display: inline-block;
+            margin-left: 4px;
+            color: $black;
+            font-size: 13px;
+            line-height: 1;
+            font-weight: 500;
+            font-family: "Museo Sans Cyrl 500";
+          }
+
         }
 
       }

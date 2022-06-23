@@ -22,6 +22,7 @@ import {DetailInterface} from "../../services-interfaces/detail-service/detail.i
 import {Subscription} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {DaDataResponse} from "../../services-interfaces/global-interfaces/response.interface";
+import {UserInterface} from "../../services-interfaces/user-service/user.interface";
 
 
 @Component({
@@ -225,22 +226,20 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     {city: 'Ярославль', cityTo: 'Ярославль'}
   ]
 
+  user: UserInterface | undefined = undefined
+  userSub$: Subscription | null = null
+
   async ngOnInit() {
     try {
-      await this.userService.refreshToken()
-    } catch (e) {
-      console.log(e);
-    }
-    try {
-      const user = this.userService.user$.getValue()
-      if (!!user) {
-        this.shoppingCartService.totalCost = user?.shoppingCart.totalCost!
-        this.shoppingCartService.itemsQuantity = user?.shoppingCart.cartItem.length!
+      this.user = await this.userService.getUser()
+      if (this.user) {
+        this.shoppingCartService.totalCost = this.user.shoppingCart.totalCost
+        this.shoppingCartService.itemsQuantity = this.user.shoppingCart.cartItem.length
       } else {
         await this.shoppingCartService.recountTotalCostWithGuest(this.shoppingCartService.storage())
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
 
     this.navigateSubscription = this.router.events.subscribe(event => {
@@ -276,10 +275,19 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
         })
     })
 
+    this.userSub$ = this.userService.user$.subscribe(user => {
+      if (user) {
+        this.user = user
+      } else {
+        this.user = undefined
+      }
+    })
+
   }
 
   ngOnDestroy(): void {
     this.navigateSubscription?.unsubscribe()
+    this.userSub$?.unsubscribe()
   }
 
   goToStart() {

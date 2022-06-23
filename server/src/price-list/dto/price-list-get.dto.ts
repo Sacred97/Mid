@@ -18,10 +18,9 @@ export class PriceListGetDto {
 
     @IsNotEmpty()
     @IsArray()
+    @IsString({each: true})
     @ArrayNotEmpty()
     @ArrayMinSize(1)
-    @ValidateNested({each: true})
-    @Type(() => String)
     list: string[]
 
 }

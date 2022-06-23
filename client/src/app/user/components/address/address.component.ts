@@ -3,10 +3,11 @@ import {UserService} from "../../../shared/services-interfaces/user-service/user
 import {
   AddressUserInterface,
   UserAddressCreate,
-  UserAddressUpdate
+  UserAddressUpdate, UserInterface
 } from "../../../shared/services-interfaces/user-service/user.interface";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 declare let DG: any;
 
@@ -17,9 +18,10 @@ declare let DG: any;
 })
 export class AddressComponent implements OnInit {
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
+  user: UserInterface | undefined = this.userService.user$.getValue()
   address: AddressUserInterface[] = []
   error: boolean = false
   loading: boolean = true
@@ -198,6 +200,8 @@ export class AddressComponent implements OnInit {
     this.userService.deleteAddress(id)
       .then(data => {
         this.address = this.sortAddresses(data)
+        this.user!.address = this.address
+        this.userService.user$.next(this.user)
       }, error => {
         console.log(error);
       })
@@ -257,6 +261,8 @@ export class AddressComponent implements OnInit {
         this.formAddError = false
         this.showHide()
         this.address = this.sortAddresses(res)
+        this.user!.address = this.address
+        this.userService.user$.next(this.user)
       }, error => {
         console.log(error);
         this.formAddError = true
@@ -318,6 +324,8 @@ export class AddressComponent implements OnInit {
         this.action = false
         this.address = this.sortAddresses(res)
         this.closeModal()
+        this.user!.address = this.address
+        this.userService.user$.next(this.user)
       }, error => {
         this.action = false
         console.log(error);

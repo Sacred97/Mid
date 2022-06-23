@@ -14,7 +14,24 @@ export class UsCertificateService {
                 private readonly filesService: FilesService) {
     }
 
-    async getAllCertificate() {
+    async getCertificatesWithQuantity(limit: number = 0, offset: number = 0) {
+        const [certificates, count] = await this.certificateRepository.findAndCount({
+            take: limit,
+            skip: offset
+        })
+        certificates.sort((a, b) => {
+            if (a.serialNumber > b.serialNumber) {
+                return 1
+            } else if (a.serialNumber === b.serialNumber) {
+                return 0
+            } else {
+                return -1
+            }
+        })
+        return {certificates, count}
+    }
+
+    async getAllCertificate(limit: number = 0, offset: number = 0) {
         const certificates = await this.certificateRepository.find()
         return certificates.sort((a, b) => {
             if (a.serialNumber > b.serialNumber) {
@@ -41,13 +58,19 @@ export class UsCertificateService {
     }
 
     async uploadCertificate(data: CertificateDto, file: Express.Multer.File) {
-        const uploadData = await this.filesService.uploadSelectel(file.buffer, 'us-certificate',
-            'certificate', file.originalname)
+        const certificates = (await this.certificateRepository.find())
+            .filter(i => i.serialNumber >= data.serialNumber)
+        const filename = file.originalname + Date.now()
+        const uploadData = await this.filesService.uploadSelectel(file.buffer, 'general-info-certificate',
+            'certificate', filename)
         const instanceEntity = await this.certificateRepository.create({
             ...data,
             url: uploadData.Location,
             key: uploadData.Key
         })
+        for (let c of certificates) {
+            await this.certificateRepository.update(c.id, {serialNumber: c.serialNumber + 1})
+        }
         await this.certificateRepository.save(instanceEntity)
         return await this.getAllCertificate()
     }
@@ -56,7 +79,7 @@ export class UsCertificateService {
         const certificate = await this.getCertificate(data.id)
         if (certificate) {
             await this.certificateRepository.update(data.id, {serialNumber: data.serialNumber})
-            return await this.getAllCertificate()
+            return await this.getCertificate(data.id)
         }
         throw new HttpException('Сертификат не найден', HttpStatus.NOT_FOUND)
     }

@@ -14,8 +14,11 @@ export class KeyWordsService {
                 private readonly redisCacheService: RedisCacheService) {
     }
 
-    async getAll() {
-        return await this.keyWordsRepository.find()
+    async getAll(offset: number = 0, limit: number = 0) {
+        const [items, count] = await this.keyWordsRepository.findAndCount({
+            skip: offset, take: limit, order: {id: "ASC"}
+        })
+        return {items, count}
     }
 
     async getById(id: number) {

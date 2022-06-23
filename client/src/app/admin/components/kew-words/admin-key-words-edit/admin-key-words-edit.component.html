@@ -1,1 +1,39 @@
-<p>admin-key-words-edit works!</p>
+<div class="admin-key-word-edit">
+
+  <h1>Редактирование ключевого слова / тэга</h1>
+
+  <div class="admin-key-word-edit__info" *ngIf="keyWord || errorMessage; else load">
+
+    <ng-container *ngIf="keyWord; else empty">
+
+      <form [formGroup]="form" (ngSubmit)="update()">
+        <label>
+          <span>Ключевое слово / тэг</span>
+          <input class="admin-input" placeholder="Ключевое слово / тэг" type="text" formControlName="keyWord">
+          <small *ngIf="form.controls['keyWord'].errors?.required">Поле не должно быть пустым</small>
+        </label>
+
+        <button class="admin-btn-action" type="submit" [disabled]="form.invalid || action">Изменить</button>
+        <small class="successful" *ngIf="successful">Тэг успешно обновлен</small>
+        <small class="error" *ngIf="updateError">{{updateError}}</small>
+      </form>
+
+      <div>
+        <button class="admin-btn-remove" type="button" (click)="remove()" [disabled]="action">Удалить</button>
+      </div>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

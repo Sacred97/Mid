@@ -14,7 +14,7 @@ export class AutoPartsService {
                 private readonly redisCacheService: RedisCacheService) {
     }
 
-    async getFiltersAndCount() {
+    async getPartsAsFilterAndCount() {
         return await this.autoPartsRepository.query(
             'SELECT a_p.id, a_p."autoPartsName" as label, COUNT(d."detailId") AS count_detail ' +
             'FROM auto_parts a_p ' +
@@ -37,10 +37,6 @@ export class AutoPartsService {
         return await this.autoPartsRepository.find({where: {shortName: In(autoParts)}})
     }
 
-    async findByParts(autoParts: string) {
-        return await this.autoPartsRepository.findOne({where: {shortName: autoParts.toLowerCase()}})
-    }
-
     async createParts(createData: PartsCreateDto[]) {
         await this.redisCacheService.deleteCacheKey(GET_PARTS_CACHE_KEY)
         for (let data of createData) {
@@ -56,9 +52,7 @@ export class AutoPartsService {
     async updateParts(updateData: PartsUpdateDto) {
         const parts = await this.getById(updateData.id)
         if (parts) {
-            if (updateData.autoPartsName) {
-                Object.assign(updateData, {shortName: updateData.autoPartsName.toLowerCase()})
-            }
+            Object.assign(updateData, {shortName: updateData.autoPartsName.toLowerCase()})
             await this.redisCacheService.deleteCacheKey(GET_PARTS_CACHE_KEY)
             await this.autoPartsRepository.update(updateData.id, {...updateData})
             return await this.getById(updateData.id)

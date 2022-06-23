@@ -11,6 +11,7 @@ import {DetailService} from "../../../shared/services-interfaces/detail-service/
 import {RecentlyViewedService} from "../../../shared/services-interfaces/recently-viewed-service/recently-viewed.service";
 import {DetailIdInterface} from "../../../shared/services-interfaces/global-interfaces/detail-id.interface";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-waiting-list',
@@ -19,12 +20,12 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class WaitingListComponent implements OnInit {
 
-  constructor(private userService: UserService, public markerService: MarkerService,
+  constructor(private userService: UserService, public markerService: MarkerService, private router: Router,
               public cartService: ShoppingCartService, private detailService: DetailService,
               public viewedService: RecentlyViewedService) {
   }
 
-  user: UserInterface | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
   details: DetailInterface[] = []
   error: boolean = false
   loading: boolean = true
@@ -37,28 +38,32 @@ export class WaitingListComponent implements OnInit {
   formAddError: boolean = false
 
   async ngOnInit() {
-    try {
-      this.user = await this.userService.getProfile()
 
-      if (this.user.waitingList.emails === this.user.email) {
-        this.formAdd.controls['profile'].setValue('Основной профиль')
+    if (!this.user) {
+      this.router.navigate(['/'])
+      return
+    }
+
+    if (this.user.waitingList.emails === this.user.email) {
+      this.formAdd.controls['profile'].setValue('Основной профиль')
+    } else {
+      const managerProfile = this.user.manager.find(m => m.email === this.user!.waitingList.emails)
+      if (managerProfile) {
+        this.formAdd.controls['profile'].setValue(managerProfile.fullName)
       } else {
-        const managerProfile = this.user.manager.find(m => m.email === this.user!.waitingList.emails)
-        if (managerProfile) {
-          this.formAdd.controls['profile'].setValue(managerProfile.fullName)
-        } else {
-          this.formAdd.controls['profile'].setValue('Неизвестно')
-        }
+        this.formAdd.controls['profile'].setValue('Неизвестно')
       }
+    }
 
+    try {
       const ids: DetailIdInterface[] = this.user.waitingList.waitingItem.map(i => ({id: i.detail.id}))
       this.details = await this.detailService.getByIds(ids)
       this.cartService.recountQuantity(this.details)
     } catch (error) {
       console.log(error);
-    } finally {
-      this.loading = false
     }
+
+    this.loading = false
 
   }
 
@@ -93,6 +98,7 @@ export class WaitingListComponent implements OnInit {
     this.userService.changeEmailNotification(email)
       .then(data => {
         this.user!.waitingList = data
+        this.userService.user$.next(this.user)
         this.formAdd.reset()
         if (this.user!.waitingList.emails === this.user!.email) {
           this.formAdd.controls['profile'].setValue('Основной профиль')
@@ -105,7 +111,6 @@ export class WaitingListComponent implements OnInit {
         console.log(error);
       })
       .finally(() => this.action = false)
-
 
   }
 
@@ -161,7 +166,7 @@ export class WaitingListComponent implements OnInit {
         .then(data => {
           this.user!.waitingList = data
           this.details.splice(idx, 1)
-          this.userService.user$.next(this.user!)
+          this.userService.user$.next(this.user)
         }, error => {
           console.log(error);
         })

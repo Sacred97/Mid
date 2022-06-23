@@ -32,8 +32,8 @@ import { ManufacturerComponent } from './manufacturer/manufacturer.component';
 import { ManufacturerEmptyComponent } from './manufacturer/components/manufacturer-empty/manufacturer-empty.component';
 import { ManufacturerPageComponent } from './manufacturer/components/manufacturer-page/manufacturer-page.component';
 import { AboutComponent } from './about/about.component';
-import { UsComponent } from './about/components/us/us.component';
-import { HistoryComponent } from './about/components/history/history.component';
+import { GeneralInfoComponent } from './about/components/general-info/general-info.component';
+import { OwnCertificatesComponent } from './about/components/own-certificates/own-certificates.component';
 import { PresentationComponent } from './about/components/presentation/presentation.component';
 import { VideoComponent } from './about/components/video/video.component';
 import { ContactsComponent } from './contacts/contacts.component';
@@ -86,6 +86,17 @@ import {ImageCropperModule} from "ngx-image-cropper";
 import { SearchPageComponent } from './search-page/search-page.component';
 import { AdminCertificateEditComponent } from './admin/components/certificate/admin-certificate-edit/admin-certificate-edit.component';
 import { AdminCertificateComponent } from './admin/components/certificate/admin-certificate/admin-certificate.component';
+import { LandingComponent } from './landing/landing.component';
+import { BuyerComponent } from './buyer/buyer.component';
+import { SiteHelpComponent } from './buyer/components/site-help/site-help.component';
+import { IndividualOrderComponent } from './buyer/components/individual-order/individual-order.component';
+import { DeliveryComponent } from './buyer/components/delivery/delivery.component';
+import { PaymentTermsComponent } from './buyer/components/payment-terms/payment-terms.component';
+import { GuaranteeComponent } from './buyer/components/guarantee/guarantee.component';
+import { OfferComponent } from './buyer/components/offer/offer.component';
+import { PrivacyPolicyComponent } from './buyer/components/privacy-policy/privacy-policy.component';
+import { ExportDepartamentComponent } from './contacts/components/export-departament/export-departament.component';
+import { SupplierComponent } from './supplier/supplier.component';
 
 
 @NgModule({
@@ -113,8 +124,8 @@ import { AdminCertificateComponent } from './admin/components/certificate/admin-
     ManufacturerEmptyComponent,
     ManufacturerPageComponent,
     AboutComponent,
-    UsComponent,
-    HistoryComponent,
+    GeneralInfoComponent,
+    OwnCertificatesComponent,
     PresentationComponent,
     VideoComponent,
     ContactsComponent,
@@ -165,6 +176,17 @@ import { AdminCertificateComponent } from './admin/components/certificate/admin-
     SearchPageComponent,
     AdminCertificateEditComponent,
     AdminCertificateComponent,
+    LandingComponent,
+    BuyerComponent,
+    SiteHelpComponent,
+    IndividualOrderComponent,
+    DeliveryComponent,
+    PaymentTermsComponent,
+    GuaranteeComponent,
+    OfferComponent,
+    PrivacyPolicyComponent,
+    ExportDepartamentComponent,
+    SupplierComponent,
   ],
     imports: [
       BrowserModule,

@@ -1,0 +1,41 @@
+@import "../../../shared/styles/variables";
+
+.guarantee {
+  width: 100%;
+  margin: 0 auto 100px;
+  min-height: 50vh;
+
+  h1 {
+    width: 100%;
+    margin-bottom: 20px;
+    color: $black;
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 500;
+    font-family: "Museo Sans Cyrl 500";
+  }
+
+  p {
+    display: block;
+    width: 100%;
+    color: $black;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 300;
+    font-family: "Museo Sans Cyrl 300";
+
+    b {
+      color: $black;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: "Museo Sans Cyrl 300";
+    }
+
+  }
+
+  > p:nth-child(3) {
+    margin-bottom: 20px;
+  }
+
+}

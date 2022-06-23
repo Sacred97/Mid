@@ -10,16 +10,16 @@
       <span [style.color]="signIn?'#898989':'#724684'" (click)="signIn=false">Регистрация</span>
     </div>
 
-    <form *ngIf="signIn; else signUp" class="auth-modal__login" [formGroup]="formLogin" (ngSubmit)="login()">
+    <form *ngIf="signIn; else signUp" class="auth-modal__login" [formGroup]="formLogin" (ngSubmit)="login()" autocomplete="on">
       <div>
-        <input type="email" placeholder="Email*" formControlName="email">
+        <input type="email" placeholder="Email*" formControlName="email" autocomplete="username">
         <div *ngIf="formLogin.controls['email'].invalid && formLogin.controls['email'].dirty" class="auth-modal__validation">
           <small *ngIf="formLogin.controls['email'].errors?.required">Поле не должно быть пустым</small>
           <small *ngIf="formLogin.controls['email'].errors?.email">Email введен не коректно</small>
         </div>
       </div>
       <div>
-        <input type="password" placeholder="Пароль*" formControlName="password">
+        <input type="password" placeholder="Пароль*" formControlName="password" autocomplete="current-password">
         <a (click)="forgotPasswordAction = true">Забыли пароль?</a>
         <div *ngIf="formLogin.controls['password'].invalid && formLogin.controls['password'].dirty" class="auth-modal__validation">
           <small *ngIf="formLogin.controls['password'].errors?.required">Поле не должно быть пустым</small>
@@ -35,22 +35,22 @@
     </form>
 
     <ng-template #signUp>
-      <form class="auth-modal__registration" [formGroup]="formRegistration" (ngSubmit)="registrationUser()">
+      <form class="auth-modal__registration" [formGroup]="formRegistration" (ngSubmit)="registrationUser()" autocomplete="on">
         <div>
-          <input type="text" placeholder="ФИО*" formControlName="fullName">
+          <input type="text" placeholder="ФИО*" formControlName="fullName" autocomplete="name">
           <div *ngIf="formRegistration.controls['fullName'].invalid && formRegistration.controls['fullName'].dirty" class="auth-modal__validation">
             <small *ngIf="formRegistration.controls['fullName'].errors?.required">Поле не должно быть пустым</small>
           </div>
         </div>
         <div>
-          <input type="email" placeholder="Email*" formControlName="email">
+          <input type="email" placeholder="Email*" formControlName="email" autocomplete="username">
           <div *ngIf="formRegistration.controls['email'].invalid && formRegistration.controls['email'].dirty" class="auth-modal__validation">
             <small *ngIf="formRegistration.controls['email'].errors?.required">Поле не должно быть пустым</small>
             <small *ngIf="formRegistration.controls['email'].errors?.email">Email введен не коректно</small>
           </div>
         </div>
         <div>
-          <input type="text" placeholder="Телефон*" formControlName="phone">
+          <input type="text" placeholder="Телефон*" formControlName="phone" autocomplete="tel">
           <div *ngIf="formRegistration.controls['phone'].invalid && formRegistration.controls['phone'].dirty" class="auth-modal__validation">
             <small
               *ngIf="formRegistration.controls['phone'].errors?.maxlength ||
@@ -60,14 +60,14 @@
           </div>
         </div>
         <div>
-          <input type="password" placeholder="Пароль*" formControlName="password">
+          <input type="password" placeholder="Пароль*" formControlName="password" autocomplete="new-password">
           <div *ngIf="formRegistration.controls['password'].invalid && formRegistration.controls['password'].dirty" class="auth-modal__validation">
             <small *ngIf="formRegistration.controls['password'].errors?.required">Поле не должно быть пустым</small>
             <small *ngIf="formRegistration.controls['password'].errors?.minlength">Пароль должен быть не менее 6 символов</small>
           </div>
         </div>
         <div>
-          <input type="password" placeholder="Повторите пароль*" formControlName="confirmPassword">
+          <input type="password" placeholder="Повторите пароль*" formControlName="confirmPassword" autocomplete="new-password">
           <div *ngIf="formRegistration.controls['confirmPassword'].invalid && formRegistration.controls['confirmPassword'].dirty" class="auth-modal__validation">
             <small *ngIf="formRegistration.controls['confirmPassword'].errors?.required">Поле не должно быть пустым</small>
             <small *ngIf="formRegistration.controls['confirmPassword'].errors?.mismatch">Пароли не совпадают</small>
@@ -94,9 +94,9 @@
     <ng-container *ngIf="forgotPasswordAction; else regAction">
       <div class="re-store-modal" *ngIf="!notice; else notification">
         <h1>Восстановить пароль</h1>
-        <form [formGroup]="restoreForm" (ngSubmit)="restorePassword()">
+        <form [formGroup]="restoreForm" (ngSubmit)="restorePassword()" autocomplete="on">
           <div>
-            <input type="email" placeholder="Введите E-mail" formControlName="email">
+            <input type="email" placeholder="Введите E-mail" formControlName="email" autocomplete="username">
             <div class="re-store-modal__validation" *ngIf="restoreForm.invalid && restoreForm.controls['email'].dirty">
               <small *ngIf="restoreForm.controls['email'].errors?.email">Email введене не коректно</small>
               <small *ngIf="restoreForm.controls['email'].errors?.required">Поле не должно быть пустым</small>

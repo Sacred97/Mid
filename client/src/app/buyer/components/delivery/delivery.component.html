@@ -1,0 +1,129 @@
+<div class="delivery">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <div>
+
+    <div>
+      <img src="../../../../assets/general-icon/pickup.svg" alt="">
+    </div>
+
+    <div>
+
+      <h1>Самовывоз из торговых точек «Мидкам»</h1>
+
+      <p>
+
+        <span>
+          Заказ можно получить в часы работы любой торговой точки.
+          В зависимости от формы оплаты при себе необходимо иметь паспорт, доверенность, либо печать.
+          Факт поступления денежных средств обязателен, платежная ведомость не принимается.
+        </span>
+
+        <span>
+          Лучшее время для приезда уточняйте у своего менеджер. Желательно приезжать, когда Ваш товар полностью собран.
+        </span>
+
+      </p>
+
+    </div>
+
+  </div>
+
+  <div>
+
+    <div>
+      <img src="../../../../assets/general-icon/delivery.svg" alt="">
+    </div>
+
+    <div>
+
+      <h1>Лучшее время для приезда уточняйте у своего менеджер. Желательно приезжать, когда Ваш товар полностью собран.</h1>
+
+      <p>
+
+        <span>
+          Для того чтобы заказать адресную доставку курьерами транспортной компании,
+          покупателю необходимо будет указать в «Корзине» в разделе «Способ получения» адресные данные.
+          Затем следует выбрать подходящую транспортную компанию.
+        </span>
+
+        <span>
+          После прибытия заказа покупатель получит СМС-оповещение. Для получения заказа необходимо предъявить документ,
+          удостоверяющий личность (паспорт или водительские права).
+        </span>
+
+        <span>
+          Доставка до подъезда – платная. Оплата стоимости доставки производится в соответствии с расценками конкретной
+          транспортной компании.
+        </span>
+
+        <span>
+          Ниже Вы можете рассчитать примерную доставку распространенными ТК.
+        </span>
+
+      </p>
+
+      <button (click)="pekModal = true"><span>Первая Экспидиционная Компания</span></button>
+      <button (click)="dellinModal = true"><span>Деловые линии</span></button>
+      <button (click)="baikalModal = true"><span>Байкал сервис</span></button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="dellinModal">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="iframe-window">
+    <div class="iframe-load" *ngIf="!iframeLoad">
+      <div class="lds-dual-ring"></div>
+    </div>
+    <iframe (load)="iframeLoad = true"
+            src="https://widgets.dellin.ru/calculator?arrival_point=1600000100000000000000000&derival_point=1600000200000000000000000&derival_to_door=off&arrival_to_door=on&sized_weight=110&sized_volume=80&disabled_calculation=on&insurance=0&package=1"
+            width="332"
+            height="390"
+            scrolling="no"
+            frameborder="0">
+    </iframe>
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="baikalModal">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="iframe-window">
+    <div class="iframe-load" *ngIf="!iframeLoad">
+      <div class="lds-dual-ring"></div>
+    </div>
+    <iframe src="https://api.baikalsr.ru/widget/calculator?order=hide" width="310" height="524.6" scrolling="no"
+            frameborder="0" (load)="iframeLoad = true">
+    </iframe>
+
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="pekModal">
+
+  <div class="modal-background" (click)="closeModal()"></div>
+
+  <div class="iframe-window">
+    <div class="iframe-load" *ngIf="!iframeLoad">
+      <div class="lds-dual-ring"></div>
+    </div>
+    <iframe (load)="iframeLoad = true" allowtransparency="true" frameborder="0" width="250" height="345"
+            scrolling="no"
+            style="border:1px solid #ededed" src="https://pecom.ru/ru/newcalc/">
+    </iframe>
+
+  </div>
+
+</div>

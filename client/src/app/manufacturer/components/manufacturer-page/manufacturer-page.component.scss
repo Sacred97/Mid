@@ -1,7 +1,7 @@
 @import "../../../shared/styles/variables";
 
 .manufacturer-catalog-page {
-  width: 89.2%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -257,7 +257,7 @@
     .slick-slide {
 
       img {
-        width: 99.9%;
+        //width: 99.9%;
       }
 
       a {
@@ -963,28 +963,6 @@
 
         }
 
-        > div:last-child {
-          position: relative;
-          width: 15px;
-          height: 25px;
-          border: 2px solid $yellow;
-          cursor: pointer;
-          &:hover {
-            background-color: $yellow-hover !important;
-          }
-          span {
-            display: block;
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ffffff;
-            bottom: -6px;
-            left: 0.5px;
-            transform: rotate(45deg);
-            border-top: 2px solid $yellow;
-            border-left: 2px solid $yellow;
-          }
-        }
       }
 
       > span:nth-child(2) {
@@ -1189,30 +1167,9 @@
       }
 
       >div:last-child {
-        position: relative;
-        width: 15px;
-        height: 25px;
-        border: 2px solid $yellow;
         margin-left: 4px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: $yellow-hover !important;
-        }
-
-        span {
-          display: block;
-          position: absolute;
-          width: 9px;
-          height: 9px;
-          background-color: #ffffff;
-          bottom: -5px;
-          left: 1px;
-          transform: rotate(45deg);
-          border-top: 2px solid $yellow;
-          border-left: 2px solid $yellow;
-        }
       }
+
     }
 
     &__to-order {

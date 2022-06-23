@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgDynamicBreadcrumbService} from "ng-dynamic-breadcrumb";
 
 @Component({
   selector: 'app-video',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VideoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private breadcrumbService: NgDynamicBreadcrumbService) { }
 
   ngOnInit(): void {
   }

@@ -9,25 +9,15 @@ import {Subscription} from "rxjs";
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnInit {
 
   constructor(public markerService: MarkerService, private userService: UserService) {
   }
 
-  user: UserInterface | undefined = undefined
-  sub: Subscription | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
 
   ngOnInit(): void {
-    this.sub = this.userService.user$.subscribe(user => {
-      this.user = user
-    }, error => {
-      console.log(error);
-    })
 
-  }
-
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe()
   }
 
 }

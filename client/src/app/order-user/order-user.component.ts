@@ -8,7 +8,6 @@ import {
 } from "../shared/services-interfaces/user-service/user.interface";
 import { Router } from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-order-user',
@@ -26,7 +25,7 @@ export class OrderUserComponent implements OnInit {
   quantityDetails: number = this.cartService.storage().length
   totalWeight: number = 0
 
-  user: UserInterface | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
 
   form: FormGroup = new FormGroup({
     contact: new FormControl(null,  [Validators.required]),
@@ -46,14 +45,11 @@ export class OrderUserComponent implements OnInit {
   prevCost: number = 0
 
   ngOnInit(): void {
-    this.userService.getProfile()
-      .then(data => {
-        this.user = data
-        this.totalWeight = this.user.shoppingCart.totalWeight
-      }, error => {
-        console.log(error)
-        this.router.navigate(['/'])
-      })
+    if (this.user) {
+      this.totalWeight = this.user.shoppingCart.totalWeight
+    } else {
+      this.router.navigate(['/'])
+    }
   }
 
   async orderDataAssembly() {
@@ -115,13 +111,13 @@ export class OrderUserComponent implements OnInit {
       }
 
       this.user = await this.userService.makeOrder(data)
+      this.userService.user$.next(this.user)
       this.action = false
       this.orderSuccess = true
       this.orderNumber = this.user.order[this.user.order.length - 1].orderNumber
       this.cartService.totalCost = 0
       this.cartService.itemsQuantity = 0
       localStorage.setItem('shopping_cart', '[]')
-      this.userService.user$.next(this.user)
 
     } catch (error) {
       console.log(error);
@@ -136,7 +132,8 @@ export class OrderUserComponent implements OnInit {
     let address: string = ''
     switch (place) {
       case 'Сидоровка':
-        address = 'РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, дом 123 (трасса М-7 Волга, направление Уфа-Казань, 1046 километр)'
+        address = 'РФ, Республика Татарстан, г. Набережные Челны, пр. Казанский, дом 123 ' +
+          '(трасса М-7 Волга, направление Уфа-Казань, 1046 километр)'
         break;
       case 'Орловка':
         address = 'РФ, Республика Татарстан, г. Набережные Челны, ул. Орловская, дом 186 (ул. Центральная, дом 186)'
@@ -150,7 +147,8 @@ export class OrderUserComponent implements OnInit {
   }
 
   close() {
-
+    this.orderError = false
+    this.makingOrder = false
   }
 
 }

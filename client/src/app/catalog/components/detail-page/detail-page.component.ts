@@ -7,6 +7,7 @@ import {ShoppingCartService} from "../../../shared/services-interfaces/shopping-
 import {RecentlyViewedService} from "../../../shared/services-interfaces/recently-viewed-service/recently-viewed.service";
 import {MarkerService} from "../../../shared/services-interfaces/marker-service/marker.service";
 import {UserService} from "../../../shared/services-interfaces/user-service/user.service";
+import {UserInterface} from "../../../shared/services-interfaces/user-service/user.interface";
 
 @Component({
   selector: 'app-detail-page',
@@ -63,21 +64,43 @@ export class DetailPageComponent implements OnInit {
   detailsByManufacturer: DetailInterface[] = []
   recentlyViewed: DetailInterface[] = []
 
+  user: UserInterface | undefined = this.userService.user$.getValue()
+
   slideWidth: number = 0
   routeReady: boolean = false
   routeError: string = ''
 
   ngOnInit(): void {
+
+    if (!this.user) {
+
+      this.userService.getUser()
+        .then(res => {
+          this.user = res
+        }, error => {
+          console.log(error);
+        })
+
+    }
+
     //-----------------------------------------Ширина слайдера товаров--------------------------------------------------
 
-    if (window.innerWidth <= 1024) {
-      this.slideWidth = Math.round(((window.innerWidth) * 0.892) / 3)
-      if (window.innerWidth <= 614) {
-        this.slideWidth = Math.round((window.innerWidth) * 0.892)
-      }
+    if (window.innerWidth >= 1615) {
+      this.slideWidth = Math.round(1440 / 4)
     } else {
-      this.slideWidth = Math.round(((window.innerWidth - 17) * 0.892) / 4)
+      if (window.innerWidth < 1615 && window.innerWidth > 1024) {
+        this.slideWidth = Math.round(((window.innerWidth - 20) * 0.892) / 4)
+      }
     }
+
+    // if (window.innerWidth <= 1024) {
+    //   this.slideWidth = Math.round(((window.innerWidth) * 0.892) / 3)
+    //   if (window.innerWidth <= 614) {
+    //     this.slideWidth = Math.round((window.innerWidth) * 0.892)
+    //   }
+    // } else {
+    //   this.slideWidth = Math.round(((window.innerWidth - 17) * 0.892) / 4)
+    // }
 
     //----------------------------------------------Получить товар------------------------------------------------------
 

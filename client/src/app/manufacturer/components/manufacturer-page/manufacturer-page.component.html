@@ -138,7 +138,7 @@
     <ngx-slick-carousel class="slick-slider-main-class manufacturer-page-banners" [config]="bannersConfig"
                         (init)="slickInit($event)">
       <div ngxSlickItem *ngFor="let b of banners" class="slide">
-        <img [src]="b.url" alt="">
+        <img [src]="b.url" alt="" [style.max-width]="bannerMaxWidth + 'px'">
         <a *ngIf="b.pageReference" [href]="b.pageReference">Узнать подробнее</a>
       </div>
     </ngx-slick-carousel>
@@ -378,8 +378,9 @@
                   </li>
                 </ul>
               </div>
-              <div (click)="mark(d.id, idx)" [style.backgroundColor]="d.marked ? '#fdcb00' : '#ffffff'">
-                <span></span>
+              <div class="favorite-mark" (click)="mark(d.id, idx)">
+                <img src="../../../../assets/general-icon/favorite-static.svg" alt="" *ngIf="!d.marked">
+                <img src="../../../../assets/general-icon/favorite-touched.svg" alt="" *ngIf="d.marked">
               </div>
             </div>
 
@@ -435,7 +436,6 @@
           </div>
 
           <div class="m-catalog__display-analog__price">
-<!--            <span>{{shoppingService.toCurrency(d.price)}}</span>-->
             {{shoppingService.toCurrency(d.price)}}
           </div>
 
@@ -448,8 +448,9 @@
               <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
               <ng-template #no_available_analog_view><span class="not-available-analog">нет в наличии</span></ng-template>
             </div>
-            <div (click)="mark(d.id, idx)" [style.backgroundColor]="d.marked ? '#fdcb00' : '#ffffff'">
-              <span></span>
+            <div class="favorite-mark" (click)="mark(d.id, idx)">
+              <img src="../../../../assets/general-icon/favorite-static.svg" alt="" *ngIf="!d.marked">
+              <img src="../../../../assets/general-icon/favorite-touched.svg" alt="" *ngIf="d.marked">
             </div>
           </div>
 

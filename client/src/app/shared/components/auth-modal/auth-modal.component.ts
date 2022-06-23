@@ -37,7 +37,7 @@ export class AuthModalComponent implements OnInit {
   formLogin: FormGroup = new FormGroup({
     email: new FormControl(localStorage.getItem('email'), [Validators.email, Validators.required]),
     //Пароль убрать потом, для быстрого входа указал
-    password: new FormControl('123456', [Validators.required, Validators.minLength(6)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     isSave: new FormControl(!!localStorage.getItem('email'))
   })
   errorLogin: string = ''
@@ -156,6 +156,9 @@ export class AuthModalComponent implements OnInit {
         this.errorLogin = error.error.message
       }
       if (error.error.statusCode === 403) {
+        this.errorLogin = error.error.message
+      }
+      if (error.error.statusCode === 404) {
         this.errorLogin = error.error.message
       }
     }).finally(() => {

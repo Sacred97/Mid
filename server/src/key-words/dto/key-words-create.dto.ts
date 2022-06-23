@@ -11,5 +11,5 @@ export class KeyWordsCreateDto {
     @IsArray()
     @ValidateNested({each: true})
     @Type(() => DetailIdDto)
-    details?: DetailIdDto[]
+    detail?: DetailIdDto[]
 }

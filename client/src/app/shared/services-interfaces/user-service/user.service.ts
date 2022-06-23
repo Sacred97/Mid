@@ -33,22 +33,20 @@ export class UserService {
 
   user$: BehaviorSubject<UserInterface | undefined> = new BehaviorSubject<UserInterface | undefined>(undefined)
 
-  async refreshToken(): Promise<boolean> {
+  async getUser(): Promise<UserInterface | undefined> {
     try {
-      await this.http.get(environment.apiUrl + 'auth/refresh', {withCredentials: true})
-        .toPromise()
-      const user = await this.http.get<UserInterface>(environment.apiUrl + 'users/profile',
-        {withCredentials: true}).toPromise()
+      const url: string = environment.apiUrl + 'users/profile'
+      const user = await this.http.get<UserInterface>(url, {withCredentials: true}).toPromise()
       const shoppingCart: ShoppingCartInterface[] = user.shoppingCart.cartItem.map(i => ({
         id: i.detail.id, quantity: i.quantity
       }))
       localStorage.setItem('shopping_cart', JSON.stringify(shoppingCart))
       this.user$.next(user)
-      return true
-    } catch (e) {
-      console.log(e)
+      return user
+    } catch (error) {
+      console.log(error)
       this.user$.next(undefined)
-      return false
+      return undefined
     }
   }
 
@@ -271,17 +269,17 @@ export class UserService {
   //----------------------------------------------------История поиска--------------------------------------------------
 
   addRequestHistory(data: AddRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
-    const url = environment.apiUrl + 'users/history'
+    const url = environment.apiUrl + 'users/own-certificates'
     return this.http.post<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
   }
 
   updateRequestHistory(data: UpdateRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
-    const url = environment.apiUrl + 'users/history'
+    const url = environment.apiUrl + 'users/own-certificates'
     return this.http.put<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
   }
 
   deleteRequestHistory(id: number): Promise<RequestHistoryUserInterface[]> {
-    const url = environment.apiUrl + 'users/history/' + id
+    const url = environment.apiUrl + 'users/own-certificates/' + id
     return this.http.delete<RequestHistoryUserInterface[]>(url, {withCredentials: true}).toPromise()
   }
 

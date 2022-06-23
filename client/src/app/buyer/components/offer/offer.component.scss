@@ -1,0 +1,32 @@
+@import "../../../shared/styles/variables";
+
+.offer {
+  width: 100%;
+  min-height: 50vh;
+  margin: 0 auto 100px;
+
+  h1 {
+    margin: 20px 0;
+    width: 100%;
+    color: $black;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 500;
+    font-family: "Museo Sans Cyrl 500";
+  }
+
+  h1:nth-child(2) {
+    margin-top: 0;
+  }
+
+  p {
+    display: block;
+    width: 100%;
+    color: $black;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 300;
+    font-family: "Museo Sans Cyrl 300";
+  }
+
+}

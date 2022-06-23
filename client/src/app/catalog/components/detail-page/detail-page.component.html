@@ -201,7 +201,8 @@
 
       <div class="detail__information__special-actions">
         <div (click)="markBySingle()">
-          <div [style.backgroundColor]="detail.marked ? '#fdcb00' : '#ffffff'"></div>
+          <img src="../../../../assets/general-icon/favorite-static.svg" alt="" *ngIf="!detail.marked">
+          <img src="../../../../assets/general-icon/favorite-touched.svg" alt="" *ngIf="detail.marked">
           <span>Добавить в закладки</span>
         </div>
         <div>
@@ -243,7 +244,7 @@
         <button (click)="textInfoView('description')" [class.active]="description">
           Описание
         </button>
-        <button (click)="textInfoView('applicability')" [class.active]="applicability">
+        <button (click)="textInfoView('applicability')" [class.active]="applicability" disabled>
           Применяемость
         </button>
         <button (click)="textInfoView('certificate')" [class.active]="certificate">
@@ -446,10 +447,9 @@
                [style.width]="slideWidth+'px'">
 
             <div>
-              <div [style.backgroundColor]="slide.marked ? '#fdcb00' : '#ffffff'"
-                   (click)="markByArray(detailsByManufacturer, idx, recentlyViewed)">
-                <span></span>
-                <span></span>
+              <div (click)="markByArray(detailsByManufacturer, idx, recentlyViewed)">
+                <img src="../../../../assets/general-icon/favorite-touched.svg" alt="" *ngIf="slide.marked">
+                <img src="../../../../assets/general-icon/favorite-static.svg" alt="" *ngIf="!slide.marked">
               </div>
               <img [src]="slide.photoDetail.length > 0 ? slide.photoDetail[0].url : defaultImg"
                    [style.maxWidth]="slideWidth*0.7+'px'">
@@ -494,7 +494,7 @@
 
       <div class="additional__details-carousel__title">
         <h1>Надевно просмотренные</h1>
-        <a [routerLink]="['/','catalog']">история просмотров »</a>
+        <a [routerLink]="user ? ['/', 'user', 'my-favorites'] : ['/', 'favorite']">история просмотров »</a>
       </div>
 
       <div class="additional__details-carousel__slider">
@@ -504,8 +504,10 @@
                [style.width]="slideWidth+'px'">
 
             <div>
-              <div [style.backgroundColor]="slide.marked ? '#fdcb00' : '#ffffff'"
-                   (click)="markByArray(recentlyViewed, idx, detailsByManufacturer)"></div>
+              <div (click)="markByArray(recentlyViewed, idx, detailsByManufacturer)">
+                <img src="../../../../assets/general-icon/favorite-touched.svg" alt="" *ngIf="slide.marked">
+                <img src="../../../../assets/general-icon/favorite-static.svg" alt="" *ngIf="!slide.marked">
+              </div>
               <img [src]="slide.photoDetail.length > 0 ? slide.photoDetail[0].url : defaultImg"
                 [style.maxWidth]="slideWidth * 0.7 + 'px'">
               <a [routerLink]="['/', 'manufacturer', slide.manufacturer.id]"

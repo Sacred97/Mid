@@ -1,0 +1,31 @@
+<div class="own-cert">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <div class="own-cert__certificates">
+
+    <div>
+
+      <div *ngFor="let c of certificates" (click)="zoom($event)">
+        <img [src]="c.url" alt="">
+      </div>
+
+    </div>
+
+    <button (click)="getMore(page + 1)" [disabled]="end || action">Показать еще</button>
+
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="modal">
+
+  <div class="modal-background" (click)="close()"></div>
+
+  <div class="own-cert-modal">
+    <img [src]="src" alt="">
+  </div>
+
+</div>

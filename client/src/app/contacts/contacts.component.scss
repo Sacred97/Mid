@@ -1,7 +1,7 @@
 @import "../shared/styles/variables";
 
 .contacts {
-  width: 89.2%;
+  width: 100%;
   margin: 0 auto 78px;
 
   > span {
@@ -21,8 +21,10 @@
     flex-wrap: wrap;
 
     a {
-      display: block;
-      flex-basis: 24%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-basis: 19%;
       padding: 3px 0;
       background-color: #ffffff;
       border-bottom: 7px solid $yellow;
@@ -34,6 +36,31 @@
       font-size: 20px;
       line-height: 1;
       font-family: 'Museo Sans Cyrl 700';
+
+      > div {
+        width: 100%;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+
+        img {
+          max-width: 100%;
+          max-height: 200px;
+        }
+      }
+
+      > span {
+        text-align: center;
+        text-transform: uppercase;
+        color: $black;
+        font-size: 20px;
+        line-height: 1;
+        font-weight: 700;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+
     }
 
     &_active {

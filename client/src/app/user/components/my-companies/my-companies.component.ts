@@ -22,7 +22,7 @@ export class MyCompaniesComponent implements OnInit {
               private daDataService: DaDataService) {
   }
 
-  user: UserInterface | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
   loading: boolean = true
   error: boolean = false
   action: boolean = false
@@ -39,16 +39,11 @@ export class MyCompaniesComponent implements OnInit {
   addressList: string[] = []
 
   ngOnInit(): void {
-    this.userService.getProfile()
-      .then(data => {
-        this.user = data
-      }, error => {
-        console.log(error);
-        this.error = true
-      })
-      .finally(() => {
-        this.loading = false
-      })
+    if (!this.user) {
+      this.router.navigate(['/'])
+      return
+    }
+    this.loading = false
   }
 
   showHideForm() {
@@ -119,6 +114,7 @@ export class MyCompaniesComponent implements OnInit {
     this.userService.deleteCompany(id)
       .then(data => {
         this.user!.company = data
+        this.userService.user$.next(this.user)
       }, error => {
         console.log(error);
       })
@@ -163,6 +159,7 @@ export class MyCompaniesComponent implements OnInit {
       .then(res => {
         this.formAddError = false
         this.user!.company = res
+        this.userService.user$.next(this.user)
         this.showHideForm()
       }, error => {
         console.log(error);
@@ -315,6 +312,7 @@ export class MyCompaniesComponent implements OnInit {
       .then(res => {
         this.action = false
         this.user!.company = res
+        this.userService.user$.next(this.user)
         this.closeModal()
       }, error => {
         this.action = false

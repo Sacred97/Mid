@@ -30,7 +30,20 @@
           </div>
 
           <div>
+
+            <a *ngIf="d.manufacturer; else no_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+              <img *ngIf="d.manufacturer.logoCompanyUrl" [src]="d.manufacturer.logoCompanyUrl"
+                   [alt]="d.manufacturer.nameCompany">
+
+              <span *ngIf="!d.manufacturer.logoCompanyUrl">{{d.manufacturer.nameCompany}}</span>
+            </a>
+
+            <ng-template #no_manufacturer>
+              <span>Производитель не указан</span>
+            </ng-template>
+
           </div>
+
         </li>
 
       </ul>

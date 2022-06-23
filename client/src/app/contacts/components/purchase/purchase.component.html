@@ -1,12 +1,12 @@
 <div class="general-contacts">
 
   <div class="general-contacts__work-time">
+
     <div>
       <div><img src="../../../../assets/icon/geoposition.svg" alt=""></div>
       <span>
         г. Набережные Челны, <br/>
-        пр. Казанский (трасса М-7), 226/4 <br/>
-        "ПГО ГАРАЖ-2000" бокс 4/2
+        пр. Казанский (трасса М-7), 123
       </span>
     </div>
 
@@ -19,64 +19,99 @@
         Воскресенье (выходной) <br/>
       </span>
     </div>
+
+    <div class="general-contacts__work-time__main-contacts">
+      <a href="tel:+78552928111">
+        <img src="../../../../assets/general-icon/phone.svg" alt="">
+        <span>+7 (8552) 928-111</span>
+      </a>
+    </div>
+
+    <button (click)="modal=true">
+      <img src="../../../../assets/icon/search.svg" alt="">
+      <span>Посмотреть сотрудников</span>
+    </button>
+
   </div>
 
-  <div class="general-contacts__contact-info">
-    <div>
-      <span>Вадим</span>
-      <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
+  <div>
+    <div id="gis"></div>
+    <div class="general-contacts__contact-info">
       <div>
-        <a href="tel:+78552927111#1101">
-          <img src="../../../../assets/phone.svg" alt="">
-          <span>+7 (8552) 927-111 (доб. 1101)</span>
-        </a>
-        <a href="mailto:vadim.p@midkam.ru">
-          <img src="../../../../assets/email.svg" alt="">
-          <span>vadim.p@midkam.ru</span>
-        </a>
+        <span>Вадим</span>
+        <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
+        <div>
+          <a href="tel:+78552927111#1101">
+            <img src="../../../../assets/general-icon/phone.svg" alt="">
+            <span>+7 (8552) 927-111 (доб. 1101)</span>
+          </a>
+          <a href="mailto:vadim.p@midkam.ru">
+            <img src="../../../../assets/general-icon/email.svg" alt="">
+            <span>vadim.p@midkam.ru</span>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <span>Анна</span>
-      <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
       <div>
-        <a href="tel:+78552927111#1102">
-          <img src="../../../../assets/phone.svg" alt="">
-          <span>+7 (8552) 927-111 (доб. 1102)</span>
-        </a>
-        <a href="mailto:anna.k@midkam.ru">
-          <img src="../../../../assets/email.svg" alt="">
-          <span>anna.k@midkam.ru</span>
-        </a>
+        <span>Анна</span>
+        <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
+        <div>
+          <a href="tel:+78552927111#1102">
+            <img src="../../../../assets/general-icon/phone.svg" alt="">
+            <span>+7 (8552) 927-111 (доб. 1102)</span>
+          </a>
+          <a href="mailto:anna.k@midkam.ru">
+            <img src="../../../../assets/general-icon/email.svg" alt="">
+            <span>anna.k@midkam.ru</span>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <span>Татьяна</span>
-      <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
       <div>
-        <a href="tel:+78552927111#1104">
-          <img src="../../../../assets/phone.svg" alt="">
-          <span>+7 (8552) 927-111 (доб. 1104)</span>
-        </a>
-        <a href="mailto:tatyana.s@midkam.ru">
-          <img src="../../../../assets/email.svg" alt="">
-          <span>tatyana.s@midkam.ru</span>
-        </a>
+        <span>Татьяна</span>
+        <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
+        <div>
+          <a href="tel:+78552927111#1104">
+            <img src="../../../../assets/general-icon/phone.svg" alt="">
+            <span>+7 (8552) 927-111 (доб. 1104)</span>
+          </a>
+          <a href="mailto:tatyana.s@midkam.ru">
+            <img src="../../../../assets/general-icon/email.svg" alt="">
+            <span>tatyana.s@midkam.ru</span>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <span>Зиля</span>
-      <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
       <div>
-        <a href="tel:+78552927111#1106">
-          <img src="../../../../assets/phone.svg" alt="">
-          <span>+7 (8552) 927-111 (доб. 1106)</span>
-        </a>
+        <span>Зиля</span>
+        <small>Менеджер отдела продаж запчастей к автомобилям КАМАЗ</small>
+        <div>
+          <a href="tel:+78552927111#1106">
+            <img src="../../../../assets/general-icon/phone.svg" alt="">
+            <span>+7 (8552) 927-111 (доб. 1106)</span>
+          </a>
+        </div>
       </div>
     </div>
+  </div>
+
+</div>
+
+<div class="modal" *ngIf="modal">
+
+  <div class="modal-background" (click)="close()"></div>
+
+  <div class="modal-employee">
+
+    <ul>
+      <li *ngFor="let e of employees">
+        <span>{{e.name}}</span>
+        <small>{{e.post}}</small>
+        <span>{{e.phone}}</span>
+        <span>{{e.email}}</span>
+      </li>
+    </ul>
+
   </div>
 
 </div>

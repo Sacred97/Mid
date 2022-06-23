@@ -13,17 +13,17 @@ export class GuestGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
 
-    return this.userService.refreshToken().then((state) => {
-      if (state) {
-        this.router.navigate(['/'])
-        return false
-      } else {
+    return this.userService.getUser()
+      .then(user => {
+        if (!!user) {
+          this.router.navigate(['/'])
+          return false
+        } else {
+          return true
+        }
+      }, (error: HttpErrorResponse) => {
         return true
-      }
-    }, (error: HttpErrorResponse) => {
-      console.log(error);
-      return true
-    })
+      })
 
   }
 

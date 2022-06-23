@@ -13,7 +13,7 @@ export class AdminGuardGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const url = environment.apiUrl + 'auth/admin'
-    return this.http.get<any>(url, {withCredentials: true}).toPromise()
+    return this.http.get<{status: boolean}>(url, {withCredentials: true}).toPromise()
       .then(status => {
         return status.status
       }, error => {

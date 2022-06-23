@@ -13,8 +13,7 @@ import {Express} from 'express'
 import {PriceListService} from "./price-list.service";
 import {PriceListGetDto} from "./dto/price-list-get.dto";
 import {PriceListUploadDto} from "./dto/price-list-upload.dto";
-import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
-import {AdminGuard} from "../auth/guards/admin.guard";
+import {OneCGuard} from "../one-c/one-c.guard";
 
 @Controller('price-list')
 export class PriceListController {
@@ -42,7 +41,7 @@ export class PriceListController {
         return await this.priceListService.getPriceListFilesName()
     }
 
-    @UseGuards(JwtAuthGuard, AdminGuard)
+    @UseGuards(OneCGuard)
     @Post('upload')
     async uploadFile(@Body() data: PriceListUploadDto) {
         return await this.priceListService.uploadToServerFiles(data)

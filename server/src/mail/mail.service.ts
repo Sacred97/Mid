@@ -4,6 +4,7 @@ import {PriceListSendDto} from "../price-list/dto/price-list-send.dto";
 import {Express} from 'express'
 import {PriceListGetDto} from "../price-list/dto/price-list-get.dto";
 import {OrderToMailInterface} from "./interfaces/order-to-mail.interface";
+import {SupplierOfferDto} from "./dto/supplier-offer.dto";
 
 @Injectable()
 export class MailService {
@@ -119,6 +120,17 @@ export class MailService {
       },
       attachments: []
     })
+  }
+
+  async sendSupplierOffer(data: SupplierOfferDto) {
+    await this.mailerService.sendMail({
+      to: 'webcite@midkam.ru',
+      subject: 'Предложение поставщика',
+      template: __dirname + '/templates/supplier-offer.hbs',
+      context: data
+    })
+
+    return {message: 'Ok'}
   }
 
 }

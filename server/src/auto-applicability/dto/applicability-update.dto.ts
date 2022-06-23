@@ -1,6 +1,4 @@
-import {IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested} from "class-validator";
-import {Type} from "class-transformer";
-import {DetailIdDto} from "../../shared-dto/detail-id.dto";
+import {IsNotEmpty, IsNumber, IsString} from "class-validator";
 
 export class ApplicabilityUpdateDto {
 
@@ -8,9 +6,8 @@ export class ApplicabilityUpdateDto {
     @IsNumber()
     id: number
 
-    @IsOptional()
     @IsNotEmpty()
     @IsString()
-    autoApplicabilityName?: string
+    autoApplicabilityName: string
 
 }

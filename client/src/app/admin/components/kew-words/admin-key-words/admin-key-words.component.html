@@ -1,1 +1,33 @@
-<p>admin-key-words works!</p>
+<div class="admin-key-words">
+
+  <h1>Список ключевых слов / тэгов</h1>
+
+  <div class="admin-key-words__info" *ngIf="errorMessage || keyWords.length; else load">
+
+    <ng-container *ngIf="keyWords.length; else empty">
+      <ul>
+        <li *ngFor="let kw of keyWords | paginate: { itemsPerPage: 20, currentPage: page, totalItems: totalItems};
+                    let idx = index;">
+          <span>id: {{kw.id}}</span>
+          <a [routerLink]="['/', 'admin', 'key-words', kw.id]">Автоприменяемость: {{kw.keyWord}}</a>
+        </li>
+      </ul>
+
+      <pagination-controls class="pagination" (pageChange)="changePage($event)"
+                           previousLabel="" nextLabel="" [maxSize]="9">
+      </pagination-controls>
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

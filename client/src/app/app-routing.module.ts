@@ -14,8 +14,8 @@ import {ManufacturerComponent} from "./manufacturer/manufacturer.component";
 import {ManufacturerEmptyComponent} from "./manufacturer/components/manufacturer-empty/manufacturer-empty.component";
 import {ManufacturerPageComponent} from "./manufacturer/components/manufacturer-page/manufacturer-page.component";
 import {AboutComponent} from "./about/about.component";
-import {UsComponent} from "./about/components/us/us.component";
-import {HistoryComponent} from "./about/components/history/history.component";
+import {GeneralInfoComponent} from "./about/components/general-info/general-info.component";
+import {OwnCertificatesComponent} from "./about/components/own-certificates/own-certificates.component";
 import {PresentationComponent} from "./about/components/presentation/presentation.component";
 import {VideoComponent} from "./about/components/video/video.component";
 import {ContactsComponent} from "./contacts/contacts.component";
@@ -64,27 +64,84 @@ import {MyCompaniesComponent} from "./user/components/my-companies/my-companies.
 import {AddressComponent} from "./user/components/address/address.component";
 import {MyContactsComponent} from "./user/components/my-contacts/my-contacts.component";
 import {CurrentOrderComponent} from "./user/components/current-order/current-order.component";
-import { OrderUserComponent } from './order-user/order-user.component';
-import { UserGuard } from './shared/guards/user.guard';
+import {OrderUserComponent} from './order-user/order-user.component';
+import {UserGuard} from './shared/guards/user.guard';
 import {SearchPageComponent} from "./search-page/search-page.component";
 import {AdminCertificateComponent} from "./admin/components/certificate/admin-certificate/admin-certificate.component";
 import {AdminCertificateEditComponent} from "./admin/components/certificate/admin-certificate-edit/admin-certificate-edit.component";
+import {LandingComponent} from "./landing/landing.component";
+import {BuyerComponent} from "./buyer/buyer.component";
+import {SiteHelpComponent} from "./buyer/components/site-help/site-help.component";
+import {IndividualOrderComponent} from "./buyer/components/individual-order/individual-order.component";
+import {DeliveryComponent} from "./buyer/components/delivery/delivery.component";
+import {PaymentTermsComponent} from "./buyer/components/payment-terms/payment-terms.component";
+import {GuaranteeComponent} from "./buyer/components/guarantee/guarantee.component";
+import {OfferComponent} from "./buyer/components/offer/offer.component";
+import {PrivacyPolicyComponent} from "./buyer/components/privacy-policy/privacy-policy.component";
+import {ExportDepartamentComponent} from "./contacts/components/export-departament/export-departament.component";
+import {SupplierComponent} from "./supplier/supplier.component";
+
+const aboutBreadcrumbs: Data = {
+  title: 'Компания', breadcrumb: [
+    {label: 'Главная', url: '/'},
+    {label: 'Компания', url: ''},
+  ]
+}
+
+function aboutCreateBreadcrumbs(label: string): Data {
+  return {
+    title: label, breadcrumb: [
+      {label: 'Главная', url: '/'},
+      {label: 'Компания', url: '/about'},
+      {label: label, url: ''},
+    ]
+  }
+}
 
 const about: Routes = [
-  {path: 'about', component: AboutComponent},
-  {path: 'about/us', component: UsComponent},
-  {path: 'about/history', component: HistoryComponent},
-  {path: 'about/presentation', component: PresentationComponent},
-  {path: 'about/video', component: VideoComponent},
+  {path: 'about', component: AboutComponent, data: aboutBreadcrumbs},
+  {path: 'about/info', component: GeneralInfoComponent, data: aboutCreateBreadcrumbs('Общая информация')},
+  {path: 'about/certificates', component: OwnCertificatesComponent, data: aboutCreateBreadcrumbs('Наши сертификаты')},
+  {path: 'about/presentation', component: PresentationComponent, data: aboutCreateBreadcrumbs('Презентиация и брошюра')},
+  {path: 'about/video', component: VideoComponent, data: aboutCreateBreadcrumbs('Видеоролик')},
 ]
 
 const contacts: Routes = [
   {path: 'contacts', component: ContactsComponent, children: [
       {path: 'selling', component: SellingComponent},
       {path: 'purchase', component: PurchaseComponent},
+      {path: 'export', component: ExportDepartamentComponent},
       {path: 'marketing', component: MarketingComponent},
       {path: 'bookkeeping', component: BookkeepingComponent},
     ]},
+]
+
+const buyerBreadcrumbs: Data = {
+  title: 'Покупателю', breadcrumb: [
+    {label: 'Главная', url: '/'},
+    {label: 'Покупателю', url: ''},
+  ]
+}
+
+function buyerChildrenBreadcrumbs(title: string): Data {
+  return {
+    title: title, breadcrumb: [
+      {label: 'Главная', url: '/'},
+      {label: 'Покупателю', url: '/buyer'},
+      {label: title, url: ''}
+    ]
+  }
+}
+
+const buyer: Routes = [
+  {path: 'buyer', component: BuyerComponent, data: buyerBreadcrumbs},
+  {path: 'buyer/site-help', component: SiteHelpComponent, data: buyerChildrenBreadcrumbs('Помощь по сайту')},
+  {path: 'buyer/individual-order', component: IndividualOrderComponent, data: buyerChildrenBreadcrumbs('Индивидуальный заказ')},
+  {path: 'buyer/delivery', component: DeliveryComponent, data: buyerChildrenBreadcrumbs('Доставка')},
+  {path: 'buyer/payment', component: PaymentTermsComponent, data: buyerChildrenBreadcrumbs('Условия оплаты')},
+  {path: 'buyer/guarantee', component: GuaranteeComponent, data: buyerChildrenBreadcrumbs('Гарантия и возврат')},
+  {path: 'buyer/offer', component: OfferComponent, data: buyerChildrenBreadcrumbs('Договор оферты')},
+  {path: 'buyer/privacy-policy', component: PrivacyPolicyComponent, data: buyerChildrenBreadcrumbs('Политика конфиденциальности')},
 ]
 
 const userBreadcrumbsData: Data = {
@@ -103,12 +160,12 @@ const userOrderBreadcrumbs: Data = {
 }
 
 const userProfile: Routes = [
-  {path: 'user', component: UserComponent, data: userBreadcrumbsData, canActivate: [],
+  {path: 'user', component: UserComponent, data: userBreadcrumbsData, canActivate: [UserGuard],
     children: [
       {path: 'profile', component: ProfileComponent, data: userBreadcrumbsData},
       {path: 'my-orders', component: MyOrderComponent, data: userBreadcrumbsData},
       {path: 'my-favorites', component: FavoriteComponent, data: userBreadcrumbsData},
-      {path: 'my-history', component: MyHistoryComponent, data: userBreadcrumbsData},
+      {path: 'my-own-certificates', component: MyHistoryComponent, data: userBreadcrumbsData},
       {path: 'my-waiting-list', component: WaitingListComponent, data: userBreadcrumbsData},
       {path: 'my-subscriptions', component: SubscriptionsComponent, data: userBreadcrumbsData},
       {path: 'my-companies', component: MyCompaniesComponent, data: userBreadcrumbsData},
@@ -116,7 +173,7 @@ const userProfile: Routes = [
       {path: 'my-contacts', component: MyContactsComponent, data: userBreadcrumbsData},
     ]
   },
-  {path: 'user/my-orders/:id', component: CurrentOrderComponent, data: userOrderBreadcrumbs, canActivate: []}
+  {path: 'user/my-orders/:id', component: CurrentOrderComponent, data: userOrderBreadcrumbs, canActivate: [UserGuard]}
 ]
 
 const admin: Routes = [
@@ -155,14 +212,27 @@ const admin: Routes = [
   }
 ]
 
+const supplierBreadcrumbs: Data = {
+  title: 'Партнерам', breadcrumb: [
+    {label: 'Главная', url: '/'},
+    {label: 'Партнерам', url: ''}
+  ]
+}
+
 const routes: Routes = [
   ...admin,
+  {
+    path: 'landing', component: LandingComponent
+  },
   {
     path: '', component: HeaderLayoutComponent, children: [
       {path: '', component: HomePageComponent},
       ...about,
       ...contacts,
+      ...buyer,
       ...userProfile,
+      {
+        path: 'supplier', component: SupplierComponent, data: supplierBreadcrumbs},
       {path: 'catalog', component: CatalogComponent},
       {
         path: 'type', component: CatalogTypeComponent, data: {

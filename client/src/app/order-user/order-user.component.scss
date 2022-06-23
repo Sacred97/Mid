@@ -1,7 +1,7 @@
 @import "../shared/styles/variables";
 
 .order-user {
-  width: 89.2%;
+  width: 100%;
   margin: 19px auto;
 
   input[type="checkbox"], input[type='radio'] {
@@ -98,7 +98,7 @@
         background-color: $grey_light;
         border-radius: 10px;
         cursor: pointer;
-  
+
         > div {
           font-size: 18px;
           display: flex;
@@ -120,7 +120,7 @@
             border-radius: 50%;
           }
         }
-  
+
         input[type='radio']:checked + div{
           border-color: $yellow;
           background-color: $yellow;
@@ -139,7 +139,7 @@
           }
 
         }
-  
+
       }
 
     }
@@ -237,7 +237,7 @@
           color: $black;
           font-size: 18px;
           line-height: 1;
-          font-family: 'Museo Sans Cyrl 700';
+          font-family: 'Museo Sans Cyrl 700', Arial, sans-serif;
         }
 
       }
@@ -422,7 +422,7 @@
         line-height: 1;
         font-family: 'Museo Sans Cyrl 300';
       }
-      
+
     }
 
   }

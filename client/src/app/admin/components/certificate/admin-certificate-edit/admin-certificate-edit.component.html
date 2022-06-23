@@ -1,1 +1,50 @@
-<p>admin-certificate-edit works!</p>
+<div class="admin-certificates-edit">
+
+  <h1>Редактирование сертификата</h1>
+
+  <div class="admin-certificates-edit__content" *ngIf="!loading; else load">
+
+    <ng-container *ngIf="certificate; else empty">
+
+      <form [formGroup]="form" (ngSubmit)="update()">
+
+        <div>
+          <img [src]="certificate.url" alt="Сертификат">
+        </div>
+
+        <label>
+          <span>Порядковый номер сертификата</span>
+          <input type="number" formControlName="serialNumber">
+          <small *ngIf="form.controls['serialNumber'].invalid">
+            Поле не должно быть пустым
+          </small>
+        </label>
+
+        <button type="submit" [disabled]="form.invalid || action">Обновить</button>
+        <span *ngIf="updateSuccess">Обновление прошло успешно</span>
+        <small *ngIf="errorUpdate">Произошла ошибка, повторите запрос позже</small>
+
+      </form>
+
+      <div>
+        <button (click)="remove()" [disabled]="action">Удалить</button>
+        <small *ngIf="errorDeleteMessage">{{errorDeleteMessage}}</small>
+      </div>
+
+    </ng-container>
+
+    <ng-template #empty>
+      <span>{{errorMessage}}</span>
+    </ng-template>
+
+    <a routerLink="/admin/certificate">Вернуться к списку</a>
+
+  </div>
+
+  <ng-template #load>
+    <div class="admin-loading">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </ng-template>
+
+</div>

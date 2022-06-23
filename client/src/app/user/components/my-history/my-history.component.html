@@ -78,8 +78,9 @@
           </ng-template>
         </div>
 
-        <div class="marker" (click)="mark(d.id, idx)" [style.backgroundColor]="d.marked ? '#fdcb00' : '#ffffff'">
-          <span></span>
+        <div class="favorite-mark" (click)="mark(d.id, idx)">
+          <img src="../../../../assets/general-icon/favorite-static.svg" alt="" *ngIf="!d.marked">
+          <img src="../../../../assets/general-icon/favorite-touched.svg" alt="" *ngIf="d.marked">
         </div>
       </div>
 

@@ -30,16 +30,13 @@ export class MyContactsComponent implements OnInit {
 
   formVisible: boolean = false
 
-  user: UserInterface | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
 
   ngOnInit(): void {
-    this.userService.getProfile()
-      .then(data => {
-        this.user = data
-      }, error => {
-        console.log(error);
-        this.router.navigate(['/'])
-      })
+    if (!this.user) {
+      this.router.navigate(['/'])
+      return
+    }
   }
 
   addNewContact() {
@@ -58,6 +55,7 @@ export class MyContactsComponent implements OnInit {
         this.formError = false
         this.formAdd.reset()
         this.formVisible = false
+        this.userService.user$.next(this.user)
       }, error => {
         console.log(error);
         this.formError = true
@@ -72,6 +70,7 @@ export class MyContactsComponent implements OnInit {
     this.userService.deleteManager(id)
       .then(data => {
         this.user!.manager = data
+        this.userService.user$.next(this.user)
       }, error => {
         console.log(error);
       })
@@ -142,6 +141,7 @@ export class MyContactsComponent implements OnInit {
         this.user!.manager = data
         this.action = false
         this.closeModal()
+        this.userService.user$.next(this.user)
       }, error => {
         this.action = false
         console.log(error);

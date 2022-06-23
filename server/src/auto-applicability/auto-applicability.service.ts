@@ -15,7 +15,7 @@ export class AutoApplicabilityService {
                 private readonly redisCacheService: RedisCacheService) {
     }
 
-    async getFiltersAndCount() {
+    async getApplicabilityAsFilterAndCount() {
         return await this.applicabilityRepository
             .query('SELECT a_ap.id, a_ap."autoApplicabilityName" as label, COUNT(d."detailId") AS count_detail ' +
                 'FROM auto_applicability a_ap ' +
@@ -38,10 +38,6 @@ export class AutoApplicabilityService {
         return await this.applicabilityRepository.find({where: {shortName: In(applicability)}})
     }
 
-    async findByApplicability(applicability: string) {
-        return await this.applicabilityRepository.find({where: {shortName: applicability}})
-    }
-
     async createApplicability(createData: ApplicabilityCreateDto[]) {
         await this.redisCacheService.deleteCacheKey(GET_APPLICABILITY_CACHE_KEY)
         for (let data of createData) {
@@ -56,12 +52,8 @@ export class AutoApplicabilityService {
     async updateApplicability(updateData: ApplicabilityUpdateDto) {
         const applicability = await this.getById(updateData.id)
         if (applicability) {
-            if (applicability.autoApplicabilityName) {
-                Object.assign(updateData, {shortName: updateData.autoApplicabilityName.toLowerCase()})
-            }
+            Object.assign(updateData, {shortName: updateData.autoApplicabilityName.toLowerCase()})
             await this.redisCacheService.deleteCacheKey(GET_APPLICABILITY_CACHE_KEY)
-            // const instanceEntity = await this.applicabilityRepository.create(updateData)
-            // return await this.applicabilityRepository.save(instanceEntity)
             await this.applicabilityRepository.update(updateData.id, {...updateData})
             return await this.getById(updateData.id)
         }

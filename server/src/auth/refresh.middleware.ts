@@ -7,7 +7,6 @@ import http from 'http'
 import * as querystring from 'querystring'
 import { AuthService } from './auth.service';
 import {JwtService} from "@nestjs/jwt";
-import {TokenPayload} from "./interfaces/tokenPayload.interface";
 
 @Injectable()
 export class RefreshMiddleware implements NestMiddleware {
@@ -20,27 +19,64 @@ export class RefreshMiddleware implements NestMiddleware {
     const refreshToken: string = req.cookies.Refresh
     const authToken: string = req.cookies.Authentication
 
-    let expirationTime: number = 0
-    const onRefreshTime: number = 0
     if (!!authToken) {
-      const data: any = this.jwtService.decode(authToken, {json: true})
-      expirationTime = data.exp - (Date.now()/1000)
+      const tokenData: any = this.jwtService.decode(authToken, {json: true})
+      const maxDifference: number = 43200 // 12 часов в секундах
+      const difference: number = tokenData.exp - (Date.now() / 1000)
 
-      // const raznicaVChasah = ((data.exp - (Date.now() / 1000)) / 60) / 60
-      // const sravnenie = 12
-      //
-      // console.log(raznicaVChasah)
-      // console.log(sravnenie)
+      if (difference > maxDifference) {
+        next()
+        return
+      } else {
+        const newAuthTokenCookie = this.authService.getCookieJwtToken(tokenData.userId)
+        const newRefreshTokenData = this.authService.getCookieWithJwtRefreshToken(tokenData.userId)
+        await this.usersService.setCurrentRefreshToken(newRefreshTokenData.token, tokenData.userId)
+        req.res.setHeader('Set-Cookie', [newAuthTokenCookie, newRefreshTokenData.cookie])
+        const p = proxy.createProxyMiddleware('**',{
+          target: 'http://localhost:3000', secure: false,
+          prependPath: true,
+          changeOrigin: true,
+          headers: {
+            "Connection": "keep-alive"
+          },
+          onProxyReq(proxyReq: http.ClientRequest, req: Request, res: Response): void {
+            proxyReq.setHeader('Cookie', [newAuthTokenCookie, newRefreshTokenData.cookie])
 
-    }
+            if (!req.body || !Object.keys(req.body).length) {
+              return;
+            }
 
-    if ( (!!refreshToken && !authToken) || (!!refreshToken && !!authToken && expirationTime < 10)) {
-      const decodedRefresh: TokenPayload =
-          this.jwtService.verify(refreshToken, {secret: this.configService.get('JWT_REFRESH_SECRET_KEY')})
-      const newAccessTokenCookie: string = this.authService.getCookieJwtToken(decodedRefresh.userId)
-      req.res.setHeader('Set-Cookie', newAccessTokenCookie)
+            const contentType: string = proxyReq.getHeader('Content-Type').toString()
+            const writeBody = (bodyData: string) => {
+              proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData))
+              proxyReq.setHeader('Content-Type', contentType)
+              proxyReq.write(bodyData)
+            }
 
-      const proxyChangeReq = proxy.createProxyMiddleware('**',{
+            if (contentType.includes('application/json') || contentType.includes('multipart/form-data')) {
+              writeBody(JSON.stringify(req.body))
+            }
+
+            if (contentType === 'application/x-www-form-urlencoded') {
+              writeBody(querystring.stringify(req.body))
+            }
+
+          }
+        })
+        p(req, res, next)
+        return
+      }
+
+    } else if (!!refreshToken) {
+      const refreshData = this.jwtService.verify(refreshToken,
+          {secret: this.configService.get('JWT_REFRESH_SECRET_KEY')}
+      )
+      const newAuthTokenCookie = this.authService.getCookieJwtToken(refreshData.userId)
+      const newRefreshTokenData = this.authService.getCookieWithJwtRefreshToken(refreshData.userId)
+      await this.usersService.setCurrentRefreshToken(newRefreshTokenData.token, refreshData.userId)
+      console.log(newRefreshTokenData.cookie)
+      req.res.setHeader('Set-Cookie', [newAuthTokenCookie, newRefreshTokenData.cookie])
+      const p = proxy.createProxyMiddleware('**',{
         target: 'http://localhost:3000', secure: false,
         prependPath: true,
         changeOrigin: true,
@@ -48,27 +84,35 @@ export class RefreshMiddleware implements NestMiddleware {
           "Connection": "keep-alive"
         },
         onProxyReq(proxyReq: http.ClientRequest, req: Request, res: Response): void {
-          proxyReq.setHeader('Cookie', newAccessTokenCookie)
+          proxyReq.setHeader('Cookie', [newAuthTokenCookie, newRefreshTokenData.cookie])
+
           if (!req.body || !Object.keys(req.body).length) {
             return;
           }
+
           const contentType: string = proxyReq.getHeader('Content-Type').toString()
           const writeBody = (bodyData: string) => {
             proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData))
             proxyReq.setHeader('Content-Type', contentType)
             proxyReq.write(bodyData)
           }
+
           if (contentType.includes('application/json') || contentType.includes('multipart/form-data')) {
             writeBody(JSON.stringify(req.body))
           }
+
           if (contentType === 'application/x-www-form-urlencoded') {
             writeBody(querystring.stringify(req.body))
           }
+
         }
       })
-      proxyChangeReq(req,res,next)
+      p(req, res, next)
       return
     }
-    next();
+
+    next()
+    return
   }
+
 }

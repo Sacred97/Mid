@@ -93,7 +93,7 @@
     width: 100%;
     position: relative;
 
-    >div:last-child {
+    > div:last-child {
       width: 100%;
 
       small {
@@ -105,7 +105,7 @@
       }
     }
 
-    >div:first-child {
+    > div:first-child {
       width: 100%;
       display: flex;
       flex-wrap: wrap;
@@ -128,13 +128,14 @@
         transform: rotate(-45deg)
       }
 
-      >span {
+      > span {
         font-size: 19px;
         font-family: "Museo Sans Cyrl 100";
         color: $grey_dark;
         z-index: 198;
       }
-      >div {
+
+      > div {
         position: relative;
         z-index: 201;
         display: flex;
@@ -144,14 +145,21 @@
         border-radius: 6px;
         padding: 5px;
         margin: 3px;
+
         span {
+          color: $black;
           font-size: 14px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
         }
-        span:last-child {
+
+        > span:last-child {
           display: inline-block;
           margin-left: .5em;
           cursor: pointer;
         }
+
       }
 
     }

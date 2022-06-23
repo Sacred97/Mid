@@ -1,7 +1,7 @@
 @import "../shared/styles/variables";
 
 .search-page {
-  width: 89.2%;
+  width: 100%;
   margin: 0 auto;
 
   > h1 {
@@ -112,8 +112,42 @@
             color: $black;
             font-size: 16px;
             line-height: 1;
+            font-family: "Museo Sans Cyrl 500", Arial, sans-serif;
+          }
+        }
+
+        > div:nth-child(4) {
+          flex-basis: 10%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          span {
+            text-align: center;
+            color: $black;
+            font-size: 14px;
+            line-height: 1;
+            font-weight: 500;
             font-family: "Museo Sans Cyrl 500";
           }
+
+          > a {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+              max-width: 100%;
+              max-height: 40px;
+            }
+
+            &:hover {
+              opacity: 0.8;
+            }
+
+          }
+
         }
 
       }

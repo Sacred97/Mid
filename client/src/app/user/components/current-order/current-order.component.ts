@@ -6,6 +6,7 @@ import {OrderInterface} from "../../../shared/services-interfaces/global-interfa
 import {DetailInterface} from "../../../shared/services-interfaces/detail-service/detail.interface";
 import {DetailService} from "../../../shared/services-interfaces/detail-service/detail.service";
 import {DetailIdInterface} from "../../../shared/services-interfaces/global-interfaces/detail-id.interface";
+import {UserInterface} from "../../../shared/services-interfaces/user-service/user.interface";
 
 @Component({
   selector: 'app-current-order',
@@ -19,6 +20,7 @@ export class CurrentOrderComponent implements OnInit {
               public cartService: ShoppingCartService) {
   }
 
+  user: UserInterface | undefined = this.userService.user$.getValue()
   order: OrderInterface | null | undefined = null
   error: boolean = false
   id: number = +this.activatedRoute.snapshot.params['id']
@@ -28,24 +30,25 @@ export class CurrentOrderComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.userService.getProfile()
+    if (!this.user) {
+      this.router.navigate(['/'])
+      return
+    }
+
+    this.order = this.user.order.find(i => i.id === this.id)
+    if (!this.order) {
+      this.error = true
+      return
+    }
+
+    const ids: DetailIdInterface[] = this.order.orderItem.map(i => ({id: i.detailId}))
+    this.detailService.getByIds(ids)
       .then(data => {
-        this.order = data.order.find(i => i.id === this.id)
-        if (!this.order) {
-          this.error = true
-          return
-        }
-        const ids: DetailIdInterface[] = this.order.orderItem.map(i => ({id: i.detailId}))
-        this.detailService.getByIds(ids)
-          .then(data => {
-            this.details = data
-          }, error => {
-            console.log(error);
-          })
+        this.details = data
       }, error => {
         console.log(error);
-        this.error = true
       })
+
   }
 
   getPhotoDetail(detailId: string): string {

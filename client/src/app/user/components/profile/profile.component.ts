@@ -24,21 +24,18 @@ export class ProfileComponent implements OnInit {
   })
   formError: boolean = false
 
-  user: UserInterface | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
   action: boolean = false
   isChange: boolean = false
 
   passwordModal: boolean = false
 
   ngOnInit(): void {
-    this.userService.getProfile()
-      .then(user => {
-        this.user = user
-        this.fillForm()
-      }, error => {
-        console.log(error);
-        this.router.navigate(['/'])
-      })
+    if (!this.user) {
+      this.router.navigate(['/'])
+      return
+    }
+    this.fillForm()
   }
 
   private fillForm() {

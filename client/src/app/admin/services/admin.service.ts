@@ -33,10 +33,12 @@ import {ApplicabilityInterface} from "../../shared/services-interfaces/detail-se
 import {AdminCreateApplicability, AdminUpdateApplicability} from "../interfaces/admin-applicability.interface";
 import {PartsInterface} from "../../shared/services-interfaces/detail-service/parts.interface";
 import {KeyWordsInterface} from "../../shared/services-interfaces/detail-service/key-words.interface";
-import {AdminUpdateKeyWords} from "../interfaces/admin-key-words.interface";
+import {AdminGetKeyWords, AdminUpdateKeyWords} from "../interfaces/admin-key-words.interface";
 import {AdminCreateParts, AdminUpdateParts} from "../interfaces/admin-parts.interface";
 import { AdminBannerUpdate, AdminBanner } from '../interfaces/admin-banner.interface';
 import {environment} from "../../../environments/environment";
+import {CertificateInterface} from "../../shared/services-interfaces/certificate-service/certificate.interface";
+import {AdminOwnCertificateInterface} from "../interfaces/admin-own-certificate.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -373,9 +375,9 @@ export class AdminService {
 
   //----------------------------------------------Ключевые слова--------------------------------------------------------
 
-  getKeyWordsList(): Promise<KeyWordsInterface[]> {
-    const url: string = environment.apiUrl + 'key-words'
-    return this.http.get<KeyWordsInterface[]>(url, {withCredentials: true}).toPromise()
+  getKeyWordsList(offset: number = 0, limit: number = 0): Promise<AdminGetKeyWords> {
+    const url: string = environment.apiUrl + 'key-words?offset=' + offset + '&limit=' + limit
+    return this.http.get<AdminGetKeyWords>(url, {withCredentials: true}).toPromise()
   }
 
   getKeyWord(id: number): Promise<KeyWordsInterface> {
@@ -421,5 +423,30 @@ export class AdminService {
   }
 
   //--------------------------------------------------------------------------------------------------------------------
+
+  getOwnCertificates(): Promise<CertificateInterface[]> {
+    const url: string = environment.apiUrl + 'general-info-certificate'
+    return this.http.get<CertificateInterface[]>(url, {withCredentials: true}).toPromise()
+  }
+
+  getOwnCertificate(id: number): Promise<CertificateInterface> {
+    const url: string = environment.apiUrl + 'general-info-certificate/' + id
+    return this.http.get<CertificateInterface>(url, {withCredentials: true}).toPromise()
+  }
+
+  uploadOwnCertificate(data: FormData): Promise<CertificateInterface[]> {
+    const url: string = environment.apiUrl + 'general-info-certificate'
+    return this.http.post<CertificateInterface[]>(url, data, {withCredentials: true}).toPromise()
+  }
+
+  updateOwnCertificate(data: AdminOwnCertificateInterface): Promise<CertificateInterface> {
+    const url: string = environment.apiUrl + 'general-info-certificate'
+    return this.http.put<CertificateInterface>(url, data, {withCredentials: true}).toPromise()
+  }
+
+  deleteOwnCertificate(id: number): Promise<CertificateInterface[]> {
+    const url: string = environment.apiUrl + 'general-info-certificate/' + id
+    return this.http.delete<CertificateInterface[]>(url, {withCredentials: true}).toPromise()
+  }
 
 }

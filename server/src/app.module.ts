@@ -26,6 +26,7 @@ import { AutoPartsModule } from './auto-parts/auto-parts.module';
 import { AutoApplicabilityModule } from './auto-applicability/auto-applicability.module';
 import { BannersModule } from './banners/banners.module';
 import { UsCertificateModule } from './us-certificate/us-certificate.module';
+import { PresentationModule } from './presentation/presentation.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -82,6 +83,7 @@ import { UsCertificateModule } from './us-certificate/us-certificate.module';
     AutoApplicabilityModule,
     BannersModule,
     UsCertificateModule,
+    PresentationModule,
     ],
   controllers: [AppController],
   providers: [AppService],

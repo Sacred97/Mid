@@ -125,6 +125,7 @@ export class AdminBannersComponent implements OnInit {
       this.file = null
     }
   }
+
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
 

@@ -1,8 +1,7 @@
 import {Body, CacheKey, Controller, Delete, Get, Param, Post, Put, UseGuards, UseInterceptors} from '@nestjs/common';
 import {FindOneParams} from "../../utils/params/findOneParams";
 import {ProductGroupService} from "./product-group.service";
-import {ProductGroupCreateDto} from "./dto/product-group-create.dto";
-import {ProductGroupUpdateDto} from "./dto/product-group-update.dto";
+import {ProductGroupDto} from "./dto/product-group.dto";
 import {GET_PRODUCT_GROUP_CACHE_KEY} from "../../redis-cache/cacheKey.constant";
 import {HttpCacheInterceptor} from "../../redis-cache/http-cache.interceptor";
 import {JwtAuthGuard} from "../../auth/guards/jwt-auth.guard";
@@ -28,13 +27,13 @@ export class ProductGroupController {
 
     @UseGuards(JwtAuthGuard, AdminGuard)
     @Post()
-    async productGroupCreate(@Body() data: ProductGroupCreateDto) {
+    async productGroupCreate(@Body() data: ProductGroupDto) {
         return await this.productGroupService.createProductGroup(data)
     }
 
     @UseGuards(JwtAuthGuard, AdminGuard)
     @Put()
-    async productGroupUpdate(@Body() data: ProductGroupUpdateDto) {
+    async productGroupUpdate(@Body() data: ProductGroupDto) {
         return await this.productGroupService.updateProductGroup(data)
     }
 

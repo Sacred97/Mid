@@ -14,19 +14,24 @@ export class UserGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
 
-    return this.userService.refreshToken().then((state) => {
-      if (state) {
-        return true
-      } else {
+    return this.userService.getUser()
+      .then(user => {
+        console.log('Guard start')
+        if (user) {
+          this.userService.user$.next(user)
+          return true
+        } else {
+          this.userService.user$.next(undefined)
+          this.router.navigate(['/'])
+          return false
+        }
+      }, (error: HttpErrorResponse) => {
+        console.log(error);
+        this.userService.user$.next(undefined)
         this.router.navigate(['/'])
         return false
-      }
-    }, (error: HttpErrorResponse) => {
-      console.log(error);
-      this.router.navigate(['/'])
-      return false
-    })
+      })
 
   }
-  
+
 }

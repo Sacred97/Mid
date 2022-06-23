@@ -6,6 +6,7 @@ import {
   UserInterface, UserSubscriptionCreate, UserSubscriptionUpdate
 } from "../../../shared/services-interfaces/user-service/user.interface";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-subscriptions',
@@ -14,12 +15,12 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class SubscriptionsComponent implements OnInit {
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   subscriptions: SubscriptionUserInterface[] = []
   newsLetter: NewsLetter[] = []
-  user: UserInterface | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
   error: boolean = false
   loading: boolean = true
   action: boolean = false
@@ -33,17 +34,20 @@ export class SubscriptionsComponent implements OnInit {
   formAddError: boolean = false
 
   async ngOnInit() {
+    if (!this.user) {
+      this.router.navigate(['/'])
+      return
+    }
 
     try {
-      this.user = await this.userService.getProfile()
       this.subscriptions = this.sortSubs(await this.userService.getAllUserSubscriptions())
       this.newsLetter = await this.userService.getAllNewsLetter()
     } catch (e) {
       console.log(e);
       this.error = true
-    } finally {
-      this.loading = false
     }
+
+    this.loading = false
 
   }
 
@@ -108,6 +112,7 @@ export class SubscriptionsComponent implements OnInit {
       .then(data => {
         this.subscriptions = data
         this.user!.subscriptions = data
+        this.userService.user$.next(this.user)
       }, error => {
         console.log(error);
       })
@@ -132,6 +137,7 @@ export class SubscriptionsComponent implements OnInit {
       .then(res => {
         this.subscriptions = this.sortSubs(res)
         this.user!.subscriptions = this.sortSubs(res)
+        this.userService.user$.next(this.user)
         this.showHideForm()
       }, error => {
         console.log(error);
@@ -198,6 +204,7 @@ export class SubscriptionsComponent implements OnInit {
         this.action = false
         this.subscriptions = this.sortSubs(res)
         this.user!.subscriptions = this.sortSubs(res)
+        this.userService.user$.next(this.user)
         this.closeModal()
       }, error => {
         console.log(error);

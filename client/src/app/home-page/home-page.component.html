@@ -205,7 +205,7 @@
                         [style.display]="fifth ? 'block' : 'none'" [config]="certificatesSliderConfig">
       <div ngxSlickItem *ngFor="let c of certificates; let idx = index" class="slide-certificate"
            [style.width]="slideWidth + 'px'">
-        <img (click)="openCertificate($event)" [src]="c.url" alt="">
+        <img [src]="c.url" alt="" (click)="openCertificate($event)">
       </div>
     </ngx-slick-carousel>
 
@@ -213,12 +213,12 @@
 
 </div>
 
-<div class="modal" *ngIf="modal">
+<div class="modal" [style.visibility]="modal ? 'visible' : 'hidden'">
 
   <div class="modal-background" (click)="modal = !modal"></div>
 
-  <div class="modal-certificate-content">
-    <img src="" alt="" #modalImage>
+  <div class="modal-certificate-content" >
+    <img src="" alt="Сертификат" #modalImage>
   </div>
 
 </div>

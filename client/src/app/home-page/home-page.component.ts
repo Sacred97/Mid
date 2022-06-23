@@ -23,7 +23,7 @@ export class HomePageComponent implements OnInit {
               private manufacturerService: ManufacturerService, public cartService: ShoppingCartService) {
   }
 
-  @ViewChild('modalImage') $modalEl?: ElementRef
+  @ViewChild('modalImage', {static: true}) $modalEl?: ElementRef
 
   //------------------------------------------------Статичные данные----------------------------------------------------
 
@@ -64,11 +64,11 @@ export class HomePageComponent implements OnInit {
   }
 
   certificatesSliderConfig = {
-    "slidesToShow": 5,
-    "slidesToScroll": 5,
+    "slidesToShow": 4,
+    "slidesToScroll": 1,
     "dots": true,
     "arrows": false,
-    "infinite": true,
+    "infinite": false,
     "variableWidth": true,
     "autoplay": true,
     "autoplaySpeed": 10000
@@ -92,14 +92,22 @@ export class HomePageComponent implements OnInit {
   slideWidth: number = 0
 
   async ngOnInit() {
-    if (window.innerWidth <= 1024) {
-      this.slideWidth = Math.round(((window.innerWidth) * 0.892) / 3)
-      if (window.innerWidth <= 614) {
-        this.slideWidth = Math.round((window.innerWidth) * 0.892)
-      }
+    if (window.innerWidth >= 1615) {
+      this.slideWidth = Math.round(1440 / 4)
     } else {
-      this.slideWidth = Math.round(((window.innerWidth - 17) * 0.892) / 4)
+      if (window.innerWidth < 1615 && window.innerWidth > 1024) {
+        this.slideWidth = Math.round(((window.innerWidth - 20) * 0.892) / 4)
+      }
     }
+
+    // if (window.innerWidth <= 1024) {
+    //   this.slideWidth = Math.round(((window.innerWidth) * 0.892) / 3)
+    //   if (window.innerWidth <= 614) {
+    //     this.slideWidth = Math.round((window.innerWidth) * 0.892)
+    //   }
+    // } else {
+    //   this.slideWidth = Math.round(((window.innerWidth - 17) * 0.892) / 4)
+    // }
 
     try {
       this.banners = await this.bannersService.getBannerForPage(true)
@@ -142,9 +150,8 @@ export class HomePageComponent implements OnInit {
   openCertificate(event: Event) {
     const src = (event.target as HTMLImageElement).src
     const $target = this.$modalEl?.nativeElement as HTMLImageElement
-    if (!$target) return
-    this.modal = true
     $target.src = src
+    this.modal = true
   }
 
   //-----------------------------------------Манипуляция с кнопками слайдера--------------------------------------------

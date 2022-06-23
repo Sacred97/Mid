@@ -24,6 +24,8 @@ export class GetPriceListModalComponent implements OnInit {
   isSuccessful: boolean = false
   isFailed: boolean = false
 
+  url = environment.apiUrl + 'price-list/get'
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -65,23 +67,18 @@ export class GetPriceListModalComponent implements OnInit {
       email: this.form.controls['email'].value,
       name: this.form.controls['name'].value,
       phone: this.form.controls['phone'].value,
-      price: this.form.controls['price'].value
+      list: this.form.controls['price'].value
     }
 
-    const url = environment.apiUrl + 'price-list/get'
-
-    this.http.post(url, data, {withCredentials: true}).toPromise()
-      .then((okStatus: any) => {
-        console.log(okStatus);
+    this.http.post(this.url, data, {withCredentials: true}).toPromise()
+      .then((res: any) => {
+        console.log(res);
+        this.isSuccessful = true
       }).catch((error: HttpErrorResponse) => {
         console.log(error)
-        this.submitted = false
         this.isFailed = true
-        this.chooseList = []
-        this.form.reset()
       }).finally(() => {
         this.submitted = false
-        this.isSuccessful = true
         this.chooseList = []
         this.form.reset()
       })

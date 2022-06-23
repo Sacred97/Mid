@@ -24,12 +24,11 @@ export class CategoryService {
         return await this.categoryRepository.findOne(id)
     }
 
-    async getAllWithCountDetails() {
+    async getCategoriesAsFilterAndCount() {
         const query: string = 'SELECT c.id, c."categoryName" as label, COUNT(d."categoryId") AS count_detail ' +
             'FROM category c LEFT JOIN detail d ON d."categoryId" = c.id ' +
             'WHERE d."isHide" != true ' +
             'GROUP BY c.id ORDER BY label'
-            // 'GROUP BY c.id ORDER BY c.id'
         return await this.categoryRepository.query(query)
     }
 

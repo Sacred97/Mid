@@ -154,6 +154,11 @@ export class DetailsService {
       take: 10
     })
 
+    saleDetails.forEach(i => {
+      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? 1
+          : a.isMain === b.isMain ? 0 : -1)
+    })
+
     const recentCount = await this.detailRepository.count({where: {isPopular: true}})
     const recentRandomOffset = recentCount <= 10 ? 0 : Math.round(Math.random() * (recentCount - 10))
     const recentDetails = await this.detailRepository.find({
@@ -162,12 +167,22 @@ export class DetailsService {
       take: 10
     })
 
+    recentDetails.forEach(i => {
+      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? 1
+          : a.isMain === b.isMain ? 0 : -1)
+    })
+
     const newCount = await this.detailRepository.count({where: {isNewDetail: true}})
     const newRandomOffset = newCount <= 10 ? 0 : Math.round(Math.random() * (newCount - 10))
     const newDetails = await this.detailRepository.find({
       where: {isNewDetail: true},
       skip: newRandomOffset,
       take: 10
+    })
+
+    newDetails.forEach(i => {
+      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? 1
+          : a.isMain === b.isMain ? 0 : -1)
     })
 
     return {new: newDetails, recent: recentDetails, sale: saleDetails}
@@ -179,11 +194,11 @@ export class DetailsService {
 
     const manufacturer = await this.manufacturerService.getAllWithCountDetails()
 
-    const category = await this.categoryService.getAllWithCountDetails()
+    const category = await this.categoryService.getCategoriesAsFilterAndCount()
 
-    const autoApplicability = await this.applicabilityService.getFiltersAndCount()
+    const autoApplicability = await this.applicabilityService.getApplicabilityAsFilterAndCount()
 
-    const autoParts = await this.partsService.getFiltersAndCount()
+    const autoParts = await this.partsService.getPartsAsFilterAndCount()
 
     return {manufacturer, category, autoApplicability, autoParts}
   }
@@ -212,7 +227,7 @@ export class DetailsService {
         .getManyAndCount()
 
     items.forEach(item => {
-      if (item.photoDetail.length>0) item.photoDetail
+      if (item.photoDetail.length > 0) item.photoDetail
           .sort((a, b) => (a.isMain === b.isMain) ? 0 : a.isMain ? -1 : 1)
     })
 

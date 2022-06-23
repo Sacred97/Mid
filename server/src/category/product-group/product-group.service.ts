@@ -2,8 +2,7 @@ import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {ProductGroup} from "./product-group.entity";
 import {Repository} from "typeorm";
-import {ProductGroupUpdateDto} from "./dto/product-group-update.dto";
-import {ProductGroupCreateDto} from "./dto/product-group-create.dto";
+import {ProductGroupDto} from "./dto/product-group.dto";
 import {RedisCacheService} from "../../redis-cache/redis-cache.service";
 import {GET_PRODUCT_GROUP_CACHE_KEY} from "../../redis-cache/cacheKey.constant";
 
@@ -26,13 +25,13 @@ export class ProductGroupService {
         return await this.productGroupRepository.findOne(id, {relations: this.getRelations(withRelations)})
     }
 
-    async createProductGroup(createData: ProductGroupCreateDto) {
+    async createProductGroup(createData: ProductGroupDto) {
         const newProductGroup = await this.productGroupRepository.create({...createData})
         await this.redisCacheService.deleteCacheKey(GET_PRODUCT_GROUP_CACHE_KEY)
         return await this.productGroupRepository.save(newProductGroup)
     }
 
-    async updateProductGroup(updateData: ProductGroupUpdateDto) {
+    async updateProductGroup(updateData: ProductGroupDto) {
         const productGroup = await this.getById(updateData.id)
         if (productGroup) {
             await this.productGroupRepository.update(updateData.id, {...updateData})

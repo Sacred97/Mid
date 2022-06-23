@@ -60,14 +60,20 @@ export class ShoppingCartComponent implements OnInit {
 
   async ngOnInit() {
 
-    const isUser = await this.userService.refreshToken()
-
     try {
-      if (isUser) {
-        const user = this.userService.user$.getValue()!
+      let user = this.userService.user$.getValue()
+      if (user) {
+        console.log('user without request')
         await this.cartService.recountTotalCostWithUserAndUpdatedPrices(user)
       } else {
-        await this.cartService.recountTotalCostWithGuest(this.cartService.storage())
+        user = await this.userService.getUser()
+        if (user) {
+          console.log('user with request')
+          await this.cartService.recountTotalCostWithUserAndUpdatedPrices(user)
+        } else {
+          console.log('guest')
+          await this.cartService.recountTotalCostWithGuest(this.cartService.storage())
+        }
       }
 
       const ids: DetailIdInterface[] = this.cartService.storage().map(i => ({id: i.id}))

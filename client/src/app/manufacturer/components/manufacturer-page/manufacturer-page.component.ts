@@ -66,6 +66,8 @@ export class ManufacturerPageComponent implements OnInit {
     }, 500)
   }
 
+  bannerMaxWidth = 996
+
   //-------------------------------------------------Сортировка---------------------------------------------------------
 
   sortByLetter: boolean = true
@@ -313,6 +315,7 @@ export class ManufacturerPageComponent implements OnInit {
   manufacturerId: number = +this.activatedRoute.snapshot.params['id']
 
   async ngOnInit() {
+    this.bannerMaxWidth = (document.documentElement.clientWidth * 0.892) * 0.735
 
     try {
       this.banners = await this.bannersService.getBannerForPage(false)

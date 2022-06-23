@@ -1,0 +1,118 @@
+<div class="supplier">
+
+  <nav class="breadcrumbs">
+    <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
+  </nav>
+
+  <div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <h1>Заявка на сотдрудничество для поставщика</h1>
+
+      <p>Пожалуйста, перед отправкой заявки ознакомьтесь с информацией <b>расположеной справа</b></p>
+
+      <hr>
+
+      <label>
+        <input type="text" placeholder="Название компании*" formControlName="companyName">
+      </label>
+
+      <label>
+        <input type="number" placeholder="ИНН компании*" formControlName="inn">
+      </label>
+
+      <label>
+        <input type="number" placeholder="КПП компании*" formControlName="kpp">
+      </label>
+
+      <label>
+        <input type="text" placeholder="Адрес*" formControlName="address">
+      </label>
+
+      <label>
+        <input type="email" placeholder="E-mail*" formControlName="email">
+      </label>
+
+      <label>
+        <input type="text" placeholder="Телефон*" formControlName="phone">
+      </label>
+
+      <label>
+        <input type="text" placeholder="Фамилия*" formControlName="firstName">
+      </label>
+
+      <label>
+        <input type="text" placeholder="Имя*" formControlName="name">
+      </label>
+
+      <label>
+        <input type="text" placeholder="Отчество*" formControlName="lastName">
+      </label>
+
+      <label>
+        <textarea placeholder="Краткая информация о компании*" formControlName="aboutCompany"></textarea>
+      </label>
+
+      <div>
+
+        <span>Выберите направление деятельности*</span>
+
+        <label *ngFor="let a of activity; let idx = index">
+          <input type="checkbox" [value]="a" (change)="checkboxChange($event)">
+          <span>{{a}}</span>
+        </label>
+
+      </div>
+
+      <label>
+        <input type="checkbox" formControlName="approval">
+        <span>Я согласен на обработку <a routerLink="/buyer/privacy-policy">персональных данных</a></span>
+      </label>
+
+      <button type="submit" [disabled]="form.invalid || action">Отправить</button>
+      <small *ngIf="form.invalid">Заполните все поля</small>
+
+    </form>
+
+    <div>
+
+      <h1>Что необходимо знать перед подачей заявки!</h1>
+
+      <ul>
+        <li>Данная форма регистрации предназначена для юридических лиц.</li>
+        <li>Все поля отмеченные символом * являются обязательными.</li>
+        <li>Проверьте правильность указанных e-mail и телефона.</li>
+        <li>В поле направление деятельности,
+          укажите направление деятельности (можно выбрать несколько, если сомневаетесь выберете «другое»).
+        </li>
+        <li>Заявки обрабатываются в рабочие дни с 8.00-17.00</li>
+      </ul>
+
+      <h1>При выборе поставщика мы руководствуемся следующими правилами:</h1>
+
+      <ul>
+        <li>Поставщик не является исключительно интернет магазином.</li>
+        <li>Поставщик является производителем или эксклюзивным представителем продукции.</li>
+        <li>Наличие кроссов на аналогичную продукцию других производителей (в основном относится к запчастям).</li>
+        <li>Все товары должны иметь артикулы.</li>
+        <li>Наличие качественных фотографий, разрешение не менее 1000 х 1000.</li>
+        <li>Наличие хорошего контента, описания товара.</li>
+        <li>Готовность поставщика работать с отсрочкой платежа.</li>
+        <li>Оперативная обработка заказов и доставка товаров на наш центральный склад.</li>
+      </ul>
+
+      <span>
+        Мы оставляем за собой право не отвечать на предложения,
+        если они не соответствуют нашим правилам выбора поставщика.
+      </span>
+
+      <span>После рассмотрения заявки, с Вами свяжется наш менеджер.</span>
+
+      <span>Также Вы можете отправить свободную форму заявки поставщика на электронную почту: zakup@midkam.ru</span>
+
+    </div>
+
+  </div>
+
+</div>

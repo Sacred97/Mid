@@ -223,7 +223,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('history/:id')
+  @Delete('own-certificates/:id')
   async deleteUserRequestFromHistory(@Req() request: RequestWithUser, @Param() {id}: FindOneParams) {
     return await this.usersService.deleteRequestFromHistory(request.user, +id)
   }

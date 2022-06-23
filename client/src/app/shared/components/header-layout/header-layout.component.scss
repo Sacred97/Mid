@@ -1,5 +1,11 @@
 @import "../../styles/variables";
 
+.wrapper {
+  width: 89.2%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
 header {
   width: 100%;
   display: flex;
@@ -7,8 +13,21 @@ header {
   margin-bottom: 24px;
 }
 
+.navbar-back {
+  display: flex;
+  flex: 1;
+  background-color: $header-footer_background;
+}
+
+.bucket-back {
+  display: flex;
+  flex: 1;
+  background-color: $violet;
+}
+
 .navbar {
-  flex-basis: 76.3%;
+  width: 76%;
+  max-width: 1094px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,6 +38,10 @@ header {
     display: flex;
     height: 100%;
     margin-left: 18px;
+
+    @media (min-width: 1921px) {
+      margin-left: 0;
+    }
 
     li, a {
       outline: none;
@@ -96,7 +119,7 @@ header {
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
         top: 100%;
-        left: 0;
+        left: -9px;
         overflow: hidden;
         box-shadow: 0 10px 10px rgba(0, 0, 0, 0.7);
 
@@ -109,7 +132,7 @@ header {
             text-decoration: underline;
             color: $black;
             font-size: 15px;
-            line-height: 1;
+            line-height: 1.2;
             font-family: 'Museo Sans Cyrl 300';
 
             &:hover {
@@ -125,6 +148,13 @@ header {
 
       }
 
+    }
+
+    > li:nth-child(4) {
+
+      &:after {
+        display: none !important;
+      }
     }
 
     > li:last-child {
@@ -164,7 +194,8 @@ header {
 }
 
 .bucket {
-  flex-basis: 23.7%;
+  width: 24%;
+  max-width: 346px;
   display: flex;
   justify-content: space-between;
   background-color: $violet;
@@ -223,6 +254,10 @@ header {
     line-height: 1;
     font-weight: 500;
     font-family: "Museo Sans Cyrl 500";
+
+    @media (min-width: 1921px) {
+      margin-right: 0;
+    }
 
     &:hover {
       background-color: $yellow-hover;
@@ -325,15 +360,16 @@ header {
 }
 
 .search-bar {
-  flex-basis: 100%;
+  max-width: 1440px;
+  flex-basis: 89.2%;
   display: flex;
-  justify-content: flex-end;
-  margin: 27px 0;
+  justify-content: space-between;
+  margin: 27px auto;
 
   > a {
+    flex-basis: 25.7%;
     display: flex;
     align-items: center;
-    margin-right: 26px;
 
     img {
       max-width: 331px;
@@ -344,7 +380,7 @@ header {
   &__bar {
     display: flex;
     flex-wrap: wrap;
-    flex-basis: 71.1%;
+    flex-basis: 73.5%;
 
     > ul {
       flex-basis: 100%;
@@ -392,7 +428,7 @@ header {
       position: relative;
 
       input {
-        width: 79%;
+        width: 86%;
         background-color: $grey_easy;
         padding: 1em 1.4em;
         border-bottom-left-radius: 10px;
@@ -402,7 +438,7 @@ header {
       }
 
       button {
-        width: 13.2%;
+        width: 14%;
         padding: 1em 2em;
         border-bottom-right-radius: 10px;
         border-top-right-radius: 10px;
@@ -474,6 +510,7 @@ header {
 }
 
 .catalog-bar {
+  max-width: 1440px;
   flex-basis: 89.2%;
   margin: 0 auto;
   display: flex;
@@ -506,7 +543,7 @@ header {
       }
     }
 
-    >ul {
+    > ul {
       width: 100%;
       position: absolute;
       z-index: 15;
@@ -519,14 +556,16 @@ header {
       transform-origin: top;
       transition: transform 0.5s;
 
-      >li {
+      > li {
         position: relative;
         width: 100%;
 
-        >a {
+        > a {
           display: flex;
           align-items: center;
           padding: 0 .7em;
+          cursor: default;
+
           div {
             display: flex;
             align-items: center;
@@ -536,21 +575,27 @@ header {
               max-width: 43px;
             }
           }
+
           span {
             font-family: 'Museo Sans Cyrl 300';
             font-size: 15px;
             line-height: 1;
             padding: 9px 0;
           }
+
         }
+
         &:hover {
           background-color: $yellow;
           div {
             visibility: visible;
           }
         }
+
       }
+
     }
+
   }
 
   &__drop-menu {
@@ -613,16 +658,18 @@ header {
         a {
           display: block;
           padding: 9px 16px;
-          font-size: 15px;
-          font-family: 'Museo Sans Cyrl 300';
-          line-height: 1;
           color: $black;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 300';
+          cursor: pointer;
 
           b {
-            font-size: 15px;
-            font-family: 'Museo Sans Cyrl 700';
-            line-height: 1;
             color: $black;
+            font-size: 15px;
+            line-height: 1;
+            font-family: 'Museo Sans Cyrl 700';
+            cursor: pointer;
           }
         }
 
@@ -712,11 +759,24 @@ footer {
   width: 100%;
 
   > div:first-child {
-    flex-basis: 60.4%;
+    display: flex;
+    flex: 1;
+    background-color: $header-footer_background;
+  }
+
+  > div:last-child{
+    display: flex;
+    flex: 1;
+    background-color: $violet;
+  }
+
+  > div:nth-child(2) {
+    width: 60%;
+    max-width: 864px;
+    background-color: $header-footer_background;
     display: flex;
     justify-content: center;
     padding: 52px 0 39px;
-    background-color: $header-footer_background;
 
     > ul {
       list-style: none;
@@ -782,8 +842,9 @@ footer {
 
   }
 
-  > div:last-child {
-    flex-basis: 39.6%;
+  > div:nth-child(3) {
+    width: 40%;
+    max-width: 576px;
     display: block;
     padding: 52px 0 39px;
     background-color: $violet;
@@ -953,9 +1014,14 @@ footer {
 
   &__navbar {
     flex-basis: 92%;
+    max-width: 1920px;
     margin: 16px auto;
     display: flex;
     justify-content: space-between;
+
+    @media (min-width: 1921px) {
+      flex-basis: 100%;
+    }
 
     &__logo {
       flex-basis: 5.5%;

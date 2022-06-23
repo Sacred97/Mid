@@ -1,6 +1,8 @@
 <ng-template appRef></ng-template>
 <header>
 
+  <div class="navbar-back"></div>
+
   <nav class="navbar">
 
     <ul class="navbar__menu">
@@ -9,43 +11,37 @@
           Компания <span></span>
         </a>
         <ul>
-          <li><a routerLink="/about/us" routerLinkActive="route-active-subnav">О компании</a></li>
-          <li><a routerLink="/about/history" routerLinkActive="route-active-subnav">История</a></li>
-          <li><a routerLink="/about/presentation" routerLinkActive="route-active-subnav">Презентация</a></li>
+          <li><a routerLink="/about/info" routerLinkActive="route-active-subnav">Общая информация</a></li>
+          <li><a routerLink="/about/certificates" routerLinkActive="route-active-subnav">Наши Сертификаты</a></li>
+          <li><a routerLink="/about/presentation" routerLinkActive="route-active-subnav">Презентация и брошюры</a></li>
           <li><a routerLink="/about/video" routerLinkActive="route-active-subnav">Видеоролик</a></li>
         </ul>
       </li>
       <li>
-        <a routerLink="/help">Покупателю <span></span></a>
+        <a routerLink="/buyer">Покупателю <span></span></a>
         <ul>
-          <li><a routerLink="/help/buy">Где купить?</a></li>
-          <li><a routerLink="/help/site">Помощь по сайту</a></li>
-          <li><a routerLink="/help/payment">Оплата</a></li>
-          <li><a routerLink="/help/delivery">Доставка</a></li>
-          <li><a routerLink="/help/guarantee">Гарантия и возврат</a></li>
-          <li><a routerLink="/help/individual">Индивидуальный заказ</a></li>
-          <li><a routerLink="/help/policy">Политика конфиденциальности</a></li>
-          <li><a routerLink="/help/offer">Договор оферты</a></li>
+          <li><a routerLink="/buyer/site-help">Помощь по сайту</a></li>
+          <li><a routerLink="/buyer/individual-order">Индивидуальный заказ</a></li>
+          <li><a routerLink="/buyer/delivery">Доставка</a></li>
+          <li><a routerLink="/buyer/payment">Условия оплаты</a></li>
+          <li><a routerLink="/buyer/guarantee">Гарантия и возврат</a></li>
+          <li><a routerLink="/buyer/offer">Договор оферты</a></li>
+          <li><a routerLink="/buyer/privacy-policy">Политика конфиденциальности</a></li>
         </ul>
       </li>
       <li>
         <a routerLink="/contacts" routerLinkActive="route-active-nav" [routerLinkActiveOptions]="{exact: true}">
-          Контакты <span></span>
+          Контакты и адреса <span></span>
         </a>
         <ul>
           <li><a routerLink="/contacts/selling" routerLinkActive="route-active-subnav">Отдел продаж</a></li>
           <li><a routerLink="/contacts/purchase" routerLinkActive="route-active-subnav">Отдел снабжения</a></li>
+          <li><a routerLink="/contacts/export" routerLinkActive="route-active-subnav">Отдел экспорта</a></li>
           <li><a routerLink="/contacts/marketing" routerLinkActive="route-active-subnav">Отдел маркетинга</a></li>
           <li><a routerLink="/contacts/bookkeeping" routerLinkActive="route-active-subnav">Бухгалтерия</a></li>
         </ul>
       </li>
-      <li>
-        <a routerLink="/supplier">Поставщикам <span></span></a>
-        <ul>
-          <li><a routerLink="/supplier/find">Мы ищем поставщиков</a></li>
-          <li><a routerLink="/supplier/become">Стать поставщиком</a></li>
-        </ul>
-      </li>
+      <li><a routerLink="/supplier">Поставщикам</a></li>
       <li><a routerLink="/jobs">Вакансии</a></li>
     </ul>
 
@@ -66,7 +62,7 @@
       </a>
     </div>
 
-    <a *ngIf="userService.user$ | async as user; else no_user" routerLink="/user/profile" >
+    <a *ngIf="user; else no_user" routerLink="/user/profile" >
       <img src="../../../../assets/header/profile.svg" alt="">
       <span>Кабинет</span>
     </a>
@@ -75,6 +71,8 @@
       <button (click)="showAuthModal()">Войти</button>
     </ng-template>
   </div>
+
+  <div class="bucket-back"></div>
 
   <div class="search-bar">
     <a routerLink="/"><img src="../../../../assets/header/logo.svg" alt=""></a>
@@ -86,7 +84,7 @@
         <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'recent'})">Рекомендуем</a></li>
         <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'sale'})">Акции</a></li>
         <li><a (click)="showGetPriceModal()">Получить прайс-лист</a></li>
-        <li><a (click)="showSendPriceModal()">Отправить свой список</a></li>
+        <li><a (click)="showSendPriceModal()">Индивидуальный заказ</a></li>
         <li><a (click)="showCityModal()"><img src="../../../../assets/header/geoposition.svg" alt="">
           <span>{{getCity()}}</span>
         </a></li>
@@ -997,7 +995,7 @@
     </div>
 
     <a class="hidden-header__navbar__profile" routerLink="/user/profile"
-       *ngIf="userService.user$ | async as user; else no_user_hidden_header">
+       *ngIf="user; else no_user_hidden_header">
       <img src="../../../../assets/header/profile.svg" alt="">
       <span>Кабинет</span>
     </a>
@@ -1027,9 +1025,13 @@
 
 <div class="arrow-to-start" (click)="goToStart()"></div>
 
-<router-outlet></router-outlet>
+<div class="wrapper">
+  <router-outlet></router-outlet>
+</div>
 
 <footer>
+
+  <div></div>
 
   <div>
 
@@ -1075,5 +1077,8 @@
     <img src="../../../../assets/home/footer-logo.png" alt="">
 
   </div>
+
+  <div></div>
+
 
 </footer>

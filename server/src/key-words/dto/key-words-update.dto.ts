@@ -11,4 +11,10 @@ export class KeyWordsUpdateDto {
     @IsNotEmpty()
     @IsString()
     keyWord?: string
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({each: true})
+    @Type(() => DetailIdDto)
+    detail?: DetailIdDto[]
 }

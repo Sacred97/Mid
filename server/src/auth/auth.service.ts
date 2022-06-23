@@ -142,8 +142,9 @@ export class AuthService {
       secret: this.configService.get('JWT_SECRET_KEY'),
       expiresIn: `${this.configService.get('JWT_EXPIRATION_TIME')}h`
     })
+    const maxAge = this.configService.get('JWT_EXPIRATION_TIME') * 3600
 
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME') * 3600}`
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${maxAge}`
   }
 
   public getCookieWithJwtRefreshToken(userId: number) {
@@ -153,7 +154,9 @@ export class AuthService {
       expiresIn: `${this.configService.get('JWT_REFRESH_EXPIRATION_TIME')}h`
     })
 
-    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_EXPIRATION_TIME')*3600}`
+    const maxAge = this.configService.get('JWT_REFRESH_EXPIRATION_TIME') * 3600
+
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${maxAge}`
     return {cookie, token}
   }
 

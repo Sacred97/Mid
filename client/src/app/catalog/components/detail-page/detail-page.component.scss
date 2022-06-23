@@ -17,7 +17,7 @@
 }
 
 .detail-page {
-  width: 89.2%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -309,43 +309,25 @@
           font-family: 'Museo Sans Cyrl 500';
         }
 
-        div {
-          position: relative;
-          width: 20px;
-          height: 30px;
-        }
       }
 
       > div:first-child {
         margin-bottom: 12px;
 
-        > div {
-          border: 2px solid $yellow;
-
-          &:before {
-            content: '';
-            position: absolute;
-            bottom: -9px;
-            left: 1px;
-            display: block;
-            width: 10px;
-            height: 10px;
-            background-color: #ffffff;
-            border-width: 2px;
-            border-style: solid;
-            border-color: $yellow transparent transparent $yellow;
-            transform: rotate(45deg);
-          }
+        img {
+          max-height: 30px;
         }
 
         &:hover {
-          div {
-            background-color: $yellow !important;
-          }
 
-          > span {
+          span {
             color: $black-hover;
           }
+
+          img {
+            background-color: $yellow-hover;
+          }
+
         }
 
       }
@@ -353,6 +335,9 @@
       > div:last-child {
 
         > div {
+          position: relative;
+          width: 20px;
+          height: 30px;
           border: 2px solid $violet;
           display: flex;
           align-items: center;
@@ -479,6 +464,12 @@
           border-color: transparent $violet $violet transparent;
           transform: rotate(45deg);
         }
+
+        &:disabled {
+          background-color: $grey_normal;
+          cursor: default;
+        }
+
       }
 
       button.active {
@@ -716,30 +707,19 @@
 
       div {
         position: absolute;
-        width: 15px;
         height: 25px;
-        border: 2px solid $yellow;
         right: 0;
         top: 0;
         cursor: pointer;
+
+        img {
+          max-height: 26px;
+        }
 
         &:hover {
           background-color: $yellow-hover !important;
         }
 
-        &:before {
-          content: '';
-          position: absolute;
-          bottom: -7px;
-          left: 0.5px;
-          display: block;
-          width: 8px;
-          height: 8px;
-          background-color: #ffffff;
-          border-top: 2px solid $yellow;
-          border-left: 2px solid $yellow;
-          transform: rotate(45deg);
-        }
       }
 
       img {

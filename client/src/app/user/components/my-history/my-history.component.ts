@@ -11,6 +11,7 @@ import {DetailIdInterface} from "../../../shared/services-interfaces/global-inte
 import {RecentlyViewedService} from "../../../shared/services-interfaces/recently-viewed-service/recently-viewed.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MarkerService} from "../../../shared/services-interfaces/marker-service/marker.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-my-history',
@@ -19,14 +20,14 @@ import {MarkerService} from "../../../shared/services-interfaces/marker-service/
 })
 export class MyHistoryComponent implements OnInit {
 
-  constructor(private userService: UserService, private detailService: DetailService,
+  constructor(private userService: UserService, private detailService: DetailService, private router: Router,
               public cartService: ShoppingCartService, private viewedService: RecentlyViewedService,
               private markerService: MarkerService) {
   }
 
   defaultImage: string = '../../../../assets/catalog/not-have-photo.jpg'
 
-  user: UserInterface | null = null
+  user: UserInterface | undefined = this.userService.user$.getValue()
   detailsInRequestHistory: DetailInterface[] = []
   details: DetailInterface[] = []
 
@@ -34,13 +35,16 @@ export class MyHistoryComponent implements OnInit {
   maxView: boolean = false
 
   async ngOnInit() {
+    if (!this.user) {
+      this.router.navigate(['/'])
+      return
+    }
+    this.user.requestHistory = this.user.requestHistory.reverse()
+    const detailsId: DetailIdInterface[] = this.user.requestHistory
+      .filter(i => !!i.detailCart)
+      .map(i => ({id: i.detailCart!}))
 
     try {
-      this.user = await this.userService.getProfile()
-      this.user.requestHistory = this.user.requestHistory.reverse()
-      const detailsId: DetailIdInterface[] = this.user.requestHistory
-        .filter(i => !!i.detailCart)
-        .map(i => ({id: i.detailCart!}))
       this.detailsInRequestHistory = await this.detailService.getByIds(detailsId)
     } catch (error) {
       console.log(error);

@@ -1,0 +1,177 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Museo Sans Cyrl 700', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.container-landing {
+  width: 80%;
+  margin: 20px auto;
+}
+
+.logo-landing {
+  display: block;
+  margin-bottom: 37px;
+
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+}
+
+.reference {
+  margin: 0 auto;
+  list-style: none;
+  width: fit-content;
+  min-width: 486px;
+
+  li {
+    margin-bottom: 10px;
+
+    a {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      padding: 11px 18px;
+      border-radius: 10px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      > div:first-child {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        width: 44px;
+        height: 44px;
+        overflow: hidden;
+
+        img {
+          display: block;
+          max-width: 100%;
+        }
+
+      }
+
+      > div:last-child {
+        margin-left: 18px;
+
+        span, small {
+          display: block;
+          line-height: 1;
+          color: #ffffff;
+        }
+
+        span {
+          font-size: 22px;
+          font-weight: 700;
+        }
+
+        small {
+          margin-top: 3px;
+          font-size: 15px;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+
+@media (max-width: 769px) {
+  .container-landing {
+    width: 100%;
+  }
+
+  .reference {
+    /*width: 50%;*/
+  }
+}
+
+@media (max-width: 530px) {
+
+  .reference {
+    min-width: 300px;
+    width: 90%;
+
+    li {
+
+      a {
+        padding: 8px 18px;
+
+        > div:first-child {
+          width: 36px;
+          height: 36px;
+        }
+
+        > div:last-child {
+
+          span {
+            font-size: 17px;
+          }
+
+          small {
+            font-size: 12px;
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  .logo-landing {
+    margin: 0 15px 25px;
+
+  }
+
+}
+
+@media (max-width: 400px) {
+
+  .reference {
+    min-width: 300px;
+    width: 90%;
+
+    li {
+
+      a {
+        padding: 8px 12px;
+
+        > div:last-child {
+
+          span {
+            font-size: 14px;
+          }
+
+          small {
+            font-size: 10px;
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+
