@@ -183,7 +183,7 @@ export class ShoppingCartService {
       let successCheckMarker: number = 0
       for (let product of detail) {
         const maxRatio: number = Math.max(product.storageGarage2000, product.storageOrlovka, product.storageGES)
-        product.quantityRatio = maxRatio >= 0 ?maxRatio > 9 ? maxRatio : 5 : 0
+        product.quantityRatio = maxRatio >= 0 ? maxRatio > 9 ? maxRatio : 5 : 0
         product.quantity = 1
 
         if (successCheckQuantity < shoppingCart.length) {

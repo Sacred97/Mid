@@ -3,7 +3,7 @@
   <ngx-slick-carousel class="slick-slider-main-class home-page-main-slider"
                       (init)="slickInit($event)" [config]="bannersSliderConfig">
     <div ngxSlickItem *ngFor="let b of banners" class="slide">
-      <img [src]="b.url" alt="">
+      <img [src]="b.url" alt="" [style]="isMobile ? 'max-width: ' + mobileMainBannerWidth + 'px;' : null">
       <a *ngIf="b.pageReference" [href]="b.pageReference">Узнать подробнее</a>
     </div>
   </ngx-slick-carousel>
@@ -194,7 +194,8 @@
 
     <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel manufacturer-slider"
                         [style.display]="fourth ? 'block' : 'none'" [config]="manufacturersSliderConfig">
-      <div ngxSlickItem *ngFor="let m of manufacturers; let idx = index" class="slide-manufacturer">
+      <div ngxSlickItem *ngFor="let m of manufacturers; let idx = index" class="slide-manufacturer"
+           [style.width]="slideManufacturer + 'px !important'">
         <a [routerLink]="['/', 'manufacturer', m.id]">
           <img [src]="m.logoCompanyUrl" alt="">
         </a>
@@ -208,6 +209,175 @@
         <img [src]="c.url" alt="" (click)="openCertificate($event)">
       </div>
     </ngx-slick-carousel>
+
+  </div>
+
+</div>
+
+<div class="mobile-home-page-slider-place">
+
+  <div>
+
+    <span>Рекомендуемые товары</span>
+
+    <div>
+      <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel mobile-details-slider"
+                          [config]="detailsSliderConfig">
+        <div ngxSlickItem *ngFor="let d of detailsNew; let idx = index" class="slide"
+             [style.width]="mobileMainBannerWidth + 'px'">
+
+          <div>
+            <img [src]="d.photoDetail && d.photoDetail.length > 0 ? d.photoDetail[0].url : defaultImage">
+          </div>
+
+          <div>
+
+            <span>{{cartService.toCurrency(d.price)}}</span>
+            <a [routerLink]="['/', 'catalog', d.id]">{{d.name}}</a>
+            <div>Артикул: <span>{{d.vendorCode}}</span></div>
+
+          </div>
+
+          <div>
+            <a *ngIf="d.manufacturer && d.manufacturer.logoCompanyUrl"
+               [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+              <img [src]="d.manufacturer.logoCompanyUrl">
+            </a>
+
+            <span *ngIf="cartService.check(d.id); else no_have">
+              В корзине
+            </span>
+
+            <ng-template #no_have>
+              <button class="btn" (click)="addProduct(detailsNew, d.id, idx)" [disabled]="action">В заказ</button>
+            </ng-template>
+          </div>
+
+        </div>
+
+      </ngx-slick-carousel>
+    </div>
+
+  </div>
+
+  <div>
+
+    <span>Товары-новинки</span>
+
+    <div>
+      <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel mobile-details-slider"
+                          [config]="detailsSliderConfig">
+        <div ngxSlickItem *ngFor="let d of detailsPopular; let idx = index" class="slide"
+             [style.width]="mobileMainBannerWidth + 'px'">
+
+          <div>
+            <img [src]="d.photoDetail && d.photoDetail.length > 0 ? d.photoDetail[0].url : defaultImage">
+          </div>
+
+          <div>
+
+            <span>{{cartService.toCurrency(d.price)}}</span>
+            <a [routerLink]="['/', 'catalog', d.id]">{{d.name}}</a>
+            <div>Артикул: <span>{{d.vendorCode}}</span></div>
+
+          </div>
+
+          <div>
+            <a *ngIf="d.manufacturer && d.manufacturer.logoCompanyUrl"
+               [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+              <img [src]="d.manufacturer.logoCompanyUrl">
+            </a>
+
+            <span *ngIf="cartService.check(d.id); else no_have">
+              В корзине
+            </span>
+
+            <ng-template #no_have>
+              <button class="btn" (click)="addProduct(detailsNew, d.id, idx)" [disabled]="action">В заказ</button>
+            </ng-template>
+          </div>
+
+        </div>
+
+      </ngx-slick-carousel>
+    </div>
+
+  </div>
+
+  <div>
+
+    <span>Акционные товары</span>
+
+    <div>
+      <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel mobile-details-slider"
+                          [config]="detailsSliderConfig">
+        <div ngxSlickItem *ngFor="let d of detailsSale; let idx = index" class="slide"
+             [style.width]="mobileMainBannerWidth + 'px'">
+
+          <div>
+            <img [src]="d.photoDetail && d.photoDetail.length > 0 ? d.photoDetail[0].url : defaultImage">
+          </div>
+
+          <div>
+
+            <span>{{cartService.toCurrency(d.price)}}</span>
+            <a [routerLink]="['/', 'catalog', d.id]">{{d.name}}</a>
+            <div>Артикул: <span>{{d.vendorCode}}</span></div>
+
+          </div>
+
+          <div>
+            <a *ngIf="d.manufacturer && d.manufacturer.logoCompanyUrl"
+               [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+              <img [src]="d.manufacturer.logoCompanyUrl">
+            </a>
+
+            <span *ngIf="cartService.check(d.id); else no_have">
+              В корзине
+            </span>
+
+            <ng-template #no_have>
+              <button class="btn" (click)="addProduct(detailsNew, d.id, idx)" [disabled]="action">В заказ</button>
+            </ng-template>
+          </div>
+
+        </div>
+
+      </ngx-slick-carousel>
+    </div>
+
+  </div>
+
+  <div>
+
+    <span>Заводы-производители</span>
+
+    <div>
+      <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel manufacturer-slider"
+                          [config]="manufacturersSliderConfig">
+        <div ngxSlickItem *ngFor="let m of manufacturers; let idx = index" class="slide-manufacturer">
+          <a [routerLink]="['/', 'manufacturer', m.id]" [style.width]="slideManufacturer + 'px !important'">
+            <img [src]="m.logoCompanyUrl" alt="">
+          </a>
+        </div>
+      </ngx-slick-carousel>
+    </div>
+
+  </div>
+
+  <div>
+
+    <span>Наши сертификаты</span>
+
+    <div>
+      <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel certificate-slider"
+                          [config]="certificatesSliderConfig">
+        <div ngxSlickItem *ngFor="let c of certificates; let idx = index" class="slide-certificate"
+             [style.width]="slideCertificate + 'px !important'">
+          <img [src]="c.url" alt="" (click)="openCertificate($event)">
+        </div>
+      </ngx-slick-carousel>
+    </div>
 
   </div>
 

@@ -11,6 +11,7 @@
 }
 
 body {
+  position: relative;
   //background-image: url("assets/header/background.jpg");
 }
 
@@ -909,16 +910,6 @@ li.analog-delete {
     right: 177px;
   }
 
-  @media (min-width: 1900px) {
-    .slick-prev {
-      left: 190px;
-    }
-
-    .slick-next {
-      right: 190px;
-    }
-  }
-
 }
 
 .catalog-banners, .manufacturer-page-banners {
@@ -1039,6 +1030,22 @@ li.analog-delete {
       opacity: 1;
     }
   }
+
+  @media (max-width: 767px) {
+
+    .slick-dots > li {
+      height: 10px;
+      width: 10px;
+
+      button {
+        height: 10px;
+        width: 10px;
+      }
+
+    }
+
+  }
+
 }
 
 .home-page-details-carousel, .details-list-slider {

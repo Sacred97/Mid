@@ -10,6 +10,7 @@ import {AdminBanner} from "../admin/interfaces/admin-banner.interface";
 import {BannersService} from "../shared/services-interfaces/banners-service/banners.service";
 import {CertificateInterface} from "../shared/services-interfaces/certificate-service/certificate.interface";
 import {CertificateService} from "../shared/services-interfaces/certificate-service/certificate.service";
+import {MarkerService} from "../shared/services-interfaces/marker-service/marker.service";
 
 @Component({
   selector: 'app-home-page',
@@ -20,6 +21,7 @@ export class HomePageComponent implements OnInit {
 
   constructor(private detailService: DetailService, private userService: UserService,
               private bannersService: BannersService, private certificateService: CertificateService,
+              private markerService: MarkerService,
               private manufacturerService: ManufacturerService, public cartService: ShoppingCartService) {
   }
 
@@ -31,7 +33,7 @@ export class HomePageComponent implements OnInit {
     "slidesToShow": 1,
     "slidesToScroll": 1,
     "dots": true,
-    "arrows": true,
+    "arrows": window.innerWidth >= 768,
     "infinite": true,
     "centerMode": true,
     "variableWidth": true,
@@ -40,12 +42,13 @@ export class HomePageComponent implements OnInit {
   };
 
   detailsSliderConfig = {
-    "slidesToShow": 4,
+    "slidesToShow": window.innerWidth >= 768 ? 4 : 1,
     "slidesToScroll": 1,
     "dots": true,
     "arrows": false,
     "infinite": false,
     "variableWidth": true,
+    "centerMode": window.innerWidth < 768,
     "autoplay": true,
     "autoplaySpeed": 10000
   }
@@ -53,7 +56,7 @@ export class HomePageComponent implements OnInit {
   manufacturersSliderConfig = {
     "slidesToShow": 1,
     "slidesToScroll": 1,
-    "rows" : 5,
+    "rows" : window.innerWidth >= 768 ? 5 : 2,
     "slidesPerRow": 1,
     "dots": true,
     "arrows": false,
@@ -64,7 +67,7 @@ export class HomePageComponent implements OnInit {
   }
 
   certificatesSliderConfig = {
-    "slidesToShow": 4,
+    "slidesToShow": window.innerWidth >= 768 ? 4 : 1,
     "slidesToScroll": 1,
     "dots": true,
     "arrows": false,
@@ -85,19 +88,29 @@ export class HomePageComponent implements OnInit {
   manufacturers: ManufacturerInterface[] = []
   certificates: CertificateInterface[] = []
 
+  isMobile: boolean = window.innerWidth < 768
+  mobileMainBannerWidth = window.innerWidth * 0.93 - 20
+
   action: boolean = false
 
   modal: boolean = false
 
   slideWidth: number = 0
+  slideManufacturer: number = 0
+  slideCertificate: number = 0
 
   async ngOnInit() {
     if (window.innerWidth >= 1615) {
       this.slideWidth = Math.round(1440 / 4)
+      this.slideManufacturer = Math.round(1440 / 5)
+    } else if (window.innerWidth < 1615 && window.innerWidth > 1024) {
+      this.slideWidth = Math.round(((window.innerWidth - 20) * 0.892) / 4)
+      this.slideManufacturer = Math.round(((window.innerWidth - 20) * 0.892) / 5)
+    } else if (window.innerWidth <= 1024 && window.innerWidth >= 768) {
+
     } else {
-      if (window.innerWidth < 1615 && window.innerWidth > 1024) {
-        this.slideWidth = Math.round(((window.innerWidth - 20) * 0.892) / 4)
-      }
+      this.slideManufacturer = Math.round((window.innerWidth * 0.93) / 3)
+      this.slideCertificate = Math.round((window.innerWidth * 0.93) / 4)
     }
 
     // if (window.innerWidth <= 1024) {
@@ -226,6 +239,10 @@ export class HomePageComponent implements OnInit {
       .finally(() => {
         this.action = false
       })
+  }
+
+  mark(details: DetailInterface[], id: string, idx: number) {
+    this.markerService.markAndUnmark(details, id, idx)
   }
 
 

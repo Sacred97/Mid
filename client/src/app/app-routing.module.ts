@@ -165,7 +165,7 @@ const userProfile: Routes = [
       {path: 'profile', component: ProfileComponent, data: userBreadcrumbsData},
       {path: 'my-orders', component: MyOrderComponent, data: userBreadcrumbsData},
       {path: 'my-favorites', component: FavoriteComponent, data: userBreadcrumbsData},
-      {path: 'my-own-certificates', component: MyHistoryComponent, data: userBreadcrumbsData},
+      {path: 'my-history', component: MyHistoryComponent, data: userBreadcrumbsData},
       {path: 'my-waiting-list', component: WaitingListComponent, data: userBreadcrumbsData},
       {path: 'my-subscriptions', component: SubscriptionsComponent, data: userBreadcrumbsData},
       {path: 'my-companies', component: MyCompaniesComponent, data: userBreadcrumbsData},

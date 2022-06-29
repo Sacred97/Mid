@@ -39,10 +39,10 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   @ViewChild(RefDirective) refDir: RefDirective
-  // @ts-ignore
-  @ViewChild('hiddenHeader') hiddenHeader: ElementRef
+  @ViewChild('hiddenHeader') hiddenHeader?: ElementRef
 
   @HostListener('window:scroll') onScroll() {
+    if (!this.hiddenHeader) return
     if (window.pageYOffset > 300) {
       this.renderer.setStyle(this.hiddenHeader.nativeElement, 'top', '0px')
     } else {
@@ -56,6 +56,7 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
   activeHiddenHeader: boolean = false
   isDisabledHiddenHeader: boolean = false
   isViewOnGroup: boolean = true
+  isMobile: boolean = window.innerWidth < 768
 
   searchingDetails: DetailInterface[] = []
 

@@ -900,6 +900,47 @@
 
 </header>
 
+<div class="mobile-header" *ngIf="isMobile">
+
+  <div class="mobile-header__logo">
+
+    <div>
+      <img src="../../../../assets/mobile/logo.svg" alt="">
+    </div>
+
+    <a href="">
+      <img src="../../../../assets/mobile/phone.svg" alt="">
+    </a>
+
+  </div>
+
+  <div class="mobile-header__main-bar">
+
+    <button>
+      <span></span>
+    </button>
+
+    <div>
+      <input type="text" placeholder="Поиск по разделу">
+      <button>
+        <img src="../../../../assets/header/search.svg" alt="">
+      </button>
+    </div>
+
+  </div>
+
+  <div class="mobile-header__bar">
+
+    <a routerLink="/catalog">Новинки</a>
+    <a routerLink="/catalog">Рекомендуем</a>
+    <a routerLink="/catalog">Акции</a>
+    <a routerLink="/catalog">Скачать прайс</a>
+    <a routerLink="/catalog">Индивидуальный заказ</a>
+
+  </div>
+
+</div>
+
 <div class="hidden-header" #hiddenHeader>
 
   <div class="hidden-header__navbar">
@@ -1076,9 +1117,52 @@
 
     <img src="../../../../assets/home/footer-logo.png" alt="">
 
+    <span *ngIf="isMobile">© МИДКАМ 1995-2022</span>
+
   </div>
 
   <div></div>
 
 
 </footer>
+
+<nav class="mobile-menu" *ngIf="isMobile">
+
+  <a routerLink="/">
+    <div>
+      <img src="../../../../assets/header/logo-hidden.svg" alt="">
+    </div>
+    <span>Главная</span>
+  </a>
+
+  <a routerLink="/">
+    <div>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <span>Каталог</span>
+  </a>
+
+  <a routerLink="/">
+    <div>
+      <img src="../../../../assets/mobile/favorite.svg" alt="">
+    </div>
+    <span>Избранное</span>
+  </a>
+
+  <a routerLink="/user/profile">
+    <div>
+      <img src="../../../../assets/mobile/profile.svg" alt="">
+    </div>
+    <span>Профиль</span>
+  </a>
+
+  <a routerLink="/shopping-cart">
+    <div>
+      <img src="../../../../assets/mobile/bucket.svg" alt="">
+    </div>
+    <span>Корзина</span>
+  </a>
+
+</nav>
