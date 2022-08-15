@@ -83,6 +83,7 @@
         <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'popular'})">Новинки</a></li>
         <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'recent'})">Рекомендуем</a></li>
         <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'sale'})">Акции</a></li>
+        <li><a [routerLink]="user ? ['/', 'user', 'my-favorites'] : ['/', 'favorite']">Избранное</a></li>
         <li><a (click)="showGetPriceModal()">Получить прайс-лист</a></li>
         <li><a (click)="showSendPriceModal()">Индивидуальный заказ</a></li>
         <li><a (click)="showCityModal()"><img src="../../../../assets/header/geoposition.svg" alt="">
@@ -904,11 +905,11 @@
 
   <div class="mobile-header__logo">
 
-    <div>
+    <a routerLink="/">
       <img src="../../../../assets/mobile/logo.svg" alt="">
-    </div>
+    </a>
 
-    <a href="">
+    <a href="tel:88007003132">
       <img src="../../../../assets/mobile/phone.svg" alt="">
     </a>
 
@@ -916,26 +917,26 @@
 
   <div class="mobile-header__main-bar">
 
-    <button>
+    <button (click)="openCloseMobileMenu(true)">
       <span></span>
     </button>
 
-    <div>
+    <form>
       <input type="text" placeholder="Поиск по разделу">
-      <button>
+      <button type="submit" (click)="toSearch($event)">
         <img src="../../../../assets/header/search.svg" alt="">
       </button>
-    </div>
+    </form>
 
   </div>
 
   <div class="mobile-header__bar">
 
-    <a routerLink="/catalog">Новинки</a>
-    <a routerLink="/catalog">Рекомендуем</a>
-    <a routerLink="/catalog">Акции</a>
-    <a routerLink="/catalog">Скачать прайс</a>
-    <a routerLink="/catalog">Индивидуальный заказ</a>
+    <a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'popular'})">Новинки</a>
+    <a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'recent'})">Рекомендуем</a>
+    <a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'sale'})">Акции</a>
+    <a (click)="showGetPriceModal()">Скачать прайс</a>
+    <a (click)="showSendPriceModal()">Индивидуальный заказ</a>
 
   </div>
 
@@ -1126,7 +1127,7 @@
 
 </footer>
 
-<nav class="mobile-menu" *ngIf="isMobile">
+<nav class="mobile-bar" *ngIf="isMobile">
 
   <a routerLink="/">
     <div>
@@ -1135,7 +1136,7 @@
     <span>Главная</span>
   </a>
 
-  <a routerLink="/">
+  <a routerLink="/catalog">
     <div>
       <span></span>
       <span></span>
@@ -1144,19 +1145,28 @@
     <span>Каталог</span>
   </a>
 
-  <a routerLink="/">
+  <a [routerLink]="user ? ['/', 'user', 'my-favorites'] : ['/', 'favorite']">
     <div>
       <img src="../../../../assets/mobile/favorite.svg" alt="">
     </div>
     <span>Избранное</span>
   </a>
 
-  <a routerLink="/user/profile">
+  <a routerLink="/user/profile" *ngIf="user; else unauth">
     <div>
       <img src="../../../../assets/mobile/profile.svg" alt="">
     </div>
     <span>Профиль</span>
   </a>
+
+  <ng-template #unauth>
+    <a (click)="showAuthModal()">
+      <div>
+        <img src="../../../../assets/mobile/profile.svg" alt="">
+      </div>
+      <span>Войти</span>
+    </a>
+  </ng-template>
 
   <a routerLink="/shopping-cart">
     <div>
@@ -1166,3 +1176,760 @@
   </a>
 
 </nav>
+
+<div class="mobile-menu" #mobile_menu_el>
+
+  <div>
+
+    <button (click)="openCloseMobileMenu(false)">
+      <div></div>
+      <span>Назад</span>
+    </button>
+
+    <span>Каталог</span>
+
+    <ul>
+      <li>
+        <button (click)="openSubMobileMenu($event)">
+          <span>Запчасти на а/м КАМАЗ</span>
+          <div></div>
+        </button>
+        <div>
+
+          <button (click)="closeSubMobileMenu($event)">
+            <span>Назад</span>
+            <div></div>
+          </button>
+
+          <span>Запчасти на а/м КАМАЗ</span>
+
+          <ul>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ'})">
+                <b>Все товары раздела</b>
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '10. Двигатель'})">
+                10. Двигатель
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '11. Система питания двигателя'})">
+                11. Система питания двигателя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '12. Система выпуска газов двигателя'})">
+                12. Система выпуска газов двигателя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '13. Система охлаждения'})">
+                13. Система охлаждения
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '14. Система смазки'})">
+                14. Система смазки
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '16. Сцепление'})">
+                16. Сцепление
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '17. Коробка передач'})">
+                17. Коробка передач
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '18. Коробка раздаточная'})">
+                18. Коробка раздаточная
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '22. Передача карданная'})">
+                22. Передача карданная
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '23. Мост передний (ведущий)'})">
+                23. Мост передний (ведущий)
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '24. Мост задний'})">
+                24. Мост задний
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '25. Мост средний (промежуточный)'})">
+                25. Мост средний (промежуточный)
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '27. Устройство седельно-сцепное'})">
+                27. Устройство седельно-сцепное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '28. Рама'})">
+                28. Рама
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '29. Подвеска автомобиля'})">
+                29. Подвеска автомобиля
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '30. Ось передняя, задняя для переднеприводных'})">
+                30. Ось передняя, задняя для переднеприводных
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '31. Колеса, шины и ступицы'})">
+                31. Колеса, шины и ступицы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '34. Управление рулевое'})">
+                34. Управление рулевое
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '35. Тормоза'})">
+                35. Тормоза
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '37. Электрооборудование'})">
+                37. Электрооборудование
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '38. Приборы'})">
+                38. Приборы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '39. Инструменты и принадлежности'})">
+                39. Инструменты и принадлежности
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '42. Коробка отбора мощности'})">
+                42. Коробка отбора мощности
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '45. Лебедка и принадлежности'})">
+                45. Лебедка и принадлежности
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '46. Оборудование навесное'})">
+                46. Оборудование навесное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '47. Оборудование дополнительное'})">
+                47. Оборудование дополнительное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '50. Кабина'})">
+                50. Кабина
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '51. Основание, пол кабины'})">
+                51. Основание, пол кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '52. Окно ветровое и заднее'})">
+                52. Окно ветровое и заднее
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '53. Передок кабины'})">
+                53. Передок кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '54. Боковина кабины'})">
+                54. Боковина кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '56. Задок кабины'})">
+                56. Задок кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '57. Крыша кабины'})">
+                57. Крыша кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '61. Дверь кабины передняя'})">
+                61. Дверь кабины передняя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '62. Дверь задняя'})">
+                62. Дверь задняя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '63. Дверь задка кузова'})">
+                63. Дверь задка кузова
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '68. Сиденье водительское'})">
+                68. Сиденье водительское
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '69. Сиденье пассажирское'})">
+                69. Сиденье пассажирское
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '80. Оборудование специализированное'})">
+                80. Оборудование специализированное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '81. Отопление и вентиляция кабины'})">
+                81. Отопление и вентиляция кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '82. Принадлежности кабины'})">
+                82. Принадлежности кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '84. Оперение кабины (капот, крылья, облицовка)'})">
+                84. Оперение кабины (капот, крылья, облицовка)
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '85. Платформа'})">
+                85. Платформа
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: '86. Устройство подъемное и опрокидывающее платформы'})">
+                86. Устройство подъемное и опрокидывающее платформы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: 'Метизы'})">
+                Метизы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: 'Подшипники'})">
+                Подшипники
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КАМАЗ', filter: 'Ремни'})">
+                Ремни
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+      <li>
+        <button (click)="openSubMobileMenu($event)">
+          <span>Запчасти на а/м МАЗ</span>
+          <div></div>
+        </button>
+        <div>
+
+          <button (click)="closeSubMobileMenu($event)">
+            <span>Назад</span>
+            <div></div>
+          </button>
+
+          <span>Запчасти на а/м МАЗ</span>
+
+          <ul>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м МАЗ'})">
+                <b>Все товары раздела</b>
+              </a>
+            </li>
+            <li>
+              <a href="https://midkam.ru/catalog/maz">
+                Раздел запчастей на автомобили МАЗ, к сожалению, пока доступен только на старом сайте
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+      <li>
+        <button (click)="openSubMobileMenu($event)">
+          <span>Запчасти на а/м ГАЗ и УАЗ</span>
+          <div></div>
+        </button>
+        <div>
+
+          <button (click)="closeSubMobileMenu($event)">
+            <span>Назад</span>
+            <div></div>
+          </button>
+
+          <span>Запчасти на а/м ГАЗ и УАЗ</span>
+
+          <ul>
+
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ'})">
+                <b>Все товары раздела</b>
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '10. Двигатель'})">
+                10. Двигатель
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '11. Система питания двигателя'})">
+                11. Система питания двигателя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '12. Система выпуска газов двигателя'})">
+                12. Система выпуска газов двигателя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '13. Система охлаждения'})">
+                13. Система охлаждения
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '16. Сцепление'})">
+                16. Сцепление
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '17. Коробка передач'})">
+                17. Коробка передач
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '18. Коробка раздаточная'})">
+                18. Коробка раздаточная
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '22. Передача карданная'})">
+                22. Передача карданная
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '23. Мост передний (ведущий)'})">
+                23. Мост передний (ведущий)
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '24. Мост задний'})">
+                24. Мост задний
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '25. Мост средний (промежуточный)'})">
+                25. Мост средний (промежуточный)
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '27. Устройство седельно-сцепное'})">
+                27. Устройство седельно-сцепное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '28. Рама'})">
+                28. Рама
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '29. Подвеска автомобиля'})">
+                29. Подвеска автомобиля
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '30. Ось передняя, задняя для переднеприводных'})">
+                30. Ось передняя, задняя для переднеприводных
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '31. Колеса, шины и ступицы'})">
+                31. Колеса, шины и ступицы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '34. Управление рулевое'})">
+                34. Управление рулевое
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '35. Тормоза'})">
+                35. Тормоза
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '37. Электрооборудование'})">
+                37. Электрооборудование
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '38. Приборы'})">
+                38. Приборы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '39. Инструменты и принадлежности'})">
+                39. Инструменты и принадлежности
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '42. Коробка отбора мощности'})">
+                42. Коробка отбора мощности
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '45. Лебедка и принадлежности'})">
+                45. Лебедка и принадлежности
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '46. Оборудование навесное'})">
+                46. Оборудование навесное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '47. Оборудование дополнительное'})">
+                47. Оборудование дополнительное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '50. Кабина'})">
+                50. Кабина
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '51. Основание, пол кабины'})">
+                51. Основание, пол кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '52. Окно ветровое и заднее'})">
+                52. Окно ветровое и заднее
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '53. Передок кабины'})">
+                53. Передок кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '54. Боковина кабины'})">
+                54. Боковина кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '56. Задок кабины'})">
+                56. Задок кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '57. Крыша кабины'})">
+                57. Крыша кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '61. Дверь кабины передняя'})">
+                61. Дверь кабины передняя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '62. Дверь задняя'})">
+                62. Дверь задняя
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '63. Дверь задка кузова'})">
+                63. Дверь задка кузова
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '68. Сиденье водительское'})">
+                68. Сиденье водительское
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '69. Сиденье пассажирское'})">
+                69. Сиденье пассажирское
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '80. Оборудование специализированное'})">
+                80. Оборудование специализированное
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '81. Отопление и вентиляция кабины'})">
+                81. Отопление и вентиляция кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '82. Принадлежности кабины'})">
+                82. Принадлежности кабины
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '84. Оперение кабины (капот, крылья, облицовка)'})">
+                84. Оперение кабины (капот, крылья, облицовка)
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '85. Платформа'})">
+                85. Платформа
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: '86. Устройство подъемное и опрокидывающее платформы'})">
+                86. Устройство подъемное и опрокидывающее платформы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: 'Метизы'})">
+                Метизы
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: 'Подшипники'})">
+                Подшипники
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ГАЗ; Отечественные а/м УАЗ', filter: 'Ремни'})">
+                Ремни
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+      <li>
+        <button (click)="openSubMobileMenu($event)">
+          <span>Прицепы и полуприцепы</span>
+          <div></div>
+        </button>
+        <div>
+
+          <button (click)="closeSubMobileMenu($event)">
+            <span>Назад</span>
+            <div></div>
+          </button>
+
+          <span>Прицепы и полуприцепы</span>
+
+          <ul>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы АМКАР; Отечественные прицепы МАЗ; Отечественные прицепы НЕФАЗ; Отечественные прицепы ОДАЗ; Отечественные прицепы СЗАП; Отечественные прицепы ТОНАР; Отечественные прицепы ЧМЗАП'})">
+                <b>Все товары раздела</b>
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы АМКАР'})">
+                Запчасти для грузовых прицепов АМКАР
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы МАЗ'})">
+                Запчасти для грузовых прицепов МАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы НЕФАЗ'})">
+                Запчасти для грузовых прицепов НЕФАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы ОДАЗ'})">
+                Запчасти для грузовых прицепов ОДАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы СЗАП'})">
+                Запчасти для грузовых прицепов СЗАП
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы ТОНАР'})">
+                Запчасти для грузовых прицепов ТОНАР
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные прицепы ЧМЗАП'})">
+                Запчасти для грузовых прицепов ЧМЗАП
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+      <li>
+        <button (click)="openSubMobileMenu($event)">
+          <span>Прочие отечественные автомобили</span>
+          <div></div>
+        </button>
+        <div>
+
+          <button (click)="closeSubMobileMenu($event)">
+            <span>Назад</span>
+            <div></div>
+          </button>
+
+          <span>Прочие отечественные автомобили</span>
+
+          <ul>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м БЕЛАЗ; Отечественные а/м ВАЗ; Отечественные а/м ЗИЛ; Отечественные а/м КРАЗ; Отечественные а/м МОАЗ; Отечественные а/м УРАЛ'})">
+                <b>Все товары раздела</b>
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м БЕЛАЗ'})">
+                Запчасти на а/м БЕЛАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ВАЗ'})">
+                Запчасти на а/м ВАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м ЗИЛ'})">
+                Запчасти на а/м ЗИЛ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м КРАЗ'})">
+                Запчасти на а/м КРАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м МОАЗ'})">
+                Запчасти на а/м МОАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/м УРАЛ'})">
+                Запчасти на а/м УРАЛ
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+      <li>
+        <button (click)="openSubMobileMenu($event)">
+          <span>Запчасти на автобусы</span>
+          <div></div>
+        </button>
+        <div>
+
+          <button (click)="closeSubMobileMenu($event)">
+            <span>Назад</span>
+            <div></div>
+          </button>
+
+          <span>Запчасти на автобусы</span>
+
+          <ul>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/б Волжанин; Отечественные а/б ИКАРУС; Отечественные а/б КАВЗ; Отечественные а/б ЛАЗ; Отечественные а/б ЛИАЗ; Отечественные а/б ПАЗ'})">
+                <b>Все товары раздела</b>
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/б Волжанин'})">
+                Волжанин
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/б ИКАРУС'})">
+                ИКАРУС
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/б КАВЗ'})">
+                КАВЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/б ЛАЗ'})">
+                ЛАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/б ЛИАЗ'})">
+                ЛИАЗ
+              </a>
+            </li>
+            <li>
+              <a (click)="toCatalogFromMobileMenu($event, {usability: 'Отечественные а/б ПАЗ'})">
+                ПАЗ
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+    </ul>
+
+  </div>
+
+  <div>
+
+    <span>Меню</span>
+
+    <ul>
+      <li>
+        <a (click)="toRouteFromMobileMenu(['/', 'about'])">Компания</a>
+        <div></div>
+      </li>
+      <li>
+        <a (click)="toRouteFromMobileMenu(['/', 'buyer'])">Покупателю</a>
+        <div></div>
+      </li>
+      <li>
+        <a (click)="toRouteFromMobileMenu(['/', 'contacts'])">Контакты</a>
+        <div></div>
+      </li>
+      <li>
+        <a (click)="toRouteFromMobileMenu(['/', 'supplier'])">Поставщикам</a>
+        <div></div>
+      </li>
+      <li>
+        <a (click)="toRouteFromMobileMenu(['/', 'jobs'])">Вакансии</a>
+        <div></div>
+      </li>
+    </ul>
+
+  </div>
+
+</div>

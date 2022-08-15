@@ -133,12 +133,152 @@
 
   </aside>
 
+  <aside class="m-aside-mobile">
+    <div class="m-aside-mobile__logo">
+      <img *ngIf="manufacturer" [src]="manufacturer.logoCompanyUrl ?
+        manufacturer.logoCompanyUrl
+        : '../../../../assets/manufacturer/default-manufacturer.jpg'" [alt]="manufacturer.nameCompany">
+      <span>{{manufacturer ? manufacturer.nameCompany : ''}}</span>
+    </div>
+
+    <button class="m-aside-mobile__modal-trigger" (click)="manufacturerInfoModal()">
+      <span>Подробнее о производителе</span>
+      <img src="../../../../assets/icon/search.svg" alt="" data-el="logo">
+    </button>
+
+    <div class="m-aside-mobile__drop-list" *ngIf="manufacturer && manufacturer.photoCertificate.length > 0">
+      <button (click)="dropList($event)">
+        <span>Сертификаты</span>
+        <div></div>
+      </button>
+
+      <ngx-slick-carousel class="slick-slider-main-class manufacturer-catalog-certificate" [config]="certificateConfig">
+        <div ngxSlickItem *ngFor="let c of manufacturer.photoCertificate" class="slide">
+          <button (click)="openCertificate($event)">
+            <img [src]="c.certificatePhotoUrl" alt="">
+          </button>
+        </div>
+      </ngx-slick-carousel>
+    </div>
+
+    <div>
+
+      <button (click)="dropListMobile($event)">
+        <span>Фильтры</span>
+        <div></div>
+      </button>
+
+
+      <div>
+        <div class="m-aside-mobile__drop-list">
+          <button (click)="dropList($event)">
+            <span>Применяемость</span>
+            <div></div>
+          </button>
+
+          <ul>
+            <li *ngFor="let ap of applicability; let idx = index">
+              <label>
+                <input type="checkbox" [ngModel]="!!ap.checked"
+                       (ngModelChange)="changesFilter(applicability, idx, 'applicability')">
+                <span>
+              {{ap.label}}
+                  <div>{{ap.count_detail ? '(' + ap.count_detail + ')' : ''}}</div>
+            </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="m-aside-mobile__drop-list">
+          <button (click)="dropList($event)">
+            <span>Категория товара</span>
+            <div></div>
+          </button>
+
+          <ul>
+            <li *ngFor="let c of category; let idx = index">
+              <label>
+                <input type="checkbox" [ngModel]="!!c.checked"
+                       (ngModelChange)="changesFilter(category, idx, 'category')">
+                <span>
+              {{c.label}}
+                  <div>{{c.count_detail ? '(' + c.count_detail + ')' : ''}}</div>
+            </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="m-aside-mobile__drop-list">
+          <button (click)="dropList($event)">
+            <span>Автомобильная группа</span>
+            <div></div>
+          </button>
+
+          <ul>
+            <li *ngFor="let p of parts; let idx = index">
+              <label>
+                <input type="checkbox" [ngModel]="!!p.checked" (ngModelChange)="changesFilter(parts, idx, 'parts')">
+                <span>
+              {{p.label}}
+                  <div>{{p.count_detail ? '(' + p.count_detail + ')' : ''}}</div>
+            </span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="m-aside-mobile__drop-list">
+          <button (click)="dropList($event)">
+            <span>Наличие товара</span>
+            <div></div>
+          </button>
+
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" [ngModel]="availability"
+                       (ngModelChange)="additionalFilterChange('availability', 'В наличии')">
+                <span>В наличии</span>
+              </label>
+            </li>
+            <div></div>
+            <li>
+              <label>
+                <input type="checkbox" [ngModel]="recent"
+                       (ngModelChange)="additionalFilterChange('recent', 'Рекомендуемые')">
+                <span>Рекомендуем</span>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" [ngModel]="sale"
+                       (ngModelChange)="additionalFilterChange('sale', 'По акции')">
+                <span>Акции</span>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" [ngModel]="popular"
+                       (ngModelChange)="additionalFilterChange('popular', 'Новинки')">
+                <span>Новинки</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </aside>
+
   <div class="m-catalog">
 
     <ngx-slick-carousel class="slick-slider-main-class manufacturer-page-banners" [config]="bannersConfig"
                         (init)="slickInit($event)">
       <div ngxSlickItem *ngFor="let b of banners" class="slide">
-        <img [src]="b.url" alt="" [style.max-width]="bannerMaxWidth + 'px'">
+        <img [src]="b.url" alt="">
         <a *ngIf="b.pageReference" [href]="b.pageReference">Узнать подробнее</a>
       </div>
     </ngx-slick-carousel>
@@ -241,6 +381,8 @@
 
           <div class="m-catalog__display-main__text">
 
+            <span>{{shoppingService.toCurrency(d.price)}}</span>
+
             <a [routerLink]="['/', 'manufacturer', manufacturerId, d.id]"
                (click)="viewedService.addToRecentlyViewed(d.id)">
               {{d.name}}
@@ -264,6 +406,10 @@
                   <span *ngIf="idx < d.autoApplicability.length - 1">, </span>
                 </span>
               </small>
+            </div>
+
+            <div class="m-catalog__display-main__text__quantity">
+              <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
             </div>
 
           </div>
@@ -477,7 +623,7 @@
       </li>
 
       <pagination-controls class="pagination" (pageChange)="nextDetails($event, false)"
-                           previousLabel="" nextLabel="" [maxSize]="9">
+                           previousLabel="" nextLabel="" [maxSize]="maxQuantityViewPages">
       </pagination-controls>
     </ul>
 

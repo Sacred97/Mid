@@ -46,7 +46,7 @@ export class OrderUserComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.user) {
-      this.totalWeight = this.user.shoppingCart.totalWeight
+      this.totalWeight = +this.user.shoppingCart.totalWeight.toFixed(3)
     } else {
       this.router.navigate(['/'])
     }

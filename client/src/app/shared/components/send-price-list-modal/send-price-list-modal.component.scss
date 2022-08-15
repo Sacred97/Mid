@@ -150,7 +150,7 @@
       display: flex;
       cursor: pointer;
       position: relative;
-      line-height: 20px;
+      line-height: 1;
       height: 1em;
       width: 100%;
       align-items: center;
@@ -284,6 +284,333 @@
     text-transform: uppercase;
   }
 
+}
 
+@media (max-width: 768px) {
+
+  .send-price-modal-window {
+    width: 80%;
+    max-height: 95vh;
+    overflow: auto;
+    padding: 20px;
+    border-radius: 10px;
+
+    &__title {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    &__form-control {
+
+      input[type='text'], input[type='email'] {
+        font-size: 16px;
+      }
+
+      small {
+      }
+
+    }
+
+    &__input {
+      margin-top: 0;
+    }
+
+    &__file {
+      display: block;
+      margin: 10px 0;
+
+      span {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      input {
+        margin-left: 0;
+        font-size: 14px;
+      }
+
+    }
+
+    &__textarea {
+      margin-top: 0;
+      margin-bottom: 10px;
+
+      span {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      textarea {
+        font-size: 16px;
+        padding: 0.5em;
+      }
+
+    }
+
+    &__checkboxes {
+      margin: 0 0 10px;
+      flex-direction: column;
+      justify-content: unset;
+      gap: 10px 0;
+
+      label {
+        display: block;
+        height: 1em;
+        width: fit-content;
+
+        span {
+          padding-left: 18px;
+          font-size: 13px;
+        }
+
+      }
+
+      > div {
+        width: 100%;
+
+        div {
+          margin-top: 5px;
+          width: 100%;
+        }
+      }
+
+    }
+
+    &__button {
+      width: 100%;
+
+      button {
+        width: unset;
+        padding: 15px 20px;
+      }
+
+    }
+
+    &__successful {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    &__result-successful {
+      padding: 15px 20px;
+      width: unset;
+      font-size: 13px;
+    }
+
+    &__failed {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    &__result-failed {
+      padding: 15px 20px;
+      width: unset;
+    }
+
+  }
 
 }
+
+@media (max-width: 550px) {
+
+  .send-price-modal-window {
+    padding: 15px;
+
+    &__title {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    &__form-control {
+
+      input[type='text'], input[type='email'] {
+        font-size: 13px;
+      }
+
+      small {
+        font-size: 8px;
+        margin-top: 0;
+      }
+
+    }
+
+    &__file {
+      margin: 8px 0;
+
+      span {
+        font-size: 16px;
+      }
+
+      input {
+        font-size: 12px;
+      }
+
+    }
+
+    &__textarea {
+      margin-bottom: 8px;
+
+      span {
+        font-size: 16px;
+      }
+
+      textarea {
+        font-size: 13px;
+        padding: 0.5em;
+      }
+
+    }
+
+    &__checkboxes {
+      margin: 0 0 8px;
+      gap: 8px 0;
+
+      label {
+
+        span {
+          padding-left: 18px;
+          font-size: 11px;
+        }
+
+      }
+
+      > div > div > div {
+        margin-top: 0;
+      }
+
+    }
+
+    &__button {
+
+      button {
+        font-size: 11px;
+      }
+
+    }
+
+    &__successful {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    &__result-successful {
+      font-size: 11px;
+    }
+
+    &__failed {
+      font-size: 18px;
+      margin-bottom: 13px;
+    }
+
+    &__result-failed {
+      font-size: 11px;
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .send-price-modal-window {
+    padding: 10px;
+
+    &__title {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    &__form-control {
+
+      input[type='text'], input[type='email'] {
+        font-size: 11px;
+      }
+
+      small {
+        font-size: 7px;
+      }
+
+    }
+
+    &__file {
+      margin: 5px 0;
+
+      span {
+        font-size: 13px;
+      }
+
+      input {
+        font-size: 10px;
+      }
+
+      input::-webkit-file-upload-button {
+        margin: 0 7px 0 0;
+        font-size: 9px;
+      }
+
+    }
+
+    &__textarea {
+      margin-bottom: 5px;
+
+      span {
+        font-size: 13px;
+      }
+
+      textarea {
+        font-size: 11px;
+        padding: 0.5em;
+      }
+
+    }
+
+    &__checkboxes {
+      margin: 0 0 5px;
+      gap: 5px 0;
+
+      label {
+
+        span {
+          padding-left: 16px;
+          font-size: 10px;
+        }
+
+      }
+
+      > div > div > div {
+        margin-top: 0;
+      }
+
+    }
+
+    &__button {
+
+      button {
+        padding: 10px 15px;
+      }
+
+    }
+
+    &__successful {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    &__result-successful {
+      padding: 10px 15px;
+    }
+
+    &__failed {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    &__result-failed {
+      padding: 10px 15px;
+    }
+
+  }
+
+}
+

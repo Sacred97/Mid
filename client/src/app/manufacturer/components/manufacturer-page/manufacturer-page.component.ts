@@ -55,7 +55,7 @@ export class ManufacturerPageComponent implements OnInit {
     "dots": true,
     "arrows": true,
     "infinite": true,
-    "variableWidth": true,
+    "variableWidth": false,
     "autoplay": true,
     "autoplaySpeed": 10000
   }
@@ -67,6 +67,8 @@ export class ManufacturerPageComponent implements OnInit {
   }
 
   bannerMaxWidth = 996
+
+  maxQuantityViewPages = window.innerWidth > 420 ? 9 : 6
 
   //-------------------------------------------------Сортировка---------------------------------------------------------
 
@@ -462,6 +464,18 @@ export class ManufacturerPageComponent implements OnInit {
 
   sanitize(html: string) {
     return this.sanitizer.bypassSecurityTrustHtml(html)
+  }
+
+  dropListMobile(event: Event) {
+    const $parent = (event.currentTarget as HTMLButtonElement).parentElement
+    if (!$parent) return
+    const $target = $parent.querySelectorAll('div').item(1)
+    if (!$target) return;
+    if ($target.classList.contains('drop-mobile')) {
+      $target.classList.remove('drop-mobile')
+      return;
+    }
+    $target.classList.add('drop-mobile')
   }
 
 }

@@ -379,6 +379,11 @@
 //--Мобильная версия
 
 @media (max-width: 767px) {
+  .container, .home-title, .slider-place, .mobile-home-page-slider-place {
+    width: 93%;
+    margin-right: auto;
+    margin-left: auto;
+  }
 
   .home-title, .slider-place {
     display: none;
@@ -417,7 +422,6 @@
 }
 
 .mobile-home-page-slider-place {
-  width: 100%;
 
   > div {
     width: 100%;
@@ -440,7 +444,6 @@
 }
 
 .mobile-details-slider {
-  width: 100%;
   position: relative;
 
   .slick-slide {

@@ -113,15 +113,6 @@ export class HomePageComponent implements OnInit {
       this.slideCertificate = Math.round((window.innerWidth * 0.93) / 4)
     }
 
-    // if (window.innerWidth <= 1024) {
-    //   this.slideWidth = Math.round(((window.innerWidth) * 0.892) / 3)
-    //   if (window.innerWidth <= 614) {
-    //     this.slideWidth = Math.round((window.innerWidth) * 0.892)
-    //   }
-    // } else {
-    //   this.slideWidth = Math.round(((window.innerWidth - 17) * 0.892) / 4)
-    // }
-
     try {
       this.banners = await this.bannersService.getBannerForPage(true)
     } catch (e) {

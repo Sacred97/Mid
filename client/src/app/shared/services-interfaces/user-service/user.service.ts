@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {
   AddRequestHistoryUser,
-  AddressUserInterface, CompanyUserInterface,
+  AddressUserInterface, ChangeUserPassword, CompanyUserInterface,
   ManagerInterface, NewsLetter,
   NewUserInterface, RequestHistoryUserInterface,
   ShoppingCartUserInterface, SubscriptionUserInterface, UpdateRequestHistoryUser,
@@ -60,6 +60,11 @@ export class UserService {
   updateProfile(data: UpdateUser): Promise<UserInterface> {
     const url: string = environment.apiUrl + 'users/profile'
     return this.http.put<UserInterface>(url, data, {withCredentials: true}).toPromise()
+  }
+
+  changeUserPassword(data: ChangeUserPassword): Promise<UserInterface> {
+    const url = environment.apiUrl + 'users/change-password'
+    return this.http.post<UserInterface>(url, data, {withCredentials: true}).toPromise()
   }
 
   //---------------------------------------------Аутентификация---------------------------------------------------------
@@ -269,17 +274,17 @@ export class UserService {
   //----------------------------------------------------История поиска--------------------------------------------------
 
   addRequestHistory(data: AddRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
-    const url = environment.apiUrl + 'users/own-certificates'
+    const url = environment.apiUrl + 'users/history'
     return this.http.post<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
   }
 
   updateRequestHistory(data: UpdateRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
-    const url = environment.apiUrl + 'users/own-certificates'
+    const url = environment.apiUrl + 'users/history'
     return this.http.put<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
   }
 
   deleteRequestHistory(id: number): Promise<RequestHistoryUserInterface[]> {
-    const url = environment.apiUrl + 'users/own-certificates/' + id
+    const url = environment.apiUrl + 'users/history/' + id
     return this.http.delete<RequestHistoryUserInterface[]>(url, {withCredentials: true}).toPromise()
   }
 

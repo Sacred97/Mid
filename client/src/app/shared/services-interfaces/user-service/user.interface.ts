@@ -229,3 +229,8 @@ export interface UpdateRequestHistoryUser {
   id: number
   detailCart: string
 }
+
+export interface ChangeUserPassword {
+  currentPassword: string
+  newPassword: string
+}

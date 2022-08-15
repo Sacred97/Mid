@@ -80,6 +80,7 @@ import {OfferComponent} from "./buyer/components/offer/offer.component";
 import {PrivacyPolicyComponent} from "./buyer/components/privacy-policy/privacy-policy.component";
 import {ExportDepartamentComponent} from "./contacts/components/export-departament/export-departament.component";
 import {SupplierComponent} from "./supplier/supplier.component";
+import {FavoriteGuestComponent} from "./favorite-guest/favorite-guest.component";
 
 const aboutBreadcrumbs: Data = {
   title: 'Компания', breadcrumb: [
@@ -233,6 +234,7 @@ const routes: Routes = [
       ...userProfile,
       {
         path: 'supplier', component: SupplierComponent, data: supplierBreadcrumbs},
+      {path: 'favorite', component: FavoriteGuestComponent},
       {path: 'catalog', component: CatalogComponent},
       {
         path: 'type', component: CatalogTypeComponent, data: {

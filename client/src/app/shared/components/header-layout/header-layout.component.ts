@@ -40,6 +40,7 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
   // @ts-ignore
   @ViewChild(RefDirective) refDir: RefDirective
   @ViewChild('hiddenHeader') hiddenHeader?: ElementRef
+  @ViewChild('mobile_menu_el') mobile_menu_el?: ElementRef
 
   @HostListener('window:scroll') onScroll() {
     if (!this.hiddenHeader) return
@@ -383,6 +384,58 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     component.instance.close.subscribe(() => {
       this.refDir.containerRef.clear()
     })
+  }
+
+  openCloseMobileMenu(open: boolean) {
+    if (!this.mobile_menu_el) return
+    const $target = this.mobile_menu_el.nativeElement as HTMLDivElement
+    if (open) {
+      $target.classList.add('mobile-menu-active')
+      document.body.style.overflow = 'hidden'
+    } else {
+      $target.classList.remove('mobile-menu-active')
+      document.body.style.overflow = 'unset'
+    }
+
+  }
+
+  openSubMobileMenu(event: Event) {
+    const $parent = (event.currentTarget as HTMLButtonElement).parentElement
+    if (!$parent) return
+    const $target = $parent.lastChild as HTMLDivElement
+    if (!$target) return;
+    $target.style.left = '0'
+  }
+
+  closeSubMobileMenu(event: Event) {
+    const $target = (event.currentTarget as HTMLButtonElement).parentElement
+    if (!$target) return
+    $target.style.left = '-100%'
+  }
+
+  toRouteFromMobileMenu(route: string[]) {
+    const $target = this.mobile_menu_el?.nativeElement as HTMLDivElement
+    if (!$target) return
+    $target.classList.remove('mobile-menu-active')
+    document.body.style.overflow = 'unset'
+    this.router.navigate(route)
+  }
+
+  toCatalogFromMobileMenu(event: Event, state: Object) {
+    const $child = (event.currentTarget as HTMLElement).parentElement?.parentElement
+    if (!$child) return
+    const $subTarget = $child.parentElement
+    if (!$subTarget) return;
+
+    const $target = this.mobile_menu_el?.nativeElement as HTMLDivElement
+    if (!$target) return;
+
+    this.onSamePage(['/', 'catalog'], state)
+
+    $subTarget.style.left = '-100%'
+    $target.classList.remove('mobile-menu-active')
+    document.body.style.overflow = 'unset'
+    this.onSamePage(['/', 'catalog'], state)
   }
 
 }

@@ -28,6 +28,8 @@ export class SearchPageComponent implements OnInit {
   details: DetailInterface[] = []
   loading: boolean = true
 
+  maxQuantityPages: number = window.innerWidth >= 420 ? 9 : 6
+
   totalQuantity: number = 0
   page: number = 1
   querySearch: string = this.activatedRoute.snapshot.queryParams['text']

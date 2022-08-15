@@ -38,7 +38,7 @@
       <span>Изменить учетные данные</span>
     </button>
 
-    <button type="button" (click)="changePassword()">
+    <button type="button" (click)="passwordModal = true">
       <div>
         <img src="../../../../assets/user/change-password-icon.svg" alt="Пароль">
       </div>
@@ -57,16 +57,32 @@
 
 <div class="modal" *ngIf="passwordModal">
 
-  <div class="modal-background"></div>
+  <div class="modal-background" (click)="closeModal()"></div>
 
   <div class="change-password-modal">
-    <h1></h1>
-    <form>
+    <h1>Смена пароля</h1>
+    <form [formGroup]="passwordForm">
       <label>
-        <span></span>
-        <input type="text">
-        <small></small>
+        <span>Старый пароль</span>
+        <input type="password" formControlName="currentPassword">
+        <small *ngIf="passwordForm.controls['currentPassword'].errors?.required">Поле не должно быть пустым</small>
+        <button (mousedown)="openClosePassword($event, 'text')" (mouseup)="openClosePassword($event, 'password')">
+          <img src="../../../../assets/user/view-password.svg" alt="">
+        </button>
       </label>
+      <label>
+        <span>Новый пароль</span>
+        <input type="password" formControlName="newPassword">
+        <small *ngIf="passwordForm.controls['newPassword'].errors?.required">Поле не должно быть пустым</small>
+        <small *ngIf="passwordForm.controls['newPassword'].errors?.minlength">Минимальная длинна пароля 6 символов</small>
+        <button (mousedown)="openClosePassword($event, 'text')" (mouseup)="openClosePassword($event, 'password')">
+          <img src="../../../../assets/user/view-password.svg" alt="">
+        </button>
+      </label>
+
+      <button (click)="changePassword()" [disabled]="passwordForm.invalid || action">Сменить пароль</button>
+      <small *ngIf="passwordModalError">{{passwordModalError}}</small>
+      <span *ngIf="passwordSuccess">Пароль успешно изменен</span>
     </form>
   </div>
 

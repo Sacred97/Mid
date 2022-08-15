@@ -188,7 +188,7 @@
         </div>
 
         <div class="notification" *ngIf="!detail.quantityRatio && userService.user$.getValue()">
-          <img src="../../../../assets/detail-cart/notification.svg" alt="">
+          <img src="../../../../assets/general-icon/notification.svg" alt="">
           <button *ngIf="!isSubscribing()" (click)="subscribeOnDetail()" [disabled]="action">
             Сообщить о поступлении
           </button>
@@ -204,10 +204,6 @@
           <img src="../../../../assets/general-icon/favorite-static.svg" alt="" *ngIf="!detail.marked">
           <img src="../../../../assets/general-icon/favorite-touched.svg" alt="" *ngIf="detail.marked">
           <span>Добавить в закладки</span>
-        </div>
-        <div>
-          <div><span>?</span></div>
-          <span>Задать вопрос</span>
         </div>
       </div>
 
@@ -262,7 +258,7 @@
 
         <div>
           <h1>От интернет-магазина www.midkam.ru</h1>
-          <pre>{{detail.description ? detail.description : 'Описания товара нет...........'}}</pre>
+          <pre width="10">{{detail.description ? detail.description : 'Описания товара нет...........'}}</pre>
         </div>
 
         <div>
@@ -295,7 +291,18 @@
       </div>
 
       <div class="additional__tabs__certificate" *ngIf="certificate">
-        <p>Макеты сертификатов производителя, слайдер?</p>
+        <div *ngIf="!!detail && !!detail.manufacturer && detail.manufacturer.photoCertificate.length > 0; else no_cert">
+          <ngx-slick-carousel class="slick-slider-main-class home-page-details-carousel cert-detail-page-slider"
+                              (init)="slickInit($event)" [config]="certSliderConfig">
+            <div ngxSlickItem *ngFor="let c of detail.manufacturer.photoCertificate" class="slide-cert">
+              <img [src]="c.certificatePhotoUrl" alt="">
+            </div>
+          </ngx-slick-carousel>
+        </div>
+
+        <ng-template #no_cert>
+          <p>В скором времени появятся сертификаты производителя</p>
+        </ng-template>
       </div>
 
       <div class="additional__tabs__delivery" *ngIf="delivery">
@@ -490,7 +497,7 @@
 
     </div>
 
-    <div class="additional__details-carouse" *ngIf="recentlyViewed.length">
+    <div class="additional__details-carousel" *ngIf="recentlyViewed.length">
 
       <div class="additional__details-carousel__title">
         <h1>Надевно просмотренные</h1>

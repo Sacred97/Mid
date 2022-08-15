@@ -56,7 +56,23 @@ export class DetailPageComponent implements OnInit {
     "autoplay": true
   }
 
+  certSliderConfig = {
+    "slidesToShow": window.innerWidth > 768 ? 4 : 2,
+    "slidesToScroll": 1,
+    "dots": true,
+    "arrows": false,
+    "infinite": true,
+    "variableWidth": false,
+    "autoplay": true
+  }
+
   defaultImg: string = '../../../../assets/general-icon/no-photo.jpg'
+
+  slickInit(event: any) {
+    setTimeout(() => {
+      event.slick.setPosition()
+    }, 500)
+  }
 
   //------------------------------------------Инициализация компонента--------------------------------------------------
 
@@ -110,6 +126,7 @@ export class DetailPageComponent implements OnInit {
 
       this.shoppingCartService.recountQuantity(detail)
       this.detail = detail
+      console.log(detail);
 
       if (!!detail.manufacturer) {
         try {

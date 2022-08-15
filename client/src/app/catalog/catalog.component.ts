@@ -42,7 +42,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     "dots": true,
     "arrows": true,
     "infinite": true,
-    "variableWidth": true,
+    "variableWidth": false,
     "autoplay": true,
     "autoplaySpeed": 10000
   }
@@ -55,6 +55,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   bannerMaxWidth: number = 996
 
+  maxQuantityViewPages: number = window.innerWidth >= 450 ? 9 : 7
 
   //-------------------------------------------------Сортировка---------------------------------------------------------
 
@@ -556,6 +557,16 @@ export class CatalogComponent implements OnInit, OnDestroy {
       }, 5000)
     }, 500)
 
+  }
+
+  dropFilter(event: Event) {
+    const $target = this.asideRef?.nativeElement as HTMLDivElement
+    console.log($target.style.maxHeight);
+    if ($target.style.maxHeight == '370px') {
+      $target.style.maxHeight = '0px'
+    } else {
+      $target.style.maxHeight = '370px'
+    }
   }
 
 }

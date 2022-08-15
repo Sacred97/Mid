@@ -858,3 +858,640 @@
 
 }
 
+@media (max-width: 768px) {
+
+  .subscriptions {
+
+    &__empty {
+      padding: 0;
+
+      > div {
+
+        img {
+          width: unset;
+          height: 46px;
+        }
+
+        span {
+          margin-left: 16px;
+          font-size: 24px;
+        }
+      }
+
+      button {
+        font-size: 14px;
+      }
+
+    }
+
+    &__info {
+      width: 100%;
+
+      &__actions {
+        > button:last-child {
+          margin-left: 210px;
+        }
+      }
+
+    }
+
+    &__add-sub {
+      width: 100%;
+
+    }
+
+  }
+
+  .modal-content {
+    width: 80%;
+    max-height: 95vh;
+    overflow: auto;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .subscriptions {
+
+    &__empty {
+
+      > div {
+
+        img {
+          height: 39px;
+        }
+
+        span {
+          margin-left: 12px;
+          font-size: 20px;
+        }
+      }
+
+      button {
+        padding: 12px 18px;
+        font-size: 11px;
+      }
+
+    }
+
+    &__info {
+
+      > div {
+        margin-bottom: 10px;
+      }
+
+      &__sub {
+
+        > span {
+          font-size: 16px;
+        }
+
+        > div {
+          margin-top: 10px;
+
+          span {
+            font-size: 13px;
+          }
+        }
+
+      }
+
+      &__actions {
+        min-height: 29px;
+
+        button {
+
+          img {
+
+          }
+
+          span {
+            font-size: 12px;
+          }
+
+        }
+
+        > button:last-child {
+          margin-left: 164px;
+        }
+
+      }
+
+    }
+
+    &__add-sub {
+      width: 100%;
+
+      &__profiles {
+
+        > span {
+          margin-bottom: 4px;
+          font-size: 16px;
+        }
+
+        button {
+
+          span {
+            font-size: 13px;
+          }
+
+          div {
+            width: 10px;
+            height: 10px;
+            top: 11px;
+            border-width: 1px;
+          }
+
+        }
+
+        ul {
+
+          li {
+
+            label {
+
+              span {
+                font-size: 13px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      &__email {
+        margin-top: 23px;
+
+        span {
+          font-size: 16px;
+        }
+
+        div {
+          font-size: 13px;
+        }
+
+      }
+
+      &__news-letters {
+        margin-top: 21px;
+
+        > span {
+          font-size: 16px;
+          margin-bottom: 4px;
+        }
+
+        button {
+
+          span {
+            font-size: 13px;
+          }
+
+          div {
+            width: 10px;
+            height: 10px;
+            top: 11px;
+            border-width: 1px;
+          }
+
+        }
+
+        ul {
+
+          li {
+
+            label {
+
+              span {
+                font-size: 13px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      &__notice {
+        margin-top: 22px;
+
+        > span {
+          margin-bottom: 4px;
+          font-size: 16px;
+        }
+
+        textarea {
+          font-size: 13px;
+        }
+
+      }
+
+      > button {
+        font-size: 11px;
+      }
+
+      > small {
+        font-size: 8px;
+      }
+
+    }
+
+  }
+
+  .modal-content {
+
+    &__info {
+
+      > form {
+
+        > span {
+          font-size: 16px;
+        }
+
+        > button {
+          font-size: 12px;
+        }
+
+        > small {
+          font-size: 8px;
+        }
+
+      }
+
+      &__profiles {
+
+        > span {
+          margin-bottom: 4px;
+          font-size: 16px;
+        }
+
+        button {
+
+          span {
+            font-size: 13px;
+          }
+
+          div {
+            width: 10px;
+            height: 10px;
+            top: 11px;
+            border-width: 1px;
+          }
+
+        }
+
+        ul {
+
+          li {
+
+            label {
+
+              span {
+                font-size: 13px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      &__email {
+        margin-top: 23px;
+
+        span {
+          font-size: 16px;
+        }
+
+        div {
+          font-size: 13px;
+        }
+
+      }
+
+      &__news-letters {
+        margin-top: 21px;
+
+        > span {
+          font-size: 16px;
+          margin-bottom: 4px;
+        }
+
+        button {
+
+          span {
+            font-size: 13px;
+          }
+
+          div {
+            width: 10px;
+            height: 10px;
+            top: 11px;
+            border-width: 1px;
+          }
+
+        }
+
+        ul {
+
+          li {
+
+            label {
+
+              span {
+                font-size: 13px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      &__notice {
+        margin-top: 22px;
+
+        > span {
+          margin-bottom: 4px;
+          font-size: 16px;
+        }
+
+        textarea {
+          font-size: 13px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .subscriptions {
+
+    &__empty {
+
+      > div {
+
+        img {
+          height: 33px;
+        }
+
+        span {
+          margin-left: 10px;
+          font-size: 16px;
+        }
+      }
+
+      button {
+        padding: 10px;
+        font-size: 9px;
+      }
+
+    }
+
+    &__info {
+
+      > div {
+        margin-bottom: 7px;
+      }
+
+      &__sub {
+
+        > span {
+          font-size: 13px;
+        }
+
+        > div {
+          margin-top: 7px;
+
+          span {
+            font-size: 11px;
+          }
+        }
+
+      }
+
+      &__actions {
+        min-height: 24px;
+
+        button {
+
+          img {
+            max-height: 10px;
+          }
+
+          span {
+            font-size: 10px;
+          }
+
+        }
+
+        > button:last-child {
+          margin-left: 128px;
+        }
+
+      }
+
+    }
+
+    &__add-sub {
+      width: 100%;
+
+      &__profiles, &__news-letters {
+
+        > span {
+          font-size: 13px;
+        }
+
+        button {
+          padding: 9px 11px;
+
+          span {
+            font-size: 11px;
+          }
+
+          div {
+            width: 9px;
+            height: 9px;
+            top: 9px;
+          }
+
+        }
+
+        ul {
+
+          li {
+
+            label {
+
+              span {
+                padding: 9px 11px;
+                font-size: 11px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      &__email {
+        margin-top: 16px;
+
+        span {
+          font-size: 12px;
+        }
+
+        div {
+          padding: 9px 11px;
+          font-size: 11px;
+        }
+
+      }
+
+      &__news-letters {
+        margin-top: 16px;
+      }
+
+      &__notice {
+        margin-top: 16px;
+
+        > span {
+          font-size: 12px;
+        }
+
+        textarea {
+          padding: 9px 11px;
+          font-size: 11px;
+        }
+
+      }
+
+      > button {
+        padding: 11px 16px;
+        font-size: 9px;
+      }
+
+      > small {
+        font-size: 6px;
+      }
+
+    }
+
+  }
+
+  .modal-content {
+
+    &__info {
+
+      > form {
+
+        > span {
+          font-size: 13px;
+        }
+
+        > button {
+          padding: 11px 16px;
+          font-size: 9px;
+        }
+
+        > small {
+          font-size: 6px;
+        }
+
+      }
+
+      &__profiles, &__news-letters {
+
+        > span {
+          font-size: 13px;
+        }
+
+        button {
+          padding: 9px 11px;
+
+          span {
+            font-size: 11px;
+          }
+
+          div {
+            width: 9px;
+            height: 9px;
+            top: 9px;
+          }
+
+        }
+
+        ul {
+
+          li {
+
+            label {
+
+              span {
+                padding: 9px 11px;
+                font-size: 11px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      &__email {
+        margin-top: 16px;
+
+        span {
+          font-size: 12px;
+        }
+
+        div {
+          padding: 9px 11px;
+          font-size: 11px;
+        }
+
+      }
+
+      &__news-letters {
+        margin-top: 16px;
+      }
+
+      &__notice {
+        margin-top: 16px;
+
+        > span {
+          font-size: 12px;
+        }
+
+        textarea {
+          padding: 9px 11px;
+          font-size: 11px;
+        }
+
+      }
+
+
+    }
+
+  }
+
+}
+

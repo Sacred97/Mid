@@ -2,8 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../shared/services-interfaces/user-service/user.service";
 import {Router} from "@angular/router";
-import {UpdateUser, UserInterface} from "../../../shared/services-interfaces/user-service/user.interface";
+import {
+  ChangeUserPassword,
+  UpdateUser,
+  UserInterface
+} from "../../../shared/services-interfaces/user-service/user.interface";
 import {ShoppingCartService} from "../../../shared/services-interfaces/shopping-cart-service/shopping-cart.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-profile',
@@ -29,6 +34,12 @@ export class ProfileComponent implements OnInit {
   isChange: boolean = false
 
   passwordModal: boolean = false
+  passwordForm: FormGroup = new FormGroup({
+    currentPassword: new FormControl('', [Validators.required]),
+    newPassword: new FormControl('', [Validators.required, Validators.minLength(6)]),
+  })
+  passwordModalError: string = ''
+  passwordSuccess: boolean = false
 
   ngOnInit(): void {
     if (!this.user) {
@@ -86,6 +97,33 @@ export class ProfileComponent implements OnInit {
   }
 
   changePassword() {
+    const data: ChangeUserPassword = {
+      currentPassword: this.passwordForm.value.currentPassword,
+      newPassword: this.passwordForm.value.newPassword,
+    }
+    this.passwordSuccess = false
+    this.passwordModalError = ''
+
+    this.action = true
+    this.userService.changeUserPassword(data)
+      .then(res => {
+        this.action = false
+        this.user = res
+        this.userService.user$.next(this.user)
+        this.passwordForm.reset()
+        this.passwordModalError = ''
+        this.passwordSuccess = true
+      }, (error: HttpErrorResponse) => {
+        console.log(error);
+        this.action = false
+        this.passwordSuccess = false
+        if (error.error.statusCode === 403) {
+          this.passwordModalError = 'Старый пароль не верный'
+          return
+        }
+        this.passwordModalError = 'Что-то произошло не так, повторите попытку позже'
+      })
+
 
   }
 
@@ -104,6 +142,21 @@ export class ProfileComponent implements OnInit {
       .finally(() => {
         this.action = false
       })
+  }
+
+  closeModal() {
+    this.passwordModalError = ''
+    this.passwordSuccess = false
+    this.passwordForm.reset()
+    this.passwordModal = false
+  }
+
+  openClosePassword(event: Event, type: string) {
+    const $target = (event.currentTarget as HTMLButtonElement).parentElement
+    if (!$target) return
+    const $input = $target.querySelector('input')
+    if (!$input) return
+    $input.type = type
   }
 
 }

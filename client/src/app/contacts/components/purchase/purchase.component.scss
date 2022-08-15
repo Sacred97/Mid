@@ -1,1 +1,208 @@
 @import "../../../shared/styles/variables";
+
+@media (max-width: 768px) {
+
+  .general-contacts {
+    width: 93%;
+    margin: 0 auto 30px;
+    flex-wrap: wrap;
+
+    &__work-time {
+      width: 100%;
+
+      > div {
+        margin-bottom: 16px;
+
+        > div {
+          width: 25px;
+          height: 30px;
+
+          img {
+            max-width: 25px;
+            max-height: 30px;
+          }
+
+        }
+
+        > span {
+          margin-left: 14px;
+          font-size: 22px;
+        }
+
+      }
+
+      &__main-contacts {
+
+        > a {
+          margin-bottom: 18px;
+
+          img {
+            margin-left: 0;
+            max-width: 25px;
+          }
+
+          > span {
+            margin-left: 13px;
+            font-size: 22px;
+          }
+
+        }
+
+      }
+
+      > button {
+        margin: 0 0 15px;
+        padding: 6px 13px;
+
+        img {
+          max-width: 17px;
+        }
+
+        span {
+          margin-left: 16px;
+          font-size: 19px;
+        }
+
+      }
+
+    }
+
+    > div:last-child {
+      display: none;
+    }
+
+    &__contact-info {
+      display: none;
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .general-contacts {
+
+    &__work-time {
+
+      > div {
+        margin-bottom: 15px;
+
+        > div {
+          height: 26px;
+          width: 22px;
+          img {
+            max-height: 26px;
+            max-width: 22px;
+          }
+        }
+
+        > span {
+          font-size: 18px;
+        }
+
+      }
+
+      &__main-contacts {
+
+        > a {
+          margin-bottom: 11px;
+
+          img {
+            max-width: 19px;
+          }
+
+          > span {
+            margin-left: 9px;
+            font-size: 18px;
+          }
+
+        }
+
+      }
+
+      > button {
+        margin: 0 0 11px;
+        padding: 5px 11px;
+
+        img {
+          max-width: 15px;
+        }
+
+        span {
+          margin-left: 13px;
+          font-size: 16px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .general-contacts {
+
+    &__work-time {
+
+      > div {
+        margin-bottom: 9px;
+
+        > div {
+          height: 21px;
+          width: 18px;
+          img {
+            max-height: 21px;
+            max-width: 18px;
+          }
+        }
+
+        > span {
+          font-size: 15px;
+        }
+
+      }
+
+      &__main-contacts {
+
+        > a {
+          margin-bottom: 9px;
+
+          img {
+            max-width: 18px;
+          }
+
+          > span {
+            margin-left: 7px;
+            font-size: 14px;
+          }
+
+        }
+
+      }
+
+      > button {
+        margin: 0 0 9px;
+        padding: 4px 9px;
+
+        img {
+          max-width: 12px;
+        }
+
+        span {
+          margin-left: 7px;
+          font-size: 13px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+

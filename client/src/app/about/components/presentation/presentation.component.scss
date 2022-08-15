@@ -5,14 +5,158 @@
   margin: 0 auto;
   min-height: 50vh;
 
-  h1 {
+  > div {
     width: 100%;
-    margin: 20px 0;
-    text-align: start;
-    color: $violet;
-    font-size: 36px;
-    line-height: 1;
-    font-family: "Museo Sans Cyrl 700";
+    background-color: $grey_easy;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px 0;
+
+    > div {
+      flex-basis: 45%;
+
+      > div:first-child {
+        width: 100%;
+        margin-bottom: 10px;
+
+        > img {
+          outline: 1px solid $black;
+          border-radius: 10px;
+          max-width: 100%;
+        }
+
+      }
+
+      > div:last-child {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+
+        > a, > button {
+          width: fit-content;
+          display: flex;
+          align-items: center;
+          background-color: transparent;
+          outline: none;
+          border: none;
+          cursor: pointer;
+
+          img {
+            max-width: 100%;
+            max-height: 20px;
+          }
+
+          span {
+            display: block;
+            width: fit-content;
+            margin-left: 5px;
+            color: $black;
+            font-size: 16px;
+            line-height: 1;
+            font-weight: 300;
+            font-family: "Museo Sans Cyrl 300";
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .presentation {
+    width: 93%;
+
+    > div {
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 30px;
+      gap: 15px 0;
+
+      > div {
+        flex-basis: 100%;
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .presentation {
+
+    > div {
+
+      > div {
+
+        > div:last-child {
+
+          > a, > button {
+
+            img {
+              max-height: 15px;
+            }
+
+            span {
+              font-size: 13px;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .presentation {
+
+    > div {
+
+      > div {
+
+        > div:last-child {
+
+          > a, > button {
+
+            img {
+              max-height: 12px;
+            }
+
+            span {
+              font-size: 11px;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
   }
 
 }

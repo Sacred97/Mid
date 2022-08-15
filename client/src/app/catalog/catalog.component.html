@@ -1,5 +1,10 @@
 <div class="catalog-page">
 
+  <div class="mobile-filter" (click)="dropFilter($event)">
+    <span>Фильтры</span>
+    <div></div>
+  </div>
+
   <aside class="aside-menu" #nav_panel>
 
     <div class="aside-menu__search">
@@ -139,7 +144,7 @@
     <ngx-slick-carousel class="slick-slider-main-class catalog-banners" [config]="bannersConfig"
                         (init)="slickInit($event)">
       <div ngxSlickItem *ngFor="let b of banners" class="slide">
-        <img [src]="b.url" alt="" [style.max-width]="bannerMaxWidth + 'px'">
+        <img [src]="b.url" alt="">
         <a *ngIf="b.pageReference" [href]="b.pageReference">Узнать подробнее</a>
       </div>
     </ngx-slick-carousel>
@@ -242,6 +247,8 @@
 
           <div class="catalog__display-main__text">
 
+            <span>{{shoppingService.toCurrency(d.price)}}</span>
+
             <a [routerLink]="['/', 'catalog', d.id]"
                (click)="recentlyViewedService.addToRecentlyViewed(d.id)">
               {{d.name}}
@@ -265,6 +272,10 @@
                   <span *ngIf="idxAp < d.autoApplicability.length - 1">, </span>
                 </span>
               </small>
+            </div>
+
+            <div class="catalog__display-main__text__quantity">
+              <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
             </div>
 
           </div>
@@ -499,7 +510,7 @@
       </li>
 
       <pagination-controls class="pagination" (pageChange)="changePage($event, false)"
-                           previousLabel="" nextLabel="" [maxSize]="9">
+                           previousLabel="" nextLabel="" [maxSize]="maxQuantityViewPages">
       </pagination-controls>
     </ul>
 

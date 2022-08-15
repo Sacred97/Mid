@@ -79,3 +79,175 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .payment-terms {
+    margin: 0 auto 30px;
+    width: 93%;
+
+    > div {
+      gap: unset;
+      justify-content: space-between;
+      margin-bottom: 25px;
+
+      > div:first-child {
+        width: 60px;
+        height: 60px;
+
+        img {
+          width: 27px;
+        }
+
+      }
+
+      > div:last-child {
+        flex-basis: 84%;
+
+        h1 {
+          margin-bottom: 20px;
+          font-size: 22px;
+        }
+
+        p {
+          font-size: 16px;
+
+          span {
+            margin-bottom: 18px;
+            font-size: 16px;
+          }
+
+        }
+
+      }
+
+    }
+
+    > div:nth-child(3) > div:first-child > img {
+      width: 24px;
+    }
+
+    > div:nth-child(4) > div:first-child > img {
+      width: 24px;
+    }
+
+    > div:last-child > div:first-child > img {
+      width: 32px;
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .payment-terms {
+
+    > div {
+      margin-bottom: 20px;
+
+      > div:first-child {
+        width: 52px;
+        height: 52px;
+
+        img {
+          width: 23px;
+        }
+
+      }
+
+      > div:last-child {
+
+        h1 {
+          margin-bottom: 18px;
+          font-size: 18px;
+        }
+
+        p {
+          font-size: 13px;
+
+          span {
+            margin-bottom: 15px;
+            font-size: 13px;
+          }
+
+        }
+
+      }
+
+    }
+
+    > div:nth-child(3) > div:first-child > img {
+      width: 21px;
+    }
+
+    > div:nth-child(4) > div:first-child > img {
+      width: 21px;
+    }
+
+    > div:last-child > div:first-child > img {
+      width: 28px;
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .payment-terms {
+
+    > div {
+      margin-bottom: 15px;
+
+      > div:first-child {
+        width: 42px;
+        height: 42px;
+
+        img {
+          width: 18px;
+        }
+
+      }
+
+      > div:last-child {
+
+        h1 {
+          margin-bottom: 14px;
+          font-size: 15px;
+        }
+
+        p {
+          font-size: 11px;
+
+          span {
+            margin-bottom: 10px;
+            font-size: 11px;
+          }
+
+        }
+
+      }
+
+    }
+
+    > div:nth-child(3) > div:first-child > img {
+      width: 17px;
+    }
+
+    > div:nth-child(4) > div:first-child > img {
+      width: 17px;
+    }
+
+    > div:last-child > div:first-child > img {
+      width: 23px;
+    }
+
+  }
+
+}
+

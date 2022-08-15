@@ -31,6 +31,7 @@ import {AdminGuard} from "../auth/guards/admin.guard";
 import {SearchUserParams} from "../utils/params/search-user-params";
 import {TransformToArrayInterceptor} from "../interceptors/transform-to-array.interceptor";
 import {RequestHistoryUpdateDto} from "./dto/request-history-update.dto";
+import {ChangeUserPasswordDto} from "./dto/change-user-password.dto";
 
 @Controller('users')
 export class UsersController {
@@ -60,6 +61,12 @@ export class UsersController {
   @Put('profile')
   async updateUserProfile(@Req() request: RequestWithUser, @Body() updateUserDto: UserUpdateDto) {
     return await this.usersService.updateUser(request.user.id, updateUserDto)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('change-password')
+  async changeUserPassword(@Req() request: RequestWithUser, @Body() data: ChangeUserPasswordDto) {
+    return await this.usersService.changeUserPassword(request.user, data)
   }
 
   //---------------------------------------- Менеджеры (Managers)---------------------------------------------------------------

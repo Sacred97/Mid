@@ -5,6 +5,7 @@
   </nav>
 
   <ng-container *ngIf="order || error; else load">
+
     <div class="current-order__info" *ngIf="order; else empty">
       <span>Заказ №{{order.orderNumber}}, создан {{cartService.toDate(order.orderDate)}}</span>
 
@@ -92,6 +93,7 @@
     <ng-template #empty>
       <span>Не удалось получить данные о заказе.</span>
     </ng-template>
+
   </ng-container>
 
   <ng-template #load>

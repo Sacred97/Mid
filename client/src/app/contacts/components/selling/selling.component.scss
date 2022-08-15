@@ -261,3 +261,278 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .contacts-selling {
+
+    &__shop-contact {
+      width: 93%;
+      margin: 0 auto 20px;
+
+      > button {
+
+        span {
+          font-size: 22px;
+        }
+
+      }
+
+      &__info {
+        margin-top: 14px;
+
+        > div {
+          padding: 20px 0 14px;
+
+          > span {
+            margin-bottom: 12px;
+            font-size: 19px;
+
+            b {
+              font-size: 19px;
+            }
+
+          }
+
+          > a {
+
+            img {
+              max-width: 21px;
+            }
+
+            span {
+              margin-left: 10px;
+              font-size: 22px;
+            }
+
+          }
+
+          > div {
+            margin-bottom: 18px;
+
+            > div {
+              width: 25px;
+              height: 30px;
+              img {
+                max-height: 30px;
+                max-width: 25px;
+              }
+            }
+
+            span {
+              margin-left: 10px;
+              font-size: 22px;
+            }
+          }
+
+          > button {
+            margin-top: 11px;
+            padding: 6px 13px;
+
+            img {
+              max-width: 17px;
+            }
+
+            span {
+              margin-left: 16px;
+              font-size: 19px;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+    div.drop {
+
+      > div {
+        max-height: 850px;
+      }
+
+    }
+
+    &__main-info {
+      display: none;
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .contacts-selling {
+
+    &__shop-contact {
+      margin: 0 auto 18px;
+
+      > button {
+
+        span {
+          font-size: 18px;
+        }
+
+      }
+
+      &__info {
+        margin-top: 11px;
+
+        > div {
+          padding: 19px 0 11px;
+
+          > span {
+            margin-bottom: 10px;
+            font-size: 16px;
+
+            b {
+              font-size: 16px;
+            }
+
+          }
+
+          > a {
+
+            img {
+              max-width: 19px;
+            }
+
+            span {
+              margin-left: 9px;
+              font-size: 18px;
+            }
+
+          }
+
+          > div {
+            margin-bottom: 17px;
+
+            > div {
+              width: 22px;
+              height: 26px;
+              img {
+                max-height: 26px;
+                max-width: 22px;
+              }
+            }
+
+            span {
+              font-size: 18px;
+            }
+
+          }
+
+          > button {
+            margin-top: 9px;
+            padding: 5px 11px;
+
+            img {
+              max-width: 15px;
+            }
+
+            span {
+              margin-left: 13px;
+              font-size: 16px;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .contacts-selling {
+
+    &__shop-contact {
+      margin: 0 auto 15px;
+
+      > button {
+
+        span {
+          font-size: 14px;
+        }
+
+      }
+
+      &__info {
+        margin-top: 9px;
+
+        > div {
+          padding: 15px 0 9px;
+
+          > span {
+            margin-bottom: 9px;
+            font-size: 13px;
+
+            b {
+              font-size: 13px;
+            }
+
+          }
+
+          > a {
+
+            img {
+              max-width: 18px;
+            }
+
+            span {
+              margin-left: 7px;
+              font-size: 14px;
+            }
+
+          }
+
+          > div {
+            margin-bottom: 9px;
+
+            > div {
+              width: 18px;
+              height: 21px;
+              img {
+                max-height: 21px;
+                max-width: 18px;
+              }
+            }
+
+            span {
+              font-size: 15px;
+            }
+
+          }
+
+          > button {
+            margin-top: 7px;
+            padding: 4px 9px;
+
+            img {
+              max-width: 12px;
+            }
+
+            span {
+              margin-left: 7px;
+              font-size: 13px;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+

@@ -43,3 +43,36 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .about {
+    width: 93%;
+
+    h1 {
+      width: fit-content;
+      margin: 20px auto;
+      text-align: start;
+      color: $violet;
+      font-size: 36px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 700";
+    }
+
+    div {
+      width: 100%;
+      margin: 0 0 30px;
+
+      a {
+        margin: 0 auto 10px;
+        width: 65%;
+      }
+    }
+
+  }
+
+}

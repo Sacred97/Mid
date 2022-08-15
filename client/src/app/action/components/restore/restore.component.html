@@ -11,7 +11,9 @@
         <div>
           <div>
             <input type="password" placeholder="Новый пароль" formControlName="password" #pass>
-            <div class="veil" (click)="disclose()">OOO</div>
+            <div class="veil" (click)="disclose()">
+              <img src="../../../../assets/user/view-password.svg" alt="">
+            </div>
           </div>
           <div *ngIf="form.controls['password'].invalid && form.controls['password'].dirty">
             <small *ngIf="form.controls['password'].errors?.required">Поле не должно быть пустым</small>

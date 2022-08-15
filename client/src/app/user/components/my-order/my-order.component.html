@@ -9,7 +9,7 @@
       <a [routerLink]="['/', 'user', 'my-orders', o.id]">Подробнее о заказе</a>
       <button>
         <img src="../../../../assets/user/repeatOrder.svg" alt="Повторить">
-        <span (click)="repeatOrder(o)">Повторить заказ</span>
+        <span (click)="prepareRepeatOrder(o)">Повторить заказ</span>
       </button>
     </div>
 
@@ -31,5 +31,19 @@
     </div>
 
   </ng-template>
+
+</div>
+
+<div class="modal" *ngIf="repeatOrderModal">
+
+  <div class="modal-background"></div>
+
+  <div class="repeat-order-modal">
+    <span>При повторе заказа ваша текущая корзина будет очищина и заполнена товарами, которые хотите повторить!</span>
+    <div>
+      <button (click)="repeatOrder()">Повторить</button>
+      <button (click)="close()">Отмена</button>
+    </div>
+  </div>
 
 </div>

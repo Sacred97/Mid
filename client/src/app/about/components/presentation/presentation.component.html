@@ -4,4 +4,30 @@
     <app-ng-dynamic-breadcrumb [bgColor]="'#ffffff'" symbol="" class="breadcrumbs-links"></app-ng-dynamic-breadcrumb>
   </nav>
 
+  <div>
+
+    <div *ngFor="let p of presentation">
+
+      <div>
+        <img src="../../../../assets/about/background.jpg" alt="">
+      </div>
+
+      <div>
+
+        <a [href]="'https://docs.google.com/viewer?url=' + urlForGoogleDocs + 'presentation/download?=' + p">
+          <img src="../../../../assets/about/view.svg" alt="">
+          <span>Посмотреть файл</span>
+        </a>
+
+        <button (click)="download(p)">
+          <img src="../../../../assets/about/download.svg" alt="">
+          <span>Скачать файл</span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>

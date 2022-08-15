@@ -30,3 +30,25 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .offer {
+    width: 93%;
+    margin: 0 auto 30px;
+
+    h1 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+
+  }
+
+}

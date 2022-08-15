@@ -410,6 +410,84 @@ input[type=number]::-webkit-outer-spin-button {
 
 }
 
+@media (max-width: 768px) {
+
+  .modal-employee {
+    max-height: 95vh;
+    max-width: unset;
+    width: 80%;
+
+    ul {
+      max-width: unset;
+
+      li {
+
+        span {
+          font-size: 20px;
+        }
+
+        small {
+          font-size: 14px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .modal-employee {
+    padding: 15px;
+
+    ul {
+
+      li {
+
+        span {
+          font-size: 18px;
+        }
+
+        small {
+          font-size: 12px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .modal-employee {
+    padding: 12px;
+
+    ul {
+
+      li {
+
+        span {
+          font-size: 16px;
+        }
+
+        small {
+          font-size: 10px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
 
 //------------------------------------------------Вид Списка Товара-----------------------------------------------------
 
@@ -745,6 +823,7 @@ li.analog-delete {
     font-size: 13px;
     line-height: 13px;
     font-family: 'Museo Sans Cyrl 500';
+
   }
 
   > span, > small {
@@ -770,12 +849,37 @@ li.analog-delete {
   }
 
   .not-available {
-    left: 8px;
+    //left: 8px;
   }
 
   .not-available-analog {
     left: 5px;
     font-size: 10px;
+
+  }
+
+}
+
+@media (max-width: 767px) {
+
+  .quantity-bar {
+
+    > span {
+      font-size: 10px;
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .quantity-bar {
+
+    > span {
+      font-size: 8px;
+    }
+
   }
 
 }
@@ -838,6 +942,15 @@ li.analog-delete {
 .iframe-load {
   position: absolute;
   z-index: 102;
+}
+
+@media (max-width: 420px) {
+
+  .iframe-window {
+    padding: 10px;
+    min-width: 300px;
+  }
+
 }
 
 //--------------------------------------------СТИЛИ ДЛЯ СЛАЙДЕРОВ, ПАГИНАЦИИ И ПРОЧИХ ПЛАГИНОВ---------------------------------------------

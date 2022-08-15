@@ -47,77 +47,127 @@
       <small *ngIf="formAddError">Что-то пошло не так.</small>
     </form>
 
-    <ul class="detail-view-analog" *ngIf="details.length && user">
+    <ng-container *ngIf="details.length && user">
 
-      <li class="analog-delete" *ngFor="let d of details; let idx = index">
+      <ul class="detail-view-analog" *ngIf="details.length && user">
 
-        <div class="detail-view-analog__image">
-          <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="">
-          <span *ngIf="d.photoDetail.length">
+        <li class="analog-delete" *ngFor="let d of details; let idx = index">
+
+          <div class="detail-view-analog__image">
+            <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="">
+            <span *ngIf="d.photoDetail.length">
               <img [src]="d.photoDetail[0].url">
             </span>
-        </div>
+          </div>
 
-        <div class="detail-view-analog__title">
-          <a [routerLink]="['/', 'catalog', d.id]"
-             (click)="viewedService.addToRecentlyViewed(d.id)">
-            {{d.name}}
-          </a>
-        </div>
+          <div class="detail-view-analog__title">
+            <a [routerLink]="['/', 'catalog', d.id]"
+               (click)="viewedService.addToRecentlyViewed(d.id)">
+              {{d.name}}
+            </a>
+          </div>
 
-        <div class="detail-view-analog__text">
-          <span>{{d.vendorCode}} / {{d.productCode}}</span>
-        </div>
+          <div class="detail-view-analog__text">
+            <span>{{d.vendorCode}} / {{d.productCode}}</span>
+          </div>
 
-        <div class="detail-view-analog__manufacturer">
-          <a *ngIf="d.manufacturer; else without_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
-            <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
-              <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
-            </ng-container>
+          <div class="detail-view-analog__manufacturer">
+            <a *ngIf="d.manufacturer; else without_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+              <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
+                <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+              </ng-container>
 
-            <ng-template #without_logo>
-              <span>{{d.manufacturer!.nameCompany}}</span>
+              <ng-template #without_logo>
+                <span>{{d.manufacturer!.nameCompany}}</span>
+              </ng-template>
+            </a>
+
+            <ng-template #without_manufacturer>
+              <span>Производитель не указан</span>
             </ng-template>
-          </a>
+          </div>
 
-          <ng-template #without_manufacturer>
-            <span>Производитель не указан</span>
-          </ng-template>
-        </div>
+          <div class="detail-view-analog__price">{{cartService.toCurrency(d.price)}}</div>
 
-        <div class="detail-view-analog__price">{{cartService.toCurrency(d.price)}}</div>
-
-        <div class="detail-view-analog__quantity">
-          <div class="quantity-bar">
-            <div [style.width]="d.quantityRatio + '%'"
-                 [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
-                 [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+          <div class="detail-view-analog__quantity">
+            <div class="quantity-bar">
+              <div [style.width]="d.quantityRatio + '%'"
+                   [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                   [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+              </div>
+              <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+              <ng-template #no_available_analog_view>
+                <span class="not-available-analog">нет в наличии</span>
+              </ng-template>
             </div>
-            <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
-            <ng-template #no_available_analog_view>
-              <span class="not-available-analog">нет в наличии</span>
+          </div>
+
+          <div class="detail-view-analog__to-order">
+            <div *ngIf="cartService.check(d.id); else to_cart">
+              <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+              <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
+              <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+            </div>
+            <ng-template #to_cart>
+              <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
             </ng-template>
           </div>
-        </div>
 
-        <div class="detail-view-analog__to-order">
-          <div *ngIf="cartService.check(d.id); else to_cart">
-            <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
-            <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
-            <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+          <div class="detail-view-analog__delete">
+            <button (click)="removeFromWaitingList(d.id, idx)">&#xd7;</button>
           </div>
-          <ng-template #to_cart>
-            <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
-          </ng-template>
-        </div>
 
-        <div class="detail-view-analog__delete">
-          <button (click)="removeFromWaitingList(d.id, idx)">&#xd7;</button>
-        </div>
+        </li>
 
-      </li>
+      </ul>
 
-    </ul>
+      <ul class="waiting-list-mobile">
+
+        <li *ngFor="let d of details; let idx = index">
+
+          <div class="waiting-list-mobile__img">
+            <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="Изображение">
+          </div>
+
+          <div class="waiting-list-mobile__title">
+            <a [routerLink]="['/', 'catalog', d.id]">
+              {{d.name}}
+            </a>
+          </div>
+
+          <div class="waiting-list-mobile__article">{{d.vendorCode}} / {{d.productCode}}</div>
+
+          <div class="waiting-list-mobile__price">{{cartService.toCurrency(d.price)}}</div>
+
+          <div class="waiting-list-mobile__quantity">
+            <div class="quantity-bar">
+              <div [style.width]="d.quantityRatio + '%'"
+                   [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                   [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+              </div>
+              <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+              <ng-template #no_available_analog_view>
+                <span class="not-available-analog">нет в наличии</span>
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="waiting-list-mobile__order">
+            <button (click)="addProduct(d.id, idx)" [disabled]="action || cartService.check(d.id)">
+              {{cartService.check(d.id) ? 'В корзине' : 'В заказ'}}
+            </button>
+          </div>
+
+          <div class="waiting-list-mobile__delete">
+            <button (click)="removeFromWaitingList(d.id, idx)">&#xd7;</button>
+          </div>
+
+        </li>
+
+      </ul>
+
+
+    </ng-container>
 
   </div>
 

@@ -17,6 +17,8 @@ export class MyOrderComponent implements OnInit {
   }
 
   orders: OrderInterface[] = []
+  repeatOrderModal: boolean = false
+  toRepeatOrder: OrderInterface | null = null
 
   ngOnInit(): void {
 
@@ -30,16 +32,28 @@ export class MyOrderComponent implements OnInit {
 
   }
 
-  async repeatOrder(order: OrderInterface) {
+  prepareRepeatOrder(order: OrderInterface) {
+    this.toRepeatOrder = order
+    this.repeatOrderModal = true
+  }
+
+  async repeatOrder() {
+    if (!this.toRepeatOrder) return
     try {
       await this.userService.cleanShoppingCart()
-      const carts: CartItemInfoInterface[] = order.orderItem.map(i => ({detailId: i.detailId, quantity: i.quantity}))
+      const carts: CartItemInfoInterface[] = this.toRepeatOrder.orderItem
+        .map(i => ({detailId: i.detailId, quantity: i.quantity}))
       await this.userService.addCartItem(carts)
       this.router.navigate(['/', 'shopping-cart'])
     } catch (error) {
       console.log(error);
     }
 
+  }
+
+  close() {
+    this.toRepeatOrder = null
+    this.repeatOrderModal = false
   }
 
 }

@@ -3,6 +3,8 @@
 .auth-modal {
   position: absolute;
   z-index: 101;
+  max-height: 95vh;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   padding: 49px 30px 35px 30px;
@@ -72,7 +74,7 @@
     span {
       font-family: 'Museo Sans Cyrl 700';
       font-size: 24px;
-      line-height: 24px;
+      line-height: 1;
       text-transform: uppercase;
     }
 
@@ -340,4 +342,261 @@
     color: $violet;
     font-family: 'Museo Sans Cyrl 700';
   }
+}
+
+@media (max-width: 768px) {
+
+  .auth-modal {
+    width: 80%;
+  }
+
+  .re-store-modal {
+    width: 80%;
+  }
+
+  .notification-modal {
+    width: 80%;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .auth-modal {
+    padding: 15px;
+
+    > form > small {
+      margin-top: 3px;
+    }
+
+    input[type="email"], input[type="password"], input[type="text"] {
+      font-size: 16px;
+    }
+
+    button {
+      font-size: 12px;
+    }
+
+    > form > div {
+      margin-bottom: 13px;
+    }
+
+    &__title {
+      margin-bottom: 22px;
+
+      span {
+        font-size: 16px;
+      }
+
+      > span:nth-child(2) {
+      }
+    }
+
+    &__login {
+
+      > div:nth-child(2) {
+
+        a {
+          font-size: 11px;
+        }
+      }
+
+      > label {
+        margin-bottom: 13px;
+
+        span {
+          font-size: 14px;
+        }
+      }
+
+    }
+
+    &__registration {
+
+      >label {
+        margin-bottom: 13px;
+        a {
+          font-size: 11px;
+        }
+      }
+
+    }
+
+    &__validation {
+      small {
+        font-size: 9px;
+      }
+    }
+
+  }
+
+  .re-store-modal {
+    padding: 15px;
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 17px;
+    }
+
+    form {
+
+      > div {
+        margin-bottom: 17px;
+      }
+
+      small {
+        font-size: 9px;
+      }
+    }
+
+    input[type="email"], input[type="password"], input[type="text"] {
+      font-size: 16px;
+    }
+
+    button {
+      font-size: 12px;
+    }
+
+    &__validation {
+      small {
+        font-size: 9px;
+      }
+    }
+
+  }
+
+  .notification-modal {
+    padding: 15px;
+
+    h1 {
+      font-size: 22px;
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .auth-modal {
+    padding: 10px;
+    border-width: 2px;
+    border-radius: 10px;
+
+    > form > small {
+      margin-top: 2px;
+    }
+
+    input[type="email"], input[type="password"], input[type="text"] {
+      font-size: 13px;
+    }
+
+    button {
+      font-size: 11px;
+    }
+
+    > form > div {
+      margin-bottom: 10px;
+    }
+
+    &__title {
+      margin-bottom: 20px;
+
+      span {
+        font-size: 16px;
+      }
+
+      > span:nth-child(2) {
+      }
+    }
+
+    &__login {
+
+      > div:nth-child(2) {
+
+        a {
+          font-size: 10px;
+        }
+      }
+
+      > label {
+        margin-bottom: 10px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+
+    }
+
+    &__registration {
+
+      >label {
+        margin-bottom: 10px;
+        a {
+          font-size: 9px;
+        }
+      }
+
+    }
+
+    &__validation {
+      small {
+        font-size: 7px;
+      }
+    }
+
+  }
+
+  .re-store-modal {
+    padding: 10px;
+    border-width: 2px;
+    border-radius: 10px;
+
+    h1 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    form {
+
+      >div {
+        margin-bottom: 15px;
+      }
+
+      small {
+        margin-top: 3px;
+        font-size: 7px;
+      }
+    }
+
+    input[type="email"], input[type="password"], input[type="text"] {
+      font-size: 14px;
+      padding: 2px 6px;
+    }
+
+    button {
+      font-size: 11px;
+    }
+
+    &__validation {
+      padding: 0 6px;
+      small {
+        font-size: 7px;
+      }
+    }
+
+  }
+
+  .notification-modal {
+    padding: 10px;
+    border-width: 2px;
+    border-radius: 10px;
+
+    h1 {
+      font-size: 18px;
+    }
+
+  }
+
 }

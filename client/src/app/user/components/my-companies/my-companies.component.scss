@@ -126,15 +126,15 @@
         &:hover > span {
           text-decoration: none;
         }
+
       }
+
     }
 
     > button {
       margin: 10px auto 0;
       display: block;
-      padding: 11px 0;
-      width: 100%;
-      max-width: 290px;
+      padding: 11px 22px;
       background-color: #ffffff;
       border: 2px solid $yellow;
       border-radius: 10px;
@@ -399,8 +399,6 @@
     }
 
   }
-
-
 
 }
 
@@ -847,4 +845,418 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+
+  .modal-content {
+    width: 80%;
+    max-height: 95vh;
+    overflow: auto;
+  }
+
+  .modal-act-content {
+    width: 80%;
+    max-height: 95vh;
+    overflow: auto;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .modal-act-content {
+    padding: 35px 30px;
+
+    form {
+
+      > span {
+
+      }
+
+      > div {
+
+      }
+
+      > button {
+
+      }
+
+    }
+
+  }
+
+  .companies {
+
+    &__info {
+
+      > span {
+        font-size: 16px;
+      }
+
+      > div {
+        margin-top: 12px;
+
+        > div {
+
+        }
+      }
+
+      &__company {
+
+        span {
+          font-size: 15px;
+        }
+
+        > span:last-child {
+          font-size: 14px;
+        }
+
+        div {
+
+          span {
+            font-size: 15px;
+          }
+        }
+
+      }
+
+      &__actions {
+        min-height: 29px;
+        gap: unset;
+        justify-content: space-between;
+
+        button {
+
+          img {
+            max-height: 10px;
+          }
+
+          span {
+            font-size: 12px;
+          }
+
+        }
+
+      }
+
+      > button {
+        font-size: 11px;
+      }
+
+    }
+
+    &__add-company {
+
+      > span {
+        font-size: 16px;
+      }
+
+      &__search {
+        margin-top: 7px;
+
+        > label:first-child {
+
+          > span {
+            font-size: 14px;
+
+          }
+
+          input {
+            padding: 6px 12px;
+            font-size: 12px;
+          }
+
+        }
+
+        > span {
+          font-size: 9px;
+          margin-top: 3px;
+        }
+
+        ul {
+          max-height: 140px;
+
+          li {
+
+            > span:first-child {
+              font-size: 14px;
+            }
+
+            > span:last-child {
+              font-size: 10px;
+            }
+
+          }
+
+        }
+
+        > label:last-child {
+          margin: 13px 0 0 15px;
+
+          > span {
+            font-size: 10px;
+          }
+
+        }
+
+      }
+
+      &__not-found {
+        gap: 12px 0;
+
+        label {
+          flex-basis: 100%;
+
+          > span {
+            font-size: 14px;
+          }
+
+          input {
+            padding: 7px 13px;
+            font-size: 14px;
+          }
+
+          > small {
+            font-size: 8px;
+          }
+
+        }
+
+        > label:last-child {
+
+          ul {
+            max-height: 120px;
+
+            li {
+              padding: 8px;
+
+              span {
+                font-size: 14px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      > button {
+        font-size: 11px;
+      }
+
+      > small {
+        font-size: 8px;
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .modal-act-content {
+    padding: 25px 20px;
+
+    > span {
+      font-size: 18px;
+    }
+
+    > small {
+      margin-top: 10px;
+      font-size: 10px;
+    }
+
+    form {
+      margin-top: 15px;
+
+      > span {
+
+      }
+
+      > div {
+        gap: 10px 0;
+
+        label {
+          flex-basis: 100%;
+
+          > small {
+            font-size: 8px;
+          }
+        }
+
+      }
+
+      > button {
+        margin: 10px auto 0;
+      }
+
+    }
+
+  }
+
+  .companies {
+
+    &__info {
+
+      > span {
+        font-size: 13px;
+      }
+
+      > div {
+        margin-top: 9px;
+
+        > div {
+          padding: 9px;
+        }
+      }
+
+      &__company {
+
+        span {
+          font-size: 13px;
+        }
+
+        > span:last-child {
+          font-size: 11px;
+        }
+
+        div {
+
+          span {
+            font-size: 13px;
+          }
+        }
+
+      }
+
+      &__actions {
+        min-height: 23px;
+
+        button {
+
+          span {
+            font-size: 10px;
+          }
+
+        }
+
+      }
+
+      > button {
+        font-size: 9px;
+        padding: 11px 15px;
+      }
+
+    }
+
+    &__add-company {
+
+      > span {
+        font-size: 13px;
+      }
+
+      &__search {
+        margin-top: 5px;
+
+        > label:first-child {
+
+          > span {
+            font-size: 11px;
+
+          }
+
+          input {
+            padding: 5px 9px;
+            font-size: 10px;
+          }
+
+        }
+
+        > span {
+          font-size: 8px;
+        }
+
+        ul {
+
+          li {
+
+            > span:first-child {
+              font-size: 11px;
+            }
+
+            > span:last-child {
+              font-size: 8px;
+            }
+
+          }
+
+        }
+
+        > label:last-child {
+          margin: 10px 0 0 15px;
+
+          > span {
+            font-size: 8px;
+          }
+
+        }
+
+      }
+
+      &__not-found {
+        gap: 12px 0;
+
+        label {
+
+          > span {
+            font-size: 11px;
+          }
+
+          input {
+            padding: 5px 9px;
+            font-size: 11px;
+          }
+
+          > small {
+            font-size: 6px;
+          }
+
+        }
+
+        > label:last-child {
+
+          ul {
+
+            li {
+              padding: 5px;
+
+              span {
+                font-size: 11px;
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      > button {
+        font-size: 9px;
+      }
+
+      > small {
+        font-size: 6px;
+      }
+
+    }
+
+  }
+
 }

@@ -15,9 +15,1053 @@
     font-family: "Museo Sans Cyrl 700";
   }
 
-  > div {
-    margin-top: 50px;
+  > div:nth-child(3) {
     width: 100%;
+    background-color: $grey_light;
+    border-radius: 40px;
+    padding: 50px;
+    margin-bottom: 60px;
+
+    font-size: 23px;
+    line-height: 1;
+    font-weight: 300;
+    font-family: "Museo Sans Cyrl 300";
+
+    b {
+      font-size: 23px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: "Museo Sans Cyrl 700";
+    }
+  }
+
+  > div:nth-child(4) {
+    width: 100%;
+    margin-bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    > div:first-child {
+      flex-basis: 45%;
+      text-align: end;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: 'Museo Sans Cyrl 300';
+
+      b {
+        font-size: 17px;
+        line-height: 1;
+        font-weight: 700;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+    }
+
+    div:last-child {
+      flex-basis: 45%;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: 'Museo Sans Cyrl 700';
+
+      b {
+        color: $violet;
+        font-size: 25px;
+        line-height: 1;
+        font-weight: 700;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+    }
+
+  }
+
+  > div:nth-child(5) {
+    width: 100%;
+    margin-bottom: 40px;
+
+     img {
+       border-radius: 40px;
+       width: 100%;
+       max-width: 100%;
+     }
+  }
+
+  > div:nth-child(6) {
+    width: 100%;
+    background-color: $grey_light;
+    border-radius: 40px;
+    padding: 50px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    > div:first-child {
+      flex-basis: 47%;
+      text-align: end;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: 'Museo Sans Cyrl 700';
+    }
+
+    > div:last-child {
+      flex-basis: 47%;
+
+      span {
+        display: block;
+        width: 100%;
+        font-size: 17px;
+        line-height: 1;
+      }
+
+      > span:first-child {
+        margin-bottom: 30px;
+        font-weight: 700;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+
+      > span:last-child {
+        font-weight: 300;
+        font-family: 'Museo Sans Cyrl 300';
+      }
+
+    }
+
+  }
+
+  > div:nth-child(7) {
+    width: 100%;
+    margin-bottom: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    > div:first-child {
+      flex-basis: 48%;
+
+      span {
+        display: block;
+        width: 80%;
+        margin-left: auto;
+        text-align: end;
+        font-size: 17px;
+        line-height: 1;
+      }
+
+      > span:first-child {
+        margin-bottom: 20px;
+        font-weight: 700;
+        font-family: "Museo Sans Cyrl 700";
+      }
+
+      > span:last-child {
+        font-weight: 300;
+        font-family: "Museo Sans Cyrl 300";
+      }
+
+    }
+
+    > div:last-child {
+      flex-basis: 48%;
+      width: 48%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      img {
+        width: 100%;
+        max-width: 100%;
+        border-top-right-radius: 40px;
+        border-bottom-right-radius: 40px;
+      }
+    }
+
+  }
+
+  > div:nth-child(8) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 90px;
+
+    > div:first-child {
+      flex-basis: 47%;
+      text-align: end;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: 'Museo Sans Cyrl 300';
+
+      b {
+        font-size: 17px;
+        line-height: 1;
+        font-weight: 700;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+    }
+
+    > div:last-child {
+      flex-basis: 47%;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: 'Museo Sans Cyrl 700';
+    }
+
+  }
+
+  > div:nth-child(9) {
+    width: 100%;
+    margin-bottom: 40px;
+    display: flex;
+
+    > div:first-child {
+      flex-basis: 50%;
+      width: 50%;
+      display: flex;
+
+      img {
+        width: 100%;
+        max-width: 100%;
+        border-top-left-radius: 40px;
+        border-bottom-left-radius: 40px;
+      }
+    }
+
+    > div:last-child {
+      flex-basis: 50%;
+      padding: 50px 50px 50px 20px;
+      background-color: $grey_light;
+      border-top-right-radius: 40px;
+      border-bottom-right-radius: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      span {
+        display: block;
+        width: 100%;
+        font-size: 17px;
+        line-height: 1;
+
+        b {
+          font-size: 17px;
+          line-height: 1;
+          font-weight: 700;
+          font-family: "Museo Sans Cyrl 700";
+        }
+      }
+
+      > span:first-child {
+        font-weight: 700;
+        font-family: "Museo Sans Cyrl 700";
+        margin-bottom: 30px;
+      }
+
+      > span:last-child {
+        font-weight: 300;
+        font-family: "Museo Sans Cyrl 300";
+
+        b {
+          font-size: 17px;
+          line-height: 1;
+          font-weight: 700;
+          font-family: "Museo Sans Cyrl 700";
+        }
+      }
+
+    }
+
+  }
+
+  > div:nth-child(10) {
+    width: 100%;
+    margin-bottom: 40px;
+    padding: 70px;
+    background-color: $grey_light;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    > div:first-child {
+      flex-basis: 45%;
+      text-align: end;
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: 'Museo Sans Cyrl 700';
+    }
+
+    > div:last-child {
+      flex-basis: 45%;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: 'Museo Sans Cyrl 300';
+
+      b {
+        font-size: 17px;
+        line-height: 1;
+        font-weight: 300;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+    }
+
+  }
+
+  > div:nth-child(11) {
+    width: 100%;
+    margin-bottom: 120px;
+
+    img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 40px;
+    }
+  }
+
+  > div:nth-child(12) {
+    width: 100%;
+    margin-bottom: 120px;
+    display: flex;
+    justify-content: space-around;
+
+    span {
+      display: block;
+      flex-basis: 45%;
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 300;
+      font-family: 'Museo Sans Cyrl 300';
+
+      b {
+        font-size: 17px;
+        line-height: 1.2;
+        font-weight: 700;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+    }
+
+    span:first-child {
+      text-align: end;
+    }
+
+    span:last-child {
+
+    }
+
+  }
+
+  > div:nth-child(13) {
+    width: 100%;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    > div {
+      flex-basis: 45%;
+      width: 45%;
+
+      img {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    > div:first-child > img {
+      border-top-left-radius: 40px;
+      border-bottom-left-radius: 40px;
+    }
+
+    > div:last-child > img {
+      border-top-right-radius: 40px;
+      border-bottom-right-radius: 40px;
+    }
+
+  }
+
+  > div:nth-child(14) {
+    width: 100%;
+    padding: 30px 50px;
+    margin-bottom: 40px;
+    background-color: $grey_light;
+    border-radius: 40px;
+
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 300;
+    font-family: 'Museo Sans Cyrl 300';
+
+    b {
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: 'Museo Sans Cyrl 700';
+    }
+  }
+
+  > div:nth-child(15) {
+    width: 100%;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    > div:first-child {
+      flex-basis: 47%;
+      text-align: end;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: 'Museo Sans Cyrl 300';
+
+      b {
+        font-size: 17px;
+        line-height: 1;
+        font-weight: 700;
+        font-family: 'Museo Sans Cyrl 700';
+      }
+
+    }
+
+    > div:last-child {
+      flex-basis: 47%;
+      width: 47%;
+
+      img {
+        width: 100%;
+        max-width: 100%;
+        border-top-right-radius: 40px;
+        border-bottom-right-radius: 40px;
+      }
+
+    }
+
+  }
+
+  > div:last-child {
+    width: 100%;
+    margin-bottom: 60px;
+    padding: 70px 50px;
+    background-color: $grey_light;
+    border-radius: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    ul {
+      flex-basis: 45%;
+      list-style: inside;
+
+      li {
+        width: 100%;
+        font-size: 17px;
+        line-height: 1;
+        font-weight: 300;
+        font-family: 'Museo Sans Cyrl 300';
+
+        b {
+          font-size: 17px;
+          line-height: 1;
+          font-weight: 700;
+          font-family: 'Museo Sans Cyrl 700';
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    width: 93%;
+    margin: 0 auto 20px;
+  }
+
+  .us {
+
+    h1 {
+      margin: 0 0 15px;
+      padding: 15px 20px;
+      background-color: $grey_easy;
+      color: $black;
+      font-size: 22px;
+    }
+
+    > div:nth-child(3) {
+      width: 93%;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 0 auto 27px;
+      font-size: 16px;
+
+      b {
+        font-size: 16px;
+      }
+    }
+
+    > div:nth-child(4) {
+      width: 93%;
+      margin: 0 auto 27px;
+      padding: 0 20px;
+      align-items: unset;
+      justify-content: unset;
+      flex-direction: column;
+      gap: 28px 0;
+
+      > div:first-child {
+        flex-basis: 100%;
+        font-size: 16px;
+        text-align: start;
+
+        b {
+          font-size: 16px;
+        }
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        font-size: 16px;
+
+        b {
+          font-size: 16px;
+        }
+      }
+
+    }
+
+    > div:nth-child(5) {
+      width: 93%;
+      margin: 0 auto 30px;
+
+      img {
+        border-radius: 20px;
+      }
+    }
+
+    > div:nth-child(6) {
+      width: 93%;
+      margin: 0 auto 21px;
+      border-radius: 0;
+      background-color: transparent;
+      padding: 0;
+      align-items: unset;
+      justify-content: unset;
+      flex-direction: column-reverse;
+      gap: 20px 0;
+
+      > div:first-child {
+        flex-basis: 100%;
+        font-size: 16px;
+        padding: 0 20px;
+        text-align: start;
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: $grey_light;
+
+        span {
+          font-size: 16px;
+        }
+
+        > span:first-child {
+          margin-bottom: 20px;
+        }
+
+      }
+
+    }
+
+    > div:nth-child(7) {
+      width: 93%;
+      margin: 0 auto 31px;
+      align-items: unset;
+      justify-content: unset;
+      flex-direction: column;
+
+      > div:first-child {
+        flex-basis: 100%;
+        padding: 0 20px;
+        margin-bottom: 14px;
+
+        span {
+          width: 100%;
+          margin-left: unset;
+          text-align: start;
+          font-size: 16px;
+        }
+
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        width: 100%;
+        display: block;
+        align-items: unset;
+        justify-content: unset;
+
+        img {
+          border-radius: 20px;
+        }
+      }
+
+    }
+
+    > div:nth-child(8) {
+      width: 93%;
+      margin: 0 auto 27px;
+      padding: 0 20px;
+      align-items: unset;
+      justify-content: unset;
+      flex-direction: column-reverse;
+
+      > div:first-child {
+        flex-basis: 100%;
+        text-align: start;
+        font-size: 16px;
+
+        b {
+          font-size: 16px;
+        }
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        font-size: 19px;
+        margin-bottom: 20px;
+      }
+
+    }
+
+    > div:nth-child(9) {
+      width: 93%;
+      margin: 0 auto 30px;
+      display: flex;
+      flex-direction: column-reverse;
+
+      > div:first-child {
+        flex-basis: 100%;
+        width: 100%;
+        display: block;
+
+        img {
+          border-radius: 20px;
+        }
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        padding: 20px;
+        border-radius: 20px;
+        justify-content: unset;
+        margin-bottom: 30px;
+
+        span {
+          font-size: 16px;
+
+          b {
+            font-size: 16px;
+          }
+        }
+
+        > span:first-child {
+          margin-bottom: 20px;
+        }
+
+        > span:last-child {
+
+          b {
+            font-size: 16px;
+          }
+        }
+
+      }
+
+    }
+
+    > div:nth-child(10) {
+      width: 93%;
+      margin: 0 auto 30px;
+      padding: 20px;
+      border-radius: 20px;
+      align-items: unset;
+      justify-content: unset;
+      flex-direction: column;
+
+      > div:first-child {
+        flex-basis: 100%;
+        text-align: start;
+        font-size: 19px;
+        margin-bottom: 20px;
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        font-size: 16px;
+
+        b {
+          font-size: 16px;
+        }
+      }
+
+    }
+
+    > div:nth-child(11) {
+      width: 93%;
+      margin: 0 auto 28px;
+
+      img {
+        border-radius: 20px;
+      }
+    }
+
+    > div:nth-child(12) {
+      width: 93%;
+      margin: 0 auto 28px;
+      padding: 0 20px;
+      justify-content: unset;
+      flex-direction: column;
+
+      span {
+        display: block;
+        flex-basis: 100%;
+        font-size: 16px;
+        line-height: 1;
+
+        b {
+          font-size: 16px;
+          line-height: 1;
+        }
+      }
+
+      > span:first-child {
+        text-align: start;
+        margin-bottom: 20px;
+      }
+
+    }
+
+    > div:nth-child(13) {
+      width: 93%;
+      margin: 0 auto 27px;
+      align-items: unset;
+      justify-content: unset;
+      flex-direction: column;
+      gap: 20px 0;
+
+      > div {
+        flex-basis: 100%;
+        width: 100%;
+
+        img {
+          border-radius: 20px;
+        }
+      }
+
+    }
+
+    > div:nth-child(14) {
+      width: 93%;
+      padding: 20px;
+      margin: 0 auto 28px;
+      border-radius: 20px;
+      font-size: 16px;
+
+      b {
+        font-size: 16px;
+      }
+    }
+
+    > div:nth-child(15) {
+      width: 93%;
+      margin: 0 auto 23px;
+      align-items: unset;
+      justify-content: unset;
+      flex-direction: column;
+
+      > div:first-child {
+        flex-basis: 100%;
+        text-align: start;
+        font-size: 16px;
+        margin-bottom: 23px;
+        padding: 0 20px;
+
+        b {
+          font-size: 16px;
+        }
+
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        width: 100%;
+
+        img {
+          border-radius: 20px;
+        }
+
+      }
+
+    }
+
+    > div:last-child {
+      width: 93%;
+      margin: 0 auto 30px;
+      padding: 20px;
+      border-radius: 20px;
+      justify-content: unset;
+      align-items: unset;
+      flex-direction: column;
+
+      ul {
+        flex-basis: 100%;
+
+        li {
+          font-size: 16px;
+
+          b {
+            font-size: 16px;
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .us {
+
+    h1 {
+      margin: 0 0 12px;
+      padding: 13px 16px;
+      font-size: 18px;
+    }
+
+    > div:nth-child(3) {
+      margin: 0 auto 22px;
+      font-size: 14px;
+
+      b {
+        font-size: 14px;
+      }
+    }
+
+    > div:nth-child(4) {
+      margin: 0 auto 23px;
+      gap: 23px 0;
+
+      > div:first-child {
+        font-size: 14px;
+        text-align: start;
+
+        b {
+          font-size: 14px;
+        }
+      }
+
+      > div:last-child {
+        flex-basis: 100%;
+        font-size: 14px;
+
+        b {
+          font-size: 14px;
+        }
+      }
+
+    }
+
+    > div:nth-child(5) {
+      margin: 0 auto 24px;
+    }
+
+    > div:nth-child(6) {
+      margin: 0 auto 18px;
+      gap: 17px 0;
+
+      > div:first-child {
+        font-size: 14px;
+      }
+
+      > div:last-child {
+
+        span {
+          font-size: 14px;
+        }
+
+        > span:first-child {
+          margin-bottom: 18px;
+        }
+
+      }
+
+    }
+
+    > div:nth-child(7) {
+      margin: 0 auto 25px;
+
+      > div:first-child {
+        margin-bottom: 13px;
+
+        span {
+          font-size: 14px;
+        }
+
+      }
+
+    }
+
+    > div:nth-child(8) {
+      margin: 0 auto 24px;
+
+      > div:first-child {
+        font-size: 14px;
+
+        b {
+          font-size: 14px;
+        }
+      }
+
+      > div:last-child {
+        font-size: 16px;
+        margin-bottom: 18px;
+      }
+
+    }
+
+    > div:nth-child(9) {
+      margin: 0 auto 22px;
+
+      > div:last-child {
+        margin-bottom: 24px;
+
+        span {
+          font-size: 14px;
+
+          b {
+            font-size: 14px;
+          }
+        }
+
+        > span:first-child {
+          margin-bottom: 18px;
+        }
+
+        > span:last-child {
+
+          b {
+            font-size: 14px;
+          }
+        }
+
+      }
+
+    }
+
+    > div:nth-child(10) {
+      margin: 0 auto 24px;
+
+      > div:first-child {
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      > div:last-child {
+        font-size: 14px;
+
+        b {
+          font-size: 14px;
+        }
+      }
+
+    }
+
+    > div:nth-child(11) {
+      margin: 0 auto 23px;
+    }
+
+    > div:nth-child(12) {
+      margin: 0 auto 23px;
+
+      span {
+        font-size: 14px;
+
+        b {
+          font-size: 14px;
+        }
+      }
+
+      > span:first-child {
+        margin-bottom: 18px;
+      }
+
+    }
+
+    > div:nth-child(13) {
+      margin: 0 auto 24px;
+      gap: 18px 0;
+
+    }
+
+    > div:nth-child(14) {
+      margin: 0 auto 25px;
+      font-size: 14px;
+
+      b {
+        font-size: 14px;
+      }
+    }
+
+    > div:nth-child(15) {
+      margin: 0 auto 20px;
+
+      > div:first-child {
+        font-size: 14px;
+        margin-bottom: 20px;
+
+        b {
+          font-size: 14px;
+        }
+
+      }
+
+    }
+
+    > div:last-child {
+      margin: 0 auto 25px;
+
+      ul {
+
+        li {
+          font-size: 14px;
+
+          b {
+            font-size: 14px;
+          }
+
+        }
+
+      }
+
+    }
+
   }
 
 }

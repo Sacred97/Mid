@@ -96,6 +96,48 @@
       </div>
 
     </li>
+
+  </ul>
+
+  <ul class="recently-view-mobile">
+
+    <li *ngFor="let d of details; let idx = index">
+
+      <div class="recently-view-mobile__img">
+        <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="Изображение">
+      </div>
+
+      <div class="recently-view-mobile__title">
+        <a [routerLink]="['/', 'catalog', d.id]">
+          {{d.name}}
+        </a>
+      </div>
+
+      <div class="recently-view-mobile__article">{{d.vendorCode}} / {{d.productCode}}</div>
+
+      <div class="recently-view-mobile__price">{{cartService.toCurrency(d.price)}}</div>
+
+      <div class="recently-view-mobile__quantity">
+        <div class="quantity-bar">
+          <div [style.width]="d.quantityRatio + '%'"
+               [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+               [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+          </div>
+          <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+          <ng-template #no_available_analog_view>
+            <span class="not-available-analog">нет в наличии</span>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="recently-view-mobile__order">
+        <button (click)="addProduct(d.id, idx)" [disabled]="action || cartService.check(d.id)">
+          {{cartService.check(d.id) ? 'В корзине' : 'В заказ'}}
+        </button>
+      </div>
+
+    </li>
+
   </ul>
 
 </div>

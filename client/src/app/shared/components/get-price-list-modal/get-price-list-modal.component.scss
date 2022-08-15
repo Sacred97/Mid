@@ -283,3 +283,210 @@
   cursor: pointer;
   z-index: 199;
 }
+
+@media (max-width: 768px) {
+
+  .get-price-modal-window {
+    width: 80%;
+    max-height: 95vh;
+    padding: 25px;
+
+    &__title {
+    }
+
+    &__footnote {
+      margin: 20px auto 0;
+    }
+
+    &__form-control {
+      button {
+        margin: 20px auto 0;
+        padding: 15px 25px;
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .get-price-modal-window {
+    padding: 18px;
+
+    &__title {
+      font-size: 20px;
+    }
+
+    &__footnote {
+      margin: 10px auto 0;
+      font-size: 13px;
+    }
+
+    &__form-control {
+
+      input[type='text'], input[type='email'] {
+        font-size: 16px;
+      }
+
+      button {
+        border-radius: 10px;
+        margin: 15px auto 0;
+        width: unset;
+        padding: 10px 15px;
+        font-size: 11px;
+      }
+
+    }
+
+    &__input {
+      margin-top: 5px;
+
+      div {
+        small {
+          font-size: 8px;
+        }
+      }
+    }
+
+    &__price-list {
+      margin-top: 5px;
+
+      > div:last-child {
+
+        small {
+          margin-top: 2px;
+          font-size: 8px;
+        }
+      }
+
+      > div:first-child {
+
+        > span {
+          font-size: 16px;
+        }
+
+        > div {
+
+          span {
+            font-size: 12px;
+          }
+
+        }
+
+      }
+
+      select {
+
+        option {
+          font-size: 16px;
+        }
+
+      }
+
+    }
+
+    &__successful, &__failed {
+
+      h1 {
+        font-size: 18px;
+      }
+      button {
+        padding: 10px 15px;
+        font-size: 12px;
+      }
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .get-price-modal-window {
+    padding: 14px;
+
+    &__title {
+      font-size: 18px;
+    }
+
+    &__footnote {
+      margin: 8px auto 0;
+      font-size: 11px;
+    }
+
+    &__form-control {
+
+      input[type='text'], input[type='email'] {
+        font-size: 13px;
+      }
+
+      button {
+        border-radius: 7px;
+        margin: 10px auto 0;
+        width: unset;
+        padding: 9px 13px;
+        font-size: 9px;
+      }
+
+    }
+
+    &__input {
+
+      div {
+        small {
+          font-size: 7px;
+        }
+      }
+    }
+
+    &__price-list {
+
+      > div:last-child {
+
+        small {
+          font-size: 7px;
+        }
+      }
+
+      > div:first-child {
+
+        > span {
+          font-size: 13px;
+        }
+
+        > div {
+
+          span {
+            font-size: 9px;
+          }
+
+        }
+
+      }
+
+      select {
+
+        option {
+          font-size: 13px;
+        }
+
+      }
+
+    }
+
+    &__successful, &__failed {
+
+      h1 {
+        font-size: 16px;
+      }
+      button {
+        padding: 9px 13px;
+        font-size: 9px;
+      }
+    }
+
+  }
+
+}

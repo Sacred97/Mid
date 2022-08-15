@@ -7,7 +7,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  >nav {
+  > nav {
     width: 100%;
   }
 }
@@ -255,9 +255,10 @@
     width: 100%;
 
     .slick-slide {
+      margin: 0 10px;
 
       img {
-        //width: 99.9%;
+        width: 100%;
       }
 
       a {
@@ -747,6 +748,10 @@
       flex-direction: column;
       justify-content: space-around;
 
+      > span {
+        display: none;
+      }
+
       > a {
         display: block;
         width: fit-content;
@@ -806,6 +811,10 @@
             }
           }
         }
+      }
+
+      &__quantity {
+        display: none;
       }
 
     }
@@ -1322,3 +1331,1126 @@
   max-height: 80vh;
   max-width: 80%;
 }
+
+.m-aside-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 10px;
+  }
+
+  .m-aside {
+    display: none;
+  }
+
+  .m-aside-mobile {
+    display: block;
+    width: 100%;
+
+    &__logo {
+      width: 100%;
+      margin: 0 0 10px;
+
+      img {
+        max-width: 80%;
+        max-height: 150px;
+        margin: 0 auto;
+      }
+
+      span {
+        display: block;
+        margin-top: 15px;
+        text-align: center;
+        color: $black;
+        font-size: 18px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 500';
+      }
+    }
+
+    &__modal-trigger {
+      width: 100%;
+      margin: 0 0 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 17px;
+      background-color: $grey_easy;
+      border: none;
+      cursor: pointer;
+
+      span {
+        color: $black;
+        font-size: 15px;
+        line-height: 1;
+        font-family: 'Museo Sans Cyrl 500';
+      }
+
+      img {
+        max-width: 19px;
+      }
+    }
+
+    &__drop-list {
+      width: 100%;
+      margin-bottom: 17px;
+
+      > button {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11.5px 17px;
+        background-color: $grey_easy;
+        border: none;
+        cursor: pointer;
+
+        span {
+          color: $black;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 500';
+        }
+
+        div {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          top: 10px;
+          right: 17px;
+          background-color: transparent;
+          border-style: solid;
+          border-width: 2px;
+          border-color: transparent $violet $violet transparent;
+          transform: rotateX(0deg) rotate(45deg);
+          transition: transform 1s, top 0.5s;
+        }
+      }
+
+      ul {
+        position: relative;
+        list-style: none;
+        padding: 0 19px;
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 1s, padding 1s;
+
+        li {
+          width: 100%;
+          margin-bottom: 9px;
+
+          label {
+            width: 100%;
+            display: flex;
+            cursor: pointer;
+            position: relative;
+            font-size: 15px;
+            min-height: calc(1em + 4px);
+
+            input[type="checkbox"] {
+              position: absolute;
+              z-index: -1;
+              opacity: 0;
+              display: block;
+              width: 0;
+              height: 0;
+            }
+            input[type='checkbox']:checked + span:before {
+              background-color: $violet;
+            }
+
+            span {
+              display: inline-block;
+              position: relative;
+              padding-top: 3px;
+              padding-left: 31px;
+              color: $black;
+              font-size: 15px;
+              line-height: 1;
+              font-family: 'Museo Sans Cyrl 300';
+
+              &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 1em;
+                height: 1em;
+                border: 2px solid $violet;
+                border-radius: 4px;
+                font-size: 15px;
+              }
+
+              div {
+                display: inline;
+                color: $grey_dark;
+                font-size: 15px;
+                line-height: 1;
+                font-family: "Museo Sans Cyrl 300";
+              }
+            }
+
+            &:hover {
+              opacity: 0.7;
+            }
+          }
+
+        }
+
+      }
+
+      &:last-child > ul {
+
+        > li:first-child {
+          margin-bottom: 37px;
+        }
+
+        > div {
+          left: 50%;
+          right: 50%;
+          top: 56px;
+          position: absolute;
+          border-top: 2px solid $grey_normal;
+          transition: right 1s, left 1s;
+        }
+      }
+
+      .manufacturer-catalog-certificate {
+        display: block;
+        margin-bottom: 17px;
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        transition: height 1s;
+
+        .slick-slide {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 10px 0;
+          height: 240px;
+
+          button {
+            display: block;
+            width: 60%;
+            background-color: transparent;
+            border: none;
+            cursor: zoom-in;
+
+            img {
+              max-height: 180px;
+              max-width: 100%;
+              margin: 0 auto;
+            }
+          }
+        }
+      }
+
+      .manufacturer-catalog-certificate.drop {
+        height: 240px;
+        transition: height 1s;
+      }
+
+      ul.drop {
+        max-height: 250px;
+        overflow: auto;
+        padding: 19px 19px;
+        transition: max-height 1s, padding 1s;
+
+        div {
+          right: 0;
+          left: 0;
+          transition: right 1s, left 1s;
+        }
+      }
+
+      button.drop > div {
+        top: 15px;
+        transform: rotateX(180deg) rotate(45deg);
+        transition: transform 1s, top 0.5s;
+      }
+
+    }
+
+    > div:last-child {
+      width: 100%;
+
+      > button {
+        position: relative;
+        display: flex;
+        width: 100%;
+        padding: 13px 20px;
+        outline: none;
+        border: none;
+        background-color: $grey_easy;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+
+        > span {
+          display: block;
+          width: fit-content;
+          font-size: 20px;
+          line-height: 1;
+          font-weight: 700;
+          font-family: "Museo Sans Cyrl 700";
+        }
+
+        > div {
+          position: absolute;
+          height: 13px;
+          width: 13px;
+          border-top: 1px solid $violet;
+          border-right: 1px solid $violet;
+          right: 25px;
+          transform: rotate(45deg);
+        }
+
+      }
+
+      > div {
+        max-height: 0;
+        margin-top: 20px;
+        overflow: auto;
+        transition: max-height 1.5s;
+      }
+
+      > div.drop-mobile {
+        max-height: 225px;
+      }
+
+    }
+
+  }
+
+  .m-catalog {
+    width: 100%;
+
+    .manufacturer-page-banners {
+      display: none;
+    }
+
+    &__quick-search {
+      width: 100%;
+      margin-bottom: 15px;
+
+      > div:first-child {
+        flex-basis: 100%;
+        padding: 13px 16px;
+        gap: 0 5px;
+        border-radius: 0;
+
+        label {
+          span {
+            font-size: 18px;
+          }
+        }
+      }
+
+      > div:last-child {
+        display: none;
+      }
+
+    }
+
+    &__info {
+      margin-bottom: 2px;
+      padding: 0 10px;
+
+      > div:first-child {
+        margin-left: 0;
+
+        span {
+          font-size: 16px;
+        }
+      }
+
+      &__sort {
+        margin-right: 0;
+
+        span {
+          font-size: 16px;
+        }
+
+        button {
+          font-size: 16px;
+        }
+
+      }
+
+      &__display {
+        display: none;
+      }
+    }
+
+    &__filters {
+      gap: 10px 10px;
+
+      > div {
+        margin-right: 0;
+
+        div {
+          padding: 9px;
+
+          > span:first-child {
+            font-size: 16px;
+          }
+
+          > span:last-child {
+            font-size: 14px;
+          }
+        }
+
+      }
+
+      button {
+        margin-right: 10px;
+        font-size: 16px;
+      }
+
+    }
+
+    &__result {
+      margin-bottom: 30px;
+
+      &__more {
+        width: 100%;
+        margin: 30px 0 15px;
+
+        button {
+          display: block;
+          margin: 0 auto;
+          padding: 13px 0;
+          width: 100%;
+          max-width: 180px;
+          background-color: #ffffff;
+          border: 2px solid $yellow;
+          border-radius: 10px;
+          color: $black;
+          text-align: center;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 500';
+          cursor: pointer;
+          &:hover {
+            background-color: $yellow-hover;
+          }
+          &:disabled {
+            border: 2px solid $grey_easy;
+            background-color: $grey_easy;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+    }
+
+    &__display-main {
+      padding: 20px;
+
+      &__image {
+        flex-basis: 33%;
+        height: 150px;
+
+        img {
+          max-height: 150px;
+        }
+
+        > span {
+          display: none;
+        }
+      }
+
+      &__text {
+        flex-basis: 50%;
+        padding-right: 0;
+        justify-content: unset;
+
+        > span {
+          display: block;
+          width: fit-content;
+          margin-bottom: 20px;
+          font-size: 27px;
+          line-height: 1;
+          font-weight: 500;
+          font-family: "Museo Sans Cyrl 700", Arial;
+        }
+
+        > a {
+          font-size: 19px;
+          margin-bottom: 20px;
+        }
+
+        &__codes {
+          font-size: 16px;
+
+          span {
+            font-size: 16px;
+          }
+
+        }
+
+        &__applicability {
+          display: none;
+        }
+
+        &__quantity {
+          display: block;
+          width: fit-content;
+          margin-top: auto;
+          margin-left: auto;
+          margin-bottom: 7px;
+
+          input {
+            height: 30px;
+            width: 30px;
+            border: 1px solid $border_grey;
+            background-color: $grey_light;
+            padding: 3px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1;
+            font-weight: 300;
+            font-family: "Museo Sans Cyrl 300";
+          }
+
+        }
+
+      }
+
+      &__quantity {
+        display: none;
+      }
+
+      &__to-order {
+        flex-basis: 15%;
+
+        > div {
+
+          > div:first-child {
+            width: 100%;
+          }
+
+          > div:last-child {
+            display: none;
+          }
+
+        }
+
+        > span:nth-child(2) {
+          height: 50px;
+
+          img {
+            max-height: 50px;
+          }
+
+          span {
+            font-size: 14px;
+            word-break: break-word;
+          }
+
+        }
+
+        > span:nth-child(3) {
+          display: none !important;
+        }
+
+        > button {
+          padding: 13px 0;
+          max-width: unset;
+          font-size: 13px;
+        }
+
+      }
+
+    }
+
+    &__display-analog {
+      display: none;
+    }
+
+  }
+
+  .manufacturer-modal {
+    padding: 30px;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .m-aside-mobile {
+
+    &__logo {
+
+      img {
+        max-width: 80%;
+        max-height: 130px;
+      }
+
+      span {
+        margin-top: 12px;
+        font-size: 16px;
+      }
+    }
+
+    &__modal-trigger {
+      margin: 0 0 10px;
+      padding: 9px 17px;
+
+      span {
+        font-size: 14px;
+      }
+
+      img {
+        max-width: 15px;
+      }
+    }
+
+    &__drop-list {
+      margin-bottom: 10px;
+
+      > button {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11.5px 17px;
+        background-color: $grey_easy;
+        border: none;
+        cursor: pointer;
+
+        span {
+          color: $black;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 500';
+        }
+
+        div {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          top: 10px;
+          right: 17px;
+          background-color: transparent;
+          border-style: solid;
+          border-width: 2px;
+          border-color: transparent $violet $violet transparent;
+          transform: rotateX(0deg) rotate(45deg);
+          transition: transform 1s, top 0.5s;
+        }
+      }
+
+      .manufacturer-catalog-certificate {
+        margin-bottom: 10px;
+
+        .slick-slide {
+          height: 150px;
+
+          button {
+
+            img {
+              max-height: 100px;
+            }
+          }
+        }
+      }
+
+      .manufacturer-catalog-certificate.drop {
+        height: 150px;
+      }
+
+      ul.drop {
+        max-height: 150px;
+      }
+
+    }
+
+    > div:last-child {
+
+      > button {
+
+        > span {
+          font-size: 16px;
+        }
+
+      }
+
+    }
+
+  }
+
+  .m-catalog {
+
+    &__quick-search {
+      margin-bottom: 12px;
+
+      > div:first-child {
+        padding: 11px 10px;
+        gap: 0 4px;
+
+        label {
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+
+    }
+
+    &__info {
+
+      > div:first-child {
+
+        span {
+          font-size: 12px;
+        }
+      }
+
+      &__sort {
+
+        span {
+          font-size: 12px;
+        }
+
+        button {
+          font-size: 12px;
+        }
+
+      }
+
+    }
+
+    &__filters {
+      gap: 10px 10px;
+
+      > div {
+
+        div {
+
+          > span:first-child {
+            font-size: 12px;
+          }
+
+          > span:last-child {
+            margin-left: 5px;
+            font-size: 10px;
+          }
+        }
+
+      }
+
+      button {
+        font-size: 12px;
+      }
+
+    }
+
+    &__result {
+
+      &__more {
+        width: 100%;
+        margin: 30px 0 15px;
+
+        button {
+          display: block;
+          margin: 0 auto;
+          padding: 13px 0;
+          width: 100%;
+          max-width: 180px;
+          background-color: #ffffff;
+          border: 2px solid $yellow;
+          border-radius: 10px;
+          color: $black;
+          text-align: center;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 500';
+          cursor: pointer;
+          &:hover {
+            background-color: $yellow-hover;
+          }
+          &:disabled {
+            border: 2px solid $grey_easy;
+            background-color: $grey_easy;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+    }
+
+    &__display-main {
+      padding: 15px;
+
+      &__image {
+        height: 130px;
+
+        img {
+          max-height: 130px;
+        }
+
+      }
+
+      &__text {
+
+        > span {
+          margin-bottom: 15px;
+          font-size: 22px;
+        }
+
+        > a {
+          font-size: 16px;
+          margin-bottom: 15px;
+        }
+
+        &__codes {
+          font-size: 13px;
+
+          span {
+            font-size: 13px;
+          }
+
+        }
+
+        &__quantity {
+          margin-bottom: 3px;
+
+          input {
+            width: 25px;
+            height: 25px;
+            font-size: 13px;
+          }
+
+        }
+
+      }
+
+      &__to-order {
+
+        > div {
+
+          > div:first-child {
+
+            ul {
+              width: 220px;
+
+              li {
+
+                > div:first-child {
+                  font-size: 9px;
+                }
+
+                > div:last-child {
+
+                  > span:first-child {
+                    font-size: 9px;
+                  }
+
+                  > div:first-child {
+                    font-size: 13px;
+                  }
+
+                  > span:last-child {
+                    font-size: 9px;
+                  }
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        > span:nth-child(2) {
+          height: 35px;
+
+          img {
+            max-height: 35px;
+          }
+
+          span {
+            font-size: 12px;
+          }
+
+        }
+
+        > button {
+          padding: 9px 0;
+          font-size: 10px;
+          border-radius: 7px;
+        }
+
+      }
+
+    }
+
+  }
+
+  .manufacturer-modal {
+    padding: 20px;
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .m-aside-mobile {
+
+    &__logo {
+
+      img {
+        max-width: 80%;
+        max-height: 110px;
+      }
+
+      span {
+        margin-top: 8px;
+        font-size: 13px;
+      }
+    }
+
+    &__modal-trigger {
+
+      span {
+        font-size: 11px;
+      }
+
+      img {
+        max-width: 15px;
+      }
+    }
+
+    &__drop-list {
+      margin-bottom: 10px;
+
+      > button {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11.5px 17px;
+        background-color: $grey_easy;
+        border: none;
+        cursor: pointer;
+
+        span {
+          color: $black;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 500';
+        }
+
+        div {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          top: 10px;
+          right: 17px;
+          background-color: transparent;
+          border-style: solid;
+          border-width: 2px;
+          border-color: transparent $violet $violet transparent;
+          transform: rotateX(0deg) rotate(45deg);
+          transition: transform 1s, top 0.5s;
+        }
+      }
+
+    }
+
+    > div:last-child {
+
+      > button {
+
+        > span {
+          font-size: 13px;
+        }
+
+      }
+
+    }
+
+  }
+
+  .m-catalog {
+
+    &__quick-search {
+      margin-bottom: 10px;
+
+      > div:first-child {
+        padding: 11px 10px;
+        gap: 0 4px;
+
+        label {
+          span {
+            font-size: 10.5px;
+          }
+        }
+      }
+
+    }
+
+    &__info {
+
+      > div:first-child {
+
+        span {
+          font-size: 10px;
+        }
+      }
+
+      &__sort {
+
+        span {
+          font-size: 10px;
+        }
+
+        button {
+          font-size: 10px;
+        }
+
+      }
+
+    }
+
+    &__filters {
+      gap: 5px 5px;
+
+      > div {
+
+        div {
+          padding: 5px;
+          border-radius: 5px;
+
+          > span:first-child {
+            font-size: 10px;
+          }
+
+          > span:last-child {
+            margin-left: 3px;
+            font-size: 8px;
+          }
+        }
+
+      }
+
+      button {
+        font-size: 10px;
+      }
+
+    }
+
+    &__result {
+
+      &__more {
+        margin: 20px 0 15px;
+
+        button {
+          margin: 0 auto;
+          padding: 10px 34px;
+          width: unset;
+          max-width: unset;
+          font-size: 13px;
+        }
+      }
+
+    }
+
+    &__display-main {
+      padding: 10px;
+
+      &__image {
+        height: 105px;
+
+        img {
+          max-height: 105px;
+        }
+
+      }
+
+      &__text {
+
+        > span {
+          margin-bottom: 10px;
+          font-size: 17px;
+        }
+
+        > a {
+          font-size: 12px;
+          margin-bottom: 10px;
+        }
+
+        &__codes {
+          font-size: 10px;
+
+          span {
+            font-size: 10px;
+          }
+
+        }
+
+        &__quantity {
+
+          input {
+            width: 23px;
+            height: 23px;
+            font-size: 10px;
+          }
+
+        }
+
+      }
+
+      &__to-order {
+
+        > span:nth-child(2) {
+          height: 28px;
+
+          img {
+            max-height: 28px;
+          }
+
+          span {
+            font-size: 10px;
+          }
+
+        }
+
+        > button {
+          font-size: 8px;
+        }
+
+      }
+
+    }
+
+  }
+
+  .quantity-bar {
+    height: 20px !important;
+
+    > span {
+      font-size: 7px;
+    }
+
+  }
+
+  .manufacturer-modal {
+    padding: 13px;
+  }
+
+}
+
+

@@ -1,0 +1,146 @@
+<div class="favorite-guest">
+
+  <h1>Избраные товары</h1>
+
+  <ng-container *ngIf="details.length > 0; else empty">
+
+    <ul class="detail-view-analog">
+
+      <li class="analog-delete" *ngFor="let d of details; let idx = index">
+
+        <div class="detail-view-analog__image">
+          <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="Изображение">
+          <span *ngIf="d.photoDetail.length">
+          <img [src]="d.photoDetail[0].url">
+        </span>
+        </div>
+
+        <div class="detail-view-analog__title">
+          <a [routerLink]="['/', 'catalog', d.id]"
+             (click)="viewedService.addToRecentlyViewed(d.id)">
+            {{d.name}}
+          </a>
+        </div>
+
+        <div class="detail-view-analog__text">
+          <span>{{d.vendorCode}} / {{d.productCode}}</span>
+        </div>
+
+        <div class="detail-view-analog__manufacturer">
+          <a *ngIf="d.manufacturer; else without_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+            <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
+              <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+            </ng-container>
+
+            <ng-template #without_logo>
+              <span>{{d.manufacturer!.nameCompany}}</span>
+            </ng-template>
+          </a>
+
+          <ng-template #without_manufacturer>
+            <span>Производитель не указан</span>
+          </ng-template>
+        </div>
+
+        <div class="detail-view-analog__price">{{cartService.toCurrency(d.price)}}</div>
+
+        <div class="detail-view-analog__quantity">
+          <div class="quantity-bar">
+            <div [style.width]="d.quantityRatio + '%'"
+                 [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                 [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+            </div>
+            <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+            <ng-template #no_available_analog_view>
+              <span class="not-available-analog">нет в наличии</span>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="detail-view-analog__to-order">
+          <div *ngIf="cartService.check(d.id); else to_cart">
+            <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+            <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
+            <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+          </div>
+          <ng-template #to_cart>
+            <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
+          </ng-template>
+        </div>
+
+        <div class="detail-view-analog__delete">
+          <button (click)="removeFromFavorite(idx)">&#xd7;</button>
+        </div>
+
+      </li>
+
+    </ul>
+
+    <ul class="mobile-detail-favorite-guest">
+
+      <li *ngFor="let d of details; let idx = index">
+
+        <div class="mobile-detail-favorite-guest__img">
+          <img [src]="d.photoDetail.length ? d.photoDetail[0].url : defaultImage" alt="Изображение">
+        </div>
+
+        <div class="mobile-detail-favorite-guest__title">
+          <a [routerLink]="['/', 'catalog', d.id]"
+             (click)="viewedService.addToRecentlyViewed(d.id)">
+            {{d.name}}
+          </a>
+          <span>{{d.vendorCode}} / {{d.productCode}}</span>
+        </div>
+
+        <div class="mobile-detail-favorite-guest__manufacturer">
+          <a *ngIf="d.manufacturer; else without_manufacturer" [routerLink]="['/', 'manufacturer', d.manufacturer.id]">
+            <ng-container *ngIf="d.manufacturer.logoCompanyUrl; else without_logo">
+              <img [src]="d.manufacturer!.logoCompanyUrl" [alt]="d.manufacturer!.nameCompany">
+            </ng-container>
+
+            <ng-template #without_logo>
+              <span>{{d.manufacturer!.nameCompany}}</span>
+            </ng-template>
+          </a>
+
+          <ng-template #without_manufacturer>
+            <span>Производитель не указан</span>
+          </ng-template>
+        </div>
+
+        <div class="mobile-detail-favorite-guest__price">{{cartService.toCurrency(d.price)}}</div>
+
+        <div class="mobile-detail-favorite-guest__quantity">
+          <div class="quantity-bar">
+            <div [style.width]="d.quantityRatio + '%'"
+                 [style.border-top-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'"
+                 [style.border-bottom-right-radius]="d.quantityRatio && d.quantityRatio > 90 ? '5px' : '0px'">
+            </div>
+            <span *ngIf="d.quantityRatio; else no_available_analog_view">в наличии</span>
+            <ng-template #no_available_analog_view>
+              <span class="not-available-analog">нет в наличии</span>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="mobile-detail-favorite-guest__order">
+          <button (click)="addProduct(d.id, idx)" [disabled]="action || cartService.check(d.id)">
+            {{cartService.check(d.id) ? 'В корзине' : 'В заказ'}}
+          </button>
+        </div>
+
+        <div class="mobile-detail-favorite-guest__delete">
+          <button (click)="removeFromFavorite(idx)">&#xd7;</button>
+        </div>
+
+      </li>
+
+    </ul>
+
+  </ng-container>
+
+  <ng-template #empty>
+    <span>Товары в разделе «Избранное» отсутствуют</span>
+  </ng-template>
+
+</div>

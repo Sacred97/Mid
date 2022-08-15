@@ -18,3 +18,18 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .verification {
+    width: 93%;
+    margin: 0 auto 30px;
+    min-height: 50vh;
+
+    h1, a {
+      font-size: 32px;
+    }
+
+  }
+
+}

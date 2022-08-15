@@ -43,7 +43,7 @@
               }
             }
 
-            >span {
+            > span {
               display: block;
               margin-left: 15px;
               color: $black;
@@ -83,6 +83,7 @@
     > div {
       width: 73.5%;
     }
+
   }
 
 }
@@ -98,4 +99,110 @@
   div.quantity {
     background-color: $grey_easy !important;
   }
+}
+
+@media (max-width: 768px) {
+
+  .user {
+    width: 93%;
+
+    > div {
+      justify-content: unset;
+      flex-direction: column;
+
+      aside {
+        width: 100%;
+
+        ul {
+
+          li {
+
+            a {
+
+              > div:first-child {
+
+                img {
+
+                }
+              }
+
+              > span {
+
+              }
+
+              div.quantity {
+
+                > span {
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      > div {
+        width: 100%;
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .user {
+
+    > div {
+
+      aside {
+
+        ul {
+
+          li {
+            margin-bottom: 10px;
+
+            a {
+              height: 30px;
+
+              > div:first-child {
+
+                img {
+
+                }
+              }
+
+              > span {
+                font-size: 15px;
+              }
+
+              div.quantity {
+                width: 44px;
+                padding: 5px 0;
+
+                > span {
+                  font-size: 15px;
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
 }

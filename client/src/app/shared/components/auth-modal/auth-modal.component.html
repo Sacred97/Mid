@@ -102,7 +102,7 @@
               <small *ngIf="restoreForm.controls['email'].errors?.required">Поле не должно быть пустым</small>
             </div>
           </div>
-          <button type="submit" [disabled]="submitted">Восстановить</button>
+          <button type="submit" [disabled]="submitted || restoreForm.invalid">Восстановить</button>
           <small *ngIf="errorRestore">{{errorRestore}}</small>
         </form>
       </div>

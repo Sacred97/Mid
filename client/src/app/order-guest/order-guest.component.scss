@@ -761,6 +761,8 @@
   position: absolute;
   z-index: 101;
   width: 38%;
+  max-height: 95vh;
+  overflow: auto;
   padding: 20px 20px;
   background-color: #ffffff;
   border: 2px solid $yellow;
@@ -868,6 +870,552 @@
     min-height: 200px;
     align-items: center;
     justify-content: center;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .order-guest {
+    width: 93%;
+    margin: 0 auto 28px;
+  }
+
+  .order-guest-data {
+    flex-wrap: wrap;
+
+    > div {
+      flex-basis: 100%;
+
+      > button {
+        margin: 0 auto;
+        padding: 12px 20px;
+        max-width: unset;
+        width: unset;
+      }
+    }
+
+    &__title, &__contacts, &__payment, &__customer {
+      margin-bottom: 20px;
+
+    }
+
+    &__contacts {
+
+      > div {
+
+        label {
+          flex-basis: 100%;
+        }
+
+      }
+
+    }
+
+  }
+
+  .modal-guest-continue {
+    width: 80%;
+
+    &__success, &__warning, &__error {
+
+      p {
+        font-size: 18px;
+      }
+
+      button, a {
+        margin: 18px auto 0 !important;
+      }
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .order-guest-data {
+
+    &__payment {
+
+      > div {
+        gap: 7px 0;
+
+        > label:first-child, > label:nth-child(2), > label:nth-child(3), > label:nth-child(4), > label:last-child {
+          flex-basis: 100%;
+        }
+
+      }
+
+    }
+
+    &__delivery {
+
+      &__transport {
+
+        &__home {
+
+          > div {
+
+            > label {
+              flex-basis: 100%;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  .modal-guest-continue {
+
+    > div {
+      margin: 15px 0 0;
+
+      > button {
+        font-size: 10px;
+      }
+
+    }
+
+    > p {
+      font-size: 18px;
+    }
+
+    &__success, &__warning, &__error {
+
+      p {
+        font-size: 16px;
+      }
+
+      button, a {
+        margin: 13px auto 0 !important;
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .order-guest-data {
+
+    > div {
+
+      > div {
+
+        h1 {
+          margin-bottom: 8px;
+          font-size: 14px;
+        }
+
+        > span {
+          height: 4px;
+          margin-bottom: 7px;
+        }
+      }
+
+      > button {
+        font-size: 11px;
+      }
+
+    }
+
+    &__title {
+
+      a {
+        margin: 6px 0 0 auto;
+        font-size: 11px;
+      }
+
+      &__info {
+
+        > div:first-child {
+          padding: 8px 8px 0;
+
+          div {
+
+            span {
+              font-size: 13px;
+            }
+
+          }
+
+        }
+
+        > div:last-child {
+          padding: 8px;
+
+          span {
+            font-size: 13px;
+          }
+
+        }
+
+      }
+
+    }
+
+    &__contacts {
+
+      > div {
+        gap: 7px 0;
+
+        label {
+
+          span {
+            margin-bottom: 3px;
+            font-size: 13px;
+          }
+
+          input {
+            padding: 7px 9px;
+            font-size: 13px;
+          }
+
+          small {
+            margin-top: 2px;
+            font-size: 7px;
+          }
+        }
+
+      }
+
+    }
+
+    &__customer {
+
+      &__choice {
+        width: 100%;
+
+        > span {
+          font-size: 13px;
+        }
+
+        > label:nth-child(2) {
+          margin-bottom: 10px;
+        }
+
+      }
+
+      &__company {
+
+        input[type='text'] {
+          padding: 7px 9px;
+          font-size: 13px;
+        }
+
+        > span:first-child {
+          font-size: 13px;
+        }
+
+        > span:nth-child(3) {
+          margin: 7px 0;
+          font-size: 11px;
+        }
+
+        label {
+          margin-top: 13px;
+
+          span {
+            font-size: 11px;
+          }
+        }
+
+        ul {
+          max-height: 150px;
+
+          li {
+            padding: 5px 8px;
+
+            > span:first-child {
+              margin-bottom: 3px;
+              font-size: 11px;
+            }
+
+            > span:last-child {
+              font-size: 9px;
+            }
+
+          }
+        }
+
+      }
+
+      &__new {
+        margin-top: 13px;
+
+        label {
+          margin-bottom: 8px;
+
+          span {
+            font-size: 13px;
+          }
+
+          input {
+            padding: 7px 9px;
+            font-size: 13px;
+          }
+
+          small {
+            font-size: 8px;
+          }
+        }
+
+      }
+
+    }
+
+    &__payment {
+
+      > div {
+        gap: 5px 0;
+
+        label {
+          height: 34px;
+
+          > div {
+
+            > div {
+              margin-left: 6px;
+
+              > span:first-child {
+                font-size: 10px;
+              }
+
+              > span:last-child {
+                font-size: 9px;
+              }
+
+            }
+
+          }
+
+        }
+
+        > label:first-child {
+
+          > div > img {
+            width: unset;
+            height: 15px;
+          }
+        }
+
+        > label:nth-child(2) {
+
+          > div > img {
+            width: unset;
+            height: 19px;
+          }
+        }
+
+        > label:nth-child(3) {
+
+          > div > img {
+            width: unset;
+            height: 17px;
+          }
+        }
+
+        > label:nth-child(4), > label:last-child {
+
+          > div > img {
+            width: unset;
+            height: 18px;
+          }
+        }
+
+      }
+
+    }
+
+    &__delivery {
+
+      &__choice {
+
+        > span {
+          margin-bottom: 4px;
+          font-size: 13px;
+        }
+
+        > label {
+          margin-bottom: 8px;
+        }
+
+      }
+
+      &__pickup {
+        margin-top: 12px;
+
+        > span {
+          font-size: 13px;
+          margin-bottom: 5px;
+        }
+
+        > label {
+          margin-bottom: 7px;
+        }
+
+        > div {
+          margin: 12px 0 0;
+
+          > span {
+            margin-bottom: 7px;
+            font-size: 13px;
+          }
+
+          > div {
+            margin-bottom: 18px;
+
+            span, p {
+              font-size: 11px;
+            }
+
+            span {
+              margin-bottom: 7px;
+            }
+
+          }
+
+        }
+
+      }
+
+      &__transport {
+        margin-top: 12px;
+
+        > span {
+          font-size: 13px;
+        }
+
+        > label {
+          margin-top: 6px;
+        }
+
+        &__own {
+          margin-top: 10px;
+
+          span {
+            margin-bottom: 3px;
+            font-size: 13px;
+          }
+
+          input {
+            padding: 7px 9px;
+            font-size: 13px;
+          }
+
+          small {
+            font-size: 8px;
+          }
+        }
+
+        &__home {
+          margin-top: 10px;
+
+          span {
+            margin-bottom: 3px;
+            font-size: 13px;
+          }
+
+          > div {
+            gap: 8px 0;
+
+            label {
+
+              > span {
+                font-size: 13px;
+              }
+
+              input {
+                padding: 7px 9px;
+                font-size: 13px;
+              }
+
+              small {
+                font-size: 8px;
+              }
+            }
+
+          }
+        }
+
+        &__city {
+          margin-top: 10px;
+
+          span {
+            margin-bottom: 3px;
+            font-size: 13px;
+          }
+
+          input {
+            padding: 7px 9px;
+            font-size: 13px;
+          }
+
+          small {
+            font-size: 8px;
+          }
+        }
+
+      }
+
+    }
+
+    .map {
+      height: 186px;
+    }
+
+  }
+
+  .radio-make-order {
+    padding: 6px 10px;
+
+    div {
+      font-size: 14px;
+    }
+
+    span {
+      font-size: 13px;
+    }
+  }
+
+  .modal-guest-continue {
+
+    > div {
+      margin: 10px 0 0;
+
+      > button {
+        font-size: 8px;
+      }
+    }
+
+    > p {
+      font-size: 16px;
+    }
+
+    &__success, &__warning, &__error {
+
+      p {
+        font-size: 14px;
+      }
+
+      button, a {
+        margin: 10px auto 0 !important;
+      }
+
+    }
+
   }
 
 }

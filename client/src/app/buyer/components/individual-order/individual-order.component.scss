@@ -45,3 +45,47 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .individual-order {
+    width: 93%;
+    margin: 0 auto 30px;
+
+    p {
+      margin-bottom: 25px;
+      font-size: 16px;
+
+      b {
+        font-size: 16px;
+      }
+
+    }
+
+    > div:nth-child(4) {
+      width: 100%;
+      margin: 0;
+
+      img {
+        display: block;
+        margin: 0 auto;
+      }
+
+    }
+
+    > div:last-child {
+      width: 100%;
+
+      img {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+
+  }
+
+}

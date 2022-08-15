@@ -1,0 +1,445 @@
+@import "../shared/styles/variables";
+
+.favorite-guest {
+  width: 100%;
+  min-height: 50vh;
+  margin-bottom: 60px;
+
+  > h1 {
+    margin-bottom: 20px;
+    color: $violet;
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 700;
+    font-family: "Museo Sans Cyrl 700";
+  }
+
+  > span {
+    display: block;
+    width: fit-content;
+    margin: 60px auto;
+    color: $grey_normal;
+    font-size: 28px;
+    line-height: 1;
+    font-weight: 500;
+    font-family: "Museo Sans Cyrl 500";
+  }
+
+}
+
+.mobile-detail-favorite-guest {
+  display: none;
+  list-style: none;
+  width: 93%;
+  margin: 0 auto;
+
+  li {
+    display: flex;
+    width: 100%;
+    padding: 2px 0;
+    border-bottom: 2px solid $border_grey;
+  }
+
+  > li:first-child {
+    border-top: 2px solid $border_grey;
+  }
+
+  &__img {
+    flex-basis: 13%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > img {
+      max-height: 42px;
+      max-width: 100%;
+    }
+  }
+
+  &__title {
+    flex-basis: 32%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 5px;
+
+    a {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: $black;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 700;
+      font-family: 'Museo Sans Cyrl 700';
+
+      &:hover {
+        color: $black-hover;
+      }
+    }
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-top: 5px;
+      color: $grey_normal;
+      font-size: 8px;
+      line-height: 1;
+      font-weight: 500;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+  }
+
+  &__manufacturer {
+    flex-basis: 12%;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        max-width: 100%;
+        max-height: 25px;
+      }
+
+    }
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-word;
+      color: $grey_normal;
+      font-size: 9px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 500';
+    }
+
+  }
+
+  &__price {
+    flex-basis: 17%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    color: $black;
+    font-size: 10px;
+    line-height: 1;
+    font-family: 'Museo Sans Cyrl 700', Arial, sans-serif;
+  }
+
+  &__quantity {
+    flex-basis: 12%;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    > div {
+      width: 100%;
+      height: 15px;
+
+      > span {
+        font-size: 8px;
+      }
+
+      span.not-available-analog {
+        font-size: 7px;
+        left: unset;
+      }
+
+    }
+
+  }
+
+  &__order {
+    flex-basis: 12%;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 26px;
+      width: 100%;
+      max-width: 100px;
+      background-color: #ffffff;
+      border: 2px solid $yellow;
+      border-radius: 7px;
+      text-transform: uppercase;
+      color: $black;
+      font-size: 8px;
+      line-height: 1;
+      font-family: 'Museo Sans Cyrl 300';
+      cursor: pointer;
+
+      &:hover {
+        background-color: $yellow-hover;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        background-color: $yellow;
+      }
+
+    }
+
+  }
+
+  &__delete {
+    flex-basis: 2%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    button {
+      width: fit-content;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: $grey_normal;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: "Museo Sans Cyrl 300";
+
+      &:hover {
+        color: $grey_normal-hover;
+      }
+    }
+
+  }
+}
+
+@media (max-width: 768px) {
+
+  .favorite-guest {
+    margin-bottom: 30px;
+
+    > h1 {
+      width: 100%;
+      padding: 11px 18px;
+      background-color: $grey_easy;
+      color: $black;
+      font-size: 28px;
+    }
+
+    > span {
+      font-size: 24px;
+    }
+
+  }
+
+  .detail-view-analog {
+    display: none;
+  }
+
+  .mobile-detail-favorite-guest {
+    display: block;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .favorite-guest {
+
+    > h1 {
+      font-size: 20px;
+    }
+
+    > span {
+      font-size: 18px;
+    }
+
+  }
+
+  .mobile-detail-favorite-guest {
+
+    &__img {
+
+      img {
+        max-height: 35px;
+      }
+
+    }
+
+    &__title {
+
+      a {
+        font-size: 9px;
+      }
+
+      span {
+        font-size: 7px;
+      }
+
+    }
+
+    &__manufacturer {
+
+      a {
+
+        img {
+          max-height: 18px;
+        }
+
+      }
+
+      span {
+        font-size: 8px;
+      }
+
+    }
+
+    &__price {
+      font-size: 8px;
+    }
+
+    &__quantity {
+
+      > div {
+
+        > span {
+          font-size: 6px;
+        }
+
+        span.not-available-analog {
+          font-size: 5.5px;
+        }
+
+      }
+
+    }
+
+    &__order {
+
+      > button {
+        font-size: 6px;
+        height: 23px;
+      }
+
+    }
+
+    &__delete {
+
+      > button {
+        font-size: 12px;
+      }
+
+    }
+
+  }
+
+
+}
+
+@media (max-width: 420px) {
+
+  .favorite-guest {
+
+    > h1 {
+      font-size: 16px;
+    }
+
+    > span {
+      font-size: 14px;
+    }
+
+  }
+
+  .mobile-detail-favorite-guest {
+
+    &__img {
+
+      img {
+        max-height: 28px;
+      }
+
+    }
+
+    &__title {
+
+      a {
+        font-size: 7px;
+      }
+
+      span {
+        font-size: 5px;
+      }
+
+    }
+
+    &__manufacturer {
+
+      a {
+
+        img {
+          max-height: 14px;
+        }
+
+      }
+
+      span {
+        font-size: 6px;
+      }
+
+    }
+
+    &__price {
+      font-size: 6px;
+    }
+
+    &__quantity {
+
+      > div {
+
+        > span {
+          font-size: 5px;
+        }
+
+        span.not-available-analog {
+          font-size: 4.5px;
+        }
+
+      }
+
+    }
+
+    &__order {
+
+      > button {
+        font-size: 5px;
+        height: 19px;
+        border-width: 1px;
+        border-radius: 5px;
+      }
+
+    }
+
+    &__delete {
+
+      > button {
+        font-size: 10px;
+      }
+
+    }
+
+  }
+
+}

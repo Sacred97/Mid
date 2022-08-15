@@ -130,3 +130,146 @@
   }
 
 }
+
+.change-password-modal {
+  width: 25%;
+  max-width: 450px;
+  max-height: 95vh;
+  overflow: auto;
+  z-index: 201;
+  position: absolute;
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border: 2px solid $yellow;
+  border-radius: 10px;
+
+  h1 {
+    width: fit-content;
+    margin: 0 auto 10px;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 500;
+    font-family: "Museo Sans Cyrl 500";
+  }
+
+  form {
+    width: 100%;
+
+    label {
+      position: relative;
+      display: block;
+      width: 100%;
+      margin-bottom: 7px;
+
+      span {
+        display: block;
+        width: fit-content;
+        font-size: 14px;
+        line-height: 1;
+        font-weight: 300;
+        font-family: "Museo Sans Cyrl 300";
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid $border_grey;
+        background-color: $grey_light;
+        padding: 5px 40px 5px 10px;
+        font-size: 14px;
+        line-height: 1;
+        font-weight: 300;
+        font-family: "Museo Sans Cyrl 300";
+      }
+
+      button {
+        position: absolute;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        cursor: pointer;
+        top: 21px;
+        right: 10px;
+
+        img {
+          height: 15px;
+        }
+      }
+
+    }
+
+    small {
+      display: block;
+      width: fit-content;
+      margin: 3px auto 0;
+      color: red;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 100;
+      font-family: "Museo Sans Cyrl 100";
+    }
+
+    > button {
+      display: block;
+      width: fit-content;
+      padding: 10px 20px;
+      margin: 0 auto;
+      border: none;
+      outline: none;
+      border-radius: 5px;
+      background-color: $yellow;
+      cursor: pointer;
+      text-transform: uppercase;
+      color: $violet;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 500;
+      font-family: "Museo Sans Cyrl 500";
+
+      &:disabled {
+        cursor: not-allowed;
+        background-color: $grey_easy;
+      }
+    }
+
+    > span {
+      display: block;
+      width: fit-content;
+      margin: 5px auto 0;
+      color: $green;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: "Museo Sans Cyrl 300";
+    }
+
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .user-profile {
+    justify-content: unset;
+    flex-direction: column-reverse;
+
+    > div {
+      flex-basis: 100%;
+      margin-bottom: 21px;
+    }
+
+    form {
+      flex-basis: 100%;
+    }
+
+  }
+
+  .change-password-modal {
+    width: 90%;
+
+    > form > label > button {
+      display: none;
+    }
+
+  }
+
+}

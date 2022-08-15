@@ -178,7 +178,7 @@
           <small *ngIf="modalForm.controls['address'].errors?.required">Поле не должно быть пустым</small>
         </label>
 
-        <button type="submit" [disabled]="modalForm.invalid || action">Обновить адрес</button>
+        <button type="submit" [disabled]="modalForm.invalid || action">Обновить</button>
         <small *ngIf="updateError">Что-то пошло не так, попробуйте позже.</small>
       </form>
 

@@ -35,3 +35,29 @@
 
 
 }
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .privacy-policy {
+    width: 93%;
+    margin: 0 auto 30px;
+
+    h1 {
+      font-size: 22px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+  }
+
+}

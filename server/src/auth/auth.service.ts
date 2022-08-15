@@ -128,7 +128,7 @@ export class AuthService {
     }
     if (user.restorePasswordToken === token) {
       const hashedPassword = await bcrypt.hash(password, 10)
-      await this.usersService.changeUserPassword(user, hashedPassword)
+      await this.usersService.newUserPassword(user, hashedPassword)
       return {message: 'Пароль успешно изменен'}
     }
     throw new HttpException('Токен не верный, доступ запрещен', HttpStatus.FORBIDDEN)

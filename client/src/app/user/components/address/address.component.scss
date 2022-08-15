@@ -82,9 +82,7 @@
     button {
       margin: 5px auto 0;
       display: block;
-      padding: 11px 0;
-      width: 100%;
-      max-width: 290px;
+      padding: 11px 16px;
       background-color: #ffffff;
       border: 2px solid $yellow;
       border-radius: 10px;
@@ -208,9 +206,7 @@
     > button {
       margin: 10px auto 0;
       display: block;
-      padding: 11px 0;
-      width: 100%;
-      max-width: 290px;
+      padding: 11px 20px;
       background-color: #ffffff;
       border: 2px solid $yellow;
       border-radius: 10px;
@@ -443,6 +439,8 @@
       width: 100%;
 
       > span {
+        display: block;
+        margin-bottom: 5px;
         color: $grey_normal;
         font-size: 20px;
         line-height: 1;
@@ -1019,6 +1017,7 @@
     }
 
   }
+
 }
 
 .user-my-address-modal-loader-container {
@@ -1028,3 +1027,606 @@
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 768px) {
+
+  .addresses {
+
+    &__empty {
+      margin: 0 auto;
+      width: 95%;
+      padding: 0;
+
+      > div {
+
+        img {
+          width: unset;
+          max-height: 46px;
+        }
+
+        > div {
+          margin-left: 15px;
+
+          span {
+            font-size: 24px;
+          }
+
+          small {
+
+          }
+        }
+
+      }
+
+    }
+
+    &__add-address {
+
+      > span {
+        font-size: 19px;
+      }
+
+      > label {
+
+      }
+
+      > button {
+
+      }
+
+      > small {
+        font-size: 11px;
+      }
+
+      &__choice {
+
+        label {
+
+          span {
+
+          }
+        }
+
+      }
+
+    }
+
+  }
+
+  .modal-content {
+    padding: 10px 15px;
+    width: 80%;
+    max-height: 95vh;
+    overflow: auto;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .addresses {
+
+    &__empty {
+
+      > div {
+
+        img {
+          max-height: 39px;
+        }
+
+        > div {
+          margin-left: 12px;
+
+          span {
+            font-size: 20px;
+          }
+
+          small {
+            font-size: 11px;
+          }
+        }
+
+      }
+
+      > button {
+        font-size: 11px;
+        padding: 8px 12px;
+      }
+
+    }
+
+    &__add-address {
+
+      > span {
+        font-size: 16px;
+      }
+
+      > label {
+
+        span {
+          font-size: 11px;
+        }
+      }
+
+      > button {
+        font-size: 11px;
+        padding: 11px 16px;
+      }
+
+      > small {
+        font-size: 9px;
+      }
+
+      &__choice {
+        flex-direction: column;
+        justify-content: unset;
+
+        label {
+
+          span {
+            font-size: 12px;
+            padding: 10px;
+          }
+        }
+
+      }
+
+      &__pickup {
+        margin-top: 20px;
+
+        > span {
+          font-size: 16px;
+        }
+
+        > div:nth-child(2) {
+          max-width: unset;
+          margin-bottom: 15px;
+
+          button {
+            padding: 11px 13px;
+
+            span {
+              font-size: 13px;
+            }
+
+            div {
+              width: 10px;
+              height: 10px;
+            }
+
+          }
+
+          ul {
+
+            li {
+
+              label {
+
+                span {
+                  padding: 11px 13px;
+                  font-size: 13px;
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        &__place {
+
+          > span {
+            font-size: 16px;
+            margin-bottom: 7px;
+          }
+
+          div {
+
+            span, p {
+              font-size: 13px;
+            }
+
+          }
+
+        }
+
+      }
+
+      &__transport {
+        margin-top: 20px;
+
+        > span {
+          font-size: 16px;
+        }
+
+        > div:nth-child(2) {
+          max-width: unset;
+          margin-bottom: 20px;
+
+          button {
+            padding: 11px 13px;
+
+            span {
+              font-size: 13px;
+            }
+
+            div {
+              width: 10px;
+              height: 10px;
+            }
+
+          }
+
+          ul {
+
+            li {
+
+
+              label {
+
+                span {
+                  font-size: 13px;
+                  padding: 11px 13px;
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        &__another, &__city, &__address-name, &__home > label {
+          margin-top: 15px;
+
+          span {
+            font-size: 16px;
+            margin-bottom: 5px;
+          }
+
+          input {
+            font-size: 13px;
+            padding: 7px 12px;
+          }
+
+          small {
+            font-size: 9px;
+          }
+
+        }
+
+        &__home {
+          margin-top: 10px;
+
+          > span {
+            font-size: 16px;
+            margin-bottom: 0;
+          }
+
+          label {
+            margin-top: 0;
+            flex-basis: 100%;
+          }
+
+        }
+
+      }
+
+    }
+
+    &__info {
+
+      > div {
+        margin-top: 12px;
+      }
+
+      > button {
+        font-size: 11px;
+        padding: 10px 13px;
+      }
+
+      &__address {
+
+        > span {
+          font-size: 16px;
+        }
+
+        > div {
+
+          span {
+            font-size: 13px;
+          }
+
+        }
+
+      }
+
+      &__actions {
+        min-height: 29px;
+
+        button {
+
+          img {
+            max-height: 10px;
+          }
+
+          span {
+            font-size: 12px;
+          }
+
+        }
+
+        > button:last-child {
+          margin-left: 36px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .addresses {
+
+    &__empty {
+
+      > div {
+
+        img {
+          max-height: 32px;
+        }
+
+        > div {
+          margin-left: 9px;
+
+          span {
+            font-size: 16px;
+          }
+
+          small {
+            font-size: 9px;
+          }
+        }
+
+      }
+
+      > button {
+        font-size: 9px;
+        padding: 6px 10px;
+      }
+
+    }
+
+    &__add-address {
+
+      > span {
+        font-size: 13px;
+      }
+
+      > button {
+        font-size: 10px;
+        padding: 9px 13px;
+      }
+
+      > small {
+        font-size: 7px;
+      }
+
+      &__choice {
+
+        label {
+
+          span {
+            font-size: 10px;
+            padding: 8px;
+          }
+        }
+
+      }
+
+      &__pickup {
+        margin-top: 15px;
+
+        > span {
+          font-size: 13px;
+        }
+
+        > div:nth-child(2) {
+
+          button {
+            padding: 9px 10px;
+
+            span {
+              font-size: 11px;
+            }
+
+            div {
+              width: 9px;
+              height: 9px;
+            }
+
+          }
+
+          ul {
+
+            li {
+
+              label {
+
+                span {
+                  padding: 9px 10px;
+                  font-size: 11px;
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        &__place {
+
+          > span {
+            font-size: 13px;
+            margin-bottom: 5px;
+          }
+
+          div {
+            margin-bottom: 20px;
+
+            span, p {
+              font-size: 10px;
+            }
+
+          }
+
+        }
+
+      }
+
+      &__transport {
+        margin-top: 15px;
+
+        > span {
+          font-size: 13px;
+        }
+
+        > div:nth-child(2) {
+          margin-bottom: 15px;
+
+          button {
+            padding: 9px 10px;
+
+            span {
+              font-size: 11px;
+            }
+
+            div {
+              width: 9px;
+              height: 9px;
+            }
+
+          }
+
+          ul {
+
+            li {
+
+
+              label {
+
+                span {
+                  font-size: 11px;
+                  padding: 9px 10px;
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+        &__another, &__city, &__address-name, &__home > label {
+          margin-top: 15px;
+
+          span {
+            font-size: 13px;
+            margin-bottom: 4px;
+          }
+
+          input {
+            font-size: 11px;
+            padding: 6px 10px;
+          }
+
+          small {
+            font-size: 7px;
+          }
+
+        }
+
+        &__home {
+          margin-top: 15px;
+
+          > span {
+            font-size: 13px;
+            margin-bottom: 0;
+          }
+
+          label {
+            margin-top: 0;
+            flex-basis: 100%;
+          }
+
+        }
+
+      }
+
+    }
+
+    &__info {
+
+      > div {
+        margin-top: 8px;
+      }
+
+      > button {
+        font-size: 9px;
+        padding: 7px 9px;
+      }
+
+      &__address {
+
+        > span {
+          font-size: 13px;
+        }
+
+        > div {
+          margin-top: 9px;
+
+          span {
+            font-size: 11px;
+          }
+
+        }
+
+      }
+
+      &__actions {
+        min-height: 24px;
+
+        button {
+
+          img {
+            max-height: 9px;
+          }
+
+          span {
+            font-size: 10px;
+          }
+
+        }
+
+        > button:last-child {
+          margin-left: 36px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+

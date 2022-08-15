@@ -63,15 +63,12 @@ export class ShoppingCartComponent implements OnInit {
     try {
       let user = this.userService.user$.getValue()
       if (user) {
-        console.log('user without request')
         await this.cartService.recountTotalCostWithUserAndUpdatedPrices(user)
       } else {
         user = await this.userService.getUser()
         if (user) {
-          console.log('user with request')
           await this.cartService.recountTotalCostWithUserAndUpdatedPrices(user)
         } else {
-          console.log('guest')
           await this.cartService.recountTotalCostWithGuest(this.cartService.storage())
         }
       }
@@ -208,9 +205,10 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   recountTotalWeight(details: DetailInterface[]) {
-    this.totalWeight = details.reduce((total, i) => {
-      return total = total + (i.weight * i.quantity!)
-    }, 0)
+    this.totalWeight = +details.reduce((total, i) => {
+      total = total + (i.weight * i.quantity!)
+      return total
+    }, 0).toFixed(3)
   }
 
   //-------------------------------------------------Действия с DOM-----------------------------------------------------

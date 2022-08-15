@@ -38,6 +38,7 @@ import {WaitingItem} from "./entities/waiting-item.entity";
 import {RegistrationUserDto} from "../auth/dto/registration-user.dto";
 import {commentCreateString, convertingNumbersToDigits, customerCreateString} from "../utils/utils";
 import {RequestHistoryUpdateDto} from "./dto/request-history-update.dto";
+import {ChangeUserPasswordDto} from "./dto/change-user-password.dto";
 
 @Injectable()
 export class UsersService {
@@ -141,8 +142,19 @@ export class UsersService {
     await this.userRepository.update(user.id, {restorePasswordToken: token})
   }
 
-  async changeUserPassword(user: User, hashedPassword: string) {
+  async newUserPassword(user: User, hashedPassword: string) {
     await this.userRepository.update(user.id, {password: hashedPassword, restorePasswordToken: null})
+  }
+
+  async changeUserPassword(user: User, data: ChangeUserPasswordDto) {
+    const userCredential = await this.getById(user.id)
+    const passwordMatching = await bcrypt.compare(data.currentPassword, userCredential.password)
+    if (!passwordMatching) {
+      throw new HttpException('Старый пароль не верный', HttpStatus.FORBIDDEN)
+    }
+    const newHashedPassword = await bcrypt.hash(data.newPassword, 10)
+    await this.userRepository.update(user.id, {password: newHashedPassword})
+    return await this.getById(user.id)
   }
 
   //--------------------------------------------Работа с токенами обновления (Refresh token)---------------------------------------
@@ -514,7 +526,7 @@ export class UsersService {
           finalWeight: detail.weight * cartItemData.quantity,
           detail: detail
         })
-        await this.cartItemRepository.save(newCartItem)
+        const test = await this.cartItemRepository.save(newCartItem)
       } else {
         await this.recount(cartItemData.quantity, duplicateItemId)
       }
@@ -560,8 +572,8 @@ export class UsersService {
       WHERE sh_c.id = ${shoppingCartId}
     `)
     await this.shoppingCartRepository.update(shoppingCartId, {
-      totalCost: result[0].totalcost | 0,
-      totalWeight: result[0].totalweight | 0
+      totalCost: !!result[0].totalcost ? result[0].totalcost : 0,
+      totalWeight: !!result[0].totalweight ? result[0].totalweight : 0
     })
   }
 
@@ -591,6 +603,10 @@ export class UsersService {
 
     if (orderData.customer === 'Юр.лицо' && !orderData.requisites) {
       throw new HttpException('Заполните данные о вашей компании', HttpStatus.BAD_REQUEST)
+    }
+
+    if (userCredentials.shoppingCart.totalCost <= 0 || userCredentials.shoppingCart.cartItem.length === 0) {
+      throw new HttpException('Ваша корзина пуста', HttpStatus.BAD_REQUEST)
     }
 
     const newOrder = await this.orderRepository.create({

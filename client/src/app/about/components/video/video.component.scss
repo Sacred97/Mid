@@ -24,3 +24,46 @@
   }
 
 }
+
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .video {
+    width: 93%;
+
+    div {
+      margin-bottom: 30px;
+      padding: 15px;
+
+      iframe {
+        height: 300px;
+      }
+
+    }
+
+  }
+
+
+}
+
+@media (max-width: 550px) {
+
+
+  .video {
+
+    div {
+
+      iframe {
+        height: 200px;
+      }
+
+    }
+
+  }
+
+
+}

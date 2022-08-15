@@ -398,10 +398,11 @@
       background-color: transparent;
       border: 2px solid $yellow;
       border-radius: 10px;
-      color: $black;
+      text-transform: uppercase;
+      color: $violet;
       font-size: 22px;
       line-height: 1;
-      font-family: "Museo Sans Cyrl 300";
+      font-family: "Museo Sans Cyrl 500";
       cursor: pointer;
 
       &:hover {
@@ -452,6 +453,7 @@
   h1 {
     width: fit-content;
     margin: 0 auto 19px;
+    text-align: center;
     color: $violet;
     font-size: 24px;
     line-height: 1;
@@ -491,6 +493,444 @@
 
     button {
       width: 49%;
+    }
+
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .cart {
+    margin: 0 0 10px;
+
+    &__header {
+      display: block;
+      justify-content: unset;
+      align-items: unset;
+
+      h1 {
+        width: 100%;
+        padding: 14px 22px;
+        margin-bottom: 5px;
+        background-color: $grey_easy;
+        font-size: 22px;
+        color: $black;
+        font-family: "Museo Sans Cyrl 300";
+      }
+
+      &__sort {
+        margin-right: 0;
+
+        > span {
+          font-size: 12px;
+        }
+
+        > button {
+          font-size: 12px;
+        }
+
+      }
+
+    }
+
+    &__result {
+      margin: 15px auto 0;
+      width: 93%;
+
+      &__number {
+        display: none;
+      }
+
+      &__image {
+        flex-basis: 10%;
+
+        img {
+          max-height: 42px;
+        }
+      }
+
+      &__title {
+        flex-basis: 36%;
+        padding-left: 5px;
+        margin-left: 0;
+
+        a {
+          margin-bottom: 4px;
+          font-size: 11px;
+        }
+
+        span {
+          font-size: 9px;
+        }
+
+      }
+
+      &__price {
+        padding-left: 5px;
+        flex-basis: 16%;
+
+        > span:first-child {
+          font-size: 11px;
+        }
+
+        > span:last-child {
+          margin-top: 4px;
+          font-size: 9px;
+        }
+
+      }
+
+      &__quantity {
+        flex-basis: 12%;
+
+        input {
+          font-size: 14px;
+        }
+
+      }
+
+      &__total {
+        flex-basis: 24%;
+        padding-left: 5px;
+        font-size: 11px;
+      }
+
+      &__remove {
+        flex-basis: 2%;
+
+        button {
+          font-size: 18px;
+        }
+      }
+
+    }
+
+  }
+
+  .cart-info {
+    width: 93%;
+    margin: 0 auto 30px;
+
+    > button {
+      font-size: 16px;
+    }
+
+    > span {
+      margin: 0 0 6px auto;
+    }
+
+    > span:nth-child(2) {
+      font-size: 19px;
+    }
+
+    > span:nth-child(3) {
+      font-size: 16px;
+    }
+
+    div {
+      width: fit-content;
+      max-width: unset;
+
+      button {
+        width: unset;
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+
+      small {
+        font-size: 9px;
+      }
+
+    }
+
+  }
+
+  .confirm-modal-window {
+    max-width: unset;
+    width: 80%;
+    padding: 18px;
+
+    h1 {
+      font-size: 22px;
+    }
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .cart {
+    margin: 0 0 7px;
+
+    &__header {
+
+      h1 {
+        font-size: 18px;
+      }
+
+      &__sort {
+
+        > span {
+          font-size: 10px;
+        }
+
+        > button {
+          font-size: 10px;
+        }
+
+      }
+
+    }
+
+    &__result {
+      margin: 12px auto 0;
+
+      &__image {
+
+        img {
+          max-height: 35px;
+        }
+      }
+
+      &__title {
+
+        a {
+          font-size: 9px;
+        }
+
+        span {
+          font-size: 8px;
+        }
+
+      }
+
+      &__price {
+
+        > span:first-child {
+          font-size: 8.5px;
+        }
+
+        > span:last-child {
+          font-size: 7.5px;
+        }
+
+      }
+
+      &__quantity {
+
+        input {
+          font-size: 11px;
+        }
+
+      }
+
+      &__total {
+        padding-left: 0;
+        font-size: 8.5px;
+      }
+
+      &__remove {
+
+        button {
+          font-size: 13px;
+        }
+      }
+
+    }
+
+  }
+
+  .cart-info {
+    margin: 0 auto 23px;
+
+    > button {
+      font-size: 14px;
+    }
+
+    > span {
+      margin: 0 0 6px auto;
+    }
+
+    > span:nth-child(2) {
+      font-size: 16px;
+    }
+
+    > span:nth-child(3) {
+      font-size: 14px;
+    }
+
+    div {
+
+      button {
+        font-size: 11px;
+      }
+
+      small {
+        font-size: 8px;
+      }
+
+    }
+
+  }
+
+  .confirm-modal-window {
+    padding: 14px;
+
+    h1 {
+      font-size: 18px;
+    }
+
+    button {
+      padding: 8px 0;
+      font-size: 11px;
+    }
+
+    div {
+
+      button {
+        width: 40%;
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .cart {
+    margin: 0 0 6px;
+
+    &__header {
+
+      h1 {
+        font-size: 14px;
+      }
+
+      &__sort {
+
+        > span {
+          font-size: 10px;
+        }
+
+        > button {
+          font-size: 10px;
+        }
+
+      }
+
+    }
+
+    &__result {
+      margin: 10px auto 0;
+
+      &__image {
+
+        img {
+          max-height: 28px;
+        }
+      }
+
+      &__title {
+
+        a {
+          font-size: 7px;
+        }
+
+        span {
+          font-size: 6px;
+        }
+
+      }
+
+      &__price {
+
+        > span:first-child {
+          font-size: 6.5px;
+        }
+
+        > span:last-child {
+          font-size: 6px;
+        }
+
+      }
+
+      &__quantity {
+
+        input {
+          font-size: 9px;
+        }
+
+      }
+
+      &__total {
+        font-size: 7px;
+      }
+
+      &__remove {
+
+        button {
+          font-size: 9px;
+        }
+      }
+
+    }
+
+  }
+
+  .cart-info {
+    margin: 0 auto 18px;
+
+    > button {
+      font-size: 11px;
+    }
+
+    > span {
+      margin: 0 0 3px auto;
+    }
+
+    > span:nth-child(2) {
+      font-size: 13px;
+    }
+
+    > span:nth-child(3) {
+      font-size: 13px;
+    }
+
+    div {
+
+      button {
+        font-size: 9px;
+      }
+
+      small {
+        font-size: 7px;
+      }
+
+    }
+
+  }
+
+  .confirm-modal-window {
+    padding: 14px;
+
+    h1 {
+      font-size: 18px;
+    }
+
+    button {
+      padding: 8px 0;
+      font-size: 11px;
+    }
+
+    div {
+
+      button {
+        width: 40%;
+      }
+
     }
 
   }

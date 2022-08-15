@@ -74,8 +74,62 @@
   z-index: 101;
 
   img {
+    display: block;
+    margin: 0 auto;
     max-width: 100%;
     max-height: 95vh;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .own-cert {
+    width: 93%;
+
+    &__certificates {
+      margin-bottom: 30px;
+      padding: 20px;
+
+      > div {
+        gap: 10px 0;
+        margin-bottom: 20px;
+
+        > div {
+          flex-basis: 50%;
+          width: 50%;
+          height: 200px;
+
+          img {
+            max-height: 200px;
+          }
+
+        }
+
+      }
+
+      > button {
+        padding: 10px 30px;
+        font-size: 15px;
+      }
+
+    }
+
+  }
+
+  .own-cert-modal {
+    position: absolute;
+    z-index: 101;
+
+    img {
+      max-width: 80%;
+      max-height: 95vh;
+    }
+
   }
 
 }

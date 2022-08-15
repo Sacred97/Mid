@@ -97,6 +97,7 @@ import { OfferComponent } from './buyer/components/offer/offer.component';
 import { PrivacyPolicyComponent } from './buyer/components/privacy-policy/privacy-policy.component';
 import { ExportDepartamentComponent } from './contacts/components/export-departament/export-departament.component';
 import { SupplierComponent } from './supplier/supplier.component';
+import { FavoriteGuestComponent } from './favorite-guest/favorite-guest.component';
 
 
 @NgModule({
@@ -187,6 +188,7 @@ import { SupplierComponent } from './supplier/supplier.component';
     PrivacyPolicyComponent,
     ExportDepartamentComponent,
     SupplierComponent,
+    FavoriteGuestComponent,
   ],
     imports: [
       BrowserModule,

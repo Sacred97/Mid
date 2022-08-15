@@ -263,3 +263,243 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+  }
+
+  .supplier {
+    width: 93%;
+    margin: 0 auto 30px;
+
+    > div {
+      justify-content: unset;
+      flex-direction: column-reverse;
+      gap: 20px 0;
+
+      > div, > form {
+        padding: 25px;
+      }
+
+      > div {
+        flex-basis: 100%;
+
+        > h1 {
+          font-size: 20px;
+        }
+
+        > ul {
+
+          li {
+
+          }
+
+        }
+
+        > span {
+        }
+
+      }
+
+      > form {
+        flex-basis: 100%;
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .supplier {
+
+    > div {
+
+      > div {
+
+        > h1 {
+          font-size: 18px;
+        }
+
+        > ul {
+          margin: 15px 0;
+
+          li {
+            font-size: 16px;
+          }
+
+        }
+
+        > span {
+          font-size: 16px;
+        }
+
+      }
+
+      > form {
+
+        > h1 {
+          font-size: 20px;
+        }
+
+        > p {
+          font-size: 13px;
+
+          b {
+            font-size: 13px;
+          }
+
+        }
+
+        > label {
+
+          input[type="number"], input[type="text"], input[type="email"], textarea {
+            font-size: 13px;
+          }
+
+        }
+
+        > div {
+
+          > span {
+            font-size: 13px;
+          }
+
+          > label {
+
+            span {
+              font-size: 13px;
+            }
+
+          }
+
+        }
+
+        > label:nth-child(15) {
+
+          > span {
+            font-size: 10px;
+
+            a {
+              font-size: 10px;
+            }
+
+          }
+
+        }
+
+        > button {
+          font-size: 13px;
+        }
+
+        > small {
+          margin: 3px auto 0;
+          font-size: 9px;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .supplier {
+
+    > div {
+
+      > div {
+
+        > h1 {
+          font-size: 16px;
+        }
+
+        > ul {
+          margin: 10px 0;
+
+          li {
+            font-size: 13px;
+          }
+
+        }
+
+        > span {
+          font-size: 13px;
+        }
+
+      }
+
+      > form {
+
+        > h1 {
+          font-size: 16px;
+        }
+
+        > p {
+          font-size: 11px;
+
+          b {
+            font-size: 11px;
+          }
+
+        }
+
+        > label {
+
+          input[type="number"], input[type="text"], input[type="email"], textarea{
+            font-size: 11px;
+          }
+
+        }
+
+        > div {
+
+          > span {
+            font-size: 11px;
+          }
+
+          > label {
+
+            span {
+              font-size: 11px;
+            }
+
+          }
+
+        }
+
+        > label:nth-child(15) {
+
+          > span {
+            font-size: 9px;
+
+            a {
+              font-size: 9px;
+            }
+
+          }
+
+        }
+
+        > button {
+          font-size: 11px;
+        }
+
+        > small {
+            font-size: 7px;
+        }
+
+      }
+
+    }
+
+  }
+
+}

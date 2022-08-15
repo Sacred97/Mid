@@ -158,7 +158,10 @@ export class ManufacturerComponent implements OnInit {
 
   searchManufacturer(event: Event) {
     const $target = event.target as HTMLInputElement
-    console.log($target.value.trim())
+    if (!$target.value.trim()) {
+      this.searchList = []
+      return
+    }
     this.manufacturerService.search($target.value.trim())
       .then(data => {
         console.log(data);

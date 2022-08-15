@@ -28,10 +28,10 @@ export class OneCService {
             'Content-Type': 'application/json; charset=utf-8'
         }
 
-        const ipVnutrenii: string = '172.16.1.35:8787'
-        let ipVneshnii = '95.78.125.227:8787'
+        const ipVnutrenii: string = '172.16.1.35:3000'
+        let ipVneshnii = '95.78.125.227:3000'
 
-        await this.http.post('http://95.78.125.227:8787/midkam/hs/eds/', order, {headers: headerOptions})
+        await this.http.post('http://95.78.125.227:3000', order, {headers: headerOptions})
             .toPromise().catch((error) => {
                 console.log(error);
             })
