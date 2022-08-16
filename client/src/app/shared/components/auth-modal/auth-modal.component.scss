@@ -24,9 +24,15 @@
     font-family: 'Museo Sans Cyrl 100';
     font-size: 20px;
     color: $grey_normal;
+    border: 0;
     border-bottom: 1px solid $black;
+    border-radius: 0;
     padding: 2px 6px;
     width: 100%;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   input[type='checkbox'] {

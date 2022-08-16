@@ -12,7 +12,6 @@
 
 body {
   position: relative;
-  //background-image: url("assets/header/background.jpg");
 }
 
 blockquote {
@@ -75,7 +74,7 @@ input[type=number]::-webkit-outer-spin-button {
   width: 100%;
   margin: 0 auto 50px auto;
 
-  >div {
+  > div {
     width: 100%;
     display: flex;
     justify-content: space-between;

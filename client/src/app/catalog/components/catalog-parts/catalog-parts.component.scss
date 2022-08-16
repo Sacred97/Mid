@@ -81,3 +81,27 @@
 .catalog-type-container>div>div:last-child>div:last-child {
   margin-top: auto;
 }
+
+@media (max-width: 768px) {
+
+  .catalog-type-container {
+    width: 93%;
+    margin: 0 auto 30px;
+  }
+
+  .catalog-type-avto-column {
+    flex-basis: unset;
+    width: 100%;
+    gap: 10px 0;
+
+    > div {
+      margin-top: 0 !important;
+    }
+
+    &__item {
+
+    }
+
+  }
+
+}

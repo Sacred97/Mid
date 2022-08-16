@@ -16,7 +16,7 @@ export class PresentationService {
   }
 
   download(fileName: string) {
-    const url = environment.apiUrl + 'presentation/download?fileName=' + fileName
+    const url = environment.apiUrl + 'presentation/download/' + fileName
     return this.http.get(url, {withCredentials: true, responseType: "text"})
   }
 

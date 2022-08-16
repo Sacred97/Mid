@@ -1,4 +1,4 @@
-import {Controller, Get, Query, Res} from '@nestjs/common';
+import {Controller, Get, Param, Query, Res} from '@nestjs/common';
 import {PresentationService} from "./presentation.service";
 import {Response} from 'express'
 import {createReadStream} from "fs";
@@ -15,8 +15,8 @@ export class PresentationController {
         return this.presentationService.returnFileName()
     }
 
-    @Get('download')
-    returnFile(@Res() response: Response, @Query('fileName') fileName: string) {
+    @Get('download/:fileName')
+    returnFile(@Res() response: Response, @Param('fileName') fileName: string) {
         const contentType = this.presentationService.contentTypeOfFile(fileName)
         const file = createReadStream(path.join(__dirname, 'files', fileName))
         const dispositionValue = 'attachment; filename=' + fileName
