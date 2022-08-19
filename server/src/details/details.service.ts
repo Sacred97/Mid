@@ -155,8 +155,8 @@ export class DetailsService {
     })
 
     saleDetails.forEach(i => {
-      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? 1
-          : a.isMain === b.isMain ? 0 : -1)
+      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? -1
+          : a.isMain === b.isMain ? 0 : 1)
     })
 
     const recentCount = await this.detailRepository.count({where: {isPopular: true}})
@@ -168,8 +168,8 @@ export class DetailsService {
     })
 
     recentDetails.forEach(i => {
-      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? 1
-          : a.isMain === b.isMain ? 0 : -1)
+      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? -1
+          : a.isMain === b.isMain ? 0 : 1)
     })
 
     const newCount = await this.detailRepository.count({where: {isNewDetail: true}})
@@ -181,8 +181,8 @@ export class DetailsService {
     })
 
     newDetails.forEach(i => {
-      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? 1
-          : a.isMain === b.isMain ? 0 : -1)
+      i.photoDetail.sort((a, b) => a.isMain > b.isMain ? -1
+          : a.isMain === b.isMain ? 0 : 1)
     })
 
     return {new: newDetails, recent: recentDetails, sale: saleDetails}

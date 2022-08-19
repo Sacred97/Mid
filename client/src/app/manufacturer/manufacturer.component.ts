@@ -77,6 +77,7 @@ export class ManufacturerComponent implements OnInit {
   private request(data: LocationInterface, offset: number, limit: number, getMore: boolean = false) {
     this.manufacturerService.getWithFilter(data, offset, limit)
       .then(data => {
+        console.log(data.items)
         this.total = data.count
         this.max = this.page === Math.ceil(this.total / 24)
         if (getMore) {
@@ -114,6 +115,7 @@ export class ManufacturerComponent implements OnInit {
     this.latin.forEach(l => l.checked = false)
     this.cyrillic.forEach(l => l.checked = false)
     this.filter.letter = ''
+    this.page = 1
     this.request(this.filter, 0, 24)
   }
 
@@ -132,6 +134,7 @@ export class ManufacturerComponent implements OnInit {
         })
     }
     this.filter.country = 0
+    this.page = 1
     this.removeClass(event)
     this.request(this.filter, 0, 24)
   }

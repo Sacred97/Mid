@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # FOR PRODUCTION
-# RUN ng build --prod
+RUN ng build --prod
 
 FROM nginx:alpine AS production
 

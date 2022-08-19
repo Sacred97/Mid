@@ -379,18 +379,25 @@ input[type=number]::-webkit-outer-spin-button {
       width: 100%;
       margin-bottom: 15px;
 
-      span {
+      span, a {
         display: block;
-        color: $black;
         font-size: 14px;
         line-height: 1;
-        font-weight: 300;
-        font-family: "Museo Sans Cyrl 300";
       }
 
-      > span:first-child {
+      > span {
+        color: $black;
         font-weight: 500;
         font-family: "Museo Sans Cyrl 500";
+      }
+
+      a {
+        color: $violet;
+        font-weight: 300;
+        font-family: "Museo Sans Cyrl 300";
+        &:hover {
+          color: $violet-hover;
+        }
       }
 
       small {
@@ -421,7 +428,7 @@ input[type=number]::-webkit-outer-spin-button {
 
       li {
 
-        span {
+        span, a {
           font-size: 20px;
         }
 
@@ -446,7 +453,7 @@ input[type=number]::-webkit-outer-spin-button {
 
       li {
 
-        span {
+        span, a {
           font-size: 18px;
         }
 
@@ -471,7 +478,7 @@ input[type=number]::-webkit-outer-spin-button {
 
       li {
 
-        span {
+        span, a {
           font-size: 16px;
         }
 

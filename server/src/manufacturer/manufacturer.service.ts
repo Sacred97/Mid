@@ -36,6 +36,22 @@ export class ManufacturerService {
     //-----------------------------------------Фильтры по производителю-------------------------------------------------
 
     async filterManufacturer(filter?: ManufacturerFilterDto, offset: number = 0, limit: number = 24) {
+
+        if (!filter || (filter.region === 0 && filter.country === 0 && filter.letter === '')) {
+            const itemWithoutFilter = await this.manufacturerRepository.query(
+                'SELECT m.id, "nameCompany", m."shortName", "logoCompanyUrl", country."country", ' +
+                'region."region" from manufacturer m ' +
+                'left join country ON m."countryId" = country.id ' +
+                'left join region on country."regionId" = region.id ' +
+                'order by ' +
+                'FIND_IN_SET(upper(left(m."nameCompany", 1)), \'А,Б,В,Г,Д,Е,Ё,Ж,З,И,К,Л,М,Н,О,П,Р,С,Т,У,Ф,Х,Ч,Ш,Щ,Э,Ю,Я,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\'), m."nameCompany" ' +
+                `LIMIT ${limit} OFFSET ${offset + 1}`)
+
+            const countWithoutFilter = await this.manufacturerRepository.count()
+
+            return {items: itemWithoutFilter, count: countWithoutFilter}
+        }
+
         const query: string = (filter.region ? `region.id = ${filter.region}` : '') +
             (filter.region && filter.country ? ' AND ' : '') +
             (filter.country ? `country.id = ${filter.country}` : '') +
