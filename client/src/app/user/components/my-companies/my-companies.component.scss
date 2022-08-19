@@ -847,6 +847,14 @@
   justify-content: center;
 }
 
+@media (min-width: 1200px) and (max-width: 1300px) {
+
+  .modal-act-content {
+    width: 40%;
+  }
+
+}
+
 @media (max-width: 768px) {
 
   .modal-content {

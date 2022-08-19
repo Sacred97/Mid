@@ -323,6 +323,18 @@
   }
 }
 
+@media (min-width: 1200px) and (max-width: 1300px) {
+
+  .sort {
+
+    &__cyrillic, &__latin, &__search {
+      flex-basis: 49%;
+    }
+
+  }
+
+}
+
 @media (max-width: 768px) {
 
   .breadcrumbs {

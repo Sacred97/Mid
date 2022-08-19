@@ -79,6 +79,13 @@
 
     <div class="search-bar__bar">
 
+      <div>
+        <button (click)="showCityModal()">
+          <img src="../../../../assets/header/geoposition.svg" alt="">
+          <span>{{getCity()}}</span>
+        </button>
+      </div>
+
       <ul>
         <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'popular'})">Новинки</a></li>
         <li><a (click)="onSamePage(['/', 'catalog'],{quickFilter: 'recent'})">Рекомендуем</a></li>
@@ -124,7 +131,7 @@
         <div>Каталог товаров</div>
       </button>
 
-      <ul [style.transform]="active?'scaleY(1)':'scaleY(0)'">
+      <ul [ngClass]="{'active-burger': active}">
 
 <!--        <li *ngFor="let using of detailMenu">-->
 <!--          <a>-->

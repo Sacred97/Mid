@@ -34,6 +34,20 @@ export class PresentationComponent implements OnInit {
         downloadLink.setAttribute('download', fileName)
         document.body.appendChild(downloadLink)
         downloadLink.click()
+
+        // let binaryString = window.atob(file);
+        // let binaryLen = binaryString.length;
+        // let bytes = new Uint8Array(binaryLen);
+        //
+        // for (let i = 0; i < binaryLen; i++) {
+        //   let ascii = binaryString.charCodeAt(i);
+        //   bytes[i] = ascii;
+        // }
+        //
+        // let blob = new Blob([bytes], {type: "application/pdf"});
+        // let link = URL.createObjectURL(blob);
+        // window.open(link, '_blank');
+
       }, error => {
         console.log(error);
       })

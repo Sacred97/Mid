@@ -252,30 +252,32 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
       }
     })
 
-    navigator.geolocation.getCurrentPosition(position => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+    if (!localStorage.getItem('city')) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
 
-      const headers = {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": "Token " + environment.daDataConfig.apiKey
-      }
-      const body = {lat: latitude, lon: longitude}
-      this.http.post<DaDataResponse>('https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
-        JSON.stringify(body), {headers: headers}).toPromise()
-        .then(response => {
-          const city = response.suggestions[0].data.city
-          const candidate = this.cityList.find(i => i.city.toLowerCase() === city.toLowerCase())
-          if (candidate) {
-            localStorage.setItem('city', JSON.stringify({city: candidate.city, cityTo: candidate.cityTo}))
-          } else {
-            localStorage.setItem('city', JSON.stringify({city: 'Набережные Челны', cityTo: 'Набережные Челны'}))
-          }
-        }, error => {
-          console.log(error);
-        })
-    })
+        const headers = {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": "Token " + environment.daDataConfig.apiKey
+        }
+        const body = {lat: latitude, lon: longitude}
+        this.http.post<DaDataResponse>('https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address',
+          JSON.stringify(body), {headers: headers}).toPromise()
+          .then(response => {
+            const city = response.suggestions[0].data.city
+            const candidate = this.cityList.find(i => i.city.toLowerCase() === city.toLowerCase())
+            if (candidate) {
+              localStorage.setItem('city', JSON.stringify({city: candidate.city, cityTo: candidate.cityTo}))
+            } else {
+              localStorage.setItem('city', JSON.stringify({city: 'Набережные Челны', cityTo: 'Набережные Челны'}))
+            }
+          }, error => {
+            console.log(error);
+          })
+      })
+    }
 
     this.userSub$ = this.userService.user$.subscribe(user => {
       if (user) {

@@ -305,6 +305,15 @@
 
       > form {
         flex-basis: 100%;
+
+        > h1 {
+          margin-bottom: 10px;
+        }
+
+        > p {
+          display: none;
+        }
+
       }
 
     }
@@ -344,15 +353,6 @@
 
         > h1 {
           font-size: 20px;
-        }
-
-        > p {
-          font-size: 13px;
-
-          b {
-            font-size: 13px;
-          }
-
         }
 
         > label {
@@ -440,15 +440,6 @@
 
         > h1 {
           font-size: 16px;
-        }
-
-        > p {
-          font-size: 11px;
-
-          b {
-            font-size: 11px;
-          }
-
         }
 
         > label {

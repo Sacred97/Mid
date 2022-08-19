@@ -1195,6 +1195,7 @@
           -webkit-line-clamp: 4;
           -webkit-box-orient: vertical;
           overflow: hidden;
+          word-break: break-word;
           color: $grey_normal;
           font-size: 12px;
           line-height: 1;
@@ -1708,6 +1709,67 @@
   background-color: $yellow;
   border: none;
   pointer-events: none;
+}
+
+@media (min-width: 1200px) and (max-width: 1300px) {
+
+  .catalog {
+
+    &__quick-search {
+
+      > div:first-child {
+        flex-basis: 57%;
+        gap: 10px 5px;
+
+        label {
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+
+      > div:last-child {
+        flex-basis: 40%;
+      }
+
+    }
+
+    &__display-main {
+
+      &__to-order {
+
+        > div:first-child {
+
+          > div:first-child {
+            width: 90px;
+          }
+
+        }
+
+      }
+
+    }
+
+    &__display-analog {
+
+      &__title {
+        flex-basis: 32%;
+        padding-right: 10px;
+      }
+
+      &__quantity {
+        flex-basis: 12%;
+
+        >div:first-child {
+          width: 68px;
+        }
+
+      }
+
+    }
+
+  }
+
 }
 
 @media (max-width: 767px) {

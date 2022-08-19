@@ -312,6 +312,14 @@
   justify-content: center;
 }
 
+@media (min-width: 1200px) and (max-width: 1300px) {
+
+  .modal-content {
+    width: 33%;
+  }
+
+}
+
 @media (max-width: 768px) {
 
   .my-contacts {

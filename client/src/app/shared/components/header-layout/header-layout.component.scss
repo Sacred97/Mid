@@ -388,6 +388,10 @@ header {
     flex-wrap: wrap;
     flex-basis: 73.5%;
 
+    > div {
+      display: none;
+    }
+
     > ul {
       flex-basis: 100%;
       list-style: none;
@@ -600,6 +604,10 @@ header {
 
       }
 
+    }
+
+    ul.active-burger {
+      transform: scaleY(1);
     }
 
   }
@@ -1838,6 +1846,224 @@ footer {
 
 .mobile-menu-active {
   left: 0;
+}
+
+@media (min-width: 1200px) and (max-width: 1300px) {
+
+  .navbar {
+
+    &__phone {
+
+      span {
+        display: none;
+      }
+
+      a {
+        margin-left: 0;
+      }
+    }
+
+  }
+
+  .bucket {
+
+    > button {
+      margin-right: 3px;
+      padding: 12px 5px;
+    }
+
+    > a {
+      margin-right: 3px;
+      padding: 3.5px 4px;
+    }
+
+  }
+
+  .search-bar {
+
+    > a {
+      flex-basis: 29%;
+
+      img {
+        max-width: 100%;
+      }
+
+    }
+
+    &__bar {
+      flex-basis: 70%;
+
+      > div {
+        display: block;
+        flex-basis: 100%;
+
+        button {
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          margin: 0 20px 7px auto;
+          background: transparent;
+          border: none;
+          outline: none;
+          cursor: pointer;
+
+          img {
+            max-width: 15px;
+          }
+
+          span {
+            display: block;
+            width: fit-content;
+            margin-left: 5px;
+            color: $black;
+            font-size: 15px;
+            line-height: 1;
+            font-family: 'Museo Sans Cyrl 300';
+          }
+
+          &:hover {
+            span {
+              text-decoration: underline;
+            }
+          }
+
+        }
+
+      }
+
+      > ul {
+
+        > li:last-child {
+          display: none;
+        }
+
+      }
+
+      > form {
+
+        input {
+          width: 84%;
+        }
+
+        button {
+          width: 16%;
+        }
+
+      }
+
+    }
+
+  }
+
+  footer {
+
+    > div:nth-child(2) {
+
+      > div {
+
+        ul {
+
+          li {
+            width: 50%;
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  .catalog-bar {
+
+    &__catalog-menu {
+      flex-basis: unset;
+
+      > button {
+        padding: 23px 20px;
+
+        > div:last-child {
+          display: none;
+        }
+      }
+
+      > ul {
+        width: 350px;
+        top: 0;
+        left: 100%;
+        transform: scaleX(0);
+        transform-origin: left;
+      }
+
+      ul.active-burger {
+        transform: scaleX(1);
+      }
+
+    }
+
+    &__quick-filters {
+      flex-basis: 92%;
+    }
+
+  }
+
+  .hidden-header {
+
+    &__navbar {
+
+      &__phone {
+        font-size: 18px;
+      }
+
+      &__bucket {
+        flex-basis: 17.5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        background-color: $grey_easy;
+
+        > span {
+          color: $black;
+          text-transform: uppercase;
+          font-size: 15px;
+          line-height: 1;
+          font-weight: 700;
+          font-family: "Museo Sans Cyrl 700";
+        }
+
+        div {
+          width: 22px;
+          height: 22px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: $yellow;
+          border-radius: 50%;
+          margin: 0 6px;
+          span {
+            color: $violet;
+            font-size: 15px;
+            line-height: 1;
+            font-weight: 300;
+            font-family: "Museo Sans Cyrl 300";
+          }
+        }
+
+        a {
+          color: $black;
+          font-size: 15px;
+          line-height: 1;
+          font-family: "Museo Sans Cyrl 500", Arial, sans-serif;
+        }
+
+      }
+
+    }
+
+  }
+
 }
 
 @media (max-width: 767px) {

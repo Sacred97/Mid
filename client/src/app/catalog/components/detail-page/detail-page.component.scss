@@ -981,6 +981,22 @@
 
 }
 
+@media (min-width: 1200px) and (max-width: 1300px) {
+
+  .additional {
+
+    &__details-carousel {
+
+      &__title {
+        width: 65%;
+      }
+
+    }
+
+  }
+
+}
+
 @media (max-width: 767px) {
 
   .breadcrumbs {

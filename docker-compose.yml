@@ -111,7 +111,7 @@ volumes:
   pgadmin:
   pgdata:
 
-# ------------------------------------------------------------------------------For Production---------------------------------------------------------------------------------------
+# --------------------------------------------------For Production------------------------------------------------------
 
 #version: "3.7"
 #services:
@@ -124,9 +124,10 @@ volumes:
 #    volumes:
 #      - ./client:/usr/src/app
 #      - /usr/src/app/node_modules
+#      - ./ssl:/etc/nginx/ssl
 #    ports:
 #      - "80:80"
-#      - "4200:4200"
+#      - "443:443"
 #    networks:
 #      - webserver
 #    links:
@@ -137,14 +138,12 @@ volumes:
 #    container_name: server
 #    build:
 #      context: ./server
-#      target: development
 #      target: production
 #    volumes:
 #      - ./server:/usr/src/app
 #      - /usr/src/app/node_modules
 #    ports:
 #      - "3000:3000"
-#    command: npm run start:dev
 #    command: npm run start:prod
 #    env_file:
 #      - ./server/.env
@@ -163,7 +162,7 @@ volumes:
 #    ports:
 #      - "5432:5432"
 #    volumes:
-#      - ./data/postgres:/var/lib/postgresql/data
+##      - ./data/postgres:/var/lib/postgresql/data
 #      - pgdata:/var/lib/postgresql/data
 #    env_file:
 #      - ./server/.env

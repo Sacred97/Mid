@@ -376,6 +376,34 @@
   display: none;
 }
 
+@media (min-width: 1200px) and (max-width: 1300px) {
+
+  .slider-place {
+
+    &__selection {
+
+      button {
+        padding: 0 7px 19px;
+
+        span {
+          font-size: 15px;
+        }
+      }
+
+      button:nth-child(2) {
+        padding-left: 7px;
+        padding-right: 7px;
+      }
+      button:nth-child(3) {
+        padding-left: 7px;
+        padding-right: 7px;
+      }
+    }
+
+  }
+
+}
+
 //--Мобильная версия
 
 @media (max-width: 767px) {
