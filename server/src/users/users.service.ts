@@ -458,18 +458,37 @@ export class UsersService {
     if (!lists.length) return
 
     for (const list of lists) {
+      let data: {emails: string[], items: {id: string, name: string, vendorCode: string, price: string, url: string}[]} = {
+        emails: [], items: []
+      }
+      let onDelete: number[] = []
+
       for (const item of list.waitingItem) {
         const max: number = Math.max(item.detail.storageGES, item.detail.storageOrlovka, item.detail.storageGarage2000)
         if (max === -10) continue;
+        const detail = await this.detailsService.getDetailById(item.detail.id)
+        const photo = detail.photoDetail.find(i => i.isMain)
+        const url = photo ? photo.url : ''
+        const price = new Intl.NumberFormat('ru-RU', {
+          currency: 'rub',
+          style: 'currency'
+        }).format(item.detail.price)
+        data.items.push({id: detail.id, name: detail.name, vendorCode: detail.vendorCode, price: price, url: url})
+        onDelete.push(item.id)
+      }
+
+      if (onDelete.length > 0) {
+        data.emails = list.emails.split(';')
         try {
-          await this.mailService.sendNotificationOfAdmissionDetail(
-              list.emails.split(';'), item.detail.name, item.detail.id
-          )
-          await this.waitingItemRepository.delete(item.id)
-        } catch (error) {
-          console.log(error);
+          await this.mailService.sendNotificationOfAdmissionDetail(data)
+          for (let d of onDelete) {
+            await this.waitingItemRepository.delete(d)
+          }
+        } catch (e) {
+          console.log(e);
         }
       }
+
     }
 
   }

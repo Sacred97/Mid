@@ -128,6 +128,9 @@ export class ManufacturerComponent implements OnInit {
       this.manufacturerService.getCountries(this.filter.region)
         .then(data => {
           this.country = data.map(c => ({id: c.id, label: c.country}))
+            .sort((a, b) => {
+              return a.label > b.label ? 1 : a.label < b.label ? -1 : 0
+            })
         }, error => {
           console.log(error);
           this.country = []

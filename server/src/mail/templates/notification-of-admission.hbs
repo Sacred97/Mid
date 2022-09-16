@@ -1,13 +1,58 @@
 <div class="background">
 
-    <div class="container">
-        <img src="https://midkam-cloud.s3.eu-central-1.amazonaws.com/logo.svg" alt="Мидкам">
+    <div class="letter">
 
-        <h1>Поступление</h1>
+        <h1>Уважаемый клиент!</h1>
 
-        <p>Один из товаров на который вы были подписаны поступил в наличие</p>
+        <span>
+            Вы подписались на оповещение при поступлении товаров. <br/>
+            Следующие товары появились на складах:
+        </span>
 
-        <a href="http://midkam.pro/catalog/{{id}}">{{name}}</a>
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Фото</th>
+                    <th>Наименование</th>
+                    <th>Артикул</th>
+                    <th>Цена</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {{#items}}
+                <tr>
+                    <td>
+                        {{#if url}}
+                            <img src="{{url}}" alt="">
+                        {{else}}
+                            <span>Фото отсутсвует</span>
+                        {{/if}}
+                    </td>
+                    <td><a href="https://midkam.pro/catalog/{{id}}">{{name}}</a></td>
+                    <td>{{vendorCode}}</td>
+                    <td>{{price}}</td>
+                </tr>
+            {{/items}}
+            </tbody>
+
+        </table>
+
+        <span>Скорее добавляйте в корзину!</span>
+
+        <div class="footer">
+
+            <a href="https://midkam.pro">
+                <img src="https://706622.selcdn.ru/midkam_bucket/ForEmailLetter/Logo.svg" alt="">
+            </a>
+
+            <div>
+                <a href="tel:88007003132">8-800-700-31-32</a>
+            </div>
+
+        </div>
+
     </div>
 
 </div>
@@ -18,63 +63,136 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: Arial, sans-serif;
     }
 
     .background {
         width: 100%;
-        padding: 28px 0 47px;
-        background-color: #ebecec;
+        padding: 20px 0;
+        background-color: #DCDCDC;
     }
 
-    .container {
+    .letter {
+        width: 100%;
+        max-width: 600px;
         margin: 0 auto;
-        padding: 30px 30px 40px;
-        max-width: 532px;
-        background-color: #ffffff;
+        background-color: #fff;
+        padding: 20px;
     }
 
-    .container img {
-        display: block;
-        max-width: 100%;
-        max-height: 60px;
-        margin: 0 auto;
-    }
-
-    .container h1, .container p, .container a{
-        display: block;
-    }
-
-    .container h1{
-        margin-top: 39px;
-        margin-bottom: 21px;
-        font-family: 'Museo Sans Cyrl 700', 'Verdana', 'Geneva', sans-serif;
-        font-weight: 700;
+    .letter > h1 {
+        margin: 0 0 20px;
+        padding: 0;
         font-size: 20px;
-        line-height: 1;
     }
 
-    .container p{
-        font-family: 'Museo Sans Cyrl 500', 'Verdana', 'Geneva', sans-serif;
-        font-weight: 500;
-        font-size: 13px;
-        line-height: 1;
+    .letter > span:nth-child(2) {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 10px;
     }
 
-    .container a{
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-top: 10px;
-        color: #724684;
-        text-decoration: none;
-        font-size: 11px;
-        line-height: 1;
-        font-family: 'Museo Sans Cyrl 700', 'Verdana', 'Geneva', sans-serif;
+    .letter > span:nth-child(4) {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 60px;
+    }
+
+    .footer {
+        width: 100%;
+    }
+
+    .footer > a:first-child {
+        display: block;
+        float: left;
+        margin-right: auto;
+    }
+
+    .footer > a:first-child > img {
+        max-width: 100%;
+        max-height: 30px;
+    }
+
+    .footer > div:last-child {
+        width: fit-content;
+        height: 30px;
+        padding-top: 8px;
+        margin-left: auto;
+    }
+
+    .footer > div:last-child > a {
+        display: block;
+        font-size: 26px;
         font-weight: 700;
-        cursor: pointer;
+        color: #000;
+        text-decoration: none;
     }
 
-    .container a:hover {
-        color: rgba(114, 70, 132, 0.4);
+    .footer > div:last-child > a:hover {
+        text-decoration: underline;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid grey;
+        margin-bottom: 20px;
+    }
+
+    thead > tr > th {
+        text-align: center;
+    }
+
+    thead > tr > th:first-child {
+        width: 15%;
+    }
+
+    thead > tr > th:nth-child(2) {
+        width: 50%;
+    }
+
+    thead > tr > th:nth-child(3) {
+        width: 20%;
+    }
+
+    thead > tr > th:last-child {
+        width: 15%;
+    }
+
+    th, td {
+        border: 1px solid grey;
+    }
+
+    tbody > tr > td:first-child {
+        text-align: center;
+    }
+
+    tbody > tr > td:first-child > img {
+        max-width: 100%;
+    }
+
+    tbody > tr > td:nth-child(2) {
+        padding: 0 5px;
+    }
+
+    tbody > tr > td:nth-child(2) > a {
+        text-decoration: none;
+        color: #724684;
+        font-size: 14px;
+    }
+
+    tbody > tr > td:nth-child(2) > a:hover {
+        text-decoration: underline;
+    }
+
+    tbody > tr > td:nth-child(3) {
+        padding: 0 5px;
+
+    }
+
+    tbody > tr > td:last-child {
+        padding: 0 5px;
+        font-weight: 700;
     }
 
 </style>

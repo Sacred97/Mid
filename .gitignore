@@ -6,6 +6,7 @@ redis
 # compiled output
 /server/dist
 /server/node_modules
+/server/.env
 
 
 # Logs
@@ -18,7 +19,7 @@ redis
 
 # OS
 /server/.DS_Store
-#/server/*.env
+/server/*.env
 
 # Tests
 /server/coverage

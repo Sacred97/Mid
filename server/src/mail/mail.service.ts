@@ -109,14 +109,14 @@ export class MailService {
     await this.mailerService.sendMail(mailOptions)
   }
 
-  async sendNotificationOfAdmissionDetail(emails: string[], name: string, id: string) {
+  async sendNotificationOfAdmissionDetail(data: {emails: string[],
+    items: {id: string, name: string, vendorCode: string, price: string, url: string}[]}) {
     await this.mailerService.sendMail({
-      to: emails,
+      to: data.emails,
       subject: 'Оповещение о поступлении товара',
       template: __dirname+'/templates/notification-of-admission.hbs',
       context: {
-        name: name,
-        id: id
+        items: data.items
       },
       attachments: []
     })

@@ -26,6 +26,7 @@ import {AdditionalCodeUpdateDto} from "./dto/additional-code-update.dto";
 import {AdditionalCodeCreateDto} from "./dto/additional-code-create.dto";
 import {DetailPhotoUpdateDto} from "./dto/detail-photo-update.dto";
 import {DetailPhotoCreateDto} from "./dto/detail-photo-create.dto";
+import {AutoApplicability} from "../auto-applicability/auto-applicability.entity";
 
 
 @Injectable()
@@ -207,12 +208,21 @@ export class DetailsService {
 
   async getSearchedDetail(queryRequest: string, limit: number = 10, offset: number = 0) {
 
-    const query: string = `detail.isHide = false AND (
+    // Can remove this query
+    const pastQuery: string = `detail.isHide = false AND (
       detail.name ILIKE '%${queryRequest}%' OR 
       detail.vendorCode ILIKE '%${queryRequest}%' OR 
       alternative_name.shortName ILIKE '%${queryRequest}%' OR 
       additional_vendor_code.shortName ILIKE '%${queryRequest}%' OR 
       key_words.shortName ILIKE '%${queryRequest}%'
+      )`
+
+    const query: string = `detail.isHide = false AND (
+      to_tsvector(detail.name) @@ plainto_tsquery('${queryRequest}') OR 
+      to_tsvector(detail.vendorCode) @@ plainto_tsquery('${queryRequest}') OR 
+      to_tsvector(alternative_name.shortName) @@ plainto_tsquery('${queryRequest}') OR 
+      to_tsvector(additional_vendor_code.shortName) @@ plainto_tsquery('${queryRequest}') OR 
+      to_tsvector(key_words.shortName) @@ plainto_tsquery('${queryRequest}')
       )`
 
     const [items, count] = await getRepository(Detail).createQueryBuilder('detail')
@@ -337,9 +347,17 @@ export class DetailsService {
     }
 
     if (createData.autoApplicabilityString) {
-      const autoApplicabilityArray: string[] = createData.autoApplicabilityString.split(';')
-          .map(item => item.trim())
-      const applicability = await this.applicabilityService.findMany(autoApplicabilityArray)
+
+      let applicability: AutoApplicability[]
+
+      if (createData.autoApplicabilityString === 'Везде применяется') {
+        applicability = await this.applicabilityService.getAll()
+      } else {
+        const autoApplicabilityArray: string[] = createData.autoApplicabilityString.split(';')
+            .map(item => item.trim())
+        applicability = await this.applicabilityService.findMany(autoApplicabilityArray)
+      }
+
       const ids: { id: number }[] = applicability.map(item => {
         return {id: item.id}
       })
@@ -467,10 +485,15 @@ export class DetailsService {
     if (detail) {
       if (detail.photoDetail.length > 0) {
         for (let photo of detail.photoDetail) {
-          await this.filesService.removeSelectel(photo.key)
+          try {
+            await this.filesService.removeSelectel(photo.key)
+          } catch (error) {
+            console.log(error);
+          }
           await this.photoDetailRepository.delete(photo.id)
         }
       }
+      
       await this.detailRepository.delete(detail.id)
       await this.redisCacheService.deleteCacheKey(GET_DETAILS_CACHE_KEY)
       return {message: `Товар ${detail.name} с id ${id} удален`}
@@ -503,8 +526,16 @@ export class DetailsService {
 
       if (detail.photoDetail && detail.photoDetail.length > 0) {
         for (let item of detail.photoDetail) {
-          await this.filesService.removeSelectel(item.key)
-          await this.photoDetailRepository.delete(item.id)
+          try {
+            await this.filesService.removeSelectel(item.key)
+          } catch (error) {
+            console.log(error);
+          }
+          try {
+            await this.photoDetailRepository.delete(item.id)
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
       let quantityKeys = Object.keys(uploadData).length

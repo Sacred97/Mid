@@ -20,7 +20,7 @@ import { MailController } from './mail.controller';
         }
       },
       defaults: {
-        from: `"No Reply Midkam.ru" ${configService.get('MAIL_FROM')}`,
+        from: `"МИДКАМ" ${configService.get('MAIL_FROM')}`,
       },
       template: {
         dir: __dirname + '/templates/',
