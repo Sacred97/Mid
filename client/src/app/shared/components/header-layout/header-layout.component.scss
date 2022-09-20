@@ -475,7 +475,7 @@ header {
         z-index: 15;
         top: 75%;
         left: 0;
-        width: 79%;
+        width: 100%;
         background-color: #ffffff;
         box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 
@@ -486,20 +486,86 @@ header {
         li {
           width: 100%;
 
-          a {
+          > a {
             display: flex;
-            flex-direction: column;
-            padding: 15px;
+            align-items: center;
+            padding: 5px 10px;
             cursor: pointer;
 
-            span {
-              color: $black;
-              font-size: 20px;
-              line-height: 1;
-              font-weight: 500;
-              font-family: 'Museo Sans Cyrl 500';
+            > div:first-child {
+              display: flex;
+              height: 50px;
+              width: 50px;
+              align-items: center;
+              justify-content: center;
+
+              img {
+                max-width: 50px;
+                max-height: 50px;
+              }
+
             }
 
+            > span:nth-child(2) {
+              display: block;
+              margin-left: 10px;
+              color: $black;
+              font-size: 14px;
+              line-height: 1;
+              font-weight: 500;
+              font-family: "Museo Sans Cyrl 500";
+            }
+
+            > div:nth-child(3) {
+              margin: 0 10px;
+              background-color: $black;
+              width: 5px;
+              height: 5px;
+              border-radius: 50%;
+            }
+
+            > span:nth-child(4) {
+              display: block;
+              color: $grey_normal;
+              font-size: 14px;
+              line-height: 1;
+              font-weight: 500;
+              font-family: "Museo Sans Cyrl 500";
+            }
+
+            > div:nth-child(5) {
+              margin: 0 10px;
+              background-color: $black;
+              width: 5px;
+              height: 5px;
+              border-radius: 50%;
+            }
+
+            > span:last-child {
+              display: block;
+              color: $black;
+              font-size: 14px;
+              line-height: 1;
+              font-weight: 700;
+              font-family: "Museo Sans Cyrl 700", Arial, sans-serif;
+            }
+
+          }
+
+          > button {
+            display: flex;
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            background-color: transparent;
+            text-align: center;
+            color: $black;
+            font-size: 14px;
+            line-height: 1;
+            font-weight: 300;
+            font-family: "Museo Sans Cyrl 300";
           }
 
           &:hover {

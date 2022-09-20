@@ -60,6 +60,9 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
   isMobile: boolean = window.innerWidth < 768
 
   searchingDetails: DetailInterface[] = []
+  searchingDetailsCount: number = 0
+
+  defaultImage: string = '../../../../assets/catalog/not-have-photo.jpg'
 
   detailMenu: MenuInterface[] = [
     // {
@@ -315,12 +318,14 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     if (!!query) {
       this.detailService.search(query, 10, 0)
         .then(itemsAndCount => {
+          this.searchingDetailsCount = itemsAndCount.count;
           this.searchingDetails = itemsAndCount.items
         }, (error: HttpErrorResponse) => {
           console.log(error);
         })
     } else {
       this.searchingDetails = []
+      this.searchingDetailsCount = 0
     }
   }
 
@@ -335,6 +340,46 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
       .then(() => {
         this.router.navigate(['/', 'search'], {queryParams: {text: searchValue}})
       })
+  }
+
+  toSearchInList(event: Event) {
+    const $liEl = (event.currentTarget as HTMLButtonElement).parentElement
+    if (!$liEl) return
+    const $ulEl = $liEl.parentElement
+    if (!$ulEl) return
+    const $formEl = $ulEl.parentElement
+    if (!$formEl) return
+    const $target = $formEl.querySelector('input')
+    if (!$target) return;
+    const searchValue = $target.value
+    this.searchingDetails = []
+    this.router.navigate(['/'], {skipLocationChange: true})
+      .then(() => {
+        this.router.navigate(['/', 'search'], {queryParams: {text: searchValue}})
+      })
+  }
+
+  sklonenie(num: number): String {
+    if (num > 9 && num < 20) {
+      return 'ий'
+    }
+    let numToString = String(num)
+    if (numToString.length > 2) {
+      numToString = numToString.charAt(numToString.length - 2) + numToString.charAt(numToString.length - 1)
+      return this.sklonenie(Number(numToString))
+    }
+    switch (numToString.charAt(numToString.length - 1)) {
+      case '1':
+        return 'ие'
+      case '2':
+        return 'ия'
+      case '3':
+        return 'ия'
+      case '4':
+        return 'ия'
+      default:
+        return 'ий'
+    }
   }
 
   onSamePage(path: string[], state?: Object) {

@@ -68,7 +68,7 @@ export class MailService {
 
   async sendOrderToMidkam(order: OrderToMailInterface) {
     await this.mailerService.sendMail({
-      to: 'webcite@midkam.ru',
+      to: ['webcite@midkam.ru', 'sales@midkam.ru'],
       subject: `Оформлен заказ в интернет-магазине №${order.orderNumber}`,
       template: __dirname+'/templates/sendOrderToMidkam.hbs',
       context: {

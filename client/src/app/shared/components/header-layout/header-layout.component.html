@@ -105,9 +105,18 @@
         <ul>
           <li *ngFor="let detail of searchingDetails; let idx=index">
             <a (click)="onSamePage(['/', 'catalog', detail.id])">
+              <div><img [src]="detail.photoDetail.length > 0 ? detail.photoDetail[0].url : defaultImage" alt=""></div>
               <span>{{detail.name}}</span>
+              <div></div>
               <span>{{detail.vendorCode}}</span>
+              <div></div>
+              <span>{{shoppingCartService.toCurrency(detail.price)}}</span>
             </a>
+          </li>
+          <li *ngIf="searchingDetailsCount > 20">
+            <button (click)="toSearchInList($event)">
+              Найдено еще {{searchingDetailsCount - 20}} совпаден{{sklonenie(searchingDetailsCount - 20)}}. Показать еще.
+            </button>
           </li>
         </ul>
 

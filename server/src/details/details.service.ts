@@ -85,7 +85,8 @@ export class DetailsService {
       ((parts.length || applicability.length || category.length) && manufacturer.length ? 'AND ' : '') +
       (manufacturer.length ? `manufacturer.id IN (${manufacturer.toString()}) ` : '') +
       ((parts.length || applicability.length || category.length || manufacturer.length) && !!letter ? 'AND ' : '') +
-      (!!letter ? `detail.name ILIKE '${letter.length === 1 ? letter : '%' + letter}%' ` : '') +
+      // (!!letter ? `detail.name ILIKE '${letter.length === 1 ? letter : '%' + letter}%' ` : '') +
+      (!!letter ? letter.length === 1 ? 'detail.name ILIKE ' + letter : `to_tsvector(detail.name) @@ plainto_tsquery('${letter}')` : '') +
       ((parts.length || applicability.length || category.length || manufacturer.length || !!letter) && recent ? 'AND ' : '') +
       (recent ? 'detail.isNewDetail = true ' : '') +
       ((parts.length || applicability.length || category.length || manufacturer.length || !!letter || recent) && popular ? 'AND ' : '') +
@@ -218,11 +219,11 @@ export class DetailsService {
       )`
 
     const query: string = `detail.isHide = false AND (
-      to_tsvector(detail.name) @@ plainto_tsquery('${queryRequest}') OR 
-      to_tsvector(detail.vendorCode) @@ plainto_tsquery('${queryRequest}') OR 
-      to_tsvector(alternative_name.shortName) @@ plainto_tsquery('${queryRequest}') OR 
-      to_tsvector(additional_vendor_code.shortName) @@ plainto_tsquery('${queryRequest}') OR 
-      to_tsvector(key_words.shortName) @@ plainto_tsquery('${queryRequest}')
+      to_tsvector(detail.name) @@ plainto_tsquery('${queryRequest}') OR detail.name ILIKE '%${queryRequest}%' OR 
+      to_tsvector(detail.vendorCode) @@ plainto_tsquery('${queryRequest}') OR detail.vendorCode ILIKE '%${queryRequest}%' OR 
+      to_tsvector(alternative_name.shortName) @@ plainto_tsquery('${queryRequest}') OR alternative_name.shortName ILIKE '%${queryRequest}%' OR 
+      to_tsvector(additional_vendor_code.shortName) @@ plainto_tsquery('${queryRequest}') OR additional_vendor_code.shortName ILIKE '%${queryRequest}%' OR 
+      to_tsvector(key_words.shortName) @@ plainto_tsquery('${queryRequest}') OR key_words.shortName ILIKE '%${queryRequest}%'
       )`
 
     const [items, count] = await getRepository(Detail).createQueryBuilder('detail')
