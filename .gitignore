@@ -91,3 +91,6 @@ Thumbs.db
 
 #Webserver
 /webserver
+src/price-list/files/
+server/src/price-list/files/
+ssl/

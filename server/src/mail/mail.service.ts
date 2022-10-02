@@ -79,7 +79,7 @@ export class MailService {
 
   async sendPriceList(dataContext: PriceListSendDto, file?: Express.Multer.File) {
     await this.mailerService.sendMail({
-      to: 'webcite@midkam.ru',
+      to: ['webcite@midkam.ru', 'reg@midkam.ru'],
       subject: `Получен Прайс-Лист от клиента ${dataContext.name}`,
       template: __dirname+'/templates/sendPriceList.hbs',
       context: {
@@ -95,7 +95,7 @@ export class MailService {
 
   async getPriceListFiles(data: PriceListGetDto, files: {path: string, filename: string}[]) {
     let mailOptions: ISendMailOptions = {
-      to: data.email,
+      to: [data.email, 'reg@midkam.ru'],
       subject: `Мидкам, Прайс-Листы`,
       template: __dirname+'/templates/getPriceList.hbs',
       context: {
@@ -124,7 +124,7 @@ export class MailService {
 
   async sendSupplierOffer(data: SupplierOfferDto) {
     await this.mailerService.sendMail({
-      to: 'webcite@midkam.ru',
+      to: ['webcite@midkam.ru', 'reg@midkam.ru'],
       subject: 'Предложение поставщика',
       template: __dirname + '/templates/supplier-offer.hbs',
       context: data

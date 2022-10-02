@@ -13,6 +13,8 @@ export class SupplierComponent implements OnInit {
   constructor(private mailActionService: MailActionService) { }
 
   action: boolean = false
+  modal: boolean = false
+  modalMessage: string = ''
 
   activity: string[] = ['Автозапчасти', 'Масло и автохимия', 'Шины и Диски', 'Аксессуары', 'Аккумуляторы',
     'Электрооборудование', 'Светотехника', 'Подшипники', 'Другое']
@@ -70,17 +72,25 @@ export class SupplierComponent implements OnInit {
     }
 
     this.action = true
+    this.modal = true
 
     this.mailActionService.sendOfferSupplier(request)
       .then(res => {
         this.action = false
         this.form.reset()
-        console.log(res);
+        this.modalMessage = 'Заявка успешно отправлена.'
       }, error => {
+        this.modalMessage = 'Заявку отправить не удалось, повторите попытку позже.'
         console.log(error);
         this.action = false
       })
 
+  }
+
+  close() {
+    if (this.action) return
+    this.modal = false
+    this.modalMessage = ''
   }
 
 }

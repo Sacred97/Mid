@@ -15,6 +15,14 @@ export class PhotoCertificate {
   @Column()
   certificatePhotoKey: string
 
+  // Буленовское значение для выяснения какого вида картинка и связь для объединенния картинок с низким разрешением и высоким
+
+  // @Column({default: false})
+  // lowResolution: boolean
+  //
+  // @Column()
+  // relations: number
+
   @ManyToOne(() => Manufacturer, manufacturer => manufacturer.photoCertificate,
       {onDelete: "CASCADE"})
   manufacturer: Manufacturer

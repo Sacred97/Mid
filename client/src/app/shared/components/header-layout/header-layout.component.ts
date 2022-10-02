@@ -316,7 +316,7 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
   search(event: Event) {
     const query = (event.target as HTMLInputElement).value.trim()
     if (!!query) {
-      this.detailService.search(query, 10, 0)
+      this.detailService.search(query, 20, 0)
         .then(itemsAndCount => {
           this.searchingDetailsCount = itemsAndCount.count;
           this.searchingDetails = itemsAndCount.items

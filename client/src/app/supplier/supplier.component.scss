@@ -264,6 +264,45 @@
 
 }
 
+.supplier-modal {
+  position: absolute;
+  z-index: 101;
+  width: 38%;
+  max-height: 95vh;
+  overflow: auto;
+  padding: 20px 20px;
+  background-color: #ffffff;
+  border: 2px solid $yellow;
+  border-radius: 15px;
+
+  &__req-finish {
+    width: 100%;
+
+    > h1 {
+      width: fit-content;
+      margin: 0 auto 15px;
+    }
+
+    > button {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      width: fit-content;
+      border: none;
+      outline: none;
+      background-color: $yellow;
+      border-radius: 10px;
+      color: $black;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 300;
+      font-family: "Museo Sans Cyrl 300";
+    }
+
+  }
+
+}
+
 @media (max-width: 768px) {
 
   .breadcrumbs {
@@ -318,6 +357,10 @@
 
     }
 
+  }
+
+  .supplier-modal {
+    width: 80%;
   }
 
 }

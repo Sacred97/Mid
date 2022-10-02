@@ -116,3 +116,24 @@
   </div>
 
 </div>
+
+<div class="modal" *ngIf="modal">
+
+  <div class="modal-background" (click)="close()"></div>
+
+  <div class="supplier-modal">
+
+    <div class="supplier-modal__req-finish" *ngIf="!action; else modalError">
+      <h1>{{modalMessage}}</h1>
+      <button (click)="close()">Закрыть</button>
+    </div>
+
+    <ng-template #modalError>
+      <div class="loading-container">
+        <div class="lds-dual-ring"></div>
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>

@@ -86,7 +86,7 @@ export class DetailsService {
       (manufacturer.length ? `manufacturer.id IN (${manufacturer.toString()}) ` : '') +
       ((parts.length || applicability.length || category.length || manufacturer.length) && !!letter ? 'AND ' : '') +
       // (!!letter ? `detail.name ILIKE '${letter.length === 1 ? letter : '%' + letter}%' ` : '') +
-      (!!letter ? letter.length === 1 ? 'detail.name ILIKE ' + letter : `to_tsvector(detail.name) @@ plainto_tsquery('${letter}')` : '') +
+      (!!letter ? letter.length === 1 ? `detail.name ILIKE '${letter}%'` : `to_tsvector(detail.name) @@ plainto_tsquery('${letter}')` : '') +
       ((parts.length || applicability.length || category.length || manufacturer.length || !!letter) && recent ? 'AND ' : '') +
       (recent ? 'detail.isNewDetail = true ' : '') +
       ((parts.length || applicability.length || category.length || manufacturer.length || !!letter || recent) && popular ? 'AND ' : '') +
