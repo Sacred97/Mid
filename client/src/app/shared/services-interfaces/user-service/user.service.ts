@@ -132,6 +132,11 @@ export class UserService {
     return this.http.post<WaitingListInterface>(url, data, {withCredentials: true}).toPromise()
   }
 
+  getWaitingList(): Promise<WaitingListInterface> {
+    const url = environment.apiUrl + 'users/waiting'
+    return this.http.post<WaitingListInterface>(url, {withCredentials: true}).toPromise()
+  }
+
   deleteFromWaitingList(waitingItemId: number): Promise<WaitingListInterface> {
     const url = environment.apiUrl + 'users/waiting/' + waitingItemId
     return this.http.delete<WaitingListInterface>(url, {withCredentials: true}).toPromise()

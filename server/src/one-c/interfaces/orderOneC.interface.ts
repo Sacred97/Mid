@@ -4,7 +4,7 @@ export interface OrderOneCInterface {
     orderNumber: string
     orderCost: number
     orderWeight: number
-    comment: string,
+    comment: string
     inn: string
 
 }

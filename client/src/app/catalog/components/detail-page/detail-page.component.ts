@@ -86,13 +86,14 @@ export class DetailPageComponent implements OnInit {
   routeReady: boolean = false
   routeError: string = ''
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     if (!this.user) {
 
       this.userService.getUser()
         .then(res => {
           this.user = res
+          this.userService.user$.next(this.user)
         }, error => {
           console.log(error);
         })

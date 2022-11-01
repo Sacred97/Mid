@@ -251,6 +251,8 @@ export class ManufacturerService {
                 const newCertificate = await this.photoCertificateRepository.create({
                     certificatePhotoUrl: uploadedData.Location,
                     certificatePhotoKey: uploadedData.Key,
+                    lowResolution: createData.lowResolution,
+                    relations: createData.relations,
                     manufacturer: manufacturer
                 })
                 await this.photoCertificateRepository.save(newCertificate)

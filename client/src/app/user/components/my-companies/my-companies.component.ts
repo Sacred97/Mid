@@ -66,9 +66,9 @@ export class MyCompaniesComponent implements OnInit {
           this.formAdd.addControl('opf', new FormControl('', [Validators.required]))
           this.formAdd.addControl('name', new FormControl('', [Validators.required]))
           this.formAdd.addControl('inn', new FormControl('', [Validators.required]))
-          this.formAdd.addControl('kpp', new FormControl('', [Validators.required]))
+          this.formAdd.addControl('kpp', new FormControl('', []))
           this.formAdd.addControl('address', new FormControl('', [Validators.required]))
-          this.formAdd.setValidators([this.validatorINN(), this.validatorKPP()])
+          this.formAdd.setValidators([this.validatorINN()])
           this.selectedCompany = null
         } else {
           this.formAdd.removeControl('opf')
@@ -142,7 +142,7 @@ export class MyCompaniesComponent implements OnInit {
         companyName: this.selectedCompany.name,
         opf: this.selectedCompany.opf,
         inn: this.selectedCompany.inn,
-        kpp: this.selectedCompany.kpp,
+        kpp: this.selectedCompany.kpp ? this.selectedCompany.kpp : 'Отсутствует',
         address: this.selectedCompany.address
       }
     } else {
@@ -150,7 +150,7 @@ export class MyCompaniesComponent implements OnInit {
         companyName: this.formAdd.value.name,
         opf: this.formAdd.value.opf,
         inn: this.formAdd.value.inn,
-        kpp: this.formAdd.value.kpp,
+        kpp: this.formAdd.value.kpp ? this.formAdd.value.kpp : 'Отсутствует',
         address: this.formAdd.value.address
       }
     }
@@ -194,27 +194,6 @@ export class MyCompaniesComponent implements OnInit {
     }
   }
 
-  private validatorKPP() {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const kppControl = control.get('kpp')
-      if (kppControl === null) {
-        return null
-      }
-
-      if (kppControl.value) {
-        if (kppControl.value.toString().length === 9) {
-          kppControl?.setErrors(null)
-          return null
-        } else {
-          kppControl?.setErrors({uncorrected: true})
-          return ({uncorrected: true})
-        }
-      } else {
-        kppControl?.setErrors({uncorrected: true})
-        return ({uncorrected: true})
-      }
-    }
-  }
 
   //------------------------------------------------Поиск в DaData------------------------------------------------------
 
@@ -229,7 +208,7 @@ export class MyCompaniesComponent implements OnInit {
         name: d.data.name.full,
         inn: d.data.inn,
         address: d.data.address.value,
-        kpp: d.data.kpp
+        kpp: d.data.kpp ? d.data.kpp : 'Отсутствует'
       }))
     }, error => {
       console.log(error);
@@ -270,9 +249,9 @@ export class MyCompaniesComponent implements OnInit {
     opf: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     inn: new FormControl('', [Validators.required]),
-    kpp: new FormControl('', [Validators.required]),
+    kpp: new FormControl('', []),
     address: new FormControl('', [Validators.required])
-  }, {validators: [this.validatorINN(), this.validatorKPP()]})
+  }, {validators: [this.validatorINN()]})
   updateError: boolean = false
   addressListModal: string[] = []
 
@@ -304,7 +283,7 @@ export class MyCompaniesComponent implements OnInit {
       opf: this.modalForm.value.opf,
       companyName: this.modalForm.value.name,
       inn: this.modalForm.value.inn,
-      kpp: this.modalForm.value.kpp,
+      kpp: this.modalForm.value.kpp ? this.modalForm.value.kpp : 'Отсутствует',
       address: this.modalForm.value.address
     }
 

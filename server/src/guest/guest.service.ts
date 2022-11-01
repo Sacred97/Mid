@@ -79,7 +79,7 @@ export class GuestService {
                         price: convertingNumbersToDigits(item.price),
                         quantity: orderItem.quantity,
                         finalPrice: convertingNumbersToDigits(finalCost),
-                        finalWeight: finalWeight.toString(),
+                        finalWeight: finalWeight.toFixed(3),
                         detailId: item.id
                     })
                     orderItemToSave.push({
@@ -88,8 +88,8 @@ export class GuestService {
                         manufacturer: item.manufacturer ? item.manufacturer.nameCompany : null,
                         price: item.price,
                         quantity: orderItem.quantity,
-                        totalCost: finalCost,
-                        totalWeight: finalWeight,
+                        totalCost: Number(finalCost.toFixed(2)),
+                        totalWeight: Number(finalWeight.toFixed(3)),
                         detailId: item.id,
                     })
                     break;
@@ -101,8 +101,8 @@ export class GuestService {
 
         const orderOneC: OrderOneCInterface = {
             orderNumber: orderNumber,
-            orderCost: totalCost,
-            orderWeight: totalWeight,
+            orderCost: Number(totalCost.toFixed(2)),
+            orderWeight: Number(totalWeight.toFixed(3)),
             details: orderItemOneC,
             comment: comment,
             inn: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.inn : null
@@ -132,7 +132,8 @@ export class GuestService {
             customer: orderData.customer,
             inn: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.inn : null,
             company: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.company : null,
-            kpp: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.kpp : null,
+            kpp: orderData.requisites && orderData.customer === 'Юр.лицо' ?
+                orderData.requisites.kpp ? orderData.requisites.kpp : null : null,
             companyAddress: orderData.requisites && orderData.customer === 'Юр.лицо' ?
                 orderData.requisites.companyAddress : null,
             paymentMethod: orderData.payment,

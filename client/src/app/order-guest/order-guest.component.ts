@@ -83,9 +83,9 @@ export class OrderGuestComponent implements OnInit, OnDestroy {
         this.form.addControl('companyOPF', new FormControl('', [Validators.required]))
         this.form.addControl('companyName', new FormControl('', [Validators.required]))
         this.form.addControl('companyINN', new FormControl('', []))
-        this.form.addControl('companyKPP', new FormControl('', [Validators.required]))
+        this.form.addControl('companyKPP', new FormControl('', []))
         this.form.addControl('companyAddress', new FormControl('', [Validators.required]))
-        this.form.setValidators([this.validatorINN(), this.validatorKPP()])
+        this.form.setValidators([this.validatorINN()])
         this.companyData = null
       } else {
         this.form.removeControl('companyOPF')
@@ -191,28 +191,6 @@ export class OrderGuestComponent implements OnInit, OnDestroy {
     }
   }
 
-  validatorKPP() {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const kppControl = control.get('companyKPP')
-      if (kppControl === null) {
-        return null
-      }
-
-      if (kppControl.value) {
-        if (kppControl.value.toString().length === 9) {
-          kppControl?.setErrors(null)
-          return null
-        } else {
-          kppControl?.setErrors({uncorrected: true})
-          return ({uncorrected: true})
-        }
-      } else {
-        kppControl?.setErrors({uncorrected: true})
-        return ({uncorrected: true})
-      }
-    }
-  }
-
   //------------------------------------------------Поиск в DaData------------------------------------------------------
 
   companyData: RequisitesInterface | null = null
@@ -229,7 +207,7 @@ export class OrderGuestComponent implements OnInit, OnDestroy {
         name: d.data.name.full,
         inn: d.data.inn,
         address: d.data.address.value,
-        kpp: d.data.kpp
+        kpp: d.data.kpp ? d.data.kpp : 'Отсутствует'
       }))
     }, error => {
       console.log(error);
@@ -287,8 +265,8 @@ export class OrderGuestComponent implements OnInit, OnDestroy {
       if (this.form.controls['new'].value) {
         requisites = {
           company: this.form.controls['companyOPF'].value.trim() + ' ' + this.form.controls['companyName'].value.trim(),
-          inn: this.form.controls['companyINN'].value.toString(),
-          kpp: this.form.controls['companyKPP'].value.toString(),
+          inn: this.form.controls['companyINN'].value.toString().trim(),
+          kpp: this.form.controls['companyKPP'].value ? this.form.controls['companyKPP'].value.toString().trim() : 'Отсутствует',
           companyAddress: this.form.controls['companyAddress'].value.trim()
         }
       } else {

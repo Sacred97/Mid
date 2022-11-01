@@ -114,7 +114,11 @@ export class OrderUserComponent implements OnInit {
       this.userService.user$.next(this.user)
       this.action = false
       this.orderSuccess = true
-      this.orderNumber = this.user.order[this.user.order.length - 1].orderNumber
+      this.user.order.forEach(i => {
+        if (+i.orderNumber > +this.orderNumber) {
+          this.orderNumber = i.orderNumber
+        }
+      })
       this.cartService.totalCost = 0
       this.cartService.itemsQuantity = 0
       localStorage.setItem('shopping_cart', '[]')

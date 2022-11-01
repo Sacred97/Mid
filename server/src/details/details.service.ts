@@ -223,7 +223,8 @@ export class DetailsService {
       to_tsvector(detail.vendorCode) @@ plainto_tsquery('${queryRequest}') OR detail.vendorCode ILIKE '%${queryRequest}%' OR 
       to_tsvector(alternative_name.shortName) @@ plainto_tsquery('${queryRequest}') OR alternative_name.shortName ILIKE '%${queryRequest}%' OR 
       to_tsvector(additional_vendor_code.shortName) @@ plainto_tsquery('${queryRequest}') OR additional_vendor_code.shortName ILIKE '%${queryRequest}%' OR 
-      to_tsvector(key_words.shortName) @@ plainto_tsquery('${queryRequest}') OR key_words.shortName ILIKE '%${queryRequest}%'
+      to_tsvector(key_words.shortName) @@ plainto_tsquery('${queryRequest}') OR key_words.shortName ILIKE '%${queryRequest}%' OR
+      detail.productCode ILIKE '%${queryRequest}%'
       )`
 
     const [items, count] = await getRepository(Detail).createQueryBuilder('detail')
@@ -711,6 +712,14 @@ export class DetailsService {
       return {message: `Доп. наименование ${alternativeName.alternativeName} удалено`}
     }
     throw new HttpException('Доп. наименование не найдено', HttpStatus.NOT_FOUND)
+  }
+
+  //-------------------------------------------Функции для UserService--------------------------------------------------
+
+  async getByIdForUserServiceCreateUpdateCartItem(id: string) {
+    const detail = await this.detailRepository.findOne(id, {loadEagerRelations: false})
+    if (detail) return detail
+    throw new HttpException('Товар не найден', HttpStatus.NOT_FOUND)
   }
 
 }

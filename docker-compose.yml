@@ -126,7 +126,7 @@ services:
       - /usr/src/app/node_modules
       - ./ssl:/etc/nginx/ssl
     ports:
-      - "80:80"
+      - "80:4200"
       - "443:443"
     networks:
       - webserver
@@ -138,13 +138,15 @@ services:
     container_name: server
     build:
       context: ./server
+#      target: development
       target: production
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - "3000:3000"
-    command: npm run start:prod
+    command: npm run start:dev
+#    command: npm run start:prod
     env_file:
       - ./server/.env
     depends_on:

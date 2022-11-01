@@ -13,7 +13,7 @@ export class MailService {
   }
 
   async sendUserEmailVerification(email: string, token: string) {
-    const url = `http://midkam.pro/action?mode=verification&token=${token}`
+    const url = `https://midkam.pro/action?mode=verification&token=${token}`
     await this.mailerService.sendMail({
       to: email,
       subject: 'Регистрация на сайте Midkam.ru',
@@ -28,7 +28,7 @@ export class MailService {
   }
 
   async sendEmailChangeLink(newEmail: string, token) {
-    const url = `http://midkam.pro/action?mode=change&token=${token}`
+    const url = `https://midkam.pro/action?mode=change&token=${token}`
     await this.mailerService.sendMail({
       to: newEmail,
       subject: 'Смена электронной почты Midkam.ru',
@@ -42,7 +42,7 @@ export class MailService {
   }
 
   async sendRestoreEmailLink(email: string, token: string) {
-    const url = `http://midkam.pro/action?mode=restore&token=${token}`
+    const url = `https://midkam.pro/action?mode=restore&token=${token}`
     await this.mailerService.sendMail({
       to: email,
       subject: 'Процедура восстановления пароля',
@@ -68,7 +68,7 @@ export class MailService {
 
   async sendOrderToMidkam(order: OrderToMailInterface) {
     await this.mailerService.sendMail({
-      to: ['webcite@midkam.ru', 'sales@midkam.ru'],
+      to: ['webcite@midkam.ru', 'orders@midkam.ru'],
       subject: `Оформлен заказ в интернет-магазине №${order.orderNumber}`,
       template: __dirname+'/templates/sendOrderToMidkam.hbs',
       context: {
@@ -79,7 +79,7 @@ export class MailService {
 
   async sendPriceList(dataContext: PriceListSendDto, file?: Express.Multer.File) {
     await this.mailerService.sendMail({
-      to: ['webcite@midkam.ru', 'reg@midkam.ru'],
+      to: ['webcite@midkam.ru', 'orders@midkam.ru'],
       subject: `Получен Прайс-Лист от клиента ${dataContext.name}`,
       template: __dirname+'/templates/sendPriceList.hbs',
       context: {
@@ -95,7 +95,7 @@ export class MailService {
 
   async getPriceListFiles(data: PriceListGetDto, files: {path: string, filename: string}[]) {
     let mailOptions: ISendMailOptions = {
-      to: [data.email, 'reg@midkam.ru'],
+      to: [data.email, 'orders@midkam.ru', 'webcite@midkam.ru'],
       subject: `Мидкам, Прайс-Листы`,
       template: __dirname+'/templates/getPriceList.hbs',
       context: {
@@ -124,7 +124,7 @@ export class MailService {
 
   async sendSupplierOffer(data: SupplierOfferDto) {
     await this.mailerService.sendMail({
-      to: ['webcite@midkam.ru', 'reg@midkam.ru'],
+      to: ['webcite@midkam.ru', 'orders@midkam.ru'],
       subject: 'Предложение поставщика',
       template: __dirname + '/templates/supplier-offer.hbs',
       context: data

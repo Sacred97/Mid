@@ -92,6 +92,7 @@ export class UsersService {
   }
 
   async getByEmail(email: string) {
+    email = email.toLowerCase()
     const user = await this.userRepository.findOne({email})
     if (user) {
       return user
@@ -100,9 +101,25 @@ export class UsersService {
   }
 
   async getById(userId: number) {
-    const user = await this.userRepository.findOne(userId, {relations: [
-        'manager', 'company', 'shoppingCart', 'waitingList', 'address', 'subscriptions', 'order', 'requestHistory'
-      ]})
+    const user = await this.userRepository.createQueryBuilder('u')
+        .leftJoinAndSelect('u.manager', 'manager')
+        .leftJoinAndSelect('u.company', 'company')
+        .leftJoinAndSelect('u.address', 'address')
+        .leftJoinAndSelect('u.requestHistory', 'request_history')
+        .leftJoinAndSelect('u.subscriptions', 'subscriptions')
+        .leftJoinAndSelect('subscriptions.newsLetter', 'news_letter')
+        .leftJoinAndSelect('u.order', 'order')
+        .leftJoinAndSelect('order.orderItem', 'order_item')
+        .leftJoinAndSelect('u.waitingList', 'waiting_list')
+        .leftJoinAndSelect('waiting_list.waitingItem', 'waiting_item')
+        .leftJoinAndSelect('waiting_item.detail', 'wld')
+        .leftJoinAndSelect('u.shoppingCart', 'shopping_cart')
+        .leftJoinAndSelect('shopping_cart.cartItem', 'cart_item')
+        .leftJoinAndSelect('cart_item.detail', 'd')
+        // .leftJoinAndSelect('d.manufacturer', 'manufacturer')
+        // .leftJoinAndSelect('d.photoDetail', 'photo_detail')
+        .where("u.id = " + userId)
+        .getOne()
     if (user) {
       return user
     }
@@ -352,7 +369,8 @@ export class UsersService {
   }
 
   async updateRequestToHistory(user: User, data: RequestHistoryUpdateDto) {
-    const request = await this.requestHistoryRepository.findOne(data.id, {relations: ['user']})
+    const request = await this.requestHistoryRepository.findOne(data.id, {relations: ['user'],
+      loadEagerRelations: false})
     if (request) {
       if (request.user.id === user.id) {
         await this.requestHistoryRepository.update(data.id, {...data})
@@ -443,7 +461,7 @@ export class UsersService {
     const candidate = user.waitingList.waitingItem.find(wi => wi.id === id)
     if (waitingItem && candidate) {
       await this.waitingItemRepository.delete(id)
-      return this.getWaitingListOfUser(user.waitingList.id)
+      return await this.getWaitingListOfUser(user.waitingList.id)
     }
     throw new HttpException('Товар не найден в списке ожидания', HttpStatus.NOT_FOUND)
   }
@@ -526,7 +544,8 @@ export class UsersService {
   async createUpdateCartItem(userCredentials: User, cartItemData: CartItemDto) {
 
     try {
-      const detail = await this.detailsService.getDetailById(cartItemData.detailId)
+      const detail = await this.detailsService.getByIdForUserServiceCreateUpdateCartItem(cartItemData.detailId)
+
       let duplicateItemId: number
       for (let cart of userCredentials.shoppingCart.cartItem) {
         if (cart.detail.id === cartItemData.detailId) {
@@ -539,13 +558,13 @@ export class UsersService {
         const newCartItem = await this.cartItemRepository.create({
           quantity: cartItemData.quantity,
           price: detail.price,
-          finalPrice: detail.price * cartItemData.quantity,
+          finalPrice: Number((detail.price * cartItemData.quantity).toFixed(2)),
           shoppingCart: userCredentials.shoppingCart,
           weight: detail.weight,
-          finalWeight: detail.weight * cartItemData.quantity,
+          finalWeight: Number((detail.weight * cartItemData.quantity).toFixed(3)),
           detail: detail
         })
-        const test = await this.cartItemRepository.save(newCartItem)
+        await this.cartItemRepository.save(newCartItem)
       } else {
         await this.recount(cartItemData.quantity, duplicateItemId)
       }
@@ -607,7 +626,7 @@ export class UsersService {
   //--------------------------------------------------------Чистка корзины----------------------------------------------------------
 
   async cleanShoppingCart(userCredentials: User): Promise<ShoppingCart> {
-    if (!!userCredentials.shoppingCart) {
+    if (userCredentials.shoppingCart) {
       await this.cartItemRepository.remove(userCredentials.shoppingCart.cartItem)
       await this.shoppingCartRepository.update(userCredentials.shoppingCart.id, {totalCost: 0, totalWeight: 0})
       return await this.shoppingCartRepository.findOne(userCredentials.shoppingCart.id)
@@ -619,6 +638,7 @@ export class UsersService {
 
   async makeOrder(userCredentials: User, orderData: OrderCreateDto) {
     const orderNumber: string = await this.getMaxNumberOrder()
+    userCredentials.shoppingCart = await this.shoppingCartRepository.findOne(userCredentials.shoppingCart.id)
 
     if (orderData.customer === 'Юр.лицо' && !orderData.requisites) {
       throw new HttpException('Заполните данные о вашей компании', HttpStatus.BAD_REQUEST)
@@ -639,7 +659,8 @@ export class UsersService {
       customer: orderData.customer,
       company: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.company : null,
       inn: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.inn : null,
-      kpp: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.kpp : null,
+      kpp: orderData.requisites && orderData.customer === 'Юр.лицо' ?
+          orderData.requisites.kpp ? orderData.requisites.kpp : null : null,
       companyAddress: orderData.requisites && orderData.customer === 'Юр.лицо' ? orderData.requisites.companyAddress : null,
       paymentMethod: orderData.payment,
       deliveryMethod: orderData.delivery,
@@ -717,7 +738,6 @@ export class UsersService {
 
     await this.cartItemRepository.remove(userCredentials.shoppingCart.cartItem)
     await this.shoppingCartRepository.update(userCredentials.shoppingCart.id, {totalCost: 0, totalWeight: 0})
-    const shoppingCart = await this.shoppingCartRepository.findOne(userCredentials.shoppingCart.id)
     await this.sendOrder(order.id, orderOneC, orderMail)
     return await this.getById(userCredentials.id)
   }
