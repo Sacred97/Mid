@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -27,6 +27,9 @@ import { AutoApplicabilityModule } from './auto-applicability/auto-applicability
 import { BannersModule } from './banners/banners.module';
 import { UsCertificateModule } from './us-certificate/us-certificate.module';
 import { PresentationModule } from './presentation/presentation.module';
+import {GlobalInterceptor} from "./global.interceptor";
+import {GlobalMiddleware} from "./global.middleware";
+import {APP_INTERCEPTOR} from "@nestjs/core";
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -86,7 +89,12 @@ import { PresentationModule } from './presentation/presentation.module';
     PresentationModule,
     ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {provide: APP_INTERCEPTOR, useClass: GlobalInterceptor}],
 })
-export class AppModule {}
+export class AppModule implements NestModule{
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(GlobalMiddleware).forRoutes('*')
+  }
+
+}
 

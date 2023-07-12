@@ -244,6 +244,12 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('waiting-list-details')
+  async getDetailsFromWaitingList(@Req() request: RequestWithUser) {
+    return await this.usersService.getDetailsFromWaitingList(request.user.waitingList.id)
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post('waiting')
   async addItemInWaitingList(@Req() request: RequestWithUser, @Body() data: WaitingItemDto) {
     return await this.usersService.addWaitingItem(request.user, data)
@@ -262,6 +268,12 @@ export class UsersController {
   }
 
   //------------------------------------------------Корзина (ShoppingCart)---------------------------------------------------------
+
+  @UseGuards(JwtAuthGuard)
+  @Get('shoppingCart')
+  async getUserShoppingCart(@Req() request: RequestWithUser) {
+    return await this.usersService.getUserShoppingCart(request.user.shoppingCart.id)
+  }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(TransformToArrayInterceptor)
@@ -298,6 +310,18 @@ export class UsersController {
   }
 
   //----------------------------------------Сформировать заказ (Order)-------------------------------------------------------------
+
+  @UseGuards(JwtAuthGuard)
+  @Get('order')
+  async getAllUserOrders(@Req() request: RequestWithUser) {
+    return await this.usersService.getAllUserOrders(request.user.id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('order/:id')
+  async getUserOrder(@Req() request: RequestWithUser, @Param() {id}: FindOneParams) {
+    return await this.usersService.getUserOrder(+id)
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('order')

@@ -22,6 +22,8 @@ import {ResponseMessage} from "../global-interfaces/response.interface";
 import {CartItemInfoInterface} from "../global-interfaces/cart-item-info.interface";
 import {ShoppingCartInterface} from "../shopping-cart-service/shopping-cart.interface";
 import {environment} from "../../../../environments/environment";
+import {DetailInterface} from "../detail-service/detail.interface";
+import {OrderInterface} from "../global-interfaces/order.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,7 @@ export class UserService {
     try {
       const url: string = environment.apiUrl + 'users/profile'
       const user = await this.http.get<UserInterface>(url, {withCredentials: true}).toPromise()
-      const shoppingCart: ShoppingCartInterface[] = user.shoppingCart.cartItem.map(i => ({
+      const shoppingCart = (await this.getShoppingCart()).cartItem.map(i => ({
         id: i.detail.id, quantity: i.quantity
       }))
       localStorage.setItem('shopping_cart', JSON.stringify(shoppingCart))
@@ -107,6 +109,11 @@ export class UserService {
 
   //------------------------------------------------Корзина пользователя------------------------------------------------
 
+  getShoppingCart() {
+    const url = environment.apiUrl + 'users/shoppingCart'
+    return this.http.get<ShoppingCartUserInterface>(url, {withCredentials: true}).toPromise()
+  }
+
   addCartItem(data: CartItemInfoInterface | CartItemInfoInterface[]): Promise<ShoppingCartUserInterface> {
     const url = environment.apiUrl + 'users/shoppingCart'
     return this.http.post<ShoppingCartUserInterface>(url, data, {withCredentials: true}).toPromise()
@@ -125,6 +132,13 @@ export class UserService {
   cleanShoppingCart(): Promise<ShoppingCartUserInterface> {
     const url = environment.apiUrl + 'users/shoppingCartClean'
     return this.http.post<ShoppingCartUserInterface>(url, {void: 'void'}, {withCredentials: true}).toPromise()
+  }
+
+  //--------------------------------------
+
+  getDetailsFromWaitingList() {
+    const url = environment.apiUrl + 'users/waiting-list-details'
+    return this.http.get<DetailInterface[]>(url, {withCredentials: true}).toPromise()
   }
 
   addToWaitingList(data: WaitingListDetailId): Promise<WaitingListInterface> {
@@ -278,6 +292,11 @@ export class UserService {
 
   //----------------------------------------------------История поиска--------------------------------------------------
 
+  getRequestHistory() {
+    const url = environment.apiUrl + 'users/history'
+    return this.http.get<RequestHistoryUserInterface[]>(url, {withCredentials: true}).toPromise()
+  }
+
   addRequestHistory(data: AddRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
     const url = environment.apiUrl + 'users/history'
     return this.http.post<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
@@ -291,6 +310,18 @@ export class UserService {
   deleteRequestHistory(id: number): Promise<RequestHistoryUserInterface[]> {
     const url = environment.apiUrl + 'users/history/' + id
     return this.http.delete<RequestHistoryUserInterface[]>(url, {withCredentials: true}).toPromise()
+  }
+
+  //-----------------------------------------------Заказы---------------------------------------------------------------
+
+  getAllUserOrders() {
+    const url = environment.apiUrl + 'users/order'
+    return this.http.get<OrderInterface[]>(url, {withCredentials: true}).toPromise()
+  }
+
+  getUserOrder(id: number) {
+    const url = environment.apiUrl + 'users/order/' + id
+    return this.http.get<OrderInterface>(url, {withCredentials: true}).toPromise()
   }
 
 

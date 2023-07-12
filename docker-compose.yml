@@ -1,5 +1,125 @@
 # ------------------------------------------------------For Test--------------------------------------------------------
 
+version: "3.7"
+services:
+
+  frontend:
+    container_name: client
+    build:
+      context: ./client
+#      target: production
+      target: development
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+#      - ./ssl:/etc/nginx/ssl
+    ports:
+#      - "80:80"
+      - "443:443"
+      - "4200:4200"
+    command: ng serve --host 0.0.0.0 --disable-host-check
+    networks:
+      - webserver
+    links:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    container_name: server
+    build:
+      context: ./server
+      target: development
+#      target: production
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm run start:dev
+#    command: npm run start:prod
+    env_file:
+      - ./server/.env
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - postgres
+      - redis
+      - webserver
+    restart: unless-stopped
+
+  postgres:
+    container_name: database
+    image: postgres:latest
+#    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - ./server/.env
+    networks:
+      - postgres
+#    healthcheck:
+      #CHANGE 1: this command checks if the database is ready, right on the source db server
+#      test: [ "CMD-SHELL", "pg_isready" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
+
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: MyPgAdmin
+    image: dpage/pgadmin4:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data/pgadmin:/root/.pgadmin
+    env_file:
+      - ./server/.env
+    depends_on:
+      - postgres
+    networks:
+      - postgres
+
+  redis:
+    image: redis:alpine
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    volumes:
+      - ./redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    networks:
+      - redis
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - redis
+
+networks:
+  postgres:
+    driver: bridge
+  redis:
+    driver: bridge
+  webserver:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  pgdata:
+
+# --------------------------------------------------For Production------------------------------------------------------
+
 #version: "3.7"
 #services:
 #
@@ -7,17 +127,14 @@
 #    container_name: client
 #    build:
 #      context: ./client
-##      target: production
-#      target: development
+#      target: production
 #    volumes:
 #      - ./client:/usr/src/app
 #      - /usr/src/app/node_modules
-##      - ./ssl:/etc/nginx/ssl
+#      - ./ssl:/etc/nginx/ssl
 #    ports:
-##      - "80:80"
+#      - "80:4200"
 #      - "443:443"
-#      - "4200:4200"
-#    command: ng serve --host 0.0.0.0 --disable-host-check
 #    networks:
 #      - webserver
 #    links:
@@ -28,8 +145,8 @@
 #    container_name: server
 #    build:
 #      context: ./server
-#      target: development
-##      target: production
+##      target: development
+#      target: production
 #    volumes:
 #      - ./server:/usr/src/app
 #      - /usr/src/app/node_modules
@@ -54,6 +171,7 @@
 #    ports:
 #      - "5432:5432"
 #    volumes:
+##      - ./data/postgres:/var/lib/postgresql/data
 #      - pgdata:/var/lib/postgresql/data
 #    env_file:
 #      - ./server/.env
@@ -78,23 +196,10 @@
 #
 #  redis:
 #    image: redis:alpine
-#    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+#    command: redis-server --appendonly yes
 #    volumes:
 #      - ./redis/data:/data
 #      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-#    ports:
-#      - "6379:6379"
-#    networks:
-#      - redis
-#
-#  redis-commander:
-#    image: rediscommander/redis-commander:latest
-#    environment:
-#      - REDIS_HOSTS=local:redis:6379
-#    ports:
-#      - "8081:8081"
-#    depends_on:
-#      - redis
 #    networks:
 #      - redis
 #
@@ -110,101 +215,3 @@
 #  postgres:
 #  pgadmin:
 #  pgdata:
-
-# --------------------------------------------------For Production------------------------------------------------------
-
-version: "3.7"
-services:
-
-  frontend:
-    container_name: client
-    build:
-      context: ./client
-      target: production
-    volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
-      - ./ssl:/etc/nginx/ssl
-    ports:
-      - "80:4200"
-      - "443:443"
-    networks:
-      - webserver
-    links:
-      - backend
-    restart: unless-stopped
-
-  backend:
-    container_name: server
-    build:
-      context: ./server
-#      target: development
-      target: production
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - "3000:3000"
-    command: npm run start:dev
-#    command: npm run start:prod
-    env_file:
-      - ./server/.env
-    depends_on:
-      - redis
-      - postgres
-    networks:
-      - postgres
-      - redis
-      - webserver
-    restart: unless-stopped
-
-  postgres:
-    container_name: database
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    volumes:
-#      - ./data/postgres:/var/lib/postgresql/data
-      - pgdata:/var/lib/postgresql/data
-    env_file:
-      - ./server/.env
-    networks:
-      - postgres
-
-  pgadmin:
-    links:
-      - postgres:postgres
-    container_name: MyPgAdmin
-    image: dpage/pgadmin4:latest
-    ports:
-      - "8080:80"
-    volumes:
-      - ./data/pgadmin:/root/.pgadmin
-    env_file:
-      - ./server/.env
-    depends_on:
-      - postgres
-    networks:
-      - postgres
-
-  redis:
-    image: redis:alpine
-    command: redis-server --appendonly yes
-    volumes:
-      - ./redis/data:/data
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    networks:
-      - redis
-
-networks:
-  postgres:
-    driver: bridge
-  redis:
-    driver: bridge
-  webserver:
-    driver: bridge
-
-volumes:
-  postgres:
-  pgadmin:
-  pgdata:

@@ -31,7 +31,7 @@
       font-family: "Museo Sans Cyrl 700";
     }
 
-    > form {
+    &__form-info {
       width: 100%;
       padding: 10px 20px;
       border: 2px solid $border_grey;
@@ -256,6 +256,94 @@
 
     }
 
+    &__form-certificate {
+      width: 100%;
+      padding: 10px 20px;
+      border: 2px solid $border_grey;
+
+      > span {
+        display: block;
+        margin-bottom: 10px;
+        color: $black;
+        font-size: 24px;
+        line-height: 1;
+        font-family: "Museo Sans Cyrl 300";
+      }
+
+      > input[type='file'] {
+        width: 500px;
+        margin-bottom: 10px;
+      }
+
+      label {
+        display: flex;
+        width: fit-content;
+        margin-bottom: 10px;
+
+        > small {
+          display: block;
+          margin-top: 5px;
+          color: red;
+          font-size: 12px;
+          line-height: 1;
+          font-weight: 100;
+          font-family: "Museo Sans Cyrl 100";
+        }
+
+      }
+
+      > label:nth-child(3) {
+        align-items: center;
+
+        span {
+          font-size: 16px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
+      }
+
+      > label:nth-child(4) {
+        flex-direction: column;
+
+        span {
+          display: block;
+          margin-bottom: 5px;
+          font-size: 16px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
+        input {
+          display: block;
+          padding: 5px;
+          width: 40px;
+          height: 40px;
+          background-color: $grey_easy;
+          border-radius: 5px;
+          text-align: center;
+          font-size: 16px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
+      }
+
+      > button {
+        width: 200px;
+      }
+
+      > small {
+        margin: 10px 0 0!important;
+        color: red !important;
+        font-size: 12px !important;
+      }
+
+    }
+
     &__certificate {
       width: 100%;
       margin-top: 10px;
@@ -264,6 +352,7 @@
         width: 100%;
         display: flex;
         align-items: center;
+        gap: 10px 20px;
         margin-bottom: 10px;
 
         div {
@@ -275,8 +364,15 @@
           }
         }
 
+        > span {
+          display: block;
+          font-size: 16px;
+          line-height: 1;
+          font-weight: 300;
+          font-family: "Museo Sans Cyrl 300";
+        }
+
         button {
-          margin-left: 30px;
           width: 200px;
         }
       }

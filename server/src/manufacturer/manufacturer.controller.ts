@@ -101,6 +101,8 @@ export class ManufacturerController {
     @UseInterceptors(FilesInterceptor('files'))
     @Post('certificate')
     async photoCertificateCreate(@Body() data: PhotoCertificateDto, @UploadedFiles() files: Express.Multer.File[]) {
+        console.log(data);
+        return
         return await this.manufacturerService.uploadCertificate(data, files)
     }
 
@@ -109,5 +111,6 @@ export class ManufacturerController {
     async photoCertificateDelete(@Param() {id}: FindOneParams) {
         return await this.manufacturerService.deleteCertificate(+id)
     }
+
 
 }

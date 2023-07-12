@@ -226,13 +226,16 @@ export class AdminService {
     return this.http.put<ManufacturerInterface>(url, data, {withCredentials: true}).toPromise()
   }
 
-  uploadManufacturerCertificate(manufacturerId: number, files: FileList): Promise<ManufacturerInterface> {
+  uploadManufacturerCertificate(manufacturerId: number, files: FileList,
+                                data: {lowResolution: boolean, relations: number}): Promise<ManufacturerInterface> {
     const url: string = environment.apiUrl + 'certificate'
     let formData = new FormData()
     formData.append('manufacturerId', manufacturerId.toString())
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i])
     }
+    formData.append('lowResolution', data.lowResolution.toString())
+    formData.append('relations', data.relations.toString())
     return this.http.post<ManufacturerInterface>(url, formData, {withCredentials: true}).toPromise()
   }
 

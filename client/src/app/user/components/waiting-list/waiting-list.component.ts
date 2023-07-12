@@ -56,8 +56,7 @@ export class WaitingListComponent implements OnInit {
     }
 
     try {
-      const ids: DetailIdInterface[] = this.user.waitingList.waitingItem.map(i => ({id: i.detail.id}))
-      this.details = await this.detailService.getByIds(ids)
+      this.details = await this.userService.getDetailsFromWaitingList()
       this.cartService.recountQuantity(this.details)
     } catch (error) {
       console.log(error);

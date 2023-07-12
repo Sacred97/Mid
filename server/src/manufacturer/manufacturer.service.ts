@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {HttpException, HttpModule, HttpService, HttpStatus, Injectable} from '@nestjs/common';
 import {FilesService} from "../files/files.service";
 import {CountryService} from "./country/country.service";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -6,12 +6,13 @@ import {Manufacturer} from "./entity/manufacturer.entity";
 import {ILike, IsNull, Not, Repository} from "typeorm";
 import {ManufacturerCreateDto} from "./dto/manufacturer-create.dto";
 import {ManufacturerUpdateDto} from "./dto/manufacturer-update.dto";
-import {Express} from 'express'
+import {Express, urlencoded} from 'express'
 import {PhotoCertificate} from "./entity/photoCertificate.entity";
 import {PhotoCertificateDto} from "./dto/photo-certificate.dto";
 import {RedisCacheService} from "../redis-cache/redis-cache.service";
 import {GET_MANUFACTURER_CACHE_KEY} from "../redis-cache/cacheKey.constant";
 import {ManufacturerFilterDto} from "./dto/manufacturer-filter.dto";
+import {customerCreateString, telegramMessageCreator} from "../utils/utils";
 
 @Injectable()
 export class ManufacturerService {
@@ -19,7 +20,7 @@ export class ManufacturerService {
     constructor(@InjectRepository(Manufacturer) private manufacturerRepository: Repository<Manufacturer>,
                 @InjectRepository(PhotoCertificate) private photoCertificateRepository: Repository<PhotoCertificate>,
                 private readonly filesService: FilesService,
-                private readonly countryService: CountryService,
+                private readonly countryService: CountryService, private http: HttpService,
                 private readonly redisCacheService: RedisCacheService) {
     }
 
@@ -273,6 +274,19 @@ export class ManufacturerService {
             return await this.getById(certificate.manufacturer.id)
         }
         throw new HttpException('Сертификат не найден', HttpStatus.NOT_FOUND)
+    }
+
+    async testTelega() {
+        const customer = customerCreateString('Юр.лицо', {
+            company: 'ИП Дейнега Артем Олегович', inn: '165054163900' , kpp: undefined,
+            companyAddress: 'Респ Татарстан, Тукаевский р-н, село Большая Шильна'
+        })
+        const url = telegramMessageCreator('000684', 56468.3,
+            {fullName: 'Альбина', phone: '+79998886655', email: 'email@email.com',
+                additionalPhone: '88552996641#101', payment: 'Безналичным платежом с НДС',
+                delivery: 'Транспортной компанией "до двери"; Деловые Линии', address: 'г.Челябинск, Троцкий Тракт 62ф, 1',
+                customer: customer})
+        return await this.http.get(url).toPromise()
     }
 
 }

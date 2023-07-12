@@ -11,6 +11,8 @@ export interface ManufacturerInterface {
 export interface PhotoCertificateInterface {
   id: number
   certificatePhotoUrl: string
+  lowResolution: boolean
+  relations: number
 }
 
 export interface Country {

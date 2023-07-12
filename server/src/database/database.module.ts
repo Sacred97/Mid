@@ -17,7 +17,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       entities: [
         __dirname + '/../**/*.entity{.ts,.js}'
       ],
-      synchronize: true
+      synchronize: true,
+      // retryAttempts: 10000, Может поможет от отвалов сервера
+      // keepConnectionAlive: true, Может поможет от отвалов сервера
     })
   })]
 })

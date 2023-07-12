@@ -6,7 +6,7 @@ import {DetailInterface} from "../shared/services-interfaces/detail-service/deta
 import {HttpErrorResponse} from "@angular/common/http";
 import {ShoppingCartService} from "../shared/services-interfaces/shopping-cart-service/shopping-cart.service";
 import {
-  AddRequestHistoryUser,
+  AddRequestHistoryUser, RequestHistoryUserInterface,
   UpdateRequestHistoryUser,
   UserInterface
 } from "../shared/services-interfaces/user-service/user.interface";
@@ -23,7 +23,8 @@ export class SearchPageComponent implements OnInit {
               public cartService: ShoppingCartService) {
   }
 
-  user: UserInterface | undefined = undefined
+  user = this.userService.user$.getValue()
+  requestHistory: RequestHistoryUserInterface[] = []
 
   details: DetailInterface[] = []
   loading: boolean = true
@@ -39,9 +40,9 @@ export class SearchPageComponent implements OnInit {
   async ngOnInit() {
 
     try {
-      this.user = await this.userService.getProfile()
-    } catch (error) {
-      console.log(error);
+      this.requestHistory = await this.userService.getRequestHistory()
+    } catch (e) {
+      console.log(e);
     }
 
     try {
@@ -56,8 +57,7 @@ export class SearchPageComponent implements OnInit {
     if (this.user) {
       try {
         const data: AddRequestHistoryUser = {requestString: this.querySearch, result: this.totalQuantity}
-        this.user.requestHistory = await this.userService.addRequestHistory(data)
-        this.userService.user$.next(this.user)
+        this.requestHistory = await this.userService.addRequestHistory(data)
       } catch (error) {
         console.log(error);
       }
@@ -81,13 +81,29 @@ export class SearchPageComponent implements OnInit {
       })
   }
 
+  // async toDetailCart(detailCart: string) {
+  //   if (this.user) {
+  //     try {
+  //       const requestHistory = this.user.requestHistory[this.user.requestHistory.length - 1]
+  //       const data: UpdateRequestHistoryUser = {id: requestHistory.id, detailCart: detailCart}
+  //       this.user.requestHistory = await this.userService.updateRequestHistory(data)
+  //       this.userService.user$.next(this.user)
+  //       this.router.navigate(['/', 'catalog', detailCart])
+  //     } catch (error) {
+  //       console.log(error);
+  //       this.router.navigate(['/', 'catalog', detailCart])
+  //     }
+  //   } else {
+  //     this.router.navigate(['/', 'catalog', detailCart])
+  //   }
+  // }
+
   async toDetailCart(detailCart: string) {
     if (this.user) {
       try {
-        const requestHistory = this.user.requestHistory[this.user.requestHistory.length - 1]
-        const data: UpdateRequestHistoryUser = {id: requestHistory.id, detailCart: detailCart}
-        this.user.requestHistory = await this.userService.updateRequestHistory(data)
-        this.userService.user$.next(this.user)
+        const request = this.requestHistory[this.requestHistory.length - 1]
+        const data: UpdateRequestHistoryUser = {id: request.id, detailCart: detailCart}
+        this.requestHistory = await this.userService.updateRequestHistory(data)
         this.router.navigate(['/', 'catalog', detailCart])
       } catch (error) {
         console.log(error);

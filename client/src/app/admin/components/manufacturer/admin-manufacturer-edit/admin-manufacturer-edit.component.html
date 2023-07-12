@@ -8,7 +8,7 @@
 
       <h2>Основная информация</h2>
 
-      <form [formGroup]="manufacturerForm" (ngSubmit)="update()">
+      <form class="admin-manufacturer-edit__info__form-info" [formGroup]="manufacturerForm" (ngSubmit)="update()">
         <label>
           <span>Производитель:</span>
           <input class="admin-input" type="text" placeholder="Введите название производителя" formControlName="nameCompany">
@@ -99,10 +99,38 @@
         <small class="admin-manufacturer-edit__info__new-certificate__error">{{certificateError}}</small>
       </div>
 
+      <form class="admin-manufacturer-edit__info__form-certificate" [formGroup]="certificateForm">
+        <span>Загрузить сертификат</span>
+        <input class="admin-input" type="file" (change)="selectCertificates($event)" #certificateEl formControlName="file">
+        <label>
+          <input type="checkbox" formControlName="isLowResolution">
+          <span>Низкое разрешение (превью файл)</span>
+        </label>
+        <label>
+          <span>Привязка
+            (привязывается к номеру с тем же файлом,
+            например, файл низкого разрешения под №1 и файл высокого разрешения под №1. Нельзя привязывать более 2 файлов к одному номеру)
+          </span>
+          <input type="number" formControlName="relations">
+          <small *ngIf="certificateForm.controls['relations'].invalid">Привязка должна быть указана</small>
+        </label>
+        <button class="admin-btn-action" (click)="uploadCertificate()"
+                [disabled]="!certificatesFiles || action || certificateForm.invalid">
+          Загрузить
+        </button>
+        <small>{{certificateError}}</small>
+        <small *ngIf="certificateForm.invalid">Форма некорректна</small>
+      </form>
+
       <div class="admin-manufacturer-edit__info__certificate"
            *ngIf="manufacturer.photoCertificate.length; else no_certificate">
         <div *ngFor="let c of manufacturer.photoCertificate; let idx = index">
           <div (click)="openCertificate($event)"><img [src]="c.certificatePhotoUrl" alt="Сертификат"></div>
+
+          <span>Разрешение: {{c.lowResolution ? 'Высокое' : 'Низкое'}}</span>
+
+          <span>Привязка: {{c.relations}}</span>
+
           <button class="admin-btn-remove" (click)="removeCertificate(c.id)">Удалить</button>
         </div>
       </div>

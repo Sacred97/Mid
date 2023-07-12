@@ -28,6 +28,8 @@ export class MyHistoryComponent implements OnInit {
   defaultImage: string = '../../../../assets/catalog/not-have-photo.jpg'
 
   user: UserInterface | undefined = this.userService.user$.getValue()
+  requestHistory: RequestHistoryUserInterface[] = []
+
   detailsInRequestHistory: DetailInterface[] = []
   details: DetailInterface[] = []
 
@@ -39,15 +41,15 @@ export class MyHistoryComponent implements OnInit {
       this.router.navigate(['/'])
       return
     }
-    this.user.requestHistory = this.user.requestHistory.reverse()
-    const detailsId: DetailIdInterface[] = this.user.requestHistory
-      .filter(i => !!i.detailCart)
-      .map(i => ({id: i.detailCart!}))
 
     try {
+      this.requestHistory = (await this.userService.getRequestHistory()).reverse()
+      const detailsId: DetailIdInterface[] = this.requestHistory
+        .filter(i => !!i.detailCart)
+        .map(i => ({id: i.detailCart!}))
       this.detailsInRequestHistory = await this.detailService.getByIds(detailsId)
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
     }
 
     try {

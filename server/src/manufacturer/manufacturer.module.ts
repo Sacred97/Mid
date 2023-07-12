@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {HttpModule, Module} from '@nestjs/common';
 import { ManufacturerController } from './manufacturer.controller';
 import { ManufacturerService } from './manufacturer.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
@@ -10,7 +10,7 @@ import {RedisCacheModule} from "../redis-cache/redis-cache.module";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Manufacturer, PhotoCertificate]),
-    CountryModule, FilesModule, RedisCacheModule],
+    CountryModule, FilesModule, RedisCacheModule, HttpModule],
   exports: [ManufacturerService],
   controllers: [ManufacturerController],
   providers: [ManufacturerService]

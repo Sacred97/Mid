@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {HttpException, HttpService, HttpStatus, Injectable} from '@nestjs/common';
 import {DetailsService} from "../details/details.service";
 import {GuestRecountOrder} from "./dto/guest-recount-order.dto";
 import {GuestMakeOrderDto} from "./dto/guest-make-order.dto";
@@ -8,7 +8,12 @@ import {UsersService} from "../users/users.service";
 import {GuestOrderInterface} from "./interfaces/guest-order.interface";
 import {GuestOrderItemsInterface} from "./interfaces/guest-order-items.interface";
 import {OrderItemToMailInterface, OrderToMailInterface} from "../mail/interfaces/order-to-mail.interface";
-import {commentCreateString, convertingNumbersToDigits, customerCreateString} from "../utils/utils";
+import {
+    commentCreateString,
+    convertingNumbersToDigits,
+    customerCreateString,
+    telegramMessageCreator
+} from "../utils/utils";
 import {DetailIdDto} from "../shared-dto/detail-id.dto";
 import {getRepository} from "typeorm";
 import {Detail} from "../details/entity/detail.entity";
@@ -17,7 +22,7 @@ import {Detail} from "../details/entity/detail.entity";
 export class GuestService {
 
     constructor(private readonly detailsService: DetailsService, private readonly oneCService: OneCService,
-                private readonly usersService: UsersService) {
+                private readonly usersService: UsersService, private http: HttpService) {
     }
 
     async recountTotalCostOfGuest(purchase: GuestRecountOrder[]) {
@@ -143,6 +148,12 @@ export class GuestService {
 
         const order = await this.usersService.createOrderUnauthorizedUser(orderToSave, orderItemToSave)
         await this.usersService.sendOrder(order.id, orderOneC, orderToMail)
+        const urlTelegram = telegramMessageCreator(orderToSave.orderNumber, orderToSave.orderCost, {
+            fullName: orderToSave.contactFullName, phone: orderToSave.contactPhone, email: orderToSave.contactEmail,
+            additionalPhone: orderToSave.contactAdditionalPhone, payment: orderToSave.paymentMethod,
+            delivery: orderToSave.deliveryMethod, address: orderToSave.deliveryAddress, customer: customer
+        })
+        await this.http.get(urlTelegram).toPromise()
         return order
     }
 

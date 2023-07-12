@@ -17,18 +17,23 @@ export class MyOrderComponent implements OnInit {
   }
 
   orders: OrderInterface[] = []
+  loading: boolean = true
+  error: boolean = false
   repeatOrderModal: boolean = false
   toRepeatOrder: OrderInterface | null = null
 
   ngOnInit(): void {
 
-    this.userService.getProfile()
-      .then(data => {
-        this.orders = data.order
+    if (!this.userService.user$.getValue()) this.router.navigate(['/'])
+
+    this.userService.getAllUserOrders()
+      .then(res => {
+        this.orders = res
+        this.loading = false
       }, error => {
-        console.log(error)
-        this.router.navigate(['/'])
-    })
+        console.log(error);
+        this.error = true
+      })
 
   }
 

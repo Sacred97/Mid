@@ -8,8 +8,6 @@ export class PhotoCertificateDto {
     manufacturerId: number
 
     @IsNotEmpty()
-    @Transform(v => JSON.parse(v.obj.lowResolution))
-    @Type(() => Boolean)
     @IsBoolean()
     lowResolution: boolean
 

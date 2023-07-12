@@ -182,10 +182,17 @@ export class AdminManufacturerEditComponent implements OnInit {
   certificatesFiles: FileList | null = null
   certificateError: string = ''
 
+  certificateForm: FormGroup = new FormGroup({
+    file: new FormControl(null, [Validators.required]),
+    isLowResolution: new FormControl(false),
+    relations: new FormControl(null, [Validators.required])
+  })
+
   selectCertificates(event: Event) {
     const files = (event.target as HTMLInputElement).files
     if (!files || !files.length) {
       this.certificatesFiles = null
+      this.certificateForm.controls['file'].setValue(null)
       return;
     }
     this.certificatesFiles = files
@@ -195,14 +202,20 @@ export class AdminManufacturerEditComponent implements OnInit {
     if (!this.certificatesFiles || !this.certificatesFiles.length) return
     this.action = true
 
-    this.adminService.uploadManufacturerCertificate(this.id, this.certificatesFiles)
+    const data = {
+      lowResolution: this.certificateForm.value.isLowResolution,
+      relations: this.certificateForm.value.relations,
+    }
+
+    this.adminService.uploadManufacturerCertificate(this.id, this.certificatesFiles, data)
       .then(data => {
         this.manufacturer!.photoCertificate = data.photoCertificate
         this.certificateError = ''
         this.certificatesFiles = null
-        const $target = (this.inputCertificateEl!.nativeElement as HTMLInputElement)
-        $target.value = ''
-        $target.files = null
+        // const $target = (this.inputCertificateEl!.nativeElement as HTMLInputElement)
+        // $target.value = ''
+        // $target.files = null
+        this.certificateForm.reset()
       }, error => {
         console.log(error);
         this.certificateError = error.error.message

@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {HttpException, HttpService, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {User} from './user.entity';
 import {ILike, Repository} from 'typeorm';
@@ -36,9 +36,15 @@ import {WaitingItemDto} from "./dto/waiting-item.dto";
 import {WaitingList} from "./entities/waiting-list.entity";
 import {WaitingItem} from "./entities/waiting-item.entity";
 import {RegistrationUserDto} from "../auth/dto/registration-user.dto";
-import {commentCreateString, convertingNumbersToDigits, customerCreateString} from "../utils/utils";
+import {
+  commentCreateString,
+  convertingNumbersToDigits,
+  customerCreateString,
+  telegramMessageCreator
+} from "../utils/utils";
 import {RequestHistoryUpdateDto} from "./dto/request-history-update.dto";
 import {ChangeUserPasswordDto} from "./dto/change-user-password.dto";
+import {Detail} from "../details/entity/detail.entity";
 
 @Injectable()
 export class UsersService {
@@ -55,6 +61,7 @@ export class UsersService {
               @InjectRepository(OrderItem) private orderItemRepository: Repository<OrderItem>,
               @InjectRepository(WaitingList) private waitingListRepository: Repository<WaitingList>,
               @InjectRepository(WaitingItem) private waitingItemRepository: Repository<WaitingItem>,
+              private http: HttpService,
               private readonly newsLetterService: NewsLetterService,
               private readonly detailsService: DetailsService,
               private readonly mailService: MailService,
@@ -105,21 +112,26 @@ export class UsersService {
         .leftJoinAndSelect('u.manager', 'manager')
         .leftJoinAndSelect('u.company', 'company')
         .leftJoinAndSelect('u.address', 'address')
-        .leftJoinAndSelect('u.requestHistory', 'request_history')
         .leftJoinAndSelect('u.subscriptions', 'subscriptions')
         .leftJoinAndSelect('subscriptions.newsLetter', 'news_letter')
-        .leftJoinAndSelect('u.order', 'order')
-        .leftJoinAndSelect('order.orderItem', 'order_item')
+        .leftJoin('u.order', 'order')
+        .addSelect(['order.id', 'order.orderNumber'])
         .leftJoinAndSelect('u.waitingList', 'waiting_list')
         .leftJoinAndSelect('waiting_list.waitingItem', 'waiting_item')
-        .leftJoinAndSelect('waiting_item.detail', 'wld')
+        .leftJoin('waiting_item.detail', 'wld')
+        .addSelect(['wld.id'])
         .leftJoinAndSelect('u.shoppingCart', 'shopping_cart')
         .leftJoinAndSelect('shopping_cart.cartItem', 'cart_item')
-        .leftJoinAndSelect('cart_item.detail', 'd')
-        // .leftJoinAndSelect('d.manufacturer', 'manufacturer')
-        // .leftJoinAndSelect('d.photoDetail', 'photo_detail')
+        // .leftJoin('cart_item.detail', 'd')
+        // .addSelect(['d.id',
+        //   'd.productCode', 'd.name', 'd.vendorCode', 'd.price', 'd.storageGES',
+        //   'd.storageOrlovka', 'd.storageGarage2000', 'd.unit', 'd.weight', 'd.isHide'
+        // ])
+        .leftJoin('cart_item.detail', 'd')
+        .addSelect(['d.id'])
         .where("u.id = " + userId)
         .getOne()
+
     if (user) {
       return user
     }
@@ -443,6 +455,15 @@ export class UsersService {
     return await this.waitingListRepository.findOne(listId)
   }
 
+  async getDetailsFromWaitingList(listId: number){
+    const list = await this.getWaitingListOfUser(listId)
+    if (list) {
+      const ids = list.waitingItem.map(i => ({id: i.detail.id}))
+      return await this.detailsService.getDetailsByIds(ids)
+    }
+    throw new HttpException('Лист ожидания не найден, сообщите в поддержку', HttpStatus.NOT_FOUND)
+  }
+
   async addWaitingItem(user: User, itemData: WaitingItemDto) {
     const detail = await this.detailsService.getDetailById(itemData.detailId, user.isAdmin)
     if (!detail) throw new HttpException('Товар не найден', HttpStatus.NOT_FOUND)
@@ -539,12 +560,26 @@ export class UsersService {
 
   }
 
+  //------------------------------------------Корзина (ShoppingCart)-----------------------------------------------------------
+
+  async getUserShoppingCart(id: number) {
+    return await this.shoppingCartRepository.createQueryBuilder('shp')
+        .leftJoinAndSelect('shp.cartItem', 'cart_item')
+        .leftJoin('cart_item.detail', 'd')
+        .addSelect(['d.id'])
+        .where("shp.id = " + id)
+        .getOne()
+  }
+
+
   //------------------------------------------Товары в корзине (CartItem)-----------------------------------------------------------
 
   async createUpdateCartItem(userCredentials: User, cartItemData: CartItemDto) {
 
     try {
       const detail = await this.detailsService.getByIdForUserServiceCreateUpdateCartItem(cartItemData.detailId)
+
+      console.log('Get detail info')
 
       let duplicateItemId: number
       for (let cart of userCredentials.shoppingCart.cartItem) {
@@ -566,11 +601,24 @@ export class UsersService {
         })
         await this.cartItemRepository.save(newCartItem)
       } else {
-        await this.recount(cartItemData.quantity, duplicateItemId)
+        await this.cartItemRepository.update(duplicateItemId, {
+          finalPrice: +(detail.price * cartItemData.quantity).toFixed(2),
+          finalWeight: +(detail.weight * cartItemData.quantity).toFixed(3),
+          quantity: cartItemData.quantity
+        })
       }
 
-      await this.totalCost(userCredentials.shoppingCart.id)
-      return await this.shoppingCartRepository.findOne(userCredentials.shoppingCart.id)
+      const fullShoppingCart = await this.shoppingCartRepository.findOne(userCredentials.shoppingCart.id)
+      let totalCost = fullShoppingCart.cartItem.map(i => i.finalPrice).reduce((sum, el) => {
+        return sum + el
+      })
+      let totalWeight = fullShoppingCart.cartItem.map(i => i.finalWeight).reduce((sum, el) => {
+        return sum + el
+      })
+      await this.shoppingCartRepository.update(fullShoppingCart.id, {totalCost: totalCost, totalWeight: totalWeight})
+      fullShoppingCart.totalCost = totalCost
+      fullShoppingCart.totalWeight = totalWeight
+      return fullShoppingCart
     } catch (error) {
       console.log(error)
       return userCredentials.shoppingCart
@@ -633,6 +681,17 @@ export class UsersService {
     }
     throw new HttpException('В корзине не обнаружено товаров', HttpStatus.NOT_FOUND)
   }
+
+  //--------------------------------------------------------Заказы----------------------------------------------------------
+
+  async getAllUserOrders(userId: number) {
+    return await this.orderRepository.find({where: {user: {id: userId}}})
+  }
+
+  async getUserOrder(id: number) {
+    return await this.orderRepository.findOne(id)
+  }
+
 
   //---------------------------------------- Формирование заказа и чистки корзины (Order)-------------------------------------------
 
@@ -739,6 +798,14 @@ export class UsersService {
     await this.cartItemRepository.remove(userCredentials.shoppingCart.cartItem)
     await this.shoppingCartRepository.update(userCredentials.shoppingCart.id, {totalCost: 0, totalWeight: 0})
     await this.sendOrder(order.id, orderOneC, orderMail)
+
+    const urlTelegram = telegramMessageCreator(newOrder.orderNumber, newOrder.orderCost, {
+      fullName: newOrder.contactFullName, phone: newOrder.contactPhone, email: newOrder.contactEmail,
+      additionalPhone: newOrder.contactAdditionalPhone, payment: newOrder.paymentMethod,
+      delivery: newOrder.deliveryMethod, address: newOrder.deliveryAddress, customer: customerString
+    })
+    await this.http.get(urlTelegram).toPromise()
+
     return await this.getById(userCredentials.id)
   }
 

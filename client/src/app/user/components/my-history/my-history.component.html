@@ -11,7 +11,7 @@
   <div class="user-history__history" *ngIf="user">
     <span>Дата: {{getCurrentDay()}}</span>
     <ul>
-      <li *ngFor="let h of getRequestHistory(user.requestHistory)">
+      <li *ngFor="let h of getRequestHistory(requestHistory)">
         <span>{{getDay(h.requestDate)}}</span>
         <span>{{getTime(h.requestDate)}}</span>
         <span>{{h.requestString}}</span>

@@ -29,25 +29,31 @@ export class CurrentOrderComponent implements OnInit {
 
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
     if (!this.user) {
       this.router.navigate(['/'])
       return
     }
 
-    this.order = this.user.order.find(i => i.id === this.id)
-    if (!this.order) {
-      this.error = true
-      return
-    }
+    // this.order = this.user.order.find(i => i.id === this.id)
+    // if (!this.order) {
+    //   this.error = true
+    //   return
+    // }
 
-    const ids: DetailIdInterface[] = this.order.orderItem.map(i => ({id: i.detailId}))
-    this.detailService.getByIds(ids)
-      .then(data => {
-        this.details = data
-      }, error => {
-        console.log(error);
-      })
+    try {
+      this.order = await this.userService.getUserOrder(this.id)
+      const ids: DetailIdInterface[] = this.order.orderItem.map(i => ({id: i.detailId}))
+      this.detailService.getByIds(ids)
+        .then(data => {
+          this.details = data
+        }, error => {
+          console.log(error);
+        })
+    } catch (e) {
+      console.log(e);
+      this.error = true
+    }
 
   }
 

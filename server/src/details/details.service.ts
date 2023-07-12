@@ -218,9 +218,12 @@ export class DetailsService {
       key_words.shortName ILIKE '%${queryRequest}%'
       )`
 
+    let withoutSymbolsQueryRequest = queryRequest.replace(/[.,-]/g, "")
+
     const query: string = `detail.isHide = false AND (
       to_tsvector(detail.name) @@ plainto_tsquery('${queryRequest}') OR detail.name ILIKE '%${queryRequest}%' OR 
-      to_tsvector(detail.vendorCode) @@ plainto_tsquery('${queryRequest}') OR detail.vendorCode ILIKE '%${queryRequest}%' OR 
+      to_tsvector(detail.vendorCode) @@ plainto_tsquery('${queryRequest}') OR detail.vendorCode ILIKE '%${queryRequest}%' OR
+      REGEXP_REPLACE(detail."vendorCode", '[,.-]', '', 'g') = '${withoutSymbolsQueryRequest}' OR 
       to_tsvector(alternative_name.shortName) @@ plainto_tsquery('${queryRequest}') OR alternative_name.shortName ILIKE '%${queryRequest}%' OR 
       to_tsvector(additional_vendor_code.shortName) @@ plainto_tsquery('${queryRequest}') OR additional_vendor_code.shortName ILIKE '%${queryRequest}%' OR 
       to_tsvector(key_words.shortName) @@ plainto_tsquery('${queryRequest}') OR key_words.shortName ILIKE '%${queryRequest}%' OR
