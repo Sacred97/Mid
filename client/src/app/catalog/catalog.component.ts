@@ -569,4 +569,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }
   }
 
+  test(event: any) {
+    console.log(event);
+    this.changesFilter(event.filterList, event.index, event.name)
+  }
+
 }

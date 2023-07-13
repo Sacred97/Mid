@@ -98,6 +98,7 @@ import { PrivacyPolicyComponent } from './buyer/components/privacy-policy/privac
 import { ExportDepartamentComponent } from './contacts/components/export-departament/export-departament.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { FavoriteGuestComponent } from './favorite-guest/favorite-guest.component';
+import { CatalogFiltersComponent } from './catalog/components/catalog-filters/catalog-filters.component';
 
 
 @NgModule({
@@ -189,6 +190,7 @@ import { FavoriteGuestComponent } from './favorite-guest/favorite-guest.componen
     ExportDepartamentComponent,
     SupplierComponent,
     FavoriteGuestComponent,
+    CatalogFiltersComponent,
   ],
     imports: [
       BrowserModule,

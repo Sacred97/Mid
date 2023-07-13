@@ -1,0 +1,18 @@
+<div class="filters">
+  <button (click)="dropList($event)">
+    <span>Применяемость</span>
+    <div></div>
+  </button>
+
+  <ul>
+    <li *ngFor="let i of filterList; let idx = index" [attr.data-filter]="i.label">
+      <label>
+        <input type="checkbox" [ngModel]="!!i.checked" (change)="selectFilter(filterList, idx)">
+        <span>
+              {{i.label}}
+          <div>{{i.count_detail ? '(' + i.count_detail + ')' : ''}}</div>
+            </span>
+      </label>
+    </li>
+  </ul>
+</div>

@@ -137,6 +137,8 @@
       </ul>
     </div>
 
+    <app-catalog-filters [nameFilter]="'applicability'" [filterList]="applicability" (choiceFilter)="test($event)"></app-catalog-filters>
+
   </aside>
 
   <div class="catalog">

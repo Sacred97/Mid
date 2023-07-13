@@ -1,0 +1,165 @@
+@import "../../../shared/styles/variables";
+
+
+.filters {
+  width: 100%;
+  margin-bottom: 17px;
+
+  > button {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11.5px 17px;
+    background-color: $grey_easy;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    span {
+      color: $black;
+      font-size: 15px;
+      line-height: 1;
+      font-family: "Museo Sans Cyrl 500";
+    }
+
+    div {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      top: 10px;
+      right: 17px;
+      background-color: transparent;
+      border-style: solid;
+      border-width: 2px;
+      border-color: transparent $violet $violet transparent;
+      transform: rotateX(0deg) rotate(45deg);
+      transition: transform 1s, top 0.5s;
+    }
+  }
+
+  ul {
+    position: relative;
+    list-style: none;
+    padding: 0 19px;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1s, padding 1s;
+
+    li {
+      width: 100%;
+      margin-bottom: 9px;
+
+      label {
+        width: 100%;
+        display: flex;
+        cursor: pointer;
+        position: relative;
+        font-size: 15px;
+        min-height: calc(1em + 4px);
+
+        input[type="checkbox"] {
+          position: absolute;
+          z-index: -1;
+          opacity: 0;
+          display: block;
+          width: 0;
+          height: 0;
+        }
+        input[type='checkbox']:checked + span:before {
+          background-color: $violet;
+        }
+
+        span {
+          display: inline-block;
+          position: relative;
+          padding-top: 3px;
+          padding-left: 31px;
+          color: $black;
+          font-size: 15px;
+          line-height: 1;
+          font-family: 'Museo Sans Cyrl 300';
+
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1em;
+            height: 1em;
+            border: 2px solid $violet;
+            border-radius: 4px;
+            font-size: 15px;
+          }
+
+          div {
+            display: inline;
+            color: $grey_dark;
+            font-size: 15px;
+            line-height: 1;
+            font-family: "Museo Sans Cyrl 300";
+          }
+        }
+
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+
+    }
+
+    li.helper > label > span {
+      color: $yellow;
+    }
+
+  }
+
+  &:last-child > ul {
+
+    //> li:first-child {
+    //  margin-bottom: 37px;
+    //}
+    //
+    //> div {
+    //  left: 50%;
+    //  right: 50%;
+    //  top: 56px;
+    //  position: absolute;
+    //  border-top: 2px solid $grey_normal;
+    //  transition: right 1s, left 1s;
+    //}
+  }
+
+  ul.drop {
+    max-height: 250px;
+    overflow: auto;
+    padding: 19px 19px;
+    transition: max-height 1s, padding 1s;
+
+    div {
+      right: 0;
+      left: 0;
+      transition: right 1s, left 1s;
+    }
+  }
+
+  button.drop > div {
+    top: 15px;
+    transform: rotateX(180deg) rotate(45deg);
+    transition: transform 1s, top 0.5s;
+  }
+
+}
+
+@media (max-width: 767px) {
+
+  .filters {
+    > button {
+      border-radius: 0;
+    }
+  }
+
+}
