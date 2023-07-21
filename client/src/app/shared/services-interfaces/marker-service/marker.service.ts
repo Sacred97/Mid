@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {DetailInterface} from "../detail-service/detail.interface";
 import {DetailIdInterface} from "../global-interfaces/detail-id.interface";
+import {_UserInterface} from "../../interfaces/user/user.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class MarkerService {
   }
 
   getMarkStorage(): DetailIdInterface[] {
-    return !!localStorage.getItem('markers') ? JSON.parse(localStorage.getItem('markers')!!) : []
+    const data = localStorage.getItem('markers')
+    return data ? JSON.parse(data) : []
   }
 
   markAndUnmark(details: DetailInterface | DetailInterface[], id: string, idx?: number): void {
@@ -37,6 +39,26 @@ export class MarkerService {
     } else {
       details.marked = action
     }
+  }
+
+  markSaved(product: DetailInterface | DetailInterface[]): void {
+    if (Array.isArray(product)) {
+      for (let pItem of product) {
+        pItem.marked = false
+        for (let mItem of this.getMarkStorage()) {
+          if (pItem.id === mItem.id) {
+            pItem.marked = true
+            break;
+          }
+        }
+      }
+      return
+    }
+
+    product.marked = false
+    const candidate = this.getMarkStorage().find(i => i.id === product.id)
+    if (candidate) product.marked = true
+    return;
   }
 
 }

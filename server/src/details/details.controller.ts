@@ -77,8 +77,8 @@ export class DetailsController {
 
   // Случайные товары из недавно просмотренных
   @Post('random')
-  async getDetailsByIds(@Body(new ParseArrayPipe({items: DetailIdDto})) ids: DetailIdDto[]) {
-    return await this.detailsService.getDetailsByIds(ids)
+  async getDetailsByIds(@Body(new ParseArrayPipe({items: DetailIdDto})) ids: DetailIdDto[], @Query('simple') simple: boolean) {
+    return await this.detailsService.getDetailsByIds(ids, simple)
   }
 
   //---------------------------------------Случайные товары популярных, новинок и распродаж-----------------------------

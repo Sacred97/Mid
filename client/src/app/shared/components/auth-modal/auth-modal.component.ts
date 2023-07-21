@@ -115,7 +115,7 @@ export class AuthModalComponent implements OnInit {
       isSave: this.formLogin.value.isSave
     }
 
-    this.userService.login(user.email, user.password).then(userCredential => {
+    this.userService.loginObs(user.email, user.password).subscribe(userCredential => {
 
       if (user.isSave) {
         localStorage.setItem('email', user.email)
@@ -123,35 +123,25 @@ export class AuthModalComponent implements OnInit {
         localStorage.removeItem('email')
       }
 
-      const shoppingCart = this.shoppingCartService.storage()
-      if (!!shoppingCart && shoppingCart.length>0) {
-        const cartInfo: CartItemInfoInterface[]  = shoppingCart.map(i => ({
-          detailId: i.id, quantity: i.quantity
-        }))
-        this.userService.addCartItem(cartInfo).then(shoppingCartUpdated => {
-          userCredential.shoppingCart = shoppingCartUpdated
-          const newLocalShoppingCart: ShoppingCartInterface[] = shoppingCartUpdated.cartItem.map(i => ({
-            id: i.detail.id, quantity: i.quantity
-          }))
-          localStorage.setItem('shopping_cart', JSON.stringify(newLocalShoppingCart))
+      const shoppingCart = this.shoppingCartService.getGuestShoppingCart()
+      if (!!shoppingCart && shoppingCart.length > 0) {
+        this.userService.addCartItem(shoppingCart).then(res => {
+          userCredential.shoppingCart = res
           this.shoppingCartService.totalCost = userCredential.shoppingCart.totalCost
           this.shoppingCartService.itemsQuantity = userCredential.shoppingCart.cartItem.length
-          this.userService.user$.next(userCredential)
+          this.userService.user = userCredential
         })
       } else {
-        const userShoppingCart: ShoppingCartInterface[] = userCredential.shoppingCart.cartItem.map(i => ({
-          id: i.detail.id, quantity: i.quantity
-        }))
-        localStorage.setItem('shopping_cart', JSON.stringify(userShoppingCart))
         this.shoppingCartService.totalCost = userCredential.shoppingCart.totalCost
         this.shoppingCartService.itemsQuantity = userCredential.shoppingCart.cartItem.length
-        this.userService.user$.next(userCredential)
+        this.userService.user = (userCredential)
       }
+      this.submitted = false
       this.close.emit()
       this.router.navigate(['/'])
-    }).catch((error: HttpErrorResponse) => {
+    }, (error: HttpErrorResponse) => {
       console.log(error);
-      this.userService.user$.next(undefined)
+      this.userService.user = undefined
       if (error.error.statusCode === 400) {
         this.errorLogin = error.error.message
       }
@@ -161,7 +151,6 @@ export class AuthModalComponent implements OnInit {
       if (error.error.statusCode === 404) {
         this.errorLogin = error.error.message
       }
-    }).finally(() => {
       this.submitted = false
     })
 

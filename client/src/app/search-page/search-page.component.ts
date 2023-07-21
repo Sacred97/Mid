@@ -10,6 +10,8 @@ import {
   UpdateRequestHistoryUser,
   UserInterface
 } from "../shared/services-interfaces/user-service/user.interface";
+import {mergeMap, switchMap, tap} from "rxjs/operators";
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-search-page',
@@ -37,31 +39,33 @@ export class SearchPageComponent implements OnInit {
 
   action: boolean = false
 
-  async ngOnInit() {
+  ngOnInit() {
 
-    try {
-      this.requestHistory = await this.userService.getRequestHistory()
-    } catch (e) {
-      console.log(e);
-    }
-
-    try {
-      const response = await this.detailService.search(this.querySearch, 20, 0)
-      this.loading = false
-      this.details = response.items
-      this.totalQuantity = response.count
-    } catch (error) {
-      console.log(error);
-    }
-
-    if (this.user) {
-      try {
-        const data: AddRequestHistoryUser = {requestString: this.querySearch, result: this.totalQuantity}
-        this.requestHistory = await this.userService.addRequestHistory(data)
-      } catch (error) {
+    this.detailService.search(this.querySearch, 20, 0)
+      .pipe(
+        switchMap(res => {
+          this.details = res.items
+          this.totalQuantity = res.count
+          if (this.user) {
+            return this.userService.getRequestHistoryObs()
+          }
+          return of(null)
+        }),
+        switchMap(res => {
+          // тут не важно пустой массив или нет, у пользователя может быть его история поиска чистая,
+          // самое главное проверить ответ не null ли, если null то пользователя нет
+          if (res) {
+            this.requestHistory = res
+            return this.userService.addRequestHistory({requestString: this.querySearch, result: this.totalQuantity})
+          }
+          return of(null)
+        })
+      ).subscribe((res) => {
+        this.loading = false
+      }, (error: HttpErrorResponse) => {
         console.log(error);
-      }
-    }
+        this.loading = false
+      }, () => {})
 
   }
 
@@ -70,7 +74,7 @@ export class SearchPageComponent implements OnInit {
     const prevPage = this.page
     this.page = pageNumber
     this.detailService.search(this.querySearch, 20, offset)
-      .then(data => {
+      .subscribe(data => {
         this.loading = false
         this.details = data.items
         this.totalQuantity = data.count
@@ -81,34 +85,19 @@ export class SearchPageComponent implements OnInit {
       })
   }
 
-  // async toDetailCart(detailCart: string) {
-  //   if (this.user) {
-  //     try {
-  //       const requestHistory = this.user.requestHistory[this.user.requestHistory.length - 1]
-  //       const data: UpdateRequestHistoryUser = {id: requestHistory.id, detailCart: detailCart}
-  //       this.user.requestHistory = await this.userService.updateRequestHistory(data)
-  //       this.userService.user$.next(this.user)
-  //       this.router.navigate(['/', 'catalog', detailCart])
-  //     } catch (error) {
-  //       console.log(error);
-  //       this.router.navigate(['/', 'catalog', detailCart])
-  //     }
-  //   } else {
-  //     this.router.navigate(['/', 'catalog', detailCart])
-  //   }
-  // }
-
   async toDetailCart(detailCart: string) {
     if (this.user) {
-      try {
-        const request = this.requestHistory[this.requestHistory.length - 1]
-        const data: UpdateRequestHistoryUser = {id: request.id, detailCart: detailCart}
-        this.requestHistory = await this.userService.updateRequestHistory(data)
-        this.router.navigate(['/', 'catalog', detailCart])
-      } catch (error) {
-        console.log(error);
-        this.router.navigate(['/', 'catalog', detailCart])
-      }
+
+      const request = this.requestHistory[this.requestHistory.length - 1]
+      const data: UpdateRequestHistoryUser = {id: request.id, detailCart: detailCart}
+      this.userService.updateRequestHistory(data)
+        .subscribe(res => {
+          this.requestHistory = res
+          this.router.navigate(['/', 'catalog', detailCart])
+        }, (error: HttpErrorResponse) => {
+          console.log(error);
+          this.router.navigate(['/', 'catalog', detailCart])
+        })
     } else {
       this.router.navigate(['/', 'catalog', detailCart])
     }

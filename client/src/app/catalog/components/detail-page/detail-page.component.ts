@@ -122,7 +122,7 @@ export class DetailPageComponent implements OnInit {
     //----------------------------------------------Получить товар------------------------------------------------------
 
     const id: string = this.activatedRoute.snapshot.params['id']
-    this.detailService.getById(id).then(async (detail) => {
+    this.detailService.getById(id).subscribe(async (detail) => {
       if (!detail) return
 
       this.shoppingCartService.recountQuantity(detail)

@@ -8,7 +8,7 @@ export class GlobalInterceptor implements NestInterceptor {
     return next.handle().pipe(
         tap((response) => {
           console.log('Ответ: ')
-          console.log(response)
+          // console.log(response)
         })
     );
   }

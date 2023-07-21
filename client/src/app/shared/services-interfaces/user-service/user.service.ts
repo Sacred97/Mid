@@ -17,13 +17,16 @@ import {
   WaitingListDetailId,
   WaitingListInterface
 } from "./user.interface";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {ResponseMessage} from "../global-interfaces/response.interface";
 import {CartItemInfoInterface} from "../global-interfaces/cart-item-info.interface";
 import {ShoppingCartInterface} from "../shopping-cart-service/shopping-cart.interface";
 import {environment} from "../../../../environments/environment";
 import {DetailInterface} from "../detail-service/detail.interface";
 import {OrderInterface} from "../global-interfaces/order.interface";
+import {_UserInterface} from "../../interfaces/user/user.interface";
+import {ProductAndQuantityInterface} from "../../interfaces/common/productAndQuantity.interface";
+import {ShoppingCartOfUserInterface} from "../../interfaces/shoppingCart/shoppingCartOfUser.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +37,7 @@ export class UserService {
   }
 
   user$: BehaviorSubject<UserInterface | undefined> = new BehaviorSubject<UserInterface | undefined>(undefined)
+  user: _UserInterface | undefined = undefined
 
   async getUser(): Promise<UserInterface | undefined> {
     try {
@@ -50,6 +54,11 @@ export class UserService {
       this.user$.next(undefined)
       return undefined
     }
+  }
+
+  getUserObs(): Observable<_UserInterface> {
+    const url: string = environment.apiUrl + 'users/profile'
+    return this.http.get<_UserInterface>(url, {withCredentials: true})
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -92,6 +101,12 @@ export class UserService {
     return this.http.post<UserInterface>(url, user, {withCredentials: true}).toPromise()
   }
 
+  loginObs(email: string, password: string): Observable<_UserInterface> {
+    const url = environment.apiUrl + 'auth/login'
+    const user = {email: email, password: password}
+    return this.http.post<_UserInterface>(url, user, {withCredentials: true})
+  }
+
   logout(): Promise<void> {
     const url = environment.apiUrl + 'auth/logout'
     return this.http.post<void>(url, {void: 'void'}, {withCredentials: true}).toPromise()
@@ -119,14 +134,29 @@ export class UserService {
     return this.http.post<ShoppingCartUserInterface>(url, data, {withCredentials: true}).toPromise()
   }
 
+  addCartItemObs(data: ProductAndQuantityInterface | ProductAndQuantityInterface[]): Observable<ShoppingCartOfUserInterface> {
+    const url = environment.apiUrl + 'users/shoppingCart'
+    return this.http.post<ShoppingCartOfUserInterface>(url, data, {withCredentials: true})
+  }
+
   deleteCartItem(id: number): Promise<ShoppingCartUserInterface> {
     const url = environment.apiUrl + 'users/shoppingCart/' + id
     return this.http.delete<ShoppingCartUserInterface>(url, {withCredentials: true}).toPromise()
   }
 
+  deleteCartItemObs(id: number): Observable<ShoppingCartOfUserInterface> {
+    const url = environment.apiUrl + 'users/shoppingCart/' + id
+    return this.http.delete<ShoppingCartOfUserInterface>(url, {withCredentials: true})
+  }
+
   recountTotalCost(): Promise<ShoppingCartUserInterface> {
     const url = environment.apiUrl + 'users/shoppingCart'
     return this.http.put<ShoppingCartUserInterface>(url, {void: 'void'}, {withCredentials: true}).toPromise()
+  }
+
+  recountTotalCostObs(): Observable<ShoppingCartOfUserInterface> {
+    const url = environment.apiUrl + 'users/shoppingCart'
+    return this.http.put<ShoppingCartOfUserInterface>(url, {void: 'void'}, {withCredentials: true})
   }
 
   cleanShoppingCart(): Promise<ShoppingCartUserInterface> {
@@ -297,19 +327,24 @@ export class UserService {
     return this.http.get<RequestHistoryUserInterface[]>(url, {withCredentials: true}).toPromise()
   }
 
-  addRequestHistory(data: AddRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
+  getRequestHistoryObs() {
     const url = environment.apiUrl + 'users/history'
-    return this.http.post<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
+    return this.http.get<RequestHistoryUserInterface[]>(url, {withCredentials: true})
   }
 
-  updateRequestHistory(data: UpdateRequestHistoryUser): Promise<RequestHistoryUserInterface[]> {
+  addRequestHistory(data: AddRequestHistoryUser): Observable<RequestHistoryUserInterface[]> {
     const url = environment.apiUrl + 'users/history'
-    return this.http.put<RequestHistoryUserInterface[]>(url, data, {withCredentials: true}).toPromise()
+    return this.http.post<RequestHistoryUserInterface[]>(url, data, {withCredentials: true})
   }
 
-  deleteRequestHistory(id: number): Promise<RequestHistoryUserInterface[]> {
+  updateRequestHistory(data: UpdateRequestHistoryUser): Observable<RequestHistoryUserInterface[]> {
+    const url = environment.apiUrl + 'users/history'
+    return this.http.put<RequestHistoryUserInterface[]>(url, data, {withCredentials: true})
+  }
+
+  deleteRequestHistory(id: number): Observable<RequestHistoryUserInterface[]> {
     const url = environment.apiUrl + 'users/history/' + id
-    return this.http.delete<RequestHistoryUserInterface[]>(url, {withCredentials: true}).toPromise()
+    return this.http.delete<RequestHistoryUserInterface[]>(url, {withCredentials: true})
   }
 
   //-----------------------------------------------Заказы---------------------------------------------------------------

@@ -19,10 +19,12 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ShoppingCartService} from "../../services-interfaces/shopping-cart-service/shopping-cart.service";
 import {MenuInterface} from "../../services-interfaces/global-interfaces/menu.interface";
 import {DetailInterface} from "../../services-interfaces/detail-service/detail.interface";
-import {Subscription} from "rxjs";
+import {of, Subscription} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {DaDataResponse} from "../../services-interfaces/global-interfaces/response.interface";
 import {UserInterface} from "../../services-interfaces/user-service/user.interface";
+import {toCurrency} from "../../utils/helpers";
+import {catchError, switchMap} from "rxjs/operators";
 
 
 @Component({
@@ -33,8 +35,8 @@ import {UserInterface} from "../../services-interfaces/user-service/user.interfa
 export class HeaderLayoutComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2, private detailService: DetailService, private router: Router,
-              private resolver: ComponentFactoryResolver, public userService: UserService,
-              public shoppingCartService: ShoppingCartService, private http: HttpClient) {
+              private resolver: ComponentFactoryResolver, private userService: UserService,
+              private shoppingCartService: ShoppingCartService, private http: HttpClient) {
   }
 
   // @ts-ignore
@@ -231,27 +233,31 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     {city: 'Ярославль', cityTo: 'Ярославль'}
   ]
 
-  user: UserInterface | undefined = undefined
-  userSub$: Subscription | null = null
+  searchText: string = ''
 
-  async ngOnInit() {
-    try {
-      this.user = await this.userService.getUser()
-      if (this.user) {
-        this.shoppingCartService.totalCost = this.user.shoppingCart.totalCost
-        this.shoppingCartService.itemsQuantity = this.user.shoppingCart.cartItem.length
-      } else {
-        await this.shoppingCartService.recountTotalCostWithGuest(this.shoppingCartService.storage())
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  ngOnInit() {
+    this.userService.getUserObs().pipe(
+      switchMap(res => {
+          this.userService.user = res
+          this.shoppingCartService.totalCost = res.shoppingCart.totalCost
+          this.shoppingCartService.itemsQuantity = res.shoppingCart.cartItem.length
+          return of(null)
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log(error)
+        return this.shoppingCartService.recountTotalCostWithGuestObs()
+      })
+    ).subscribe(res => {
+      }, (error: HttpErrorResponse) => {
+        console.log(error);
+      })
 
     this.navigateSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.active = false
         this.activeHiddenHeader = false
         this.searchingDetails = []
+        this.searchingDetailsCount = 0
       }
     })
 
@@ -282,19 +288,10 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
       })
     }
 
-    this.userSub$ = this.userService.user$.subscribe(user => {
-      if (user) {
-        this.user = user
-      } else {
-        this.user = undefined
-      }
-    })
-
   }
 
   ngOnDestroy(): void {
     this.navigateSubscription?.unsubscribe()
-    this.userSub$?.unsubscribe()
   }
 
   goToStart() {
@@ -314,10 +311,10 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
   }
 
   search(event: Event) {
-    const query = (event.target as HTMLInputElement).value.trim()
-    if (!!query) {
-      this.detailService.search(query, 20, 0)
-        .then(itemsAndCount => {
+    this.searchText = (event.target as HTMLInputElement).value.trim()
+    if (!!this.searchText) {
+      this.detailService.search(this.searchText, 20, 0)
+        .subscribe(itemsAndCount => {
           this.searchingDetailsCount = itemsAndCount.count;
           this.searchingDetails = itemsAndCount.items
         }, (error: HttpErrorResponse) => {
@@ -329,33 +326,12 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  toSearch(event: Event) {
-    const $parent = (event.currentTarget as HTMLButtonElement).parentElement
-    if (!$parent) return
-    const $target = $parent.querySelector('input')
-    if (!$target) return;
-    const searchValue = $target.value
+  toSearch() {
     this.searchingDetails = []
+    this.searchingDetailsCount = 0
     this.router.navigate(['/'], {skipLocationChange: true})
       .then(() => {
-        this.router.navigate(['/', 'search'], {queryParams: {text: searchValue}})
-      })
-  }
-
-  toSearchInList(event: Event) {
-    const $liEl = (event.currentTarget as HTMLButtonElement).parentElement
-    if (!$liEl) return
-    const $ulEl = $liEl.parentElement
-    if (!$ulEl) return
-    const $formEl = $ulEl.parentElement
-    if (!$formEl) return
-    const $target = $formEl.querySelector('input')
-    if (!$target) return;
-    const searchValue = $target.value
-    this.searchingDetails = []
-    this.router.navigate(['/'], {skipLocationChange: true})
-      .then(() => {
-        this.router.navigate(['/', 'search'], {queryParams: {text: searchValue}})
+        this.router.navigate(['/', 'search'], {queryParams: {text: this.searchText}})
       })
   }
 
@@ -395,7 +371,26 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     return city.city
   }
 
-  //-----------------------------Модальные окна-------------------------------------------------------------------------
+
+  //-------------------------------------------------Геттеры------------------------------------------------------------
+
+  get user() {
+    return this.userService.user
+  }
+
+  get itemsQuantity() {
+    return this.shoppingCartService.itemsQuantity
+  }
+
+  get totalCost() {
+    return this.shoppingCartService.totalCost
+  }
+
+  getCurrency(price: number) {
+    return toCurrency(price)
+  }
+
+  //--------------------------------------------------Модальные окна----------------------------------------------------
 
   showAuthModal() {
     const modalFactory = this.resolver.resolveComponentFactory(AuthModalComponent)

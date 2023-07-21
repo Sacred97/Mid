@@ -272,7 +272,12 @@ export class DetailsService {
     return {items, count}
   }
 
-  async getDetailsByIds(ids: DetailIdDto[]) {
+  async getDetailsByIds(ids: DetailIdDto[], simple: boolean = false) {
+
+    if (simple) {
+      return await this.detailRepository.findByIds(ids, {select: ["id", "name"], loadEagerRelations: false})
+    }
+
     const details = await this.detailRepository.findByIds(ids)
     details.forEach(item => {
       if (item.photoDetail.length>0) item.photoDetail

@@ -574,9 +574,20 @@ export class UsersService {
 
   //------------------------------------------Товары в корзине (CartItem)-----------------------------------------------------------
 
+  private getDate(place: string) {
+    let now = new Date()
+    const hours = now.getHours().toString();
+    const minutes = now.getMinutes().toString();
+    const seconds = now.getSeconds().toString();
+    const milliseconds = now.getMilliseconds().toString();
+    const time = hours + ':' + minutes + ':' + seconds + ':' + milliseconds
+    return place + ' ' + time
+  }
+
   async createUpdateCartItem(userCredentials: User, cartItemData: CartItemDto) {
 
     try {
+
       const detail = await this.detailsService.getByIdForUserServiceCreateUpdateCartItem(cartItemData.detailId)
 
       console.log('Get detail info')
@@ -608,21 +619,45 @@ export class UsersService {
         })
       }
 
+      let interval = setInterval(() => {
+        console.log(this.getDate('Получем корзину пользователя'))
+      }, 100)
+
       const fullShoppingCart = await this.shoppingCartRepository.findOne(userCredentials.shoppingCart.id)
+
+      clearInterval(interval)
+      console.log('Получили')
+      interval = setInterval(() => {
+        console.log(this.getDate('Вычисляем общ сумму и вес'))
+      }, 100)
+
       let totalCost = fullShoppingCart.cartItem.map(i => i.finalPrice).reduce((sum, el) => {
         return sum + el
       })
       let totalWeight = fullShoppingCart.cartItem.map(i => i.finalWeight).reduce((sum, el) => {
         return sum + el
       })
+
+      clearInterval(interval)
+      console.log('Вычислили')
+      interval = setInterval(() => {
+        console.log(this.getDate('Обновляем'))
+      }, 100)
+
       await this.shoppingCartRepository.update(fullShoppingCart.id, {totalCost: totalCost, totalWeight: totalWeight})
       fullShoppingCart.totalCost = totalCost
       fullShoppingCart.totalWeight = totalWeight
+
+      clearInterval(interval)
+      console.log('Обновили')
+
       return fullShoppingCart
     } catch (error) {
       console.log(error)
       return userCredentials.shoppingCart
+
     }
+
   }
 
   async deleteItemCart(user: User, id: number) {

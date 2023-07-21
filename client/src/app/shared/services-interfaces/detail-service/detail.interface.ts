@@ -34,8 +34,10 @@ export interface DetailInterface {
   autoApplicability: ApplicabilityInterface[] // Can be empty []
   keyWords: KeyWordsInterface[] // Can be empty []
 
-  quantityRatio?: number
-  quantity?: number
+  // quantityRatio?: number
+  // quantity?: number
+  quantityRatio: number
+  quantity: number
   marked?: boolean
 }
 

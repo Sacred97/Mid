@@ -18,126 +18,20 @@
       </ul>
     </div>
 
-    <div class="aside-menu__filters">
-      <button (click)="dropList($event)">
-        <span>Применяемость</span>
-        <div></div>
-      </button>
+    <app-catalog-filters *ngFor="let filterKey of getFilterKey(filters)"
+                         [nameFilter]="filterKey"
+                         [label]="filters[filterKey].label"
+                         [filterList]="filters[filterKey].filterItems"
+                         (choiceFilter)="filterChanges($event)"
+    ></app-catalog-filters>
 
-      <ul>
-        <li *ngFor="let ap of applicability; let idx = index" [attr.data-filter]="ap.label">
-          <label>
-            <input type="checkbox" [ngModel]="!!ap.checked"
-                   (ngModelChange)="changesFilter(applicability, idx, 'applicability')">
-            <span>
-              {{ap.label}}
-              <div>{{ap.count_detail ? '(' + ap.count_detail + ')' : ''}}</div>
-            </span>
-          </label>
-        </li>
-      </ul>
-    </div>
-
-    <div class="aside-menu__filters">
-      <button (click)="dropList($event)">
-        <span>Категория товара</span>
-        <div></div>
-      </button>
-
-      <ul>
-        <li *ngFor="let c of category; let idx = index" [attr.data-filter]="c.label">
-          <label>
-            <input type="checkbox" [ngModel]="!!c.checked"
-                   (ngModelChange)="changesFilter(category, idx, 'category')">
-            <span>
-              {{c.label}}
-              <div>{{c.count_detail ? '(' + c.count_detail + ')' : ''}}</div>
-            </span>
-          </label>
-        </li>
-      </ul>
-    </div>
-
-    <div class="aside-menu__filters">
-      <button (click)="dropList($event)">
-        <span>Автомобильная группа</span>
-        <div></div>
-      </button>
-
-      <ul>
-        <li *ngFor="let p of parts; let idx = index" [attr.data-filter]="p.label">
-          <label>
-            <input type="checkbox" [ngModel]="!!p.checked" (ngModelChange)="changesFilter(parts, idx, 'parts')">
-            <span>
-              {{p.label}}
-              <div>{{p.count_detail ? '(' + p.count_detail + ')' : ''}}</div>
-            </span>
-          </label>
-        </li>
-      </ul>
-    </div>
-
-    <div class="aside-menu__filters">
-      <button (click)="dropList($event)">
-        <span>Производитель</span>
-        <div></div>
-      </button>
-
-      <ul>
-        <li *ngFor="let m of manufacturer; let idx=index" [attr.data-filter]="m.label">
-          <label>
-            <input type="checkbox" [ngModel]="!!m.checked"
-                   (ngModelChange)="changesFilter(manufacturer, idx, 'manufacturer')">
-            <span>
-              {{m.label}}
-              <div>{{m.count_detail ? '(' + m.count_detail + ')' : ''}}</div>
-            </span>
-          </label>
-        </li>
-      </ul>
-
-    </div>
-
-    <div class="aside-menu__filters">
-      <button (click)="dropList($event)">
-        <span>Наличие товара</span>
-        <div></div>
-      </button>
-
-      <ul>
-        <li>
-          <label>
-            <input type="checkbox" [ngModel]="availability"
-                   (ngModelChange)="additionalFilterChange('availability', 'В наличии')">
-            <span>В наличии</span>
-          </label>
-        </li>
-        <div></div>
-        <li>
-          <label>
-            <input type="checkbox" [ngModel]="recent"
-                   (ngModelChange)="additionalFilterChange('recent', 'Рекомендуемые')">
-            <span>Рекомендуем</span>
-          </label>
-        </li>
-        <li>
-          <label>
-            <input type="checkbox" [ngModel]="sale"
-                   (ngModelChange)="additionalFilterChange('sale', 'По акции')">
-            <span>Акции</span>
-          </label>
-        </li>
-        <li>
-          <label>
-            <input type="checkbox" [ngModel]="popular"
-                   (ngModelChange)="additionalFilterChange('popular', 'Новинки')">
-            <span>Новинки</span>
-          </label>
-        </li>
-      </ul>
-    </div>
-
-    <app-catalog-filters [nameFilter]="'applicability'" [filterList]="applicability" (choiceFilter)="test($event)"></app-catalog-filters>
+    <app-catalog-filters *ngFor="let add of getFilterKey(additionalFilters)"
+                         [isShowLine]="true"
+                         [nameFilter]="add"
+                         [label]="additionalFilters[add].label"
+                         [filterList]="additionalFilters[add].filterItems"
+                         (choiceFilter)="additionalFilterChanges($event)"
+    ></app-catalog-filters>
 
   </aside>
 
@@ -249,10 +143,10 @@
 
           <div class="catalog__display-main__text">
 
-            <span>{{shoppingService.toCurrency(d.price)}}</span>
+            <span>{{getCurrency(d.price)}}</span>
 
             <a [routerLink]="['/', 'catalog', d.id]"
-               (click)="recentlyViewedService.addToRecentlyViewed(d.id)">
+               (click)="toRecentlyViewed(d.id)">
               {{d.name}}
             </a>
 
@@ -283,9 +177,9 @@
           </div>
 
           <div class="catalog__display-main__quantity">
-            <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+            <button (click)="increaseDecrease(d.id, idx, d.quantity - 1)" [disabled]="action"></button>
             <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
-            <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+            <button (click)="increaseDecrease(d.id, idx, d.quantity + 1)" [disabled]="action"><span></span></button>
           </div>
 
           <div class="catalog__display-main__to-order">
@@ -416,13 +310,13 @@
 
             </div>
 
-            <span>{{shoppingService.toCurrency(d.price)}}</span>
+            <span>{{getCurrency(d.price)}}</span>
 
             <button (click)="addProduct(d.id, idx)"
-                    [disabled]="shoppingService.check(d.id) || action"
-                    [style]="shoppingService.check(d.id)?
+                    [disabled]="isCheck(d.id) || action"
+                    [style]="isCheck(d.id)?
                     'background-color: #fdcb00;':'background-color: #ffffff;'">
-              {{shoppingService.check(d.id)?'В корзине':'В заказ'}}
+              {{isCheck(d.id)?'В корзине':'В заказ'}}
             </button>
 
           </div>
@@ -440,7 +334,7 @@
 
           <div class="catalog__display-analog__title">
             <a [routerLink]="['/', 'catalog', d.id]"
-               (click)="recentlyViewedService.addToRecentlyViewed(d.id)">
+               (click)="toRecentlyViewed(d.id)">
               {{d.name}}
             </a>
           </div>
@@ -468,7 +362,7 @@
           </div>
 
           <div class="catalog__display-analog__price">
-            {{shoppingService.toCurrency(d.price)}}
+            {{getCurrency(d.price)}}
           </div>
 
           <div class="catalog__display-analog__quantity">
@@ -490,10 +384,10 @@
           </div>
 
           <div class="catalog__display-analog__to-order">
-            <div *ngIf="shoppingService.check(d.id); else to_cart">
-              <button (click)="decrease(d.id, idx)" [disabled]="action"></button>
+            <div *ngIf="isCheck(d.id); else to_cart">
+              <button (click)="increaseDecrease(d.id, idx, d.quantity - 1)" [disabled]="action"></button>
               <input type="number" [value]="d.quantity" (change)="manualInput($event, d.id, idx)" [disabled]="action">
-              <button (click)="increase(d.id, idx)" [disabled]="action"><span></span></button>
+              <button (click)="increaseDecrease(d.id, idx, d.quantity + 1)" [disabled]="action"><span></span></button>
             </div>
             <ng-template #to_cart>
               <button (click)="addProduct(d.id, idx)" [disabled]="action">В заказ</button>
@@ -511,7 +405,7 @@
         </button>
       </li>
 
-      <pagination-controls class="pagination" (pageChange)="changePage($event, false)"
+      <pagination-controls class="pagination" (pageChange)="choicePage($event)"
                            previousLabel="" nextLabel="" [maxSize]="maxQuantityViewPages">
       </pagination-controls>
     </ul>

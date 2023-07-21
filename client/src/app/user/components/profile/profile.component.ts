@@ -133,6 +133,7 @@ export class ProfileComponent implements OnInit {
       .then(() => {
         localStorage.setItem('shopping_cart', JSON.stringify([]))
         this.userService.user$.next(undefined)
+        this.userService.user = undefined
         this.shoppingCartService.totalCost = 0
         this.shoppingCartService.itemsQuantity = 0
         this.router.navigate(['/'])

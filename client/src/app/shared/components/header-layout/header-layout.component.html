@@ -55,14 +55,14 @@
   <div class="bucket">
     <div>
       <span>Корзина</span>
-      <div class="bucket__quantity"><span>{{shoppingCartService.itemsQuantity}}</span></div>
+      <div class="bucket__quantity"><span>{{itemsQuantity}}</span></div>
       <a routerLink="/shopping-cart">
-        {{shoppingCartService.totalCost && shoppingCartService.itemsQuantity ?
-        shoppingCartService.toCurrency(shoppingCartService.totalCost) : 'Нет товаров'}}
+        {{totalCost && itemsQuantity ?
+        getCurrency(totalCost) : 'Нет товаров'}}
       </a>
     </div>
 
-    <a *ngIf="user; else no_user" routerLink="/user/profile" >
+    <a *ngIf="user; else no_user" routerLink="/user/profile">
       <img src="../../../../assets/header/profile.svg" alt="">
       <span>Кабинет</span>
     </a>
@@ -110,17 +110,17 @@
               <div></div>
               <span>{{detail.vendorCode}}</span>
               <div></div>
-              <span>{{shoppingCartService.toCurrency(detail.price)}}</span>
+              <span>{{getCurrency(detail.price)}}</span>
             </a>
           </li>
           <li *ngIf="searchingDetailsCount > 20">
-            <button (click)="toSearchInList($event)">
+            <button (click)="toSearch()">
               Найдено еще {{searchingDetailsCount - 20}} совпаден{{sklonenie(searchingDetailsCount - 20)}}. Показать еще.
             </button>
           </li>
         </ul>
 
-        <button class="btn" (click)="toSearch($event)" type="submit">
+        <button class="btn" (click)="toSearch()" type="submit">
           <img src="../../../../assets/header/search.svg" alt="">
           <span>Поиск</span>
         </button>
@@ -939,7 +939,7 @@
 
     <form>
       <input type="text" placeholder="Поиск по разделу">
-      <button type="submit" (click)="toSearch($event)">
+      <button type="submit" (click)="toSearch()">
         <img src="../../../../assets/header/search.svg" alt="">
       </button>
     </form>
@@ -1035,7 +1035,7 @@
 
     <div class="hidden-header__navbar__search">
       <input type="text" placeholder="Поиск по артикулу или названию">
-      <button class="btn" (click)="toSearch($event)">
+      <button class="btn" (click)="toSearch()">
         <img src="../../../../assets/header/search.svg" alt="">
         <span>Поиск</span>
       </button>
@@ -1045,10 +1045,10 @@
 
     <div class="hidden-header__navbar__bucket">
       <span>Корзина</span>
-      <div><span>{{shoppingCartService.itemsQuantity ? shoppingCartService.itemsQuantity : 0}}</span></div>
+      <div><span>{{itemsQuantity ? itemsQuantity : 0}}</span></div>
       <a routerLink="/shopping-cart">
-        {{shoppingCartService.totalCost && shoppingCartService.itemsQuantity ?
-        shoppingCartService.toCurrency(shoppingCartService.totalCost) : 'Нет товаров'}}
+        {{totalCost && itemsQuantity ?
+        getCurrency(totalCost) : 'Нет товаров'}}
       </a>
     </div>
 

@@ -1,11 +1,11 @@
 <div class="filters">
-  <button (click)="dropList($event)">
-    <span>Применяемость</span>
+  <button (click)="isShowed = !isShowed" [ngClass]="{'drop': isShowed}">
+    <span>{{label}}</span>
     <div></div>
   </button>
 
-  <ul>
-    <li *ngFor="let i of filterList; let idx = index" [attr.data-filter]="i.label">
+  <ul [ngClass]="{'drop': isShowed, 'line': isShowLine}">
+    <li *ngFor="let i of filterList; let idx = index;" [attr.data-filter]="i.label">
       <label>
         <input type="checkbox" [ngModel]="!!i.checked" (change)="selectFilter(filterList, idx)">
         <span>

@@ -117,33 +117,18 @@
 
   }
 
-  &:last-child > ul {
-
-    //> li:first-child {
-    //  margin-bottom: 37px;
-    //}
-    //
-    //> div {
-    //  left: 50%;
-    //  right: 50%;
-    //  top: 56px;
-    //  position: absolute;
-    //  border-top: 2px solid $grey_normal;
-    //  transition: right 1s, left 1s;
-    //}
-  }
-
   ul.drop {
     max-height: 250px;
     overflow: auto;
     padding: 19px 19px;
     transition: max-height 1s, padding 1s;
 
-    div {
+    > li:first-child:after {
       right: 0;
       left: 0;
       transition: right 1s, left 1s;
     }
+
   }
 
   button.drop > div {
@@ -152,6 +137,25 @@
     transition: transform 1s, top 0.5s;
   }
 
+}
+
+.line {
+
+  > li:first-child {
+    margin-bottom: 37px !important;
+  }
+
+  > li:first-child:after {
+    content: '';
+    display: block;
+    height: 1px;
+    left: 50%;
+    right: 50%;
+    top: 56px;
+    position: absolute;
+    border-top: 2px solid $grey_normal;
+    transition: right 1s, left 1s;
+  }
 }
 
 @media (max-width: 767px) {

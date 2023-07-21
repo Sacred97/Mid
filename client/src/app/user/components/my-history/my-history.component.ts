@@ -12,6 +12,7 @@ import {RecentlyViewedService} from "../../../shared/services-interfaces/recentl
 import {HttpErrorResponse} from "@angular/common/http";
 import {MarkerService} from "../../../shared/services-interfaces/marker-service/marker.service";
 import {Router} from "@angular/router";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-my-history',
@@ -47,10 +48,24 @@ export class MyHistoryComponent implements OnInit {
       const detailsId: DetailIdInterface[] = this.requestHistory
         .filter(i => !!i.detailCart)
         .map(i => ({id: i.detailCart!}))
-      this.detailsInRequestHistory = await this.detailService.getByIds(detailsId)
+      this.detailsInRequestHistory = await this.detailService.getByIds(detailsId, true)
     } catch (e) {
       console.log(e);
     }
+
+    // this.userService.getRequestHistoryObs().pipe(
+    //   switchMap(res => {
+    //     this.requestHistory = res.reverse()
+    //     const detailsId: DetailIdInterface[] = this.requestHistory
+    //       .filter(i => !!i.detailCart)
+    //       .map(i => ({id: i.detailCart!}))
+    //     return this.detailService.getByIdsObs(detailsId, true)
+    //   })
+    // ).subscribe(res => {
+    //
+    // }, (error: HttpErrorResponse) => {
+    //   console.log(error);
+    // })
 
     try {
       this.details = await this.viewedService.getRecentlyViewedDetails()
